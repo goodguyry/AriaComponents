@@ -53,6 +53,15 @@ export default class Popup {
   }
 
   /**
+   * Return the class name for referencing and identifying instances.
+   *
+   * @return {String}
+   */
+  static getClassName() {
+    return 'popup';
+  }
+
+  /**
    * Expand or collapse the popup
    *
    * @param {Boolean} expand The expected `expanded` state.
