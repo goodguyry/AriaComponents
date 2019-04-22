@@ -33,4 +33,10 @@ describe('', () => {
     () => {
       expect(instanceOf(list, MenuItem)).toBeTruthy();
     });
+
+  it('Should return false for a non-existant element',
+    () => {
+      const missing = document.querySelector('.missing');
+      expect(instanceOf(missing, MenuItem)).toBeFalsy();
+    });
 });

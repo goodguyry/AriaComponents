@@ -7,6 +7,10 @@
  * @return {Boolean}
  */
 export default function instanceOf(element, instance) {
+  if (undefined === element || null === element) {
+    return false;
+  }
+
   const propName = instance.getClassName();
 
   return (
