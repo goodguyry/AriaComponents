@@ -1,5 +1,5 @@
-import Popup from '../Popup';
-import events from './utils/events';
+import Popup from '.';
+import events from '../../utils/events';
 
 const {
   click,

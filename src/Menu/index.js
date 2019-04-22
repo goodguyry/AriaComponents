@@ -1,9 +1,9 @@
-import Popup from './Popup';
-import MenuItem from './MenuItem';
-import keyCodes from './lib/keyCodes';
-import rovingTabIndex from './lib/rovingTabIndex';
-import createScreenReaderText from './lib/createScreenReaderText';
-import instanceOf from './lib/instanceOf';
+import Popup from '../Popup';
+import MenuItem from '../MenuItem';
+import keyCodes from '../lib/keyCodes';
+import rovingTabIndex from '../lib/rovingTabIndex';
+import createScreenReaderText from '../lib/createScreenReaderText';
+import instanceOf from '../lib/instanceOf';
 
 /**
  * Menu class for managing a menu's top-level keyboard interactions.

@@ -1,5 +1,5 @@
-import keyCodes from './lib/keyCodes';
-import interactiveChildren from './lib/interactiveChildren';
+import keyCodes from '../lib/keyCodes';
+import interactiveChildren from '../lib/interactiveChildren';
 
 /**
  * Sets up a controller-target relationship with appropriate aria-attributes and event handling.

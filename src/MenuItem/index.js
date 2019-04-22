@@ -1,6 +1,6 @@
-import Popup from './Popup';
-import keyCodes from './lib/keyCodes';
-import instanceOf from './lib/instanceOf';
+import Popup from '../Popup';
+import keyCodes from '../lib/keyCodes';
+import instanceOf from '../lib/instanceOf';
 
 /**
  * MenuItem class for managing menu items' keyboard interactions.

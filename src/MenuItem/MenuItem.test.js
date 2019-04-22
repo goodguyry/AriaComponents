@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import MenuItem from '../MenuItem';
+import MenuItem from '.';
 import Popup from '../Popup';
-import events from './utils/events';
+import events from '../../utils/events';
 
 const {
   keydownDown,

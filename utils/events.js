@@ -1,10 +1,11 @@
+/**
+ * Keyboard and mouse event abstraction to simplify testing events.
+ * @type {Object}
+ */
 const events = {
   click: (new MouseEvent('click', {})),
   keydownTab: (new KeyboardEvent('keydown', { keyCode: 9 })),
-  keydownShiftTab: (new KeyboardEvent('keydown', {
-    keyCode: 9,
-    shiftKey: true,
-  })),
+  keydownShiftTab: (new KeyboardEvent('keydown', { keyCode: 9, shiftKey: true })), // eslint-disable-line max-len
   keydownReturn: (new KeyboardEvent('keydown', { keyCode: 13 })),
   keydownEsc: (new KeyboardEvent('keydown', { keyCode: 27 })),
   keydownSpace: (new KeyboardEvent('keydown', { keyCode: 32 })),
