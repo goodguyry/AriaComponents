@@ -5,7 +5,7 @@
  * @param {HTMLElement|NodeList|Array} allow The item to which we'll allow tabbing.
  */
 function rovingTabIndex(items, allow) {
-  let allowedElements = [];
+  let allowedElements = Array.isArray(allow) ? allow : [];
 
   // Convert allowed ellement(s) to an Array.
   if (allow instanceof HTMLElement || allow instanceof Node) {
