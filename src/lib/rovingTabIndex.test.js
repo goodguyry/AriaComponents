@@ -14,16 +14,16 @@ describe('Correctly updates tabindex attribute.', () => {
     rovingTabIndex(elements, elements[1]);
 
     expect(elements[0].getAttribute('tabindex')).toEqual('-1');
-    expect(elements[1].getAttribute('tabindex')).toEqual(null);
+    expect(elements[1].getAttribute('tabindex')).toBeNull();
     expect(elements[2].getAttribute('tabindex')).toEqual('-1');
   });
 
   it('Allow on a NodeList of elements', () => {
     rovingTabIndex(elements, elements);
 
-    expect(elements[0].getAttribute('tabindex')).toEqual(null);
-    expect(elements[1].getAttribute('tabindex')).toEqual(null);
-    expect(elements[2].getAttribute('tabindex')).toEqual(null);
+    expect(elements[0].getAttribute('tabindex')).toBeNull();
+    expect(elements[1].getAttribute('tabindex')).toBeNull();
+    expect(elements[2].getAttribute('tabindex')).toBeNull();
   });
 
   it('Missing `allowed` argument', () => {

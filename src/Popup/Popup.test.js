@@ -121,10 +121,10 @@ describe('Popup correctly responds to events', () => {
 it('Should destroy the popup as expected', () => {
   popup.destroy();
 
-  expect(controller.getAttribute('aria-haspopup')).toEqual(null);
-  expect(controller.getAttribute('aria-expanded')).toEqual(null);
-  expect(controller.getAttribute('aria-controls')).toEqual(null);
-  expect(target.getAttribute('aria-hidden')).toEqual(null);
+  expect(controller.getAttribute('aria-haspopup')).toBeNull();
+  expect(controller.getAttribute('aria-expanded')).toBeNull();
+  expect(controller.getAttribute('aria-controls')).toBeNull();
+  expect(target.getAttribute('aria-hidden')).toBeNull();
 
   controller.dispatchEvent(click);
   expect(popup.state.expanded).toBeFalsy();
