@@ -5,9 +5,23 @@
  *
  * @returns {String}
  */
-function uniqueId(radix = 36) {
+function getUniqueId(radix = 36) {
   const [, attr] = Math.random().toString(radix).split('.');
   return `id_${attr}`;
 }
 
-export default uniqueId;
+/**
+ * Set the ID attribute if the element does not already have one.
+ *
+ * @param {HTMLElement} element the element upon which to act.
+ */
+function setUniqueId(element) {
+  if (null !== element && '' === element.id) {
+    element.setAttribute('id', getUniqueId());
+  }
+}
+
+export {
+  getUniqueId,
+  setUniqueId,
+};

@@ -1,5 +1,5 @@
 import interactiveChildren from '../lib/interactiveChildren';
-import uniqueId from '../lib/uniqueId';
+import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Sets up a controller-target relationship with appropriate aria-attributes and event handling.
@@ -96,9 +96,7 @@ export default class Disclosure {
 
     // Ensure the target and controller each have an ID attribute.
     [this.controller, this.target].forEach((element) => {
-      if ('' === element.id) {
-        element.setAttribute('id', uniqueId());
-      }
+      setUniqueId(element);
     });
 
     // Add a reference to the class instance

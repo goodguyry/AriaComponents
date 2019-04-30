@@ -1,4 +1,4 @@
-import uniqueId from './uniqueId';
+import { getUniqueId, setUniqueId } from './uniqueId';
 
 describe('Adds a unique ID attribute to the given element.', () => {
   // Set up our document body
@@ -7,18 +7,29 @@ describe('Adds a unique ID attribute to the given element.', () => {
   const span = document.querySelector('span');
   const div = document.querySelector('div');
 
-  it('Should not have an ID attribute', () => {
-    expect(span.id).toBeFalsy();
+  beforeEach(() => {
+    span.removeAttribute('id');
+    div.removeAttribute('id');
   });
 
-  it('Should have an ID attribute', () => {
-    span.id = uniqueId();
+  // get
+  it('Should return an ID', () => {
+    expect(getUniqueId()).toMatch(/id_[\d\w]+/);
+  });
+
+  it('Should return unique IDs', () => {
+    expect(getUniqueId()).not.toEqual(getUniqueId());
+  });
+
+  // set
+  it('Should add an ID attribute', () => {
+    setUniqueId(span);
     expect(span.id).toMatch(/id_[\d\w]+/);
   });
 
-  it('Should have a unique ID attribute', () => {
-    span.id = uniqueId();
-    div.id = uniqueId();
+  it('Should add unique ID attributes', () => {
+    setUniqueId(span);
+    setUniqueId(div);
     expect(span.id).not.toEqual(div.id);
   });
 });
