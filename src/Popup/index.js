@@ -16,8 +16,14 @@ export default class Popup {
    * Start the component
    */
   constructor(config) {
+    const options = {
+      controller: null,
+      target: null,
+      type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+    };
+
     // Save references to the controller and target.
-    Object.assign(this, config);
+    Object.assign(this, options, config);
 
     /**
      * The target element's interactive child elements.
@@ -84,7 +90,7 @@ export default class Popup {
     this.target.popup = this;
 
     // Add controller attributes
-    this.controller.setAttribute('aria-haspopup', 'menu');
+    this.controller.setAttribute('aria-haspopup', this.type);
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.controller.setAttribute('aria-controls', this.target.id);
 
