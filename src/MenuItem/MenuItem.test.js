@@ -131,11 +131,11 @@ describe('MenuItem correctly responds to events', () => {
       controller: domElements.listThirdItem,
       target: domElements.sublistTwo,
     });
-    popup.setExpandedState(true);
+    popup.setState({ expanded: true });
 
     domElements.sublistTwoFirstItem.focus();
     domElements.sublistTwoFirstItem.dispatchEvent(keydownLeft);
     expect(document.activeElement).toEqual(domElements.listThirdItem);
-    expect(popup.state.expanded).toBeFalsy();
+    expect(popup.getState().expanded).toBeFalsy();
   });
 });

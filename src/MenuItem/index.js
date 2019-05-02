@@ -1,3 +1,4 @@
+import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import keyCodes from '../lib/keyCodes';
 import instanceOf from '../lib/instanceOf';
@@ -7,7 +8,7 @@ import instanceOf from '../lib/instanceOf';
  *
  * @param {HTMLElement} list The list to manage.
  */
-export default class MenuItem {
+export default class MenuItem extends AriaComponent {
   /**
    * Test for a list as the next sibling element.
    *
@@ -24,40 +25,46 @@ export default class MenuItem {
    * Start the component
    */
   constructor(list) {
-    /**
-     * The list to manage
-     * @type {HTMLElement}
-     */
-    this.list = list;
-
-    // Save a reference to the MenuItem instance on the list item.
-    Object.assign(list, { menuItem: this });
+    super(list);
 
     /**
-     * The list's child elements.
-     * @type {Array}
+     * The component name.
+     * @type {String}
      */
-    this.listItems = Array.prototype.slice.call(list.children);
+    this.componentName = 'menuItem';
+
+    /**
+     * Options shape.
+     * @type {Object}
+     */
+    const options = {
+      list: null,
+    };
+
+    // Merge config options with defaults.
+    Object.assign(this, options, { list });
 
     // Bind class methods
     this.handleListKeydown = this.handleListKeydown.bind(this);
 
-    this.init();
-  }
-
-  /**
-   * Return the class name for referencing and identifying instances.
-   *
-   * @return {String}
-   */
-  static getClassName() {
-    return 'menuItem';
+    if (null !== this.list) {
+      this.init();
+    }
   }
 
   /**
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init() {
+    // Add a reference to the class instance
+    this.setSelfReference([this.list]);
+
+    /**
+     * The list's child elements.
+     * @type {Array}
+     */
+    this.listItems = Array.prototype.slice.call(this.list.children);
+
     // Collect menu items.
     this.menuItems = this.listItems.reduce((acc, item) => {
       const itemLink = item.firstElementChild;
@@ -147,7 +154,7 @@ export default class MenuItem {
       // Drill down into a nested list, if present.
       const siblingElement = this.constructor.nextElementIsUl(activeDescendant);
 
-      if (siblingElement && instanceOf(siblingElement, MenuItem)) {
+      if (siblingElement && instanceOf(siblingElement.menuItem, MenuItem)) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -160,13 +167,13 @@ export default class MenuItem {
         event.stopPropagation();
         event.preventDefault();
         // Close the popup if it exists and is exapnded.
-        if (instanceOf(this.previousSibling, Popup)) {
+        if (instanceOf(this.previousSibling.popup, Popup)) {
           event.stopPropagation();
           event.preventDefault();
 
           const { popup } = this.previousSibling;
           if (popup.state.expanded) {
-            popup.setExpandedState(false);
+            popup.setState({ expanded: false });
           }
         }
 
