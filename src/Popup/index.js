@@ -33,6 +33,9 @@ export default class Popup extends AriaComponent {
       controller: null,
       target: null,
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+      onInit: () => {},
+      onStateChange: () => {},
+      onDestroy: () => {},
     };
 
     // Save references to the controller and target.
@@ -97,6 +100,8 @@ export default class Popup extends AriaComponent {
     this.controller.addEventListener('keydown', this.controllerKeyDownHandler);
     this.target.addEventListener('keydown', this.targetKeyDownHandler);
     document.body.addEventListener('click', this.closeOnOutsideClick);
+
+    this.onInit.call(this);
   }
 
   /**
@@ -107,6 +112,8 @@ export default class Popup extends AriaComponent {
   stateWasUpdated({ expanded }) {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.target.setAttribute('aria-hidden', `${! expanded}`);
+
+    this.onStateChange.call(this);
   }
 
   /**
@@ -248,5 +255,7 @@ export default class Popup extends AriaComponent {
     this.state = {
       expanded: false,
     };
+
+    this.onDestroy.call(this);
   }
 }

@@ -26,7 +26,19 @@ const domLastChild = document.querySelector('.last-child');
 
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');
-const popup = new Popup({ controller, target });
+
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
+const popup = new Popup({
+  controller,
+  target,
+  onStateChange,
+  onInit,
+  onDestroy,
+});
 
 describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
@@ -39,6 +51,8 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
     expect(controller.popup).toBeInstanceOf(Popup);
     expect(target.popup).toBeInstanceOf(Popup);
+
+    expect(onInit).toHaveBeenCalled();
   });
 
   it('Should add the correct attributes to the popup controller', () => {
@@ -65,6 +79,14 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(popup.getState().expanded).toBeFalsy();
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
+  });
+
+  it('Should run subscriber functions', () => {
+    popup.setState({ expanded: true });
+    expect(onStateChange).toHaveBeenCalled();
+
+    popup.setState({ expanded: false });
+    expect(onStateChange).toHaveBeenCalled();
   });
 });
 
@@ -128,4 +150,6 @@ it('Should destroy the popup as expected', () => {
 
   controller.dispatchEvent(click);
   expect(popup.getState().expanded).toBeFalsy();
+
+  expect(onDestroy).toHaveBeenCalled();
 });
