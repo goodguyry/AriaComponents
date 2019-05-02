@@ -16,24 +16,11 @@ export default class AriaComponent {
      * @type {Object}
      */
     this.state = {};
-  }
 
-  /**
-   * Return the class name for referencing and identifying instances.
-   *
-   * @return {String}
-   */
-  getClassName() {
-    return this.componentName;
-  }
-
-  /**
-   * Return the state instance property.
-   *
-   * @return {Object}
-   */
-  getState() {
-    return this.state;
+    // Bind class methods.
+    this.setState = this.setState.bind(this);
+    this.getState = this.getState.bind(this);
+    this.setSelfReference = this.setSelfReference.bind(this);
   }
 
   /**
@@ -58,5 +45,14 @@ export default class AriaComponent {
     elements.forEach((element) => {
       Object.assign(element, { [this.componentName]: this });
     });
+  }
+
+  /**
+   * Return the state instance property.
+   *
+   * @return {Object}
+   */
+  getState() {
+    return this.state;
   }
 }
