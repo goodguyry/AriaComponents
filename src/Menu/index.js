@@ -1,3 +1,4 @@
+import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import MenuItem from '../MenuItem';
 import keyCodes from '../lib/keyCodes';
@@ -10,75 +11,39 @@ import instanceOf from '../lib/instanceOf';
  *
  * @param {HTMLElement} menu The menu <ul>
  */
-export default class Menu {
+export default class Menu extends AriaComponent {
   /**
    * Start the component
    */
   constructor(menu) {
+    super(menu);
+
     /**
-     * The menu <ul>
-     * @type {HTMLElement}
+     * The component name.
+     * @type {String}
      */
-    this.menu = menu;
+    this.componentName = 'menu';
+
+    /**
+     * Options shape.
+     * @type {Object}
+     */
+    const options = {
+      menu: null,
+    };
+
+    // Merge config options with defaults.
+    Object.assign(this, options, { menu });
 
     // Bind class methods.
     this.addHelpText = this.addHelpText.bind(this);
-    this.manageState = this.manageState.bind(this);
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    this.init();
-  }
-
-  /**
-   * Manage menu activeDescendant state.
-   *
-   * @param {Object} newState The new state.
-   */
-  manageState(newState) {
-    this.state = Object.assign(this.state, newState);
-
-    if (Object.prototype.hasOwnProperty.call(newState, 'activeDescendant')) {
-      const { activeDescendant } = this.state;
-
-      rovingTabIndex(this.menuBarItems, activeDescendant);
-      activeDescendant.focus();
+    if (null !== this.menu) {
+      this.init();
     }
-  }
-
-  /**
-   * Adds screen reader help text for use in aria-describedby attributes.
-   */
-  addHelpText() {
-    const helpTextItems = [
-      {
-        id: 'menu-class-top-level-help',
-        text: 'Use left and right arrow keys to navigate between menu items.',
-      },
-      {
-        id: 'menu-class-submenu-help',
-        text: 'Use right arrow key to move into submenus.',
-      },
-      {
-        id: 'menu-class-esc-help',
-        text: 'Use escape to exit the menu.',
-      },
-      {
-        id: 'menu-class-submenu-explore',
-        text: 'Use up and down arrow keys to explore.',
-      },
-      {
-        id: 'menu-class-submenu-back',
-        text: 'Use left arrow key to move back to the parent list.',
-      },
-    ];
-
-    helpTextItems.forEach(({ id, text }) => {
-      if (null === this.menu.parentElement.querySelector(`#${id}`)) {
-        const helpSpan = createScreenReaderText(id, text);
-        this.menu.parentElement.appendChild(helpSpan);
-      }
-    });
   }
 
   /**
@@ -137,9 +102,7 @@ export default class Menu {
      * Set initial state.
      * @type {Object}
      */
-    this.state = {
-      activeDescendant: this.menuBarItems[0],
-    };
+    [this.state.activeDescendant] = this.menuBarItems;
 
     // Initialize popups for nested lists.
     this.popups = this.menuBarItems.map((controller) => {
@@ -164,6 +127,51 @@ export default class Menu {
       this.menuBarItems,
       this.state.activeDescendant
     );
+  }
+
+  /**
+   * Manage menu activeDescendant state.
+   *
+   * @param {Object} state The component state.
+   */
+  stateWasUpdated({ activeDescendant }) {
+    rovingTabIndex(this.menuBarItems, activeDescendant);
+    activeDescendant.focus();
+  }
+
+  /**
+   * Adds screen reader help text for use in aria-describedby attributes.
+   */
+  addHelpText() {
+    const helpTextItems = [
+      {
+        id: 'menu-class-top-level-help',
+        text: 'Use left and right arrow keys to navigate between menu items.',
+      },
+      {
+        id: 'menu-class-submenu-help',
+        text: 'Use right arrow key to move into submenus.',
+      },
+      {
+        id: 'menu-class-esc-help',
+        text: 'Use escape to exit the menu.',
+      },
+      {
+        id: 'menu-class-submenu-explore',
+        text: 'Use up and down arrow keys to explore.',
+      },
+      {
+        id: 'menu-class-submenu-back',
+        text: 'Use left arrow key to move back to the parent list.',
+      },
+    ];
+
+    helpTextItems.forEach(({ id, text }) => {
+      if (null === this.menu.parentElement.querySelector(`#${id}`)) {
+        const helpSpan = createScreenReaderText(id, text);
+        this.menu.parentElement.appendChild(helpSpan);
+      }
+    });
   }
 
   /**
@@ -196,19 +204,19 @@ export default class Menu {
         nextIndex = 0;
       }
 
-      this.manageState({
+      this.setState({
         activeDescendant: this.menuBarItems[nextIndex],
       });
     } else if (DOWN === keyCode) {
       // Open the popup if it exists and is not expanded.
-      if (instanceOf(activeDescendant, Popup)) {
+      if (instanceOf(activeDescendant.popup, Popup)) {
         event.stopPropagation();
         event.preventDefault();
 
         const { popup } = activeDescendant;
 
         if (! popup.state.expanded) {
-          popup.setExpandedState(true);
+          popup.setState({ expanded: true });
         }
 
         popup.firstChild.focus();
@@ -222,7 +230,7 @@ export default class Menu {
    * @param  {Object} event The event object.
    */
   handleMenuBarClick(event) {
-    this.manageState({
+    this.setState({
       activeDescendant: event.target,
     });
   }
