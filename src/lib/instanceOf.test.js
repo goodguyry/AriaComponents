@@ -26,17 +26,16 @@ const menu = new MenuItem(list); // eslint-disable-line no-unused-vars
 describe('', () => {
   it('Should be a Popup instance',
     () => {
-      expect(instanceOf(controller, Popup)).toBeTruthy();
+      expect(instanceOf(controller.popup, Popup)).toBeTruthy();
     });
 
   it('Should be a MenuItem instance',
     () => {
-      expect(instanceOf(list, MenuItem)).toBeTruthy();
+      expect(instanceOf(list.menuItem, MenuItem)).toBeTruthy();
     });
 
   it('Should return false for a non-existant element',
     () => {
-      const missing = document.querySelector('.missing');
-      expect(instanceOf(missing, MenuItem)).toBeFalsy();
+      expect(instanceOf(target.unknown, MenuItem)).toBeFalsy();
     });
 });

@@ -1,20 +1,15 @@
 /**
- * Check if an element has been instantiated as an A11Y class.
+ * Check if a given element's property has been instantiated as an AriaComponent class.
  *
- * @param  {HTMLElement} element  The element to check.
- * @param  {Object}      instance The class instance to check against.
+ * @param  {HTMLElement} prop      The property to check.
+ * @param  {Object}      component The class instance to check against.
  *
  * @return {Boolean}
  */
-export default function instanceOf(element, instance) {
-  if (undefined === element || null === element) {
+export default function instanceOf(prop, component) {
+  if (undefined === prop || null === prop) {
     return false;
   }
 
-  const propName = instance.getClassName();
-
-  return (
-    Object.prototype.hasOwnProperty.call(element, propName)
-    && (element[propName] instanceof instance)
-  );
+  return (prop instanceof component);
 }
