@@ -7,7 +7,7 @@ import keyCodes from '../lib/keyCodes';
 /**
  * Manage tablist elements
  */
-export default class Tablist extends AriaComponent {
+export default class TabList extends AriaComponent {
   constructor(config) {
     super();
 
@@ -45,7 +45,7 @@ export default class Tablist extends AriaComponent {
     this.destroy = this.destroy.bind(this);
 
     /**
-     * Tablist panels
+     * TabList panels
      * @type {Array}
      */
     this.panels = Array.prototype.slice.call(this.panels);
