@@ -1,4 +1,6 @@
+import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
+import rovingTabIndex from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
 
 /**
@@ -15,13 +17,21 @@ import { setUniqueId } from '../lib/uniqueId';
  *   @type {Function}    onClose                  Function to be run after the Disclosure is closed.
  * }
  */
-export default class Disclosure {
+export default class Disclosure extends AriaComponent {
   /**
    * Start the component
    */
   constructor(config) {
+    super(config);
+
     /**
-     * Default config options.
+     * The component name.
+     * @type {String}
+     */
+    this.componentName = 'disclosure';
+
+    /**
+     * Options shape.
      * @type {Object}
      */
     const options = {
@@ -37,9 +47,22 @@ export default class Disclosure {
     Object.assign(this, options, config);
 
     // Initial state.
-    this.state = {
-      expanded: this.loadOpen,
-    };
+    this.state.expanded = this.loadOpen;
+
+    // Bind class methods.
+    this.init = this.init.bind(this);
+    this.destroy = this.destroy.bind(this);
+    this.toggleExpandedState = this.toggleExpandedState.bind(this);
+    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
+
+    this.init();
+  }
+
+  /**
+   * Add initial attributes, establish relationships, and listen for events
+   */
+  init() {
+    const { expanded } = this.state;
 
     /**
      * The target element's interactive child elements.
@@ -47,61 +70,13 @@ export default class Disclosure {
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    // Bind class methods.
-    this.setup = this.setup.bind(this);
-    this.destroy = this.destroy.bind(this);
-    this.toggleExpandedState = this.toggleExpandedState.bind(this);
-    this.setExpandedState = this.setExpandedState.bind(this);
-    this.rovingTabIndex = this.rovingTabIndex.bind(this);
-    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
-
-    this.setup();
-    this.rovingTabIndex(false);
-  }
-
-  /**
-   * Expand or collapse the disclosure
-   *
-   * @param {Boolean} expand The expected `expanded` state.
-   */
-  setExpandedState(expand) {
-    this.controller.setAttribute('aria-expanded', `${expand}`);
-    this.target.setAttribute('aria-hidden', `${! expand}`);
-
-    this.rovingTabIndex(expand);
-
-    this.state.expanded = expand;
-
-    if (expand) {
-      this.onOpen.call(this);
-    } else {
-      this.onClose.call(this);
-    }
-  }
-
-  /**
-   * Return the class name for referencing and identifying instances.
-   *
-   * @return {String}
-   */
-  static getClassName() {
-    return 'popup';
-  }
-
-  /**
-   * Add initial attributes, establish relationships, and listen for events
-   */
-  setup() {
-    const { expanded } = this.state;
-
     // Ensure the target and controller each have an ID attribute.
     [this.controller, this.target].forEach((element) => {
       setUniqueId(element);
     });
 
     // Add a reference to the class instance
-    this.controller.disclosure = this;
-    this.target.disclosure = this;
+    this.setSelfReference([this.controller, this.target]);
 
     // Add controller attributes
     this.controller.setAttribute('aria-expanded', `${expanded}`);
@@ -120,6 +95,60 @@ export default class Disclosure {
 
     if (! this.allowOutsideClick) {
       document.body.addEventListener('click', this.closeOnOutsideClick);
+    }
+
+    // Prevent focus on interactive elements in the target when the target is hidden.
+    rovingTabIndex(this.interactiveChildElements);
+  }
+
+  /**
+   * Expand or collapse the disclosure
+   *
+   * @param {Boolean} expand The expected `expanded` state.
+   */
+  stateWasUpdated({ expanded }) {
+    this.controller.setAttribute('aria-expanded', `${expanded}`);
+    this.target.setAttribute('aria-hidden', `${! expanded}`);
+
+    if (expanded) {
+      rovingTabIndex(
+        this.interactiveChildElements,
+        this.interactiveChildElements
+      );
+      this.onOpen.call(this);
+    } else {
+      rovingTabIndex(this.interactiveChildElements);
+      this.onClose.call(this);
+    }
+  }
+
+  /**
+   * Toggle the expanded state.
+   *
+   * @param {Object} event The event object.
+   */
+  toggleExpandedState(event) {
+    event.preventDefault();
+
+    if (this.state.expanded) {
+      this.setState({ expanded: false });
+    } else {
+      this.setState({ expanded: true });
+    }
+  }
+
+  /**
+   * Close the disclosure when the user clicks outside of the target.
+   *
+   * @param {Object} event The event object.
+   */
+  closeOnOutsideClick(event) {
+    if (
+      this.state.expanded
+      && event.target !== this.controller
+      && ! this.target.contains(event.target)
+    ) {
+      this.setState({ expanded: false });
     }
   }
 
@@ -147,54 +176,5 @@ export default class Disclosure {
     this.state = {
       expanded: this.loadOpen,
     };
-  }
-
-  /**
-   * Toggle the expanded state.
-   *
-   * @param {Object} event The event object.
-   */
-  toggleExpandedState(event) {
-    event.preventDefault();
-
-    if (this.state.expanded) {
-      this.setExpandedState(false);
-    } else {
-      this.setExpandedState(true);
-    }
-  }
-
-  /**
-   * Close the disclosure when the user clicks outside of the target.
-   *
-   * @param {Object} event The event object.
-   */
-  closeOnOutsideClick(event) {
-    if (
-      this.state.expanded
-      && event.target !== this.controller
-      && ! this.target.contains(event.target)
-    ) {
-      this.setExpandedState(false);
-    }
-  }
-
-  /**
-   * Prevent focus on interactive elements in the target when the target is hidden.
-   *
-   * This isn't much of an issue if the element is visually hidden with
-   * `display:none`, but becomes an issue if the target is collapsed by
-   * other means, like reducing one of its dimensions.
-   *
-   * @param {Boolean} allow Whether or not to allow focus on children of this.target.
-   */
-  rovingTabIndex(allow) {
-    this.interactiveChildElements.forEach((child) => {
-      if (allow) {
-        child.removeAttribute('tabindex');
-      } else {
-        child.setAttribute('tabindex', '-1');
-      }
-    });
   }
 }

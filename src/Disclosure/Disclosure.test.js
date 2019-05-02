@@ -30,7 +30,7 @@ describe('Disclosure with default configuration', () => {
     it('Should be instantiated as expected', () => {
       expect(disclosure).toBeInstanceOf(Disclosure);
 
-      expect(disclosure.state.expanded).toBeFalsy();
+      expect(disclosure.getState().expanded).toBeFalsy();
 
       expect(controller.disclosure).toBeInstanceOf(Disclosure);
       expect(target.disclosure).toBeInstanceOf(Disclosure);
@@ -54,21 +54,21 @@ describe('Disclosure with default configuration', () => {
     it('Should update attributes when the controller is clicked', () => {
       // Click to open.
       controller.dispatchEvent(click);
-      expect(disclosure.state.expanded).toBeTruthy();
+      expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
 
       // Click again to close.
       controller.dispatchEvent(click);
-      expect(disclosure.state.expanded).toBeFalsy();
+      expect(disclosure.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
 
       // Re-open the disclosure.
-      disclosure.setExpandedState(true);
+      disclosure.setState({ expanded: true });
       // Should close on outside click.
       document.body.dispatchEvent(click);
-      expect(disclosure.state.expanded).toBeTruthy();
+      expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
     });
@@ -93,21 +93,21 @@ describe('Disclosure with non-default configuration', () => {
   });
 
   it('Should load open', () => {
-    expect(disclosure.state.expanded).toBeTruthy();
+    expect(disclosure.getState().expanded).toBeTruthy();
   });
 
   it('Should close the disclosure on outside click', () => {
     document.body.dispatchEvent(click);
-    expect(disclosure.state.expanded).toBeFalsy();
+    expect(disclosure.getState().expanded).toBeFalsy();
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
   it('Should run subscriber functions', () => {
-    disclosure.setExpandedState(true);
+    disclosure.setState({ expanded: true });
     expect(onOpen).toHaveBeenCalled();
 
-    disclosure.setExpandedState(false);
+    disclosure.setState({ expanded: false });
     expect(onClose).toHaveBeenCalled();
   });
 });
