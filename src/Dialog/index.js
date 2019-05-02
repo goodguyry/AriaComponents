@@ -28,7 +28,7 @@ export default class Dialog extends AriaComponent {
     this.componentName = 'dialog';
 
     /**
-     * Default config options.
+     * Options shape.
      * @type {Object}
      */
     const options = {
@@ -53,27 +53,6 @@ export default class Dialog extends AriaComponent {
     this.show = this.show.bind(this);
 
     this.init();
-  }
-
-  /**
-   * Update element attributes and event listeners.
-   *
-   * @param {Boolean} visible The `visible` state.
-   */
-  stateWasUpdated({ visible }) {
-    this.controller.setAttribute('aria-expanded', `${visible}`);
-    this.target.setAttribute('aria-hidden', `${! visible}`);
-    this.content.setAttribute('aria-hidden', `${visible}`);
-
-    if (visible) {
-      this.interactiveChildren = interactiveChildren(this.target);
-
-      document.body.addEventListener('keydown', this.handleKeydownEsc);
-      this.close.focus();
-    } else {
-      document.body.removeEventListener('keydown', this.handleKeydownEsc);
-      this.controller.focus();
-    }
   }
 
   /**
@@ -104,6 +83,27 @@ export default class Dialog extends AriaComponent {
     Object.keys(this.attributes).forEach((attr) => {
       this.target.setAttribute(`aria-${attr}`, this.attributes[attr]);
     });
+  }
+
+  /**
+   * Update element attributes and event listeners.
+   *
+   * @param {Object} state The component state.
+   */
+  stateWasUpdated({ visible }) {
+    this.controller.setAttribute('aria-expanded', `${visible}`);
+    this.target.setAttribute('aria-hidden', `${! visible}`);
+    this.content.setAttribute('aria-hidden', `${visible}`);
+
+    if (visible) {
+      this.interactiveChildren = interactiveChildren(this.target);
+
+      document.body.addEventListener('keydown', this.handleKeydownEsc);
+      this.close.focus();
+    } else {
+      document.body.removeEventListener('keydown', this.handleKeydownEsc);
+      this.controller.focus();
+    }
   }
 
   /**
@@ -141,8 +141,6 @@ export default class Dialog extends AriaComponent {
         event.preventDefault();
         this.interactiveChildren[0].focus();
       }
-    // } else {
-    //   this.handleKeydownEsc(event);
     }
   }
 
