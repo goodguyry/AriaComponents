@@ -35,14 +35,14 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(popup.firstChild).toEqual(domFirstChild);
     expect(popup.lastChild).toEqual(domLastChild);
 
-    expect(popup.state.expanded).toBeFalsy();
+    expect(popup.getState().expanded).toBeFalsy();
 
     expect(controller.popup).toBeInstanceOf(Popup);
     expect(target.popup).toBeInstanceOf(Popup);
   });
 
   it('Should add the correct attributes to the popup controller', () => {
-    expect(controller.getAttribute('aria-haspopup')).toEqual('menu');
+    expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
     // The test markup isn't detatched, so this doesn't apply.
@@ -56,13 +56,13 @@ describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should update attributes when the controller is clicked', () => {
     // Click to open.
     controller.dispatchEvent(click);
-    expect(popup.state.expanded).toBeTruthy();
+    expect(popup.getState().expanded).toBeTruthy();
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
     // Click again to close.
     controller.dispatchEvent(click);
-    expect(popup.state.expanded).toBeFalsy();
+    expect(popup.getState().expanded).toBeFalsy();
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
@@ -71,14 +71,14 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 describe('Popup correctly responds to events', () => {
   // Ensure the popup is open before all tests.
   beforeEach(() => {
-    popup.setExpandedState(true);
+    popup.setState({ expanded: true });
   });
 
   it('Should close the popup when the ESC key is pressed',
     () => {
       controller.focus();
       controller.dispatchEvent(keydownEsc);
-      expect(popup.state.expanded).toBeFalsy();
+      expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
@@ -93,7 +93,7 @@ describe('Popup correctly responds to events', () => {
   it('Should close the popup and focus the controller when the ESC key is pressed',
     () => {
       target.dispatchEvent(keydownEsc);
-      expect(popup.state.expanded).toBeFalsy();
+      expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
@@ -101,7 +101,7 @@ describe('Popup correctly responds to events', () => {
     () => {
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
-      expect(popup.state.expanded).toBeFalsy();
+      expect(popup.getState().expanded).toBeFalsy();
     });
 
   it('Should focus the controller when tabbing back from the first child',
@@ -114,7 +114,7 @@ describe('Popup correctly responds to events', () => {
   it('Should close the popup when an outside element it clicked',
     () => {
       document.body.dispatchEvent(click);
-      expect(popup.state.expanded).toBeFalsy();
+      expect(popup.getState().expanded).toBeFalsy();
     });
 });
 
@@ -127,5 +127,5 @@ it('Should destroy the popup as expected', () => {
   expect(target.getAttribute('aria-hidden')).toBeNull();
 
   controller.dispatchEvent(click);
-  expect(popup.state.expanded).toBeFalsy();
+  expect(popup.getState().expanded).toBeFalsy();
 });
