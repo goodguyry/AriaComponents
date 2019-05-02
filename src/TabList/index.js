@@ -20,10 +20,10 @@ export default class Tablist extends AriaComponent {
      * The component name.
      * @type {String}
      */
-    this.componentName = 'dialog';
+    this.componentName = 'tablist';
 
     /**
-     * Default config options.
+     * Options shape.
      * @type {Object}
      */
     const options = {
@@ -35,9 +35,7 @@ export default class Tablist extends AriaComponent {
     Object.assign(this, options, config);
 
     // Default state.
-    this.state = {
-      activeIndex: 0,
-    };
+    this.state.activeIndex = 0;
 
     // Bind class methods
     this.handleTabKeydown = this.handleTabKeydown.bind(this);
@@ -67,34 +65,6 @@ export default class Tablist extends AriaComponent {
     if (this.tabs.length === this.panels.length) {
       this.init();
     }
-  }
-
-  /**
-   * Update tab and panel attributes based on new state.
-   */
-  stateWasUpdated({ activeIndex }) {
-    const [deactivate] = this.tabs.filter((tab) => (
-      'true' === tab.getAttribute('aria-selected')
-    ));
-    const deactiveIndex = this.tabs.indexOf(deactivate);
-
-    // Deactivate the previously-selected tab.
-    deactivate.setAttribute('tabindex', '-1');
-    deactivate.removeAttribute('aria-selected');
-    this.panels[deactiveIndex].setAttribute('aria-hidden', 'true');
-
-    const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
-    // Prevent tabbing to interactive children of the deactivated panel.
-    rovingTabIndex(deactiveChildren);
-
-    // Actvate the newly active tab.
-    this.tabs[activeIndex].removeAttribute('tabindex');
-    this.tabs[activeIndex].setAttribute('aria-selected', 'true');
-    this.panels[activeIndex].setAttribute('aria-hidden', 'false');
-
-    // Allow tabbing to the newly-active panel.
-    this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
-    rovingTabIndex(this.interactiveChildren, this.interactiveChildren);
   }
 
   /**
@@ -146,6 +116,36 @@ export default class Tablist extends AriaComponent {
 
     // Save the active panel's interactive children.
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
+  }
+
+  /**
+   * Update tab and panel attributes based on new state.
+   *
+   * @param {Object} state The component state.
+   */
+  stateWasUpdated({ activeIndex }) {
+    const [deactivate] = this.tabs.filter((tab) => (
+      'true' === tab.getAttribute('aria-selected')
+    ));
+    const deactiveIndex = this.tabs.indexOf(deactivate);
+
+    // Deactivate the previously-selected tab.
+    deactivate.setAttribute('tabindex', '-1');
+    deactivate.removeAttribute('aria-selected');
+    this.panels[deactiveIndex].setAttribute('aria-hidden', 'true');
+
+    const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
+    // Prevent tabbing to interactive children of the deactivated panel.
+    rovingTabIndex(deactiveChildren);
+
+    // Actvate the newly active tab.
+    this.tabs[activeIndex].removeAttribute('tabindex');
+    this.tabs[activeIndex].setAttribute('aria-selected', 'true');
+    this.panels[activeIndex].setAttribute('aria-hidden', 'false');
+
+    // Allow tabbing to the newly-active panel.
+    this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
+    rovingTabIndex(this.interactiveChildren, this.interactiveChildren);
   }
 
   /**
