@@ -46,13 +46,15 @@ export default class Popup extends AriaComponent {
 
     // Bind class methods.
     this.init = this.init.bind(this);
-    this.destroy = this.destroy.bind(this);
-    this.toggleState = this.toggleState.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.close = this.close.bind(this);
+    this.open = this.open.bind(this);
+    this.controllerClickHandler = this.controllerClickHandler.bind(this);
     this.controllerKeyDownHandler = this.controllerKeyDownHandler.bind(this);
     this.targetKeyDownHandler = this.targetKeyDownHandler.bind(this);
     this.closeOnTabOut = this.closeOnTabOut.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.destroy = this.destroy.bind(this);
 
     // Conditionally initialize.
     if (null !== this.controller && null !== this.target) {
@@ -96,7 +98,7 @@ export default class Popup extends AriaComponent {
     this.target.setAttribute('aria-hidden', 'true');
 
     // Add event listeners
-    this.controller.addEventListener('click', this.toggleState);
+    this.controller.addEventListener('click', this.controllerClickHandler);
     this.controller.addEventListener('keydown', this.controllerKeyDownHandler);
     this.target.addEventListener('keydown', this.targetKeyDownHandler);
     document.body.addEventListener('click', this.closeOnOutsideClick);
@@ -133,7 +135,7 @@ export default class Popup extends AriaComponent {
         event.stopPropagation();
         event.preventDefault();
 
-        this.setState({ expanded: false });
+        this.close();
       } else if (TAB === keyCode) {
         // Move to the first interactive child.
         event.preventDefault();
@@ -159,7 +161,7 @@ export default class Popup extends AriaComponent {
       event.stopPropagation();
       event.preventDefault();
 
-      this.setState({ expanded: false });
+      this.close();
       this.controller.focus();
     } else if (TAB === keyCode) {
       if (
@@ -172,7 +174,7 @@ export default class Popup extends AriaComponent {
       } else if (this.lastChild === activeElement) {
         // Close the popup when tabbing from the last child.
         // TODO: Is this correct behavior?
-        this.setState({ expanded: false });
+        this.close();
       }
     }
   }
@@ -182,7 +184,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  toggleState(event) {
+  controllerClickHandler(event) {
     event.preventDefault();
     const { expanded } = this.state;
 
@@ -200,7 +202,7 @@ export default class Popup extends AriaComponent {
     const { keyCode, shiftKey } = event;
 
     if (TAB === keyCode && ! shiftKey && expanded) {
-      this.setState({ expanded: false });
+      this.close();
     }
   }
 
@@ -218,7 +220,7 @@ export default class Popup extends AriaComponent {
       && clicked !== this.controller
       && ! this.target.contains(clicked)
     ) {
-      this.setState({ expanded: false });
+      this.close();
     }
   }
 
@@ -243,7 +245,7 @@ export default class Popup extends AriaComponent {
     this.target.removeAttribute('aria-hidden');
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.toggleState);
+    this.controller.removeEventListener('click', this.controllerClickHandler);
     this.controller.removeEventListener(
       'keydown',
       this.controllerKeyDownHandler
@@ -257,5 +259,19 @@ export default class Popup extends AriaComponent {
     };
 
     this.onDestroy.call(this);
+  }
+
+  /**
+   * Show the target element.
+   */
+  open() {
+    this.setState({ expanded: true });
+  }
+
+  /**
+   * Hide the target element.
+   */
+  close() {
+    this.setState({ expanded: false });
   }
 }

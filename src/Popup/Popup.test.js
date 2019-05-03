@@ -81,11 +81,11 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  it('Should run subscriber functions', () => {
-    popup.setState({ expanded: true });
+  it('Should run class methods and subscriber functions', () => {
+    popup.open();
     expect(onStateChange).toHaveBeenCalled();
 
-    popup.setState({ expanded: false });
+    popup.close();
     expect(onStateChange).toHaveBeenCalled();
   });
 });
