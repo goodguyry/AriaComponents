@@ -15,8 +15,8 @@ export default class Menu extends AriaComponent {
   /**
    * Start the component
    */
-  constructor(menu) {
-    super(menu);
+  constructor(config) {
+    super(config);
 
     /**
      * The component name.
@@ -30,10 +30,14 @@ export default class Menu extends AriaComponent {
      */
     const options = {
       menu: null,
+      onInit: () => {},
+      onPopupStateChange: () => {},
+      onPopupInit: () => {},
+      onPopupDestroy: () => {},
     };
 
     // Merge config options with defaults.
-    Object.assign(this, options, { menu });
+    Object.assign(this, options, config);
 
     // Bind class methods.
     this.addHelpText = this.addHelpText.bind(this);
@@ -41,7 +45,7 @@ export default class Menu extends AriaComponent {
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    if (null !== this.menu) {
+    if (null !== this.menu && 'UL' === this.menu.nodeName) {
       this.init();
     }
   }
@@ -109,7 +113,12 @@ export default class Menu extends AriaComponent {
       const target = controller.nextElementSibling;
 
       if (null !== target && 'UL' === target.nodeName) {
-        const popup = new Popup({ controller, target });
+        const popup = new Popup({
+          controller,
+          target,
+          onStateChange: this.onPopupStateChange,
+          onInit: this.onPopupInit,
+        });
 
         target.addEventListener('keydown', this.handleListKeydown);
         const subList = new MenuItem(target);
@@ -127,6 +136,8 @@ export default class Menu extends AriaComponent {
       this.menuBarItems,
       this.state.activeDescendant
     );
+
+    this.onInit.call(this);
   }
 
   /**

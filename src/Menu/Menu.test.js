@@ -54,13 +54,25 @@ const domElements = {
   sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
 };
 
-const menu = new Menu(domElements.list);
+// Mock functions.
+const onInit = jest.fn();
+const onPopupStateChange = jest.fn();
+const onPopupInit = jest.fn();
+
+const menu = new Menu({
+  menu: domElements.list,
+  onInit,
+  onPopupStateChange,
+  onPopupInit,
+});
 
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menu).toBeInstanceOf(Menu);
+    expect(onInit).toHaveBeenCalled();
 
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
+    expect(onPopupInit).toHaveBeenCalled();
   });
 });
 
@@ -100,5 +112,6 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(domElements.sublistOneFirstItem);
+      expect(onPopupStateChange).toHaveBeenCalled();
     });
 });
