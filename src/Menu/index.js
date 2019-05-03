@@ -31,6 +31,7 @@ export default class Menu extends AriaComponent {
     const options = {
       menu: null,
       onInit: () => {},
+      onDestroy: () => {},
       onPopupStateChange: () => {},
       onPopupInit: () => {},
       onPopupDestroy: () => {},
@@ -119,6 +120,7 @@ export default class Menu extends AriaComponent {
           target,
           onStateChange: this.onPopupStateChange,
           onInit: this.onPopupInit,
+          onDestroy: this.onPopupDestroy,
         });
 
         target.addEventListener('keydown', this.handleListKeydown);
@@ -278,5 +280,7 @@ export default class Menu extends AriaComponent {
       this.menuBarItems,
       this.menuBarItems
     );
+
+    this.onDestroy.call(this);
   }
 }

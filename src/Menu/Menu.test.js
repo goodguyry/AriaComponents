@@ -56,14 +56,18 @@ const domElements = {
 
 // Mock functions.
 const onInit = jest.fn();
+const onDestroy = jest.fn();
 const onPopupStateChange = jest.fn();
 const onPopupInit = jest.fn();
+const onPopupDestroy = jest.fn();
 
 const menu = new Menu({
   menu: domElements.list,
   onInit,
+  onDestroy,
   onPopupStateChange,
   onPopupInit,
+  onPopupDestroy,
 });
 
 describe('Menu collects DOM elements and adds attributes', () => {
@@ -141,5 +145,7 @@ describe('Menu should destroy properly', () => {
     // Sub-lists should be instantiated as MenuItems as well.
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+
+    expect(onDestroy).toHaveBeenCalled();
   });
 });
