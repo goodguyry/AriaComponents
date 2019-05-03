@@ -55,7 +55,9 @@ const domElements = {
   sublistTwoLastItem: document.querySelector('.sublist2-last-child'),
 };
 
-const menu = new MenuItem(domElements.list);
+const menu = new MenuItem({
+  menu: domElements.list,
+});
 
 describe('MenuItem collects DOM elements and adds attributes', () => {
   it('Should instantiate the MenuItem class with correct instance values', () => {

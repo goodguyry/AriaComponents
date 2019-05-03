@@ -24,8 +24,8 @@ export default class MenuItem extends AriaComponent {
   /**
    * Start the component
    */
-  constructor(list) {
-    super(list);
+  constructor(config) {
+    super(config);
 
     /**
      * The component name.
@@ -38,16 +38,16 @@ export default class MenuItem extends AriaComponent {
      * @type {Object}
      */
     const options = {
-      list: null,
+      menu: null,
     };
 
     // Merge config options with defaults.
-    Object.assign(this, options, { list });
+    Object.assign(this, options, config);
 
     // Bind class methods
     this.handleListKeydown = this.handleListKeydown.bind(this);
 
-    if (null !== this.list) {
+    if (null !== this.menu || 'UL' !== this.menu.nodeName) {
       this.init();
     }
   }
@@ -57,13 +57,13 @@ export default class MenuItem extends AriaComponent {
    */
   init() {
     // Add a reference to the class instance
-    this.setSelfReference([this.list]);
+    this.setSelfReference([this.menu]);
 
     /**
      * The list's child elements.
      * @type {Array}
      */
-    this.listItems = Array.prototype.slice.call(this.list.children);
+    this.listItems = Array.prototype.slice.call(this.menu.children);
 
     // Collect menu items.
     this.menuItems = this.listItems.reduce((acc, item) => {
@@ -98,7 +98,7 @@ export default class MenuItem extends AriaComponent {
 
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
-        const subList = new MenuItem(siblingList);
+        const subList = new MenuItem({ menu: siblingList });
         // Save the list's previous sibling.
         subList.previousSibling = link;
       }
@@ -123,7 +123,7 @@ export default class MenuItem extends AriaComponent {
       RIGHT,
     } = keyCodes;
     const { activeElement } = document;
-    const activeDescendant = (this.list.contains(activeElement)
+    const activeDescendant = (this.menu.contains(activeElement)
       ? activeElement
       : this.menuItems[0]);
     const menuLastIndex = this.menuItems.length - 1;
