@@ -55,8 +55,14 @@ const domElements = {
   sublistTwoLastItem: document.querySelector('.sublist2-last-child'),
 };
 
+// Mock functions.
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
 const menu = new MenuItem({
   menu: domElements.list,
+  onInit,
+  onDestroy,
 });
 
 describe('MenuItem collects DOM elements and adds attributes', () => {
@@ -68,6 +74,8 @@ describe('MenuItem collects DOM elements and adds attributes', () => {
 
     expect(domElements.sublistOne.menuItem).toBeInstanceOf(MenuItem);
     expect(domElements.sublistOne.menuItem.previousSibling).toEqual(domElements.listFirstItem);
+
+    expect(onInit).toHaveBeenCalled();
   });
 
   it('Should set element attributes correctly', () => {

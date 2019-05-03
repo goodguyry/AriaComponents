@@ -39,6 +39,8 @@ export default class MenuItem extends AriaComponent {
      */
     const options = {
       menu: null,
+      onInit: () => {},
+      onDestroy: () => {},
     };
 
     // Merge config options with defaults.
@@ -108,6 +110,8 @@ export default class MenuItem extends AriaComponent {
     // Save the menu's first item.
     const [firstItem] = this.menuItems;
     Object.assign(this, { firstItem });
+
+    this.onInit.call(this);
   }
 
   /**
@@ -204,5 +208,7 @@ export default class MenuItem extends AriaComponent {
         siblingList.menuItem.destroy();
       }
     });
+
+    this.onDestroy.call(this);
   }
 }
