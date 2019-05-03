@@ -36,6 +36,8 @@ export default class Dialog extends AriaComponent {
       target: null,
       content: null,
       close: null,
+      onInit: () => {},
+      onStateChange: () => {},
     };
 
     // Merge config options with defaults.
@@ -83,6 +85,8 @@ export default class Dialog extends AriaComponent {
     Object.keys(this.attributes).forEach((attr) => {
       this.target.setAttribute(`aria-${attr}`, this.attributes[attr]);
     });
+
+    this.onInit.call(this);
   }
 
   /**
@@ -104,6 +108,8 @@ export default class Dialog extends AriaComponent {
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
       this.controller.focus();
     }
+
+    this.onStateChange.call(this);
   }
 
   /**

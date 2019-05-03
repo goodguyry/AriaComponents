@@ -42,11 +42,17 @@ const content = document.querySelector('main');
 // Cached elements.
 const lastItem = document.querySelector('.last-item');
 
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+
 const modal = new Dialog({
   controller,
   target,
   close,
   content,
+  onStateChange,
+  onInit,
 });
 
 describe('Dialog with default configuration', () => {
@@ -62,6 +68,8 @@ describe('Dialog with default configuration', () => {
       expect(target.dialog).toBeInstanceOf(Dialog);
 
       expect(modal.getState().visible).toBeFalsy();
+
+      expect(onInit).toHaveBeenCalled();
     });
 
     it('Should add the correct attributes and overlay element',
@@ -78,10 +86,12 @@ describe('Dialog with default configuration', () => {
       modal.show();
       expect(modal.getState().visible).toBeTruthy();
       expect(document.activeElement).toEqual(close);
+      expect(onStateChange).toHaveBeenCalled();
 
       modal.hide();
       expect(modal.getState().visible).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
+      expect(onStateChange).toHaveBeenCalled();
     });
   });
 
