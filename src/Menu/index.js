@@ -109,7 +109,7 @@ export default class Menu extends AriaComponent {
     [this.state.activeDescendant] = this.menuBarItems;
 
     // Initialize popups for nested lists.
-    this.popups = this.menuBarItems.map((controller) => {
+    this.popups = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
 
       if (null !== target && 'UL' === target.nodeName) {
@@ -121,15 +121,15 @@ export default class Menu extends AriaComponent {
         });
 
         target.addEventListener('keydown', this.handleListKeydown);
-        const subList = new MenuItem(target);
+        const subList = new MenuItem({ menu: target });
         // Save the list's previous sibling.
         subList.previousSibling = controller;
 
-        return popup;
+        return [...acc, popup];
       }
 
-      return false;
-    });
+      return acc;
+    }, []);
 
     // Set up initial tabindex.
     rovingTabIndex(
