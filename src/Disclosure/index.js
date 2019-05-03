@@ -51,6 +51,8 @@ export default class Disclosure extends AriaComponent {
     // Bind class methods.
     this.init = this.init.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
     this.toggleExpandedState = this.toggleExpandedState.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
 
@@ -179,5 +181,19 @@ export default class Disclosure extends AriaComponent {
     };
 
     this.onDestroy.call(this);
+  }
+
+  /**
+   * Show the target element.
+   */
+  open() {
+    this.setState({ expanded: true });
+  }
+
+  /**
+   * Hide the target element.
+   */
+  close() {
+    this.setState({ expanded: false });
   }
 }

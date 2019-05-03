@@ -104,16 +104,19 @@ describe('Disclosure with non-default configuration', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  it('Should run subscriber functions', () => {
+  it('Should run class methods and subscriber functions', () => {
     expect(onInit).toHaveBeenCalled();
 
-    disclosure.setState({ expanded: true });
+    disclosure.open();
+    expect(disclosure.getState().expanded).toBeTruthy();
     expect(onStateChange).toHaveBeenCalled();
 
-    disclosure.setState({ expanded: false });
-    expect(onInit).toHaveBeenCalled();
+    disclosure.close();
+    expect(disclosure.getState().expanded).toBeFalsy();
+    expect(onStateChange).toHaveBeenCalled();
 
     disclosure.destroy();
+    expect(disclosure).not.toBeInstanceOf(Disclosure);
     expect(onDestroy).toHaveBeenCalled();
   });
 });
