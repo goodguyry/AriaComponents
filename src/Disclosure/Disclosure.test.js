@@ -76,20 +76,21 @@ describe('Disclosure with default configuration', () => {
 });
 
 describe('Disclosure with non-default configuration', () => {
-  const onOpen = jest.fn();
-  const onClose = jest.fn();
+  // Mock functions.
+  const onStateChange = jest.fn();
+  const onInit = jest.fn();
+  const onDestroy = jest.fn();
 
   beforeEach(() => {
-    disclosure = new Disclosure(
-      {
-        controller,
-        target,
-        loadOpen: true,
-        allowOutsideClick: false,
-        onOpen,
-        onClose,
-      }
-    );
+    disclosure = new Disclosure({
+      controller,
+      target,
+      loadOpen: true,
+      allowOutsideClick: false,
+      onStateChange,
+      onInit,
+      onDestroy,
+    });
   });
 
   it('Should load open', () => {
@@ -104,10 +105,15 @@ describe('Disclosure with non-default configuration', () => {
   });
 
   it('Should run subscriber functions', () => {
+    expect(onInit).toHaveBeenCalled();
+
     disclosure.setState({ expanded: true });
-    expect(onOpen).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalled();
 
     disclosure.setState({ expanded: false });
-    expect(onClose).toHaveBeenCalled();
+    expect(onInit).toHaveBeenCalled();
+
+    disclosure.destroy();
+    expect(onDestroy).toHaveBeenCalled();
   });
 });

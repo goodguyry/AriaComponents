@@ -13,8 +13,6 @@ import { setUniqueId } from '../lib/uniqueId';
  *   @type {HTMLElement} target                   The Disclosure's target element.
  *   @type {Boolean}     [loadOpen=false]         To load the Disclosure open.
  *   @type {Boolean}     [allowOutsideClick=true] Keep the Disclosure open on outside clicks.
- *   @type {Function}    onOpen                   Function to be run after the Disclosure is opened.
- *   @type {Function}    onClose                  Function to be run after the Disclosure is closed.
  * }
  */
 export default class Disclosure extends AriaComponent {
@@ -39,8 +37,9 @@ export default class Disclosure extends AriaComponent {
       target: null,
       loadOpen: false,
       allowOutsideClick: true,
-      onOpen: () => {},
-      onClose: () => {},
+      onStateChange: () => {},
+      onInit: () => {},
+      onDestroy: () => {},
     };
 
     // Merge config options with defaults.
@@ -99,6 +98,8 @@ export default class Disclosure extends AriaComponent {
 
     // Prevent focus on interactive elements in the target when the target is hidden.
     rovingTabIndex(this.interactiveChildElements);
+
+    this.onInit.call(this);
   }
 
   /**
@@ -115,11 +116,11 @@ export default class Disclosure extends AriaComponent {
         this.interactiveChildElements,
         this.interactiveChildElements
       );
-      this.onOpen.call(this);
     } else {
       rovingTabIndex(this.interactiveChildElements);
-      this.onClose.call(this);
     }
+
+    this.onStateChange.call(this);
   }
 
   /**
@@ -176,5 +177,7 @@ export default class Disclosure extends AriaComponent {
     this.state = {
       expanded: this.loadOpen,
     };
+
+    this.onDestroy.call(this);
   }
 }
