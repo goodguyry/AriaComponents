@@ -141,3 +141,22 @@ describe('MenuItem correctly responds to events', () => {
     expect(popup.getState().expanded).toBeFalsy();
   });
 });
+
+describe('Destroying the MenuItem removes attributes', () => {
+  it('Should remove attributes on destroy', () => {
+    menu.destroy();
+
+    expect(domElements.list.menuItem).not.toBeInstanceOf(MenuItem);
+    expect(domElements.sublistOne.menuItem).not.toBeInstanceOf(MenuItem);
+
+    expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.sublistOneFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.sublistTwoFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistOneSecondItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+
+    expect(onDestroy).toHaveBeenCalled();
+  });
+});

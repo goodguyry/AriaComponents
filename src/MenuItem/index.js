@@ -46,6 +46,7 @@ export default class MenuItem extends AriaComponent {
 
     // Bind class methods
     this.handleListKeydown = this.handleListKeydown.bind(this);
+    this.destroy = this.destroy.bind(this);
 
     if (null !== this.menu || 'UL' !== this.menu.nodeName) {
       this.init();
@@ -172,7 +173,7 @@ export default class MenuItem extends AriaComponent {
           event.preventDefault();
 
           const { popup } = this.previousSibling;
-          if (popup.state.expanded) {
+          if (popup.getState().expanded) {
             popup.setState({ expanded: false });
           }
         }
@@ -180,5 +181,28 @@ export default class MenuItem extends AriaComponent {
         this.previousSibling.focus();
       }
     }
+  }
+
+  /**
+   * Destroy the MenuItem (recursively)
+   */
+  destroy() {
+    this.menu.menuItem = null;
+
+    this.menuItems.forEach((link) => {
+      link.removeAttribute('aria-describedby');
+
+      // Add size and position attributes.
+      link.removeAttribute('aria-setsize');
+      link.removeAttribute('aria-posinset');
+
+      link.removeEventListener('keydown', this.handleListKeydown);
+
+      // Destroy nested MenuItems.
+      const siblingList = this.constructor.nextElementIsUl(link);
+      if (siblingList && instanceOf(siblingList.menuItem, MenuItem)) {
+        siblingList.menuItem.destroy();
+      }
+    });
   }
 }
