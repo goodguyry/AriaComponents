@@ -18,6 +18,13 @@ export default class Dialog extends AriaComponent {
     return overlay;
   }
 
+  static createCloseButtton() {
+    const button = document.createElement('button');
+    button.innerText = 'Close';
+
+    return button;
+  }
+
   constructor(config) {
     super(config);
 
@@ -35,13 +42,17 @@ export default class Dialog extends AriaComponent {
       controller: null,
       target: null,
       content: null,
-      close: null,
+      close: this.constructor.createCloseButtton(),
       onInit: () => {},
       onStateChange: () => {},
     };
 
     // Merge config options with defaults.
     Object.assign(this, options, config);
+
+    if (undefined === config.close && null !== this.target) {
+      this.target.insertBefore(this.close, this.target.firstChild);
+    }
 
     // Default state.
     this.state.visible = false;
@@ -54,7 +65,13 @@ export default class Dialog extends AriaComponent {
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
 
-    this.init();
+    if (
+      null !== this.controller
+      && null !== this.target
+      && null !== this.content
+    ) {
+      this.init();
+    }
   }
 
   /**

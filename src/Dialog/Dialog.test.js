@@ -85,7 +85,7 @@ describe('Dialog with default configuration', () => {
     it('Should reflect the accurate state', () => {
       modal.show();
       expect(modal.getState().visible).toBeTruthy();
-      expect(document.activeElement).toEqual(close);
+      expect(document.activeElement).toEqual(modal.close);
       expect(onStateChange).toHaveBeenCalled();
 
       modal.hide();
@@ -102,7 +102,7 @@ describe('Dialog with default configuration', () => {
 
     it('Should update attributes when the controller is clicked', () => {
       // Click to close (it is opened by `beforeEach`)
-      close.dispatchEvent(click);
+      modal.close.dispatchEvent(click);
       expect(modal.getState().visible).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(content.getAttribute('aria-hidden')).toEqual('false');
@@ -121,7 +121,7 @@ describe('Dialog with default configuration', () => {
       expect(document.activeElement).toEqual(lastItem);
 
       lastItem.dispatchEvent(keydownTab);
-      expect(document.activeElement).toEqual(close);
+      expect(document.activeElement).toEqual(modal.close);
     });
 
     it('Should close when the ESC key is pressed', () => {
