@@ -1,6 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
-import rovingTabIndex from '../lib/rovingTabIndex';
+import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
 
 /**
@@ -99,7 +99,7 @@ export default class Disclosure extends AriaComponent {
     }
 
     // Prevent focus on interactive elements in the target when the target is hidden.
-    rovingTabIndex(this.interactiveChildElements);
+    tabIndexDeny(this.interactiveChildElements);
 
     this.onInit.call(this);
   }
@@ -114,12 +114,9 @@ export default class Disclosure extends AriaComponent {
     this.target.setAttribute('aria-hidden', `${! expanded}`);
 
     if (expanded) {
-      rovingTabIndex(
-        this.interactiveChildElements,
-        this.interactiveChildElements
-      );
+      tabIndexAllow(this.interactiveChildElements);
     } else {
-      rovingTabIndex(this.interactiveChildElements);
+      tabIndexDeny(this.interactiveChildElements);
     }
 
     this.onStateChange.call(this);

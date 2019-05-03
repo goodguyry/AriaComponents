@@ -2,7 +2,7 @@ import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import MenuItem from '../MenuItem';
 import keyCodes from '../lib/keyCodes';
-import rovingTabIndex from '../lib/rovingTabIndex';
+import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import createScreenReaderText from '../lib/createScreenReaderText';
 import instanceOf from '../lib/instanceOf';
 
@@ -135,10 +135,7 @@ export default class Menu extends AriaComponent {
     }, []);
 
     // Set up initial tabindex.
-    rovingTabIndex(
-      this.menuBarItems,
-      this.state.activeDescendant
-    );
+    rovingTabIndex(this.menuBarItems, this.state.activeDescendant);
 
     this.onInit.call(this);
   }
@@ -276,10 +273,7 @@ export default class Menu extends AriaComponent {
       popup.destroy();
     });
 
-    rovingTabIndex(
-      this.menuBarItems,
-      this.menuBarItems
-    );
+    tabIndexAllow(this.menuBarItems);
 
     this.onDestroy.call(this);
   }

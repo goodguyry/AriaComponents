@@ -1,7 +1,7 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
 import { setUniqueId } from '../lib/uniqueId';
-import rovingTabIndex from '../lib/rovingTabIndex';
+import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import keyCodes from '../lib/keyCodes';
 
 /**
@@ -136,7 +136,7 @@ export default class Tablist extends AriaComponent {
 
     const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
     // Prevent tabbing to interactive children of the deactivated panel.
-    rovingTabIndex(deactiveChildren);
+    tabIndexDeny(deactiveChildren);
 
     // Actvate the newly active tab.
     this.tabs[activeIndex].removeAttribute('tabindex');
@@ -145,7 +145,7 @@ export default class Tablist extends AriaComponent {
 
     // Allow tabbing to the newly-active panel.
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
-    rovingTabIndex(this.interactiveChildren, this.interactiveChildren);
+    tabIndexAllow(this.interactiveChildren);
   }
 
   /**
@@ -264,7 +264,7 @@ export default class Tablist extends AriaComponent {
       panel.removeAttribute('aria-hidden');
 
       const interactiveChildElements = interactiveChildren(panel);
-      rovingTabIndex(interactiveChildElements, interactiveChildElements);
+      tabIndexAllow(interactiveChildElements);
 
       panel.removeEventListener(
         'keydown',
