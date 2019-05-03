@@ -115,3 +115,18 @@ describe('Menu correctly responds to events', () => {
       expect(onPopupStateChange).toHaveBeenCalled();
     });
 });
+
+describe('Menu should destroy properly', () => {
+  it('Should remove all attributes and destroy popups', () => {
+    menu.destroy();
+    expect(domElements.list.getAttribute('role')).toBeNull();
+
+    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listSecondItem.getAttribute('aria-describedby')).toBeNull();
+    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
+
+    // Sub-lists should be instantiated as MenuItems as well.
+    expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+  });
+});

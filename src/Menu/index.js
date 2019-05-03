@@ -44,6 +44,7 @@ export default class Menu extends AriaComponent {
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.destroy = this.destroy.bind(this);
 
     if (null !== this.menu && 'UL' === this.menu.nodeName) {
       this.init();
@@ -244,5 +245,38 @@ export default class Menu extends AriaComponent {
     this.setState({
       activeDescendant: event.target,
     });
+  }
+
+  /**
+   * Recursively destroy Menu, MenuItems, and Popups.
+   */
+  destroy() {
+    // Remove the menu role.
+    this.menu.removeAttribute('role');
+
+    this.menuBarItems.forEach((link) => {
+      // Remove reference to the help text.
+      link.removeAttribute('aria-describedby');
+
+      // Remove size and position attributes.
+      link.removeAttribute('aria-setsize');
+      link.removeAttribute('aria-posinset');
+
+      link.removeEventListener('keydown', this.handleMenuBarKeydown);
+      link.removeEventListener('click', this.handleMenuBarClick);
+    });
+
+    // Destroy nested components.
+    this.popups.forEach((popup) => {
+      if (instanceOf(popup.target.menuItem, MenuItem)) {
+        popup.target.menuItem.destroy();
+      }
+      popup.destroy();
+    });
+
+    rovingTabIndex(
+      this.menuBarItems,
+      this.menuBarItems
+    );
   }
 }
