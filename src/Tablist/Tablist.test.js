@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import TabList from '.';
+import Tablist from '.';
 import events from '../../utils/events';
 
 const {
@@ -63,14 +63,14 @@ const firstPanel = document.querySelector('#first-panel');
 const secondPanel = document.querySelector('#second-panel');
 const thirdPanel = document.querySelector('#third-panel');
 
-describe('TabList with default configuration', () => {
+describe('Tablist with default configuration', () => {
   beforeEach(() => {
-    tablist = new TabList({ tablist: tabs, panels });
+    tablist = new Tablist({ tablist: tabs, panels });
   });
 
-  describe('TabList adds and manipulates DOM element attributes', () => {
+  describe('Tablist adds and manipulates DOM element attributes', () => {
     it('Should be instantiated as expected', () => {
-      expect(tablist).toBeInstanceOf(TabList);
+      expect(tablist).toBeInstanceOf(Tablist);
 
       expect(tablist.getState().activeIndex).toEqual(0);
     });
@@ -100,7 +100,7 @@ describe('TabList with default configuration', () => {
       });
   });
 
-  describe('TabList methods work as expected', () => {
+  describe('Tablist methods work as expected', () => {
     it('Should switch to the specified tab', () => {
       tablist.switchTo(0);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
@@ -154,7 +154,7 @@ describe('TabList with default configuration', () => {
     });
   });
 
-  describe('TabList correctly responds to events', () => {
+  describe('Tablist correctly responds to events', () => {
     it('Should update attributes when the tabs are clicked', () => {
       firstTab.dispatchEvent(click);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
