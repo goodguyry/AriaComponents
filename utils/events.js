@@ -63,6 +63,12 @@ const events = {
       { keyCode: 38, bubbles: true }
     )
   ),
+  keyUpUp: (
+    new KeyboardEvent(
+      'keyup',
+      { keyCode: 38, bubbles: true }
+    )
+  ),
   keydownRight: (
     new KeyboardEvent(
       'keydown',
@@ -72,6 +78,12 @@ const events = {
   keydownDown: (
     new KeyboardEvent(
       'keydown',
+      { keyCode: 40, bubbles: true }
+    )
+  ),
+  keyUpDown: (
+    new KeyboardEvent(
+      'keyup',
       { keyCode: 40, bubbles: true }
     )
   ),
