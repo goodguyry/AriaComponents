@@ -126,7 +126,7 @@ export default class Dialog extends AriaComponent {
       this.controller.focus();
     }
 
-    this.onStateChange.call(this);
+    this.onStateChange.call(this, this.state);
   }
 
   /**

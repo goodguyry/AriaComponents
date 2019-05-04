@@ -115,7 +115,7 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.target.setAttribute('aria-hidden', `${! expanded}`);
 
-    this.onStateChange.call(this);
+    this.onStateChange.call(this, this.state);
   }
 
   /**
