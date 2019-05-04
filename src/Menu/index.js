@@ -108,7 +108,7 @@ export default class Menu extends AriaComponent {
      * Set initial state.
      * @type {Object}
      */
-    [this.state.activeDescendant] = this.menuBarItems;
+    [this.state.menubarItem] = this.menuBarItems;
 
     // Initialize popups for nested lists.
     this.popups = this.menuBarItems.reduce((acc, controller) => {
@@ -135,19 +135,19 @@ export default class Menu extends AriaComponent {
     }, []);
 
     // Set up initial tabindex.
-    rovingTabIndex(this.menuBarItems, this.state.activeDescendant);
+    rovingTabIndex(this.menuBarItems, this.state.menubarItem);
 
     this.onInit.call(this);
   }
 
   /**
-   * Manage menu activeDescendant state.
+   * Manage menu menubarItem state.
    *
    * @param {Object} state The component state.
    */
-  stateWasUpdated({ activeDescendant }) {
-    rovingTabIndex(this.menuBarItems, activeDescendant);
-    activeDescendant.focus();
+  stateWasUpdated({ menubarItem }) {
+    rovingTabIndex(this.menuBarItems, menubarItem);
+    menubarItem.focus();
   }
 
   /**
@@ -193,8 +193,8 @@ export default class Menu extends AriaComponent {
   handleMenuBarKeydown(event) {
     const { LEFT, RIGHT, DOWN } = keyCodes;
     const { keyCode } = event;
-    const { activeDescendant } = this.state;
-    const activeIndex = this.menuBarItems.indexOf(activeDescendant);
+    const { menubarItem } = this.state;
+    const activeIndex = this.menuBarItems.indexOf(menubarItem);
 
     if ([LEFT, RIGHT].includes(keyCode)) {
       event.stopPropagation();
@@ -216,15 +216,15 @@ export default class Menu extends AriaComponent {
       }
 
       this.setState({
-        activeDescendant: this.menuBarItems[nextIndex],
+        menubarItem: this.menuBarItems[nextIndex],
       });
     } else if (DOWN === keyCode) {
       // Open the popup if it exists and is not expanded.
-      if (instanceOf(activeDescendant.popup, Popup)) {
+      if (instanceOf(menubarItem.popup, Popup)) {
         event.stopPropagation();
         event.preventDefault();
 
-        const { popup } = activeDescendant;
+        const { popup } = menubarItem;
 
         if (! popup.state.expanded) {
           popup.setState({ expanded: true });
@@ -242,7 +242,7 @@ export default class Menu extends AriaComponent {
    */
   handleMenuBarClick(event) {
     this.setState({
-      activeDescendant: event.target,
+      menubarItem: event.target,
     });
   }
 

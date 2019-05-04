@@ -86,7 +86,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).not.toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
 
-    expect(menu.getState().activeDescendant).toEqual(domElements.listFirstItem);
+    expect(menu.getState().menubarItem).toEqual(domElements.listFirstItem);
 
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toEqual('4');
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toEqual('4');
