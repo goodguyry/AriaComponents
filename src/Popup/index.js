@@ -3,14 +3,9 @@ import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 
 /**
- * Sets up a controller-target relationship with appropriate aria-attributes and event handling.
- *
- * @param {Object} config {
- *   And object denoting the Popup's controller and target elements
- *
- *   @type {HTMLElement} controller The controlling element.
- *   @type {HTMLElement} target     The target popup element.
- * }
+ * Popup class.
+ * Sets up an interactive popup element, such as menu or dialog, that can be
+ * triggered by a controlling element.
  */
 export default class Popup extends AriaComponent {
   /**
@@ -26,62 +21,94 @@ export default class Popup extends AriaComponent {
     this.componentName = 'popup';
 
     /**
-     * Options shape.
+     * Component configuration options.
      * @type {Object}
      */
     const options = {
+      /**
+       * The element used to trigger the popup element.
+       * @type {HTMLElement}
+       */
       controller: null,
+      /**
+       * The popup element.
+       * @type {HTMLElement}
+       */
       target: null,
+      /**
+       * The value of aria-haspopup must match the role of the popup container.
+       * Options: menu, listbox, tree, grid, or dialog,
+       * @type {String}
+       */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+      /**
+       * Callback to run after the component initializes.
+       * @type {Function}
+       */
       onInit: () => {},
+      /**
+       * Callback to run after component state is updated.
+       * @type {Function}
+       */
       onStateChange: () => {},
+      /**
+       * Callback to run after the component is destroyed.
+       * @type {Function}
+       */
       onDestroy: () => {},
     };
 
     // Save references to the controller and target.
     Object.assign(this, options, config);
 
-    // Intial state.
+    // Intial component state.
     this.state.expanded = false;
 
     // Bind class methods.
     this.init = this.init.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
-    this.close = this.close.bind(this);
-    this.open = this.open.bind(this);
+    this.hide = this.hide.bind(this);
+    this.show = this.show.bind(this);
     this.controllerClickHandler = this.controllerClickHandler.bind(this);
     this.controllerKeyDownHandler = this.controllerKeyDownHandler.bind(this);
     this.targetKeyDownHandler = this.targetKeyDownHandler.bind(this);
-    this.closeOnTabOut = this.closeOnTabOut.bind(this);
-    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
+    this.hideOnTabOut = this.hideOnTabOut.bind(this);
+    this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    // Conditionally initialize.
+    // Check for a valid controller and target before initializing.
     if (null !== this.controller && null !== this.target) {
       this.init();
     }
   }
 
   /**
-   * Add initial attributes, establish relationships, and listen for events
+   * Set up the component's DOM attributes and event listeners.
    */
   init() {
     /**
-     * The target element's interactive child elements.
+     * Collect the target element's interactive child elements.
      * @type {Array}
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    // Collect first and last interactive child elements from target.
+    /**
+     * Collect first and last interactive child elements from target and merge
+     * them in as instance properties.
+     */
     if (0 < this.interactiveChildElements.length) {
       const [firstChild] = this.interactiveChildElements;
-      this.firstChild = firstChild;
-      this.lastChild = (
+      const lastChild = (
         this.interactiveChildElements[this.interactiveChildElements.length - 1]
       );
+
+      Object.assign(this, { firstChild, lastChild });
     }
 
-    // Add a reference to the class instance
+    /**
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
+     */
     super.setSelfReference([this.controller, this.target]);
 
     // Add controller attributes
@@ -89,25 +116,33 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', 'false');
     this.controller.setAttribute('aria-controls', this.target.id);
 
-    // If the markup is disconnected, establish a relationship.
+    /**
+     * Establishes a relationship when the DOM heirarchy doesn't represent that
+     * a relationship exists.
+     */
     if (this.target !== this.controller.nextElementSibling) {
       this.controller.setAttribute('aria-owns', this.target.id);
     }
 
-    // Add target attributes
+    /**
+     * Set the taget as hidden by default. Using the `aria-hidden` attribute,
+     * rather than the `hidden` attribute, means authors must hide the target
+     * element via CSS.
+     */
     this.target.setAttribute('aria-hidden', 'true');
 
     // Add event listeners
     this.controller.addEventListener('click', this.controllerClickHandler);
     this.controller.addEventListener('keydown', this.controllerKeyDownHandler);
     this.target.addEventListener('keydown', this.targetKeyDownHandler);
-    document.body.addEventListener('click', this.closeOnOutsideClick);
+    document.body.addEventListener('click', this.hideOnOutsideClick);
 
+    // Call the onInit callback.
     this.onInit.call(this);
   }
 
   /**
-   * Expand or collapse the popup
+   * Act upon the new component state.
    *
    * @param {Object} state The component state.
    */
@@ -131,15 +166,23 @@ export default class Popup extends AriaComponent {
       const { keyCode } = event;
 
       if (ESC === keyCode) {
-        // Close the popup.
-        event.stopPropagation();
         event.preventDefault();
 
-        this.close();
+        /**
+         * Close the popup when the Escape key is pressed. Because focus is not
+         * inside the target (based on the fact that the event was fired on the
+         * controller), there's no need to move focus.
+         */
+        this.hide();
       } else if (TAB === keyCode) {
-        // Move to the first interactive child.
         event.preventDefault();
 
+        /**
+         * When the Popup is open, pressing the TAB key should move focus to the
+         * first interctive child of the target element. This would likely be
+         * the default behavior in most cases, but this patches the behavior in
+         * cases where the markup is disconnected or out-of-order.
+         */
         this.firstChild.focus();
       }
     }
@@ -157,24 +200,37 @@ export default class Popup extends AriaComponent {
     const { activeElement } = document;
 
     if (ESC === keyCode && expanded) {
-      // Close the popup.
-      event.stopPropagation();
       event.preventDefault();
 
-      this.close();
+      /**
+       * Close the popup when the Escape key is pressed.
+       */
+      this.hide();
+
+      /**
+       * Because the activeElement is within the popup, move focus to the popup
+       * controller to avoid the confusion of focus being within a hidden
+       * element.
+       */
       this.controller.focus();
     } else if (TAB === keyCode) {
       if (
         shiftKey
-        && (this.firstChild === activeElement || this.target === activeElement)
+        && ([this.firstChild, this.target].includes(activeElement))
       ) {
-        // Tab back from the first interactive child to the controller.
         event.preventDefault();
+        /**
+         * Move focus back to the controller if the Shift key is pressed with
+         * the Tab key, but only if the event target is the popup's first
+         * interactive child or the popup itself.
+         */
         this.controller.focus();
       } else if (this.lastChild === activeElement) {
-        // Close the popup when tabbing from the last child.
-        // TODO: Is this correct behavior?
-        this.close();
+        /**
+         * Close the popup when tabbing from the last child.
+         * @todo Is this correct behavior?
+         */
+        this.hide();
       }
     }
   }
@@ -192,26 +248,28 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Tab from the last item and close the menu.
+   * Close the list if the Tab key is pressed if the last interactive child of
+   * the popup is the event target.
    *
    * @param {Object} event The event object.
    */
-  closeOnTabOut(event) {
+  hideOnTabOut(event) {
     const { expanded } = this.state;
     const { TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
 
     if (TAB === keyCode && ! shiftKey && expanded) {
-      this.close();
+      this.hide();
     }
   }
 
   /**
-   * Close the popup when clicking anywhere outside.
+   * Close the popup when clicking anywhere outsideof the target or controller
+   * elements.
    *
-   * @param  {Object} event The event object.
+   * @param {Object} event The event object.
    */
-  closeOnOutsideClick(event) {
+  hideOnOutsideClick(event) {
     const { expanded } = this.state;
     const { target: clicked } = event;
 
@@ -220,28 +278,25 @@ export default class Popup extends AriaComponent {
       && clicked !== this.controller
       && ! this.target.contains(clicked)
     ) {
-      this.close();
+      this.hide();
     }
   }
 
   /**
-   * Remove all ARIA attributes added by this class.
+   * Remove all attributes and event listeners added by this class.
    */
   destroy() {
-    // Add a reference to the class instance
+    // Remove the reference to the class instance.
     this.controller.popup = null;
     this.target.popup = null;
 
-    // Remove controller attributes
+    // Remove controller attributes.
     this.controller.removeAttribute('aria-haspopup');
     this.controller.removeAttribute('aria-expanded');
     this.controller.removeAttribute('aria-controls');
+    this.controller.removeAttribute('aria-owns');
 
-    if (this.target !== this.controller.nextElementSibling) {
-      this.controller.removeAttribute('aria-owns');
-    }
-
-    // Remove target attributes
+    // Remove target attributes.
     this.target.removeAttribute('aria-hidden');
 
     // Remove event listeners.
@@ -251,27 +306,26 @@ export default class Popup extends AriaComponent {
       this.controllerKeyDownHandler
     );
     this.target.removeEventListener('keydown', this.targetKeyDownHandler);
-    document.body.removeEventListener('click', this.closeOnOutsideClick);
+    document.body.removeEventListener('click', this.hideOnOutsideClick);
 
     // Reset initial state.
-    this.state = {
-      expanded: false,
-    };
+    this.state.expanded = false;
 
+    // Run the onDestroy callback.
     this.onDestroy.call(this);
   }
 
   /**
    * Show the target element.
    */
-  open() {
+  show() {
     this.setState({ expanded: true });
   }
 
   /**
    * Hide the target element.
    */
-  close() {
+  hide() {
     this.setState({ expanded: false });
   }
 }

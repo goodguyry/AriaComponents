@@ -82,10 +82,10 @@ describe('Popup adds and manipulates DOM element attributes', () => {
   });
 
   it('Should run class methods and subscriber functions', () => {
-    popup.open();
+    popup.show();
     expect(onStateChange).toHaveBeenCalled();
 
-    popup.close();
+    popup.hide();
     expect(onStateChange).toHaveBeenCalled();
   });
 });
