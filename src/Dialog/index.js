@@ -9,18 +9,6 @@ import keyCodes from '../lib/keyCodes';
  */
 export default class Dialog extends AriaComponent {
   /**
-   * Create the dialog overlay element.
-   * Can be used to obscure the content behind the dialog.
-   *
-   * @static
-   */
-  static createOverlayElement() {
-    const overlay = document.createElement('div');
-    overlay.id = 'aria-dialog-overlay';
-    return overlay;
-  }
-
-  /**
    * Create the dialog close button, in case one doesn't exist. Will be inserted
    * as the dialog element's first child.
    *
@@ -118,13 +106,6 @@ export default class Dialog extends AriaComponent {
      * with this instance.
      */
     this.setSelfReference([this.controller, this.target]);
-
-    // Insert the overlay element if it's not found.
-    this.overlay = document.getElementById('aria-dialog-overlay');
-    if (null === this.overlay) {
-      this.overlay = this.constructor.createOverlayElement();
-      document.body.insertBefore(this.overlay, this.target);
-    }
 
     /**
      * Create the popup to control the Dialog.

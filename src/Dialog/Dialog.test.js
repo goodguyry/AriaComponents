@@ -72,12 +72,11 @@ describe('Dialog with default configuration', () => {
       expect(onInit).toHaveBeenCalled();
     });
 
-    it('Should add the correct attributes and overlay element',
+    it('Should add the correct attributes',
       () => {
         expect(controller.getAttribute('aria-haspopup')).toEqual('dialog');
         expect(controller.getAttribute('aria-expanded')).toEqual('false');
         expect(target.getAttribute('aria-hidden')).toEqual('true');
-        expect(document.getElementById('aria-dialog-overlay')).not.toBeNull();
       });
   });
 
@@ -131,7 +130,7 @@ describe('Dialog with default configuration', () => {
     });
 
     it('Should close on outside click', () => {
-      modal.overlay.dispatchEvent(click);
+      document.body.dispatchEvent(click);
       expect(modal.popup.getState().expanded).toBeFalsy();
     });
   });
