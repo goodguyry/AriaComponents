@@ -142,7 +142,7 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Act upon the new component state.
+   * Update the component attributes based on updated state.
    *
    * @param {Object} state The component state.
    */
@@ -150,6 +150,7 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.target.setAttribute('aria-hidden', `${! expanded}`);
 
+    // Call the onStateChange callback.
     this.onStateChange.call(this, this.state);
   }
 
@@ -316,14 +317,14 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Show the target element.
+   * Update component state to show the target element.
    */
   show() {
     this.setState({ expanded: true });
   }
 
   /**
-   * Hide the target element.
+   * Update component state to hide the target element.
    */
   hide() {
     this.setState({ expanded: false });
