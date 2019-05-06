@@ -1,11 +1,11 @@
 import AriaComponent from '../AriaComponent';
+import Popup from '../Popup';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 
 /**
  * Manage dialog (modal) elements
  *
- * @todo Add a close button if one isn't passed.
  * @todo Throw an error if the modal is within the content element
  */
 export default class Dialog extends AriaComponent {
@@ -54,21 +54,16 @@ export default class Dialog extends AriaComponent {
       this.target.insertBefore(this.close, this.target.firstChild);
     }
 
-    // Default state.
-    this.state.visible = false;
-
     // Bind class methods
-    this.outsideClick = this.outsideClick.bind(this);
+    this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
-    this.setState = this.setState.bind(this);
-    this.hide = this.hide.bind(this);
-    this.show = this.show.bind(this);
 
     if (
       null !== this.controller
       && null !== this.target
       && null !== this.content
+      && ! this.content.contains(this.target)
     ) {
       this.init();
     }
@@ -89,14 +84,22 @@ export default class Dialog extends AriaComponent {
       document.body.insertBefore(this.overlay, this.target);
     }
 
-    this.controller.setAttribute('aria-haspopup', 'dialog');
-    this.controller.setAttribute('aria-expanded', 'false');
-    this.target.setAttribute('aria-hidden', 'true');
+    this.popup = new Popup({
+      controller: this.controller,
+      target: this.target,
+      type: 'dialog',
+      onStateChange: this.onPopupStateChange,
+    });
 
-    this.controller.addEventListener('click', this.show);
+    this.interactiveChildren = interactiveChildren(this.target);
+
+    this.close.addEventListener('click', this.popup.hide);
     this.target.addEventListener('keydown', this.handleTargetKeydown);
-    this.close.addEventListener('click', this.hide);
-    this.overlay.addEventListener('click', this.outsideClick);
+    // Remove clashing Popup event listener.
+    this.popup.target.removeEventListener(
+      'keydown',
+      this.popup.targetKeyDownHandler
+    );
 
     // @todo Remove support for passing in additional aria-* attributes?
     Object.keys(this.attributes).forEach((attr) => {
@@ -111,21 +114,20 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Object} state The component state.
    */
-  stateWasUpdated({ visible }) {
-    this.controller.setAttribute('aria-expanded', `${visible}`);
-    this.target.setAttribute('aria-hidden', `${! visible}`);
-    this.content.setAttribute('aria-hidden', `${visible}`);
+  onPopupStateChange({ expanded }) {
+    this.interactiveChildren = interactiveChildren(this.target);
 
-    if (visible) {
-      this.interactiveChildren = interactiveChildren(this.target);
-
+    if (expanded) {
+      this.content.setAttribute('aria-hidden', 'true');
       document.body.addEventListener('keydown', this.handleKeydownEsc);
       this.close.focus();
     } else {
+      this.content.removeAttribute('aria-hidden');
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
       this.controller.focus();
     }
 
+    // Run the onStageChange callback.
     this.onStateChange.call(this, this.state);
   }
 
@@ -135,10 +137,10 @@ export default class Dialog extends AriaComponent {
    * @param {Object} event The event object.
    */
   outsideClick(event) {
-    const { visible } = this.state;
+    const { expanded } = this.popup.getState();
 
-    if (visible && ! this.target.contains(event.target)) {
-      this.hide();
+    if (expanded && ! this.target.contains(event.target)) {
+      this.popup.hide();
     }
   }
 
@@ -151,7 +153,7 @@ export default class Dialog extends AriaComponent {
     const { TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
 
-    if (this.state.visible && keyCode === TAB) {
+    if (this.popup.getState().expanded && keyCode === TAB) {
       const { activeElement } = document;
       const activeIndex = this.interactiveChildren.indexOf(activeElement);
       const lastIndex = this.interactiveChildren.length - 1;
@@ -177,21 +179,7 @@ export default class Dialog extends AriaComponent {
     const { keyCode } = event;
 
     if (ESC === keyCode) {
-      this.hide();
+      this.popup.hide();
     }
-  }
-
-  /**
-   * Hide the target element.
-   */
-  hide() {
-    this.setState({ visible: false });
-  }
-
-  /**
-   * Show the target element.
-   */
-  show() {
-    this.setState({ visible: true });
   }
 }

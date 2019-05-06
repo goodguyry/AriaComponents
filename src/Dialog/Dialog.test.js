@@ -57,7 +57,7 @@ const modal = new Dialog({
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
-    modal.setState({ visible: false });
+    modal.popup.hide();
   });
 
   describe('Dialog adds and manipulates DOM element attributes', () => {
@@ -67,7 +67,7 @@ describe('Dialog with default configuration', () => {
       expect(controller.dialog).toBeInstanceOf(Dialog);
       expect(target.dialog).toBeInstanceOf(Dialog);
 
-      expect(modal.getState().visible).toBeFalsy();
+      expect(modal.popup.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalled();
     });
@@ -83,13 +83,13 @@ describe('Dialog with default configuration', () => {
 
   describe('Dialog class methods', () => {
     it('Should reflect the accurate state', () => {
-      modal.show();
-      expect(modal.getState().visible).toBeTruthy();
+      modal.popup.show();
+      expect(modal.popup.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(modal.close);
       expect(onStateChange).toHaveBeenCalled();
 
-      modal.hide();
-      expect(modal.getState().visible).toBeFalsy();
+      modal.popup.hide();
+      expect(modal.popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
       expect(onStateChange).toHaveBeenCalled();
     });
@@ -97,20 +97,20 @@ describe('Dialog with default configuration', () => {
 
   describe('Dialog correctly responds to events', () => {
     beforeEach(() => {
-      modal.setState({ visible: true });
+      modal.popup.show();
     });
 
     it('Should update attributes when the controller is clicked', () => {
       // Click to close (it is opened by `beforeEach`)
       modal.close.dispatchEvent(click);
-      expect(modal.getState().visible).toBeFalsy();
+      expect(modal.popup.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      expect(content.getAttribute('aria-hidden')).toEqual('false');
+      expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
 
       // Click to re-open.
       controller.dispatchEvent(click);
-      expect(modal.getState().visible).toBeTruthy();
+      expect(modal.popup.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
@@ -127,12 +127,12 @@ describe('Dialog with default configuration', () => {
     it('Should close when the ESC key is pressed', () => {
       lastItem.focus();
       lastItem.dispatchEvent(keydownEsc);
-      expect(modal.getState().visible).toBeFalsy();
+      expect(modal.popup.getState().expanded).toBeFalsy();
     });
 
     it('Should close on outside click', () => {
       modal.overlay.dispatchEvent(click);
-      expect(modal.getState().visible).toBeFalsy();
+      expect(modal.popup.getState().expanded).toBeFalsy();
     });
   });
 });
