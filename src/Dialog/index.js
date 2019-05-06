@@ -4,13 +4,15 @@ import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 
 /**
- * Manage dialog (modal) elements
- *
- * @todo Throw an error if the modal is within the content element
+ * Dialog class.
+ * Sets up an interactive popup dialog element.
  */
 export default class Dialog extends AriaComponent {
   /**
    * Create the dialog overlay element.
+   * Can be used to obscure the content behind the dialog.
+   *
+   * @static
    */
   static createOverlayElement() {
     const overlay = document.createElement('div');
@@ -18,6 +20,12 @@ export default class Dialog extends AriaComponent {
     return overlay;
   }
 
+  /**
+   * Create the dialog close button, in case one doesn't exist. Will be inserted
+   * as the dialog element's first child.
+   *
+   * @static
+   */
   static createCloseButtton() {
     const button = document.createElement('button');
     button.innerText = 'Close';
@@ -25,6 +33,9 @@ export default class Dialog extends AriaComponent {
     return button;
   }
 
+  /**
+   * Start the component.
+   */
   constructor(config) {
     super(config);
 
@@ -39,17 +50,45 @@ export default class Dialog extends AriaComponent {
      * @type {Object}
      */
     const options = {
+      /**
+       * The element used to trigger the dialog popup.
+       * @type {HTMLElement}
+       */
       controller: null,
+      /**
+       * The dialog element.
+       * @type {HTMLElement}
+       */
       target: null,
+      /**
+       * The site content wrapper. NOT necessarily <main>, but the element
+       * wrapping all site content (including header and footer) with the sole
+       * exception of the dialog element.
+       * @type {HTMLElement}
+       */
       content: null,
+      /**
+       * The button used to close the dialog. Required to be the very first
+       * element inside the dialog. If none is passed, one will be created.
+       * @type {HTMLElement}
+       */
       close: this.constructor.createCloseButtton(),
+      /**
+       * Callback to run after the component initializes.
+       * @type {Function}
+       */
       onInit: () => {},
+      /**
+       * Callback to run after component state is updated.
+       * @type {Function}
+       */
       onStateChange: () => {},
     };
 
-    // Merge config options with defaults.
+    // Merge config options with defaults and save all as instance properties.
     Object.assign(this, options, config);
 
+    // Insert the close button if no button was passed in.
     if (undefined === config.close && null !== this.target) {
       this.target.insertBefore(this.close, this.target.firstChild);
     }
@@ -59,6 +98,7 @@ export default class Dialog extends AriaComponent {
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
 
+    // Initialize the component if all required elements are accounted for.
     if (
       null !== this.controller
       && null !== this.target
@@ -70,20 +110,26 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
-   * Initial element setup.
+   * Set the component's DOM attributes and event listeners.
    */
   init() {
-    // Add a reference to the class instance
+    /**
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
+     */
     this.setSelfReference([this.controller, this.target]);
 
-    this.attributes = this.attributes || {};
-
-    this.overlay = document.getElementById('dialog-overlay');
+    // Insert the overlay element if it's not found.
+    this.overlay = document.getElementById('aria-dialog-overlay');
     if (null === this.overlay) {
       this.overlay = this.constructor.createOverlayElement();
       document.body.insertBefore(this.overlay, this.target);
     }
 
+    /**
+     * Create the popup to control the Dialog.
+     * @type {Popup}
+     */
     this.popup = new Popup({
       controller: this.controller,
       target: this.target,
@@ -91,28 +137,39 @@ export default class Dialog extends AriaComponent {
       onStateChange: this.onPopupStateChange,
     });
 
+    /**
+     * Collect the Dialog's interactive child elements. This is an initial pass
+     * to ensure values exists, but the interactive children will be collected
+     * each time the dialog opens, in case the dialog's contents change.
+     */
     this.interactiveChildren = interactiveChildren(this.target);
 
+    // Add event listeners.
     this.close.addEventListener('click', this.popup.hide);
     this.target.addEventListener('keydown', this.handleTargetKeydown);
-    // Remove clashing Popup event listener.
+
+    /**
+     * Remove clashing Popup event listener. This Popup event listener is
+     * clashing with the Dialog's ability to trap keyboard tabs.
+     *
+     * @todo Can this event listener be removed outright?
+     */
     this.popup.target.removeEventListener(
       'keydown',
       this.popup.targetKeyDownHandler
     );
 
-    // @todo Remove support for passing in additional aria-* attributes?
-    Object.keys(this.attributes).forEach((attr) => {
-      this.target.setAttribute(`aria-${attr}`, this.attributes[attr]);
-    });
-
+    // Call the onInit callback.
     this.onInit.call(this);
   }
 
   /**
-   * Update element attributes and event listeners.
+   * Update element attributes and event listeners when the Popup's state
+   * changes. The Dialog component has no state of its own, but run the
+   * onStateChange callback regardless so authors can tie in additional
+   * functionality necessary for their design.
    *
-   * @param {Object} state The component state.
+   * @param {Object} state The Popup component state.
    */
   onPopupStateChange({ expanded }) {
     this.interactiveChildren = interactiveChildren(this.target);
@@ -132,9 +189,9 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
-   * Close the dialog on outside click.
+   * Close the dialog on when users click outside of the Dialog element.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   outsideClick(event) {
     const { expanded } = this.popup.getState();
@@ -145,9 +202,9 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
-   * Handle key presses.
+   * Trap key tabs within the dialog.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   handleTargetKeydown(event) {
     const { TAB } = keyCodes;
@@ -155,24 +212,34 @@ export default class Dialog extends AriaComponent {
 
     if (this.popup.getState().expanded && keyCode === TAB) {
       const { activeElement } = document;
-      const activeIndex = this.interactiveChildren.indexOf(activeElement);
       const lastIndex = this.interactiveChildren.length - 1;
+      const [firstChild] = this.interactiveChildren;
+      const lastChild = this.interactiveChildren[lastIndex];
 
-      // Trap key tabs inside dialog.
-      if (shiftKey && 0 === activeIndex) {
+      if (shiftKey && firstChild === activeElement) {
         event.preventDefault();
-        this.interactiveChildren[lastIndex].focus();
-      } else if (! shiftKey && activeIndex === lastIndex) {
+        /**
+         * Move back from the first interactive child element to the last
+         * interactive child element
+         */
+        lastChild.focus();
+      } else if (! shiftKey && lastChild === activeElement) {
         event.preventDefault();
-        this.interactiveChildren[0].focus();
+        /**
+         * Move forward from the last interactive child element to the first
+         * interactive child element.
+         */
+        firstChild.focus();
       }
     }
   }
 
   /**
-   * Close the dialog on ESC key press.
+   * Close the dialog on ESC key press. This is added to the body element, so
+   * any press of the ESC key will short-circuit the dialog and move forcus back
+   * to the controller.
    *
-   * @param  {Object} event The event object.
+   * @param {Event}
    */
   handleKeydownEsc(event) {
     const { ESC } = keyCodes;

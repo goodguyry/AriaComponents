@@ -156,7 +156,7 @@ export default class Popup extends AriaComponent {
   /**
    * Handle keydown events on the popup controller.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   controllerKeyDownHandler(event) {
     const { expanded } = this.state;
@@ -191,7 +191,7 @@ export default class Popup extends AriaComponent {
   /**
    * Handle keydown events on the popup target.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   targetKeyDownHandler(event) {
     const { ESC, TAB } = keyCodes;
@@ -238,7 +238,7 @@ export default class Popup extends AriaComponent {
   /**
    * Toggle the popup state.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   controllerClickHandler(event) {
     event.preventDefault();
@@ -251,7 +251,7 @@ export default class Popup extends AriaComponent {
    * Close the list if the Tab key is pressed if the last interactive child of
    * the popup is the event target.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   hideOnTabOut(event) {
     const { expanded } = this.state;
@@ -267,7 +267,7 @@ export default class Popup extends AriaComponent {
    * Close the popup when clicking anywhere outsideof the target or controller
    * elements.
    *
-   * @param {Object} event The event object.
+   * @param {Event}
    */
   hideOnOutsideClick(event) {
     const { expanded } = this.state;

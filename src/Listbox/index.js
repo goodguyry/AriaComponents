@@ -101,7 +101,7 @@ export default class ListBox extends AriaComponent {
     this.state.activeDescendant = this.firstOption;
 
     /**
-     * The Listbox is basically  a Popup to present a list of options, so we
+     * The Listbox is basically a Popup to present a list of options, so we
      * instantiate a Popup and subscribe to state changes to act on the Listbox
      * when the Popup is shown and hidden.
      *
