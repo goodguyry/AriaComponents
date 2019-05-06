@@ -87,6 +87,7 @@ export default class Disclosure extends AriaComponent {
    * Add initial attributes, establish relationships, and listen for events
    */
   init() {
+    // Component state is initially set in the constructor.
     const { expanded } = this.state;
 
     /**
