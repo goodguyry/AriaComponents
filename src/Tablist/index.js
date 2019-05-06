@@ -37,6 +37,21 @@ export default class Tablist extends AriaComponent {
        * @type {NodeList}
        */
       panels: null,
+      /**
+       * Callback to run after the component initializes.
+       * @type {Function}
+       */
+      onInit: () => {},
+      /**
+       * Callback to run after component state is updated.
+       * @type {Function}
+       */
+      onStateChange: () => {},
+      /**
+       * Callback to run after the component is destroyed.
+       * @type {Function}
+       */
+      onDestroy: () => {},
     };
 
     // Save references to the tablist and panels.
@@ -135,6 +150,9 @@ export default class Tablist extends AriaComponent {
 
     // Save the active panel's interactive children.
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
+
+    // Call the onInit callback.
+    this.onInit.call(this);
   }
 
   /**
@@ -167,6 +185,9 @@ export default class Tablist extends AriaComponent {
     // Allow tabbing to the newly-active panel.
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
     tabIndexAllow(this.interactiveChildren);
+
+    // Call the onStateChange callback.
+    this.onStateChange.call(this, this.state);
   }
 
   /**
@@ -324,5 +345,8 @@ export default class Tablist extends AriaComponent {
         this.handleTabKeydown
       );
     });
+
+    // Run the onDestroy callback.
+    this.onDestroy.call(this);
   }
 }

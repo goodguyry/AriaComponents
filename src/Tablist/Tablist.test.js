@@ -63,9 +63,20 @@ const firstPanel = document.querySelector('#first-panel');
 const secondPanel = document.querySelector('#second-panel');
 const thirdPanel = document.querySelector('#third-panel');
 
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
-    tablist = new Tablist({ tablist: tabs, panels });
+    tablist = new Tablist({
+      tablist: tabs,
+      panels,
+      onStateChange,
+      onInit,
+      onDestroy,
+    });
   });
 
   describe('Tablist adds and manipulates DOM element attributes', () => {
@@ -73,6 +84,8 @@ describe('Tablist with default configuration', () => {
       expect(tablist).toBeInstanceOf(Tablist);
 
       expect(tablist.getState().activeIndex).toEqual(0);
+
+      expect(onInit).toHaveBeenCalled();
     });
 
     it('Should add the correct attributes and overlay element',
@@ -115,6 +128,8 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
+      expect(onStateChange).toHaveBeenCalled();
+
       tablist.switchTo(2);
       expect(firstTab.getAttribute('aria-selected')).toBeNull();
       expect(secondTab.getAttribute('aria-selected')).toBeNull();
@@ -127,6 +142,8 @@ describe('Tablist with default configuration', () => {
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
+
+      expect(onStateChange).toHaveBeenCalled();
     });
 
     it('Should remove all DOM attributes when destroyed', () => {
@@ -151,6 +168,8 @@ describe('Tablist with default configuration', () => {
         const firstChild = panel.querySelector('a[href]');
         expect(firstChild.getAttribute('tabindex')).toBeNull();
       });
+
+      expect(onDestroy).toHaveBeenCalled();
     });
   });
 
