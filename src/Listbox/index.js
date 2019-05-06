@@ -7,6 +7,8 @@ import keyCodes from '../lib/keyCodes';
  * Listbox class.
  * Implements a single-select listbox based on WAI-ARIA Authoring Practices 1.1
  *
+ * @see https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
+ *
  * @param {Object} config {
  *   @type {HTMLElement} controller The button to activate the Listbox.
  *   @type {HMTLElement} target     The list, comprises Listbox options.

@@ -6,6 +6,8 @@ import instanceOf from '../lib/instanceOf';
 /**
  * MenuItem class for managing menu items' keyboard interactions.
  *
+ * @see https://www.w3.org/TR/wai-aria-practices-1.1/#menu
+ *
  * @param {HTMLElement} list The list to manage.
  */
 export default class MenuItem extends AriaComponent {

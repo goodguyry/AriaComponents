@@ -5,7 +5,10 @@ import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import keyCodes from '../lib/keyCodes';
 
 /**
- * Manage tablist elements
+ * Tablist class.
+ * Impliments a tabs widget for sectioning content and displaying one at a time.
+ *
+ * @see https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
  */
 export default class Tablist extends AriaComponent {
   constructor(config) {

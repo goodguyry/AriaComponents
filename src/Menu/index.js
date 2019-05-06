@@ -9,6 +9,8 @@ import instanceOf from '../lib/instanceOf';
 /**
  * Menu class for managing a menu's top-level keyboard interactions.
  *
+ * @see https://www.w3.org/TR/wai-aria-practices-1.1/#menu
+ *
  * @param {HTMLElement} menu The menu <ul>
  */
 export default class Menu extends AriaComponent {
