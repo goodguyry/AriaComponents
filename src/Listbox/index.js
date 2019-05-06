@@ -227,7 +227,7 @@ export default class ListBox extends AriaComponent {
 
     if ([UP, DOWN].includes(event.keyCode)) {
       event.preventDefault();
-      this.popup.open();
+      this.popup.show();
     }
   }
 
@@ -259,7 +259,7 @@ export default class ListBox extends AriaComponent {
       case RETURN:
       case SPACE: {
         event.preventDefault();
-        this.popup.close();
+        this.popup.hide();
 
         // Move focus to the controller when the Listbox is closed.
         this.controller.focus();
@@ -324,7 +324,7 @@ export default class ListBox extends AriaComponent {
    */
   handleTargetClicks(event) {
     this.setState({ activeDescendant: event.target });
-    this.popup.close();
+    this.popup.hide();
   }
 
   /**
@@ -336,7 +336,7 @@ export default class ListBox extends AriaComponent {
   handleTargetBlur(event) {
     if (this.popup.getState().expanded) {
       this.setState({ activeDescendant: event.target });
-      this.popup.close();
+      this.popup.hide();
     }
   }
 
