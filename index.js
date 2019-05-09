@@ -1,4 +1,4 @@
-import Menu from './src/Menu';
+import MenuBar from './src/MenuBar';
 import MenuItem from './src/MenuItem';
 import Popup from './src/Popup';
 import Disclosure from './src/Disclosure';
@@ -6,7 +6,7 @@ import Dialog from './src/Dialog';
 import Tablist from './src/Tablist';
 
 export {
-  Menu,
+  MenuBar,
   MenuItem,
   Popup,
   Disclosure,

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import Menu from '.';
+import MenuBar from '.';
 import Popup from '../Popup';
 import events from '../../utils/events';
 
@@ -11,7 +11,7 @@ const {
 
 // Set up our document body
 document.body.innerHTML = `
-  <ul class="menu">
+  <ul class="menubar">
     <li><a class="first-item" href="example.com"></a>
       <ul class="sublist1">
         <li><a class="sublist1-first-item" href="example.com"></a></li>
@@ -35,7 +35,7 @@ document.body.innerHTML = `
 
 // Collect references to DOM elements.
 const domElements = {
-  list: document.querySelector('.menu'),
+  list: document.querySelector('.menubar'),
   listFirstItem: document.querySelector('.first-item'),
   listSecondItem: document.querySelector('.second-item'),
   listThirdItem: document.querySelector('.third-item'),
@@ -61,7 +61,7 @@ const onPopupStateChange = jest.fn();
 const onPopupInit = jest.fn();
 const onPopupDestroy = jest.fn();
 
-const menu = new Menu({
+const menuBar = new MenuBar({
   menu: domElements.list,
   onInit,
   onDestroy,
@@ -72,7 +72,7 @@ const menu = new Menu({
 
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
-    expect(menu).toBeInstanceOf(Menu);
+    expect(menuBar).toBeInstanceOf(MenuBar);
     expect(onInit).toHaveBeenCalled();
 
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
@@ -86,7 +86,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).not.toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
 
-    expect(menu.getState().menubarItem).toEqual(domElements.listFirstItem);
+    expect(menuBar.getState().menubarItem).toEqual(domElements.listFirstItem);
 
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toEqual('4');
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toEqual('4');
@@ -135,7 +135,7 @@ describe('Menu correctly responds to events', () => {
 
 describe('Menu should destroy properly', () => {
   it('Should remove all attributes and destroy popups', () => {
-    menu.destroy();
+    menuBar.destroy();
     expect(domElements.list.getAttribute('role')).toBeNull();
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();

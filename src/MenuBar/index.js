@@ -7,13 +7,14 @@ import createScreenReaderText from '../lib/createScreenReaderText';
 import instanceOf from '../lib/instanceOf';
 
 /**
- * Menu class for managing a menu's top-level keyboard interactions.
+ * MenuBar class for managing a visually persistent menu.
  *
  * @see https://www.w3.org/TR/wai-aria-practices-1.1/#menu
+ * @see https://www.w3.org/TR/wai-aria-1.1/#menubar
  *
  * @param {HTMLElement} menu The menu <ul>
  */
-export default class Menu extends AriaComponent {
+export default class MenuBar extends AriaComponent {
   /**
    * Start the component
    */
@@ -24,7 +25,7 @@ export default class Menu extends AriaComponent {
      * The component name.
      * @type {String}
      */
-    this.componentName = 'menu';
+    this.componentName = 'menuBar';
 
     /**
      * Options shape.
