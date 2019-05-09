@@ -116,6 +116,11 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', 'false');
     this.controller.setAttribute('aria-controls', this.target.id);
 
+    if ('BUTTON' !== this.controller.nodeName) {
+      this.controller.setAttribute('role', 'button');
+      this.controller.setAttribute('tabindex', '0');
+    }
+
     /**
      * Establishes a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
@@ -161,11 +166,17 @@ export default class Popup extends AriaComponent {
    */
   controllerKeyDownHandler(event) {
     const { expanded } = this.state;
+    const {
+      ESC,
+      TAB,
+      SPACE,
+      RETURN,
+    } = keyCodes;
+    const { keyCode } = event;
 
-    if (expanded) {
-      const { ESC, TAB } = keyCodes;
-      const { keyCode } = event;
-
+    if ([SPACE, RETURN].includes(keyCode)) {
+      this.controllerClickHandler(event);
+    } else if (expanded) {
       if (ESC === keyCode) {
         event.preventDefault();
 

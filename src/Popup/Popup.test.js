@@ -6,10 +6,13 @@ const {
   keydownEsc,
   keydownTab,
   keydownShiftTab,
+  keydownSpace,
+  keydownReturn,
 } = events;
 
 // Set up our document body
 document.body.innerHTML = `
+  <a href="#dropdown" class="link">Open</a>
   <button>Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
@@ -24,6 +27,7 @@ document.body.innerHTML = `
 const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
 
+const link = document.querySelector('.link');
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');
 
@@ -59,6 +63,11 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
+
+    // Button controller should not get button role
+    expect(controller.getAttribute('role')).toBeNull();
+    expect(controller.getAttribute('tabindex')).toBeNull();
+
     // The test markup isn't detatched, so this doesn't apply.
     expect(controller.getAttribute('aria-own')).toBeFalsy();
   });
@@ -138,6 +147,31 @@ describe('Popup correctly responds to events', () => {
       document.body.dispatchEvent(click);
       expect(popup.getState().expanded).toBeFalsy();
     });
+});
+
+describe('Test button behaviors in non-button element controller', () => {
+  const linkPopup = new Popup({
+    controller: link,
+    target,
+    onStateChange,
+    onInit,
+    onDestroy,
+  });
+
+  it('Should add the correct attributes', () => {
+    expect(link.getAttribute('role')).toEqual('button');
+    expect(link.getAttribute('tabindex')).toEqual('0');
+  });
+
+  it('Should update Popup state with keyboard', () => {
+    // Toggle popup
+    link.dispatchEvent(keydownSpace);
+    expect(linkPopup.getState().expanded).toBeTruthy();
+
+    // Toggle popup
+    link.dispatchEvent(keydownReturn);
+    expect(linkPopup.getState().expanded).toBeFalsy();
+  });
 });
 
 it('Should destroy the popup as expected', () => {
