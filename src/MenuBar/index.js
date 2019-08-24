@@ -60,7 +60,7 @@ export default class MenuBar extends AriaComponent {
    */
   init() {
     // Set the menu role.
-    this.menu.setAttribute('role', 'menu');
+    this.menu.setAttribute('role', 'menubar');
 
     this.addHelpText();
 

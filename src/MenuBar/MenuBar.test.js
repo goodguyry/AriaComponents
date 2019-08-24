@@ -80,7 +80,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
   });
 
   it('Should add the correct DOM attributes and collect elements', () => {
-    expect(domElements.list.getAttribute('role')).toEqual('menu');
+    expect(domElements.list.getAttribute('role')).toEqual('menubar');
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toEqual('5');
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).not.toBeNull();
