@@ -145,6 +145,10 @@ export default class MenuBar extends AriaComponent {
    * @param {Object} state The component state.
    */
   stateWasUpdated({ menubarItem }) {
+    // Add the current popup (or false) to state.
+    this.state.popup = instanceOf(menubarItem.popup, Popup)
+      ? menubarItem.popup
+      : false;
     rovingTabIndex(this.menuBarItems, menubarItem);
     menubarItem.focus();
   }
@@ -157,7 +161,7 @@ export default class MenuBar extends AriaComponent {
   handleMenuBarKeydown(event) {
     const { LEFT, RIGHT, DOWN } = keyCodes;
     const { keyCode } = event;
-    const { menubarItem } = this.state;
+    const { menubarItem, popup } = this.state;
 
     if ([LEFT, RIGHT].includes(keyCode)) {
       // Move through sibling list items.
@@ -177,11 +181,9 @@ export default class MenuBar extends AriaComponent {
       }
     } else if (DOWN === keyCode) {
       // Open the popup if it exists and is not expanded.
-      if (instanceOf(menubarItem.popup, Popup)) {
+      if (popup) {
         event.stopPropagation();
         event.preventDefault();
-
-        const { popup } = menubarItem;
 
         if (! popup.state.expanded) {
           popup.setState({ expanded: true });
