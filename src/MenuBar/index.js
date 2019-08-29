@@ -97,7 +97,7 @@ export default class MenuBar extends AriaComponent {
       link.setAttribute('aria-setsize', this.menuLength);
       link.setAttribute('aria-posinset', index + 1);
 
-      link.addEventListener('keydown', this.handleMenuBarKeydown);
+      link.parentElement.addEventListener('keydown', this.handleMenuBarKeydown);
       link.addEventListener('click', this.handleMenuBarClick);
     });
 
@@ -126,7 +126,6 @@ export default class MenuBar extends AriaComponent {
           onDestroy: this.onPopupDestroy,
         });
 
-        target.addEventListener('keydown', this.handleListKeydown);
         const subList = new MenuItem({ menu: target });
         // Save the list's previous sibling.
         subList.previousSibling = controller;

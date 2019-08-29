@@ -171,14 +171,10 @@ export default class MenuItem extends AriaComponent {
     } else if (LEFT === keyCode) {
       // Move up to the list's previous sibling, if present.
       if (undefined !== this.previousSibling) {
-        event.stopPropagation();
-        event.preventDefault();
         // Close the popup if it exists and is exapnded.
         if (instanceOf(this.previousSibling.popup, Popup)) {
-          event.stopPropagation();
-          event.preventDefault();
-
           const { popup } = this.previousSibling;
+
           if (popup.getState().expanded) {
             popup.setState({ expanded: false });
           }

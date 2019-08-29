@@ -131,6 +131,16 @@ describe('Menu correctly responds to events', () => {
       expect(document.activeElement).toEqual(domElements.sublistOneFirstItem);
       expect(onPopupStateChange).toHaveBeenCalled();
     });
+
+  it('Should close the submenu on right arrow key on a menu item with no submenu', () => {
+    menuBar.setState({
+      menubarItem: domElements.listThirdItem,
+    });
+    domElements.sublistTwoThirdItem.focus();
+    domElements.sublistTwoThirdItem.dispatchEvent(keydownRight);
+    expect(document.activeElement).toEqual(domElements.listFourthItem);
+    expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
+  });
 });
 
 describe('Menu should destroy properly', () => {
