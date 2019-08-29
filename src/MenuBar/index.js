@@ -3,6 +3,7 @@ import Popup from '../Popup';
 import MenuItem from '../MenuItem';
 import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
+import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import instanceOf from '../lib/instanceOf';
 
 /**
@@ -157,30 +158,23 @@ export default class MenuBar extends AriaComponent {
     const { LEFT, RIGHT, DOWN } = keyCodes;
     const { keyCode } = event;
     const { menubarItem } = this.state;
-    const activeIndex = this.menuBarItems.indexOf(menubarItem);
 
     if ([LEFT, RIGHT].includes(keyCode)) {
+      // Move through sibling list items.
+      const nextItem = nextPreviousFromLeftRight(
+        keyCode,
+        menubarItem,
+        this.menuBarItems
+      );
+
+      if (nextItem) {
       event.stopPropagation();
       event.preventDefault();
 
-      // Determine the direction.
-      let nextIndex = (keyCode === LEFT)
-        ? activeIndex - 1
-        : activeIndex + 1;
-
-      // Move to the end if we're moving to the previous child from the first child.
-      if (LEFT === keyCode && 0 > nextIndex) {
-        nextIndex = this.lastIndex;
-      }
-
-      // Move to first child if we're at the end.
-      if (RIGHT === keyCode && this.lastIndex < nextIndex) {
-        nextIndex = 0;
-      }
-
       this.setState({
-        menubarItem: this.menuBarItems[nextIndex],
+          menubarItem: nextItem,
       });
+      }
     } else if (DOWN === keyCode) {
       // Open the popup if it exists and is not expanded.
       if (instanceOf(menubarItem.popup, Popup)) {
