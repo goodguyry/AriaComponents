@@ -3,7 +3,6 @@ import Popup from '../Popup';
 import MenuItem from '../MenuItem';
 import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
-import createScreenReaderText from '../lib/createScreenReaderText';
 import instanceOf from '../lib/instanceOf';
 
 /**
@@ -44,7 +43,6 @@ export default class MenuBar extends AriaComponent {
     Object.assign(this, options, config);
 
     // Bind class methods.
-    this.addHelpText = this.addHelpText.bind(this);
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
@@ -61,8 +59,6 @@ export default class MenuBar extends AriaComponent {
   init() {
     // Set the menu role.
     this.menu.setAttribute('role', 'menubar');
-
-    this.addHelpText();
 
     this.menuItemsCollection = this.menu.children;
     this.menuItemsArray = Array.prototype.slice.call(this.menuItemsCollection);
@@ -150,41 +146,6 @@ export default class MenuBar extends AriaComponent {
   stateWasUpdated({ menubarItem }) {
     rovingTabIndex(this.menuBarItems, menubarItem);
     menubarItem.focus();
-  }
-
-  /**
-   * Adds screen reader help text for use in aria-describedby attributes.
-   */
-  addHelpText() {
-    const helpTextItems = [
-      {
-        id: 'menu-class-top-level-help',
-        text: 'Use left and right arrow keys to navigate between menu items.',
-      },
-      {
-        id: 'menu-class-submenu-help',
-        text: 'Use right arrow key to move into submenus.',
-      },
-      {
-        id: 'menu-class-esc-help',
-        text: 'Use escape to exit the menu.',
-      },
-      {
-        id: 'menu-class-submenu-explore',
-        text: 'Use up and down arrow keys to explore.',
-      },
-      {
-        id: 'menu-class-submenu-back',
-        text: 'Use left arrow key to move back to the parent list.',
-      },
-    ];
-
-    helpTextItems.forEach(({ id, text }) => {
-      if (null === this.menu.parentElement.querySelector(`#${id}`)) {
-        const helpSpan = createScreenReaderText(id, text);
-        this.menu.parentElement.appendChild(helpSpan);
-      }
-    });
   }
 
   /**
