@@ -2,6 +2,11 @@
 import Menu from '.';
 import events from '../../utils/events';
 
+// Create the help text elements.
+const ariaDescribedbyTestMarkup = Menu.getHelpIds().reduce((acc, id) => (
+  `${acc}<div id="${id.replace('#', '')}"></div>`
+), '');
+
 const {
   keydownDown,
   keydownUp,
@@ -31,6 +36,8 @@ document.body.innerHTML = `
     <li><a class="fourth-child" href="example.com"></a></li>
     <li><a class="last-child" href="example.com"></a></li>
   </ul>
+
+  ${ariaDescribedbyTestMarkup}
 `;
 
 // Collect references to DOM elements.
@@ -156,3 +163,5 @@ describe('Destroying the Menu removes attributes', () => {
     expect(onDestroy).toHaveBeenCalled();
   });
 });
+
+export default ariaDescribedbyTestMarkup;

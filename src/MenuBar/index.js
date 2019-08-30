@@ -5,6 +5,9 @@ import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import instanceOf from '../lib/instanceOf';
+import {
+  missingDescribedByWarning,
+} from '../lib/checkForAriaDescribedbyElements';
 
 /**
  * MenuBar class for managing a visually persistent menu.
@@ -15,6 +18,19 @@ import instanceOf from '../lib/instanceOf';
  * @param {HTMLElement} menu The menu <ul>
  */
 export default class MenuBar extends AriaComponent {
+  /**
+   * HTML IDs for elements containing help text
+   *
+   * @return {Array}
+   */
+  static getHelpIds() {
+    return [
+      '#ac-describe-top-level-help',
+      '#ac-describe-submenu-help',
+      '#ac-describe-esc-help',
+    ];
+  }
+
   /**
    * Start the component
    */
@@ -80,6 +96,9 @@ export default class MenuBar extends AriaComponent {
      * @type {Number}
      */
     this.menuLength = this.menuBarItems.length;
+
+    // Warn if aria-decribedby elements are not found.
+    missingDescribedByWarning(Menu.getHelpIds());
 
     // Set menu link attributes and event listeners.
     this.menuBarItems.forEach((link, index) => {

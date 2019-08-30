@@ -2,6 +2,15 @@
 import MenuBar from '.';
 import Popup from '../Popup';
 import events from '../../utils/events';
+import Menu from '../Menu';
+
+// Create the help text elements for both MenuBar and Menu.
+const ariaDescribedbyTestMarkup = Array.from(new Set([
+  ...MenuBar.getHelpIds(),
+  ...Menu.getHelpIds(),
+])).reduce((acc, id) => (
+  `${acc}<div id="${id.replace('#', '')}"></div>`
+), '');
 
 const {
   keydownDown,
@@ -31,6 +40,8 @@ document.body.innerHTML = `
     <li><a class="fourth-item" href="example.com"></a></li>
     <li><a class="last-item" href="example.com"></a></li>
   </ul>
+
+  ${ariaDescribedbyTestMarkup}
 `;
 
 // Collect references to DOM elements.

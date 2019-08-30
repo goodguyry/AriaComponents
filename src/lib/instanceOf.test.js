@@ -1,6 +1,8 @@
 import Popup from '../Popup';
 import Menu from '../Menu';
 import instanceOf from './instanceOf';
+// Because we're instantiating Menu.
+import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
 
 // Set up our document body
 document.body.innerHTML = `
@@ -13,6 +15,8 @@ document.body.innerHTML = `
       <li><a href="example.com"></a></li>
     </ul>
   </div>
+
+  ${ariaDescribedbyTestMarkup}
 `;
 
 const controller = document.querySelector('button');

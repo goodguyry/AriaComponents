@@ -2,6 +2,9 @@ import AriaComponent from '../AriaComponent';
 import keyCodes from '../lib/keyCodes';
 import instanceOf from '../lib/instanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
+import {
+  missingDescribedByWarning,
+} from '../lib/checkForAriaDescribedbyElements';
 
 /**
  * MenuItem class for managing menu items' keyboard interactions.
@@ -11,6 +14,20 @@ import { nextPreviousFromUpDown } from '../lib/nextPrevious';
  * @param {HTMLElement} list The list to manage.
  */
 export default class Menu extends AriaComponent {
+  /**
+   * HTML IDs for elements containing help text
+   *
+   * @return {Array}
+   */
+  static getHelpIds() {
+    return [
+      '#ac-describe-submenu-help',
+      '#ac-describe-esc-help',
+      '#ac-describe-submenu-explore',
+      '#ac-describe-submenu-back',
+    ];
+  }
+
   /**
    * Test for a list as the next sibling element.
    *
@@ -95,6 +112,9 @@ export default class Menu extends AriaComponent {
      * Listen for keydown events on the menu.
      */
     this.menu.addEventListener('keydown', this.handleListKeydown);
+
+    // Warn if aria-decribedby elements are not found.
+    missingDescribedByWarning(Menu.getHelpIds());
 
     // Set menu item link attributes and event listeners.
     this.menuItems.forEach((link, index) => {
