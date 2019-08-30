@@ -1,6 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
-import MenuItem from '../MenuItem';
+import Menu from '../Menu';
 import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
@@ -123,7 +123,7 @@ export default class MenuBar extends AriaComponent {
           onDestroy: this.onPopupDestroy,
         });
 
-        const subList = new MenuItem({ menu: target });
+        const subList = new Menu({ menu: target });
         // Save the list's previous sibling.
         subList.previousSibling = controller;
 
@@ -172,12 +172,12 @@ export default class MenuBar extends AriaComponent {
       );
 
       if (nextItem) {
-      event.stopPropagation();
-      event.preventDefault();
+        event.stopPropagation();
+        event.preventDefault();
 
-      this.setState({
+        this.setState({
           menubarItem: nextItem,
-      });
+        });
       }
     } else if (DOWN === keyCode) {
       // Open the popup if it exists and is not expanded.
@@ -226,7 +226,7 @@ export default class MenuBar extends AriaComponent {
 
     // Destroy nested components.
     this.popups.forEach((popup) => {
-      if (instanceOf(popup.target.menuItem, MenuItem)) {
+      if (instanceOf(popup.target.menuItem, Menu)) {
         popup.target.menuItem.destroy();
       }
       popup.destroy();
