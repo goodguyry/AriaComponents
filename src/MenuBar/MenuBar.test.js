@@ -101,6 +101,8 @@ describe('Menu collects DOM elements and adds attributes', () => {
 
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toEqual('4');
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toEqual('4');
+
+    expect(domElements.listThirdItem.getAttribute('aria-haspopup')).toEqual('menu');
   });
 });
 

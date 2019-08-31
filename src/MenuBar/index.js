@@ -140,6 +140,7 @@ export default class MenuBar extends AriaComponent {
           onStateChange: this.onPopupStateChange,
           onInit: this.onPopupInit,
           onDestroy: this.onPopupDestroy,
+          type: 'menu',
         });
 
         const subList = new Menu({ menu: target });
