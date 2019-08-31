@@ -79,6 +79,9 @@ export default class Menu extends AriaComponent {
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init() {
+    // Set the menu role.
+    this.menu.setAttribute('role', 'menu');
+
     // Add a reference to the class instance
     this.setSelfReference([this.menu]);
 
