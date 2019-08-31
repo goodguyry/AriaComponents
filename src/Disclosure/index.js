@@ -4,63 +4,71 @@ import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
 
 /**
- * Disclosure class.
- * Sets up a controller-target relationship for independently revealing and
- * hiding content.
+ * Class to set up a controller-target relationship for independently revealing
+ * and hiding content.
+ * @extends AriaComponent
  *
- * @see https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure
+ * @see {@link https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure|W3C WAI-ARIA Authoring Practices 1.1}
  */
 export default class Disclosure extends AriaComponent {
   /**
-   * Start the component
+   * Create a Disclosure.
+   * @constructor
+   *
+   * @param {object} config The config object.
    */
   constructor(config) {
     super(config);
 
     /**
      * The component name.
-     * @type {String}
+     * @type {string}
      */
     this.componentName = 'disclosure';
 
     /**
      * Options shape.
-     * @type {Object}
+     *
+     * @type {object}
      */
     const options = {
       /**
-       * The element used to trigger the dialog popup.
+       * The element used to trigger the Disclosure Popup.
+       *
        * @type {HTMLElement}
        */
       controller: null,
       /**
-       * The dialog element.
+       * The Disclosure element.
+       *
        * @type {HTMLElement}
        */
       target: null,
       /**
        * Load the Disclosure open by default.
-       * @type {Boolean}
+       *
+       * @type {boolean}
        */
       loadOpen: false,
       /**
        * Keep the Disclosure open when the user clicks outside of it.
-       * @type {Boolean}
+       *
+       * @type {boolean}
        */
       allowOutsideClick: true,
       /**
        * Callback to run after the component initializes.
-       * @type {Function}
+       * @callback initCallback
        */
       onInit: () => {},
       /**
        * Callback to run after component state is updated.
-       * @type {Function}
+       * @callback stateChangeCallback
        */
       onStateChange: () => {},
       /**
        * Callback to run after the component is destroyed.
-       * @return {Function}
+       * @callback destroyCallback
        */
       onDestroy: () => {},
     };
@@ -94,7 +102,7 @@ export default class Disclosure extends AriaComponent {
 
     /**
      * Collect the target element's interactive child elements.
-     * @type {Array}
+     * @type {array}
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
@@ -103,7 +111,7 @@ export default class Disclosure extends AriaComponent {
       setUniqueId(element);
     });
 
-    /**
+    /*
      * Add a reference to the class instance to enable external interactions
      * with this instance.
      */
@@ -113,7 +121,7 @@ export default class Disclosure extends AriaComponent {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.controller.setAttribute('aria-controls', this.target.id);
 
-    /**
+    /*
      * Establishes a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
      */
@@ -121,7 +129,7 @@ export default class Disclosure extends AriaComponent {
       this.controller.setAttribute('aria-owns', this.target.id);
     }
 
-    /**
+    /*
      * Set the taget as hidden by default. Using the `aria-hidden` attribute,
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
@@ -134,7 +142,7 @@ export default class Disclosure extends AriaComponent {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
 
-    /**
+    /*
      * Prevent focus on interactive elements in the target when the target is
      * hidden. This isn't such an issue when the target is hidden with
      * `display:none`, but is necessary if the target is hidden by other means,
@@ -142,14 +150,15 @@ export default class Disclosure extends AriaComponent {
      */
     tabIndexDeny(this.interactiveChildElements);
 
-    // Call the onInit callback.
+    // Run {initCallback}
     this.onInit.call(this);
   }
 
   /**
    * Update the component attributes based on updated state.
    *
-   * @param {Boolean} expand The expected `expanded` state.
+   * @param {object} state The component state.
+   * @param {boolean} state.expanded The expected `expanded` state.
    */
   stateWasUpdated({ expanded }) {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
@@ -162,14 +171,14 @@ export default class Disclosure extends AriaComponent {
       tabIndexDeny(this.interactiveChildElements);
     }
 
-    // Call the onStateChange callback.
+    // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
   }
 
   /**
    * Toggle the expanded state.
    *
-   * @param {Event}
+   * @param {Event} event The Event object.
    */
   toggleExpandedState(event) {
     event.preventDefault();
@@ -184,7 +193,7 @@ export default class Disclosure extends AriaComponent {
   /**
    * Close the disclosure when the user clicks outside of the target.
    *
-   * @param {Event}
+   * @param {Event} event The Event object.
    */
   closeOnOutsideClick(event) {
     if (
@@ -219,7 +228,7 @@ export default class Disclosure extends AriaComponent {
     // Reset initial state.
     this.state.expanded = this.loadOpen;
 
-    // Call the onDestroy callback.
+    // Run {destroyCallback}
     this.onDestroy.call(this);
   }
 
