@@ -69,7 +69,7 @@ export default class Popup extends AriaComponent {
     Object.assign(this, options, config);
 
     // Intial component state.
-    this.state.expanded = false;
+    this.state = { expanded: false };
 
     // Bind class methods.
     this.init = this.init.bind(this);
@@ -334,7 +334,7 @@ export default class Popup extends AriaComponent {
     document.body.removeEventListener('click', this.hideOnOutsideClick);
 
     // Reset initial state.
-    this.state.expanded = false;
+    this.state = { expanded: false };
 
     // Run {destroyCallback}
     this.onDestroy.call(this);

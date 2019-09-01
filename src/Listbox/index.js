@@ -112,14 +112,14 @@ export default class ListBox extends AriaComponent {
     Object.assign(this, { firstOption, lastOption });
 
     /**
-     * The default state.
+     * The initial default state.
      *
      * The element is saved, rather than just its ID attribute, to remove the
      * need to query the DOM for it each time we need to act on it.
      *
      * @type {HTMLElement}
      */
-    this.state.activeDescendant = this.firstOption;
+    this.state = { activeDescendant: this.firstOption };
 
     /**
      * The Listbox is basically a Popup to present a list of options, so we

@@ -76,7 +76,7 @@ export default class Disclosure extends AriaComponent {
     Object.assign(this, options, config);
 
     // Initial component state.
-    this.state.expanded = this.loadOpen;
+    this.state = { expanded: this.loadOpen };
 
     // Bind class methods.
     this.init = this.init.bind(this);
@@ -225,7 +225,7 @@ export default class Disclosure extends AriaComponent {
     document.body.removeEventListener('click', this.closeOnOutsideClick);
 
     // Reset initial state.
-    this.state.expanded = this.loadOpen;
+    this.state = { expanded: this.loadOpen };
 
     // Run {destroyCallback}
     this.onDestroy.call(this);

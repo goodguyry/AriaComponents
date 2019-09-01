@@ -185,7 +185,8 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {object}
      */
-    [this.state.menubarItem] = this.menuBarItems;
+    const [menubarItem] = this.menuBarItems;
+    this.state = { menubarItem };
 
     // Initialize popups for nested lists.
     this.popups = this.menuBarItems.reduce((acc, controller) => {
@@ -212,7 +213,7 @@ export default class MenuBar extends AriaComponent {
     }, []);
 
     // Set up initial tabindex.
-    rovingTabIndex(this.menuBarItems, this.state.menubarItem);
+    rovingTabIndex(this.menuBarItems, menubarItem);
 
     // Run {initCallback}
     this.onInit.call(this);
@@ -225,10 +226,13 @@ export default class MenuBar extends AriaComponent {
    */
   stateWasUpdated({ menubarItem }) {
     // Add the current popup (or false) to state.
-    this.state.popup = instanceOf(menubarItem.popup, Popup)
+    const popup = instanceOf(menubarItem.popup, Popup)
       ? menubarItem.popup
       : false;
+
+    Object.assign(this.state, { popup });
     rovingTabIndex(this.menuBarItems, menubarItem);
+
     menubarItem.focus();
   }
 

@@ -72,7 +72,7 @@ export default class Tablist extends AriaComponent {
     Object.assign(this, options, config);
 
     // Intial component state.
-    this.state.activeIndex = 0;
+    this.state = { activeIndex: 0 };
 
     // Bind class methods
     this.handleTabKeydown = this.handleTabKeydown.bind(this);
