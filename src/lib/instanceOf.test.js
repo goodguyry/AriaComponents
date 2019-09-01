@@ -35,7 +35,7 @@ describe('', () => {
 
   it('Should be a Menu instance',
     () => {
-      expect(instanceOf(list.menuItem, Menu)).toBeTruthy();
+      expect(instanceOf(list.menu, Menu)).toBeTruthy();
     });
 
   it('Should return false for a non-existant element',

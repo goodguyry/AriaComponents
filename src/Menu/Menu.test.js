@@ -74,12 +74,12 @@ const menu = new Menu({
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menu).toBeInstanceOf(Menu);
-    expect(domElements.list.menuItem).toBeInstanceOf(Menu);
+    expect(domElements.list.menu).toBeInstanceOf(Menu);
 
     expect(menu.firstItem.className).toEqual('first-child');
 
-    expect(domElements.sublistOne.menuItem).toBeInstanceOf(Menu);
-    expect(domElements.sublistOne.menuItem.previousSibling).toEqual(domElements.listFirstItem);
+    expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
+    expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
 
     expect(onInit).toHaveBeenCalled();
   });
@@ -149,8 +149,8 @@ describe('Destroying the Menu removes attributes', () => {
   it('Should remove attributes on destroy', () => {
     menu.destroy();
 
-    expect(domElements.list.menuItem).toBeUndefined();
-    expect(domElements.sublistOne.menuItem).toBeUndefined();
+    expect(domElements.list.menu).toBeUndefined();
+    expect(domElements.sublistOne.menu).toBeUndefined();
 
     expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();

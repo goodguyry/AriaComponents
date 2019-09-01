@@ -328,8 +328,8 @@ export default class MenuBar extends AriaComponent {
 
     // Destroy nested components.
     this.popups.forEach((popup) => {
-      if (instanceOf(popup.target.menuItem, Menu)) {
-        popup.target.menuItem.destroy();
+      if (instanceOf(popup.target.menu, Menu)) {
+        popup.target.menu.destroy();
       }
       popup.destroy();
     });

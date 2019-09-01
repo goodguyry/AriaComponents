@@ -51,7 +51,7 @@ export default class Menu extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'menuItem';
+    this.componentName = 'menu';
 
     /**
      * Options shape.
@@ -223,12 +223,12 @@ export default class Menu extends AriaComponent {
       case RIGHT: {
         const siblingElement = this.constructor.nextElementIsUl(activeDescendant); // eslint-disable-line max-len
 
-        if (siblingElement && instanceOf(siblingElement.menuItem, Menu)) {
+        if (siblingElement && instanceOf(siblingElement.menu, Menu)) {
           event.stopPropagation();
           event.preventDefault();
 
-          const { menuItem } = siblingElement;
-          menuItem.firstItem.focus();
+          const { menu } = siblingElement;
+          menu.firstItem.focus();
         }
 
         break;
@@ -259,7 +259,7 @@ export default class Menu extends AriaComponent {
    * Destroy the Menu and any submenus.
    */
   destroy() {
-    delete this.menu.menuItem;
+    delete this.menu.menu;
 
     this.menuItems.forEach((link) => {
       link.removeAttribute('aria-describedby');
@@ -272,8 +272,8 @@ export default class Menu extends AriaComponent {
 
       // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
-      if (siblingList && instanceOf(siblingList.menuItem, Menu)) {
-        siblingList.menuItem.destroy();
+      if (siblingList && instanceOf(siblingList.menu, Menu)) {
+        siblingList.menu.destroy();
       }
     });
 
