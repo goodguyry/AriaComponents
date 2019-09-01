@@ -1,19 +1,23 @@
 /**
- * Base AriaComponent class.
+ * Class for facilitating accessible components.
  */
 export default class AriaComponent {
+  /**
+   * Create an AriaComponent.
+   * @constructor
+   */
   constructor() {
     /**
      * The component name.
      *
-     * @type {String}
+     * @type {string}
      */
     this.componentName = '';
 
     /**
      * Component state.
      *
-     * @type {Object}
+     * @type {object}
      */
     this.state = {};
 
@@ -24,9 +28,9 @@ export default class AriaComponent {
   }
 
   /**
-   * Set state.
+   * Set component state.
    *
-   * @param {Object} newState The new state to merge with existing state.
+   * @param {object} newState The new state to merge with existing state.
    */
   setState(newState) {
     Object.assign(this.state, newState);
@@ -39,7 +43,7 @@ export default class AriaComponent {
   /**
    * Set a reference to the class instance on the element upon which the class is instantiated
    *
-   * @param {Array} elements An array of elements upon which to add a reference to `this`.
+   * @param {array} elements An array of elements upon which to add a reference to `this`.
    */
   setSelfReference(elements) {
     [...elements].forEach((element) => {
@@ -50,7 +54,7 @@ export default class AriaComponent {
   /**
    * Return the state instance property.
    *
-   * @return {Object}
+   * @return {object}
    */
   getState() {
     return this.state;
