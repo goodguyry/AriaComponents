@@ -5,7 +5,6 @@ import keyCodes from '../lib/keyCodes';
 
 /**
  * Class to set up an interactive Popup Dialog element.
- * @extends AriaComponent
  */
 export default class Dialog extends AriaComponent {
   /**
@@ -14,7 +13,7 @@ export default class Dialog extends AriaComponent {
    *
    * @return {HTMLElement} The HTML button element.
    */
-  static createCloseButtton() {
+  static createCloseButton() {
     const button = document.createElement('button');
     button.innerText = 'Close';
 
@@ -69,7 +68,7 @@ export default class Dialog extends AriaComponent {
        *
        * @type {HTMLElement}
        */
-      close: this.constructor.createCloseButtton(),
+      close: this.constructor.createCloseButton(),
       /**
        * Callback to run after the component initializes.
        * @callback initCallback

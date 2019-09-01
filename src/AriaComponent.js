@@ -41,7 +41,8 @@ export default class AriaComponent {
   }
 
   /**
-   * Set a reference to the class instance on the element upon which the class is instantiated
+   * Set a reference to the class instance on the element upon which the class
+   * is instantiated.
    *
    * @param {array} elements An array of elements upon which to add a reference to `this`.
    */
@@ -52,7 +53,7 @@ export default class AriaComponent {
   }
 
   /**
-   * Return the state instance property.
+   * Return the current compoennt state.
    *
    * @return {object}
    */

@@ -47,7 +47,7 @@ export default class Tablist extends AriaComponent {
        */
       tablist: null,
       /**
-       * The Tablist panels.
+       * The Tablist panel elements.
        *
        * @type {NodeList}
        */

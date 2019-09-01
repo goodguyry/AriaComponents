@@ -343,7 +343,6 @@ export default class Popup extends AriaComponent {
 
   /**
    * Update component state to show the target element.
-   * @public
    */
   show() {
     this.setState({ expanded: true });
@@ -351,7 +350,6 @@ export default class Popup extends AriaComponent {
 
   /**
    * Update component state to hide the target element.
-   * @public
    */
   hide() {
     this.setState({ expanded: false });

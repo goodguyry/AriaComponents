@@ -7,13 +7,13 @@ import {
 } from '../lib/ariaDescribedbyElementsFound';
 
 /**
- * Class to set up an interactive Menu element.
+ * Class to set up an vertically oriented interactive Menu element.
  *
  * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
  */
 export default class Menu extends AriaComponent {
   /**
-   * HTML IDs for elements containing help text
+   * HTML IDs for elements containing help text.
    *
    * @return {array}
    */

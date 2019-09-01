@@ -10,7 +10,7 @@ import {
 } from '../lib/ariaDescribedbyElementsFound';
 
 /**
- * MenuBar class for managing a visually persistent menu.
+ * Class for managing a visually persistent (horizontally-oriented) menubar.
  *
  * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
  * https://www.w3.org/TR/wai-aria-1.1/#menubar
@@ -63,25 +63,25 @@ export default class MenuBar extends AriaComponent {
        */
       onInit: () => {},
       /**
-       * Callback to run after the component is destroyed.
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
-      /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
       /**
-       * Callback to run after Popup state is updated.
-       * @callback popupStateChangeCallback
+       * Callback to run after the component is destroyed.
+       * @callback destroyCallback
        */
-      onPopupStateChange: () => {},
+      onDestroy: () => {},
       /**
        * Callback to run after Popup initializes.
        * @callback popupInitCallback
        */
       onPopupInit: () => {},
+      /**
+       * Callback to run after Popup state is updated.
+       * @callback popupStateChangeCallback
+       */
+      onPopupStateChange: () => {},
       /**
        * Callback to run after Popup is destroyed.
        * @callback popupDestroyCallback
