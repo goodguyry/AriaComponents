@@ -42,7 +42,7 @@ export default class AriaComponent {
    * @param {Array} elements An array of elements upon which to add a reference to `this`.
    */
   setSelfReference(elements) {
-    elements.forEach((element) => {
+    [...elements].forEach((element) => {
       Object.assign(element, { [this.componentName]: this });
     });
   }
