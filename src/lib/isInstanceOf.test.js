@@ -1,6 +1,6 @@
 import Popup from '../Popup';
 import Menu from '../Menu';
-import instanceOf from './instanceOf';
+import isInstanceOf from './isInstanceOf';
 // Because we're instantiating Menu.
 import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
 
@@ -30,16 +30,16 @@ const menu = new Menu({ menu: list }); // eslint-disable-line no-unused-vars
 describe('', () => {
   it('Should be a Popup instance',
     () => {
-      expect(instanceOf(controller.popup, Popup)).toBeTruthy();
+      expect(isInstanceOf(controller.popup, Popup)).toBeTruthy();
     });
 
   it('Should be a Menu instance',
     () => {
-      expect(instanceOf(list.menu, Menu)).toBeTruthy();
+      expect(isInstanceOf(list.menu, Menu)).toBeTruthy();
     });
 
   it('Should return false for a non-existant element',
     () => {
-      expect(instanceOf(target.unknown, Menu)).toBeFalsy();
+      expect(isInstanceOf(target.unknown, Menu)).toBeFalsy();
     });
 });

@@ -5,7 +5,7 @@
  * @param {Object}      component The class instance to check against.
  * @return {Boolean}
  */
-export default function instanceOf(prop, component) {
+export default function isInstanceOf(prop, component) {
   if (undefined === prop || null === prop) {
     return false;
   }

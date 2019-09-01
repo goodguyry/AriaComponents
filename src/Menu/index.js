@@ -1,6 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import keyCodes from '../lib/keyCodes';
-import instanceOf from '../lib/instanceOf';
+import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
 import {
   missingDescribedByWarning,
@@ -223,7 +223,7 @@ export default class Menu extends AriaComponent {
       case RIGHT: {
         const siblingElement = this.constructor.nextElementIsUl(activeDescendant); // eslint-disable-line max-len
 
-        if (siblingElement && instanceOf(siblingElement.menu, Menu)) {
+        if (siblingElement && isInstanceOf(siblingElement.menu, Menu)) {
           event.stopPropagation();
           event.preventDefault();
 
@@ -272,7 +272,7 @@ export default class Menu extends AriaComponent {
 
       // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
-      if (siblingList && instanceOf(siblingList.menu, Menu)) {
+      if (siblingList && isInstanceOf(siblingList.menu, Menu)) {
         siblingList.menu.destroy();
       }
     });

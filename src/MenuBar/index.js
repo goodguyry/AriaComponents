@@ -4,7 +4,7 @@ import Menu from '../Menu';
 import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
-import instanceOf from '../lib/instanceOf';
+import isInstanceOf from '../lib/isInstanceOf';
 import {
   missingDescribedByWarning,
 } from '../lib/ariaDescribedbyElementsFound';
@@ -225,7 +225,7 @@ export default class MenuBar extends AriaComponent {
    */
   stateWasUpdated({ menubarItem }) {
     // Add the current popup (or false) to state.
-    const popup = instanceOf(menubarItem.popup, Popup)
+    const popup = isInstanceOf(menubarItem.popup, Popup)
       ? menubarItem.popup
       : false;
 
@@ -331,7 +331,7 @@ export default class MenuBar extends AriaComponent {
 
     // Destroy nested components.
     this.popups.forEach((popup) => {
-      if (instanceOf(popup.target.menu, Menu)) {
+      if (isInstanceOf(popup.target.menu, Menu)) {
         popup.target.menu.destroy();
       }
       popup.destroy();
