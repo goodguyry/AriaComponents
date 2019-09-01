@@ -358,6 +358,9 @@ export default class Tablist extends AriaComponent {
 
     // Remove tab attributes and event listeners.
     this.tabs.forEach((tab) => {
+      // Remove the self reference.
+      delete tab.tablist; // eslint-disable-line no-param-reassign
+
       tab.removeAttribute('role');
       tab.removeAttribute('aria-selected');
       tab.removeAttribute('tabindex');
@@ -368,6 +371,9 @@ export default class Tablist extends AriaComponent {
 
     // Remove panel attributes and event listeners.
     this.panels.forEach((panel) => {
+      // Remove the self reference.
+      delete panel.tablist; // eslint-disable-line no-param-reassign
+
       panel.removeAttribute('role');
       panel.removeAttribute('aria-hidden');
 

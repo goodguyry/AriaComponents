@@ -235,7 +235,7 @@ export default class Menu extends AriaComponent {
    * Destroy the Menu and any submenus.
    */
   destroy() {
-    this.menu.menuItem = null;
+    delete this.menu.menuItem;
 
     this.menuItems.forEach((link) => {
       link.removeAttribute('aria-describedby');

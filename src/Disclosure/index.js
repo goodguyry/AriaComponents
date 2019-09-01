@@ -209,8 +209,8 @@ export default class Disclosure extends AriaComponent {
    */
   destroy() {
     // Add a reference to the class instance.
-    this.controller.disclosure = null;
-    this.target.disclosure = null;
+    delete this.controller.disclosure;
+    delete this.target.disclosure;
 
     // Remove controller attributes.
     this.controller.removeAttribute('aria-expanded');

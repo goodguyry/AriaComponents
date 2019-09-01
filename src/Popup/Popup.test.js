@@ -182,6 +182,9 @@ it('Should destroy the popup as expected', () => {
   expect(controller.getAttribute('aria-controls')).toBeNull();
   expect(target.getAttribute('aria-hidden')).toBeNull();
 
+  expect(controller.popup).toBeUndefined();
+  expect(target.popup).toBeUndefined();
+
   controller.dispatchEvent(click);
   expect(popup.getState().expanded).toBeFalsy();
 

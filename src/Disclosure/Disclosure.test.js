@@ -116,8 +116,8 @@ describe('Disclosure with non-default configuration', () => {
     expect(onStateChange).toHaveBeenCalled();
 
     disclosure.destroy();
-    expect(disclosure.controller).not.toBeInstanceOf(Disclosure);
-    expect(disclosure.target).not.toBeInstanceOf(Disclosure);
+    expect(disclosure.controller.disclosure).toBeUndefined();
+    expect(disclosure.target.disclosure).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();
   });
 });

@@ -149,8 +149,8 @@ describe('Destroying the Menu removes attributes', () => {
   it('Should remove attributes on destroy', () => {
     menu.destroy();
 
-    expect(domElements.list.menuItem).not.toBeInstanceOf(Menu);
-    expect(domElements.sublistOne.menuItem).not.toBeInstanceOf(Menu);
+    expect(domElements.list.menuItem).toBeUndefined();
+    expect(domElements.sublistOne.menuItem).toBeUndefined();
 
     expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();

@@ -172,6 +172,9 @@ describe('Tablist with default configuration', () => {
         expect(firstChild.getAttribute('tabindex')).toBeNull();
       });
 
+      expect(firstTab.tablist).toBeUndefined();
+      expect(secondPanel.tablist).toBeUndefined();
+
       expect(onDestroy).toHaveBeenCalled();
     });
   });

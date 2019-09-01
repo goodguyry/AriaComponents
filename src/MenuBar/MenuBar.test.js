@@ -171,6 +171,7 @@ describe('Menu should destroy properly', () => {
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
 
+    expect(domElements.list.menuBar).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();
   });
 });
