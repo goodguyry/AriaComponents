@@ -4,7 +4,7 @@ import instanceOf from '../lib/instanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
 import {
   missingDescribedByWarning,
-} from '../lib/checkForAriaDescribedbyElements';
+} from '../lib/ariaDescribedbyElementsFound';
 
 /**
  * Class to set up an interactive Menu element.

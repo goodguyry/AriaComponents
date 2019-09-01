@@ -7,7 +7,7 @@ import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import instanceOf from '../lib/instanceOf';
 import {
   missingDescribedByWarning,
-} from '../lib/checkForAriaDescribedbyElements';
+} from '../lib/ariaDescribedbyElementsFound';
 
 /**
  * MenuBar class for managing a visually persistent menu.

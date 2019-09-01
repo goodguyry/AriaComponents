@@ -1,7 +1,7 @@
 import Menu from '../Menu';
 import {
   ariaDescribedbyElementsFound,
-} from './checkForAriaDescribedbyElements';
+} from './ariaDescribedbyElementsFound';
 import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
 
 describe('Document contains aria-describedby elements', () => {
