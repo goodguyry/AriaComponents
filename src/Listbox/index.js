@@ -43,6 +43,21 @@ export default class ListBox extends AriaComponent {
        * @type {HTMLElement}
        */
       target: null,
+      /**
+       * Callback to run after the component initializes.
+       * @callback initCallback
+       */
+      onInit: () => {},
+      /**
+       * Callback to run after component state is updated.
+       * @callback stateChangeCallback
+       */
+      onStateChange: () => {},
+      /**
+       * Callback to run after the component is destroyed.
+       * @callback destroyCallback
+       */
+      onDestroy: () => {},
     };
 
     // Merge config options with defaults.
@@ -64,6 +79,7 @@ export default class ListBox extends AriaComponent {
     this.clearSearchString = this.clearSearchString.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.popupStateWasUpdated = this.popupStateWasUpdated.bind(this);
+    this.destroy = this.destroy.bind(this);
 
     this.init();
   }
@@ -164,6 +180,9 @@ export default class ListBox extends AriaComponent {
         event.preventDefault();
       }
     });
+
+    // Run {initCallback}
+    this.onInit.call(this);
   }
 
   /**
@@ -196,6 +215,9 @@ export default class ListBox extends AriaComponent {
      * option is always visible.
      */
     this.scrollOptionIntoView(activeDescendant);
+
+    // Run {stateChangeCallback}
+    this.onStateChange.call(this, this.state);
   }
 
   /**
@@ -250,6 +272,7 @@ export default class ListBox extends AriaComponent {
 
     if ([UP, DOWN].includes(event.keyCode)) {
       event.preventDefault();
+
       this.popup.show();
     }
   }
@@ -428,5 +451,52 @@ export default class ListBox extends AriaComponent {
       this.searchString = '';
       this.keyClear = null;
     }, 500);
+  }
+
+  /**
+   * Destroy the Listbox and Popup.
+   */
+  destroy() {
+    // Remove the self references.
+    delete this.controller.listbox;
+    delete this.target.listbox;
+
+    // Remvoe the role attribute from each of the options.
+    this.options.forEach((listItem) => {
+      listItem.removeAttribute('role');
+    });
+
+    // Destroy the Popup.
+    this.popup.destroy();
+
+    // Remove the listbox role.
+    this.target.removeAttribute('role');
+
+    /*
+     * Set up the target element to allow programatically setting focus to it
+     * when the Listbox opens.
+     *
+     * @see this.stateWasUpdated()
+     */
+    this.target.setAttribute('tabindex', '-1');
+
+    // Add event listeners.
+    this.controller.removeEventListener('keyup', this.handleControllerKeyup);
+    this.target.removeEventListener('keydown', this.handleTargetKeydown);
+    this.target.removeEventListener('click', this.handleTargetClicks);
+    this.target.removeEventListener('blur', this.handleTargetBlur);
+
+    // Prevent scrolling when using UP/DOWN arrows on the button
+    window.addEventListener('keydown', (event) => {
+      const { UP, DOWN } = keyCodes;
+      const { target: keydownTarget, keyCode } = event;
+
+      if (keydownTarget === this.controller && [UP, DOWN].includes(keyCode)) {
+        event.preventDefault();
+      }
+    });
+
+    // Run {destroyCallback}
+    this.onDestroy.call(this);
   }
 }

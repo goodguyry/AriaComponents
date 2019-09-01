@@ -150,8 +150,6 @@ export default class Dialog extends AriaComponent {
     /*
      * Remove clashing Popup event listener. This Popup event listener is
      * clashing with the Dialog's ability to trap keyboard tabs.
-     *
-     * @todo Can this event listener be removed outright?
      */
     this.popup.target.removeEventListener(
       'keydown',

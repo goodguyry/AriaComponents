@@ -233,6 +233,9 @@ export default class MenuBar extends AriaComponent {
     rovingTabIndex(this.menuBarItems, menubarItem);
 
     menubarItem.focus();
+
+    // Run {stateChangeCallback}
+    this.onStateChange.call(this, this.state);
   }
 
   /**

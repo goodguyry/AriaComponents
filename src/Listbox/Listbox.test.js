@@ -42,9 +42,20 @@ function typeCharacter(character) {
   return new KeyboardEvent('keydown', { keyCode: character.charCodeAt(), bubbles: true });
 }
 
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
 describe('Listbox with default configuration', () => {
   beforeEach(() => {
-    listbox = new Listbox({ target, controller });
+    listbox = new Listbox({
+      controller,
+      target,
+      onStateChange,
+      onInit,
+      onDestroy,
+    });
   });
 
   describe('Listbox adds and manipulates DOM element attributes', () => {
@@ -59,6 +70,8 @@ describe('Listbox with default configuration', () => {
 
       expect(controller.listbox).toBeInstanceOf(Listbox);
       expect(target.listbox).toBeInstanceOf(Listbox);
+
+      expect(onInit).toHaveBeenCalled();
     });
 
     it('Should add the correct attributes', () => {
@@ -87,6 +100,8 @@ describe('Listbox with default configuration', () => {
       expect(target.getAttribute('aria-hidden')).toEqual('false');
       expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
       expect(document.activeElement).toEqual(target);
+
+      expect(onStateChange).toHaveBeenCalled();
     });
   });
 
@@ -225,5 +240,22 @@ describe('Listbox with default configuration', () => {
       expect(controller.getAttribute('aria-activedescendant')).toBeNull();
       expect(controller.textContent).toEqual(target.children[5].textContent);
     });
+  });
+
+  it('Should destroy the Listbox as expected', () => {
+    listbox.destroy();
+
+    expect(controller.getAttribute('aria-haspopup')).toBeNull();
+    expect(controller.getAttribute('aria-expanded')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toBeNull();
+    expect(target.getAttribute('aria-hidden')).toBeNull();
+
+    expect(controller.listbox).toBeUndefined();
+    expect(target.listbox).toBeUndefined();
+
+    controller.dispatchEvent(click);
+    expect(listbox.getState().expanded).toBeFalsy();
+
+    expect(onDestroy).toHaveBeenCalled();
   });
 });

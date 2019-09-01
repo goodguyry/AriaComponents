@@ -67,6 +67,7 @@ const domElements = {
 
 // Mock functions.
 const onInit = jest.fn();
+const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const onPopupStateChange = jest.fn();
 const onPopupInit = jest.fn();
@@ -75,6 +76,7 @@ const onPopupDestroy = jest.fn();
 const menuBar = new MenuBar({
   menu: domElements.list,
   onInit,
+  onStateChange,
   onDestroy,
   onPopupStateChange,
   onPopupInit,
@@ -116,6 +118,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.listSecondItem);
+      expect(onStateChange).toHaveBeenCalled();
     });
 
   it('Should move to the previous sibling list item with left arrow key',
