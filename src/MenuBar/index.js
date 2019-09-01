@@ -122,15 +122,14 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {array}
      */
-    this.menuItemsCollection = this.menu.children;
-    this.menuItemsArray = Array.prototype.slice.call(this.menuItemsCollection);
+    this.menuBarChildren = Array.prototype.slice.call(this.menu.children);
 
     /**
      * Collected menubar links.
      *
      * @type {array}
      */
-    this.menuBarItems = this.menuItemsArray.reduce((acc, item) => {
+    this.menuBarItems = this.menuBarChildren.reduce((acc, item) => {
       const itemLink = item.firstElementChild;
 
       if (null !== itemLink && 'A' === itemLink.nodeName) {
@@ -254,15 +253,15 @@ export default class MenuBar extends AriaComponent {
       case RIGHT: {
         const nextItem = nextPreviousFromLeftRight(
           keyCode,
-        menubarItem,
-        this.menuBarItems
-      );
+          menubarItem,
+          this.menuBarItems
+        );
 
-      if (nextItem) {
-        event.stopPropagation();
-        event.preventDefault();
+        if (nextItem) {
+          event.stopPropagation();
+          event.preventDefault();
 
-        this.setState({
+          this.setState({
             menubarItem: nextItem,
           });
         }
@@ -276,11 +275,11 @@ export default class MenuBar extends AriaComponent {
       case DOWN: {
         if (popup) {
           event.stopPropagation();
-        event.preventDefault();
+          event.preventDefault();
 
-        if (! popup.state.expanded) {
-          popup.setState({ expanded: true });
-        }
+          if (! popup.state.expanded) {
+            popup.setState({ expanded: true });
+          }
 
           popup.firstChild.focus();
         }
@@ -297,7 +296,7 @@ export default class MenuBar extends AriaComponent {
   /**
    * Update the active descendant when the item is clicked.
    *
-   * @param  {Object} event The event object.
+   * @param {Object} event The event object.
    */
   handleMenuBarClick(event) {
     this.setState({
