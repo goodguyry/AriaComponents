@@ -5,15 +5,22 @@ import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import keyCodes from '../lib/keyCodes';
 
 /**
- * Tablist class.
- * Impliments a tabs widget for sectioning content and displaying one at a time.
+ * Class for implimenting a tabs widget for sectioning content and displaying
+ * one at a time.
  *
- * @see https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
+ * https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
  */
 export default class Tablist extends AriaComponent {
+  /**
+   * Create a Tablist.
+   * @constructor
+   *
+   * @param {object} config The config object.
+   */
   constructor(config) {
     super();
 
+    // The Tablist element is required to be a UL.
     if ('UL' !== config.tablist.nodeName) {
       // @todo Maybe throw an error here?
       return;
@@ -21,38 +28,42 @@ export default class Tablist extends AriaComponent {
 
     /**
      * The component name.
-     * @type {String}
+     *
+     * @type {string}
      */
     this.componentName = 'tablist';
 
     /**
      * Component configuration options.
-     * @type {Object}
+     *
+     * @type {object}
      */
     const options = {
       /**
-       * The UL parent of the tablist tabs.
+       * The UL parent of the Tablist tabs.
+       *
        * @type {HTMLElement}
        */
       tablist: null,
       /**
-       * The tablist panels.
+       * The Tablist panels.
+       *
        * @type {NodeList}
        */
       panels: null,
       /**
        * Callback to run after the component initializes.
-       * @type {Function}
+       * @callback initCallback
        */
       onInit: () => {},
       /**
        * Callback to run after component state is updated.
-       * @type {Function}
+       * @callback stateChangeCallback
        */
       onStateChange: () => {},
       /**
        * Callback to run after the component is destroyed.
-       * @type {Function}
+       * @callback destroyCallback
        */
       onDestroy: () => {},
     };
@@ -72,18 +83,19 @@ export default class Tablist extends AriaComponent {
 
     /**
      * Tablist panels
-     * @type {Array}
+     *
+     * @type {array}
      */
     this.panels = Array.prototype.slice.call(this.panels);
 
     /**
      * Collect the anchor inside of each list item. Using anchors makes
-     * providing non-JS fallback as simple as using the associated tabpanel's ID
-     * attribute as the link's HREF.
+     * providing a non-JS fallback as simple as using the associated tabpanel's
+     * ID attribute as the link's HREF.
      *
      * Required tab markup: `<li><a href=""></a></li>`
      *
-     * @type {Array}
+     * @type {array}
      */
     this.tabs = Array.prototype.filter.call(
       this.tablist.children,
@@ -107,8 +119,8 @@ export default class Tablist extends AriaComponent {
     // The`tablist` role indicates that the list is a container for a set of tabs.
     this.tablist.setAttribute('role', 'tablist');
 
-    /**
-     * Prevent the tablist <li> element from being announced as list-items as
+    /*
+     * Prevent the Tablist LI element from being announced as list-items as
      * that information is neither useful nor applicable.
      */
     Array.prototype.forEach.call(this.tablist.children, (listChild) => {
@@ -154,17 +166,18 @@ export default class Tablist extends AriaComponent {
     // Save the active panel's interactive children.
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
 
-    // Call the onInit callback.
+    // Run {initCallback}
     this.onInit.call(this);
   }
 
   /**
    * Update tab and panel attributes based on component state.
    *
-   * @param {Object} state The component state.
+   * @param {object} state The component state.
+   * @param {number} state.activeIndex The active index of both tabs and panels.
    */
   stateWasUpdated({ activeIndex }) {
-    // Get the tab currently designated as `aria-selected`
+    // Get the tab currently designated as `aria-selected`.
     const [deactivate] = this.tabs.filter((tab) => (
       'true' === tab.getAttribute('aria-selected')
     ));
@@ -189,14 +202,14 @@ export default class Tablist extends AriaComponent {
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
     tabIndexAllow(this.interactiveChildren);
 
-    // Call the onStateChange callback.
+    // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
   }
 
   /**
    * Handle keydown events on the tabpanels.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   handleTabKeydown(event) {
     const { TAB } = keyCodes;
@@ -213,12 +226,13 @@ export default class Tablist extends AriaComponent {
       );
       const theTab = document.getElementById(panelLabelledby);
 
-      /**
+      /*
        * Ensure navigating with Shift-TAB from the first interactive child of
        * the active panel returns focus to the active panel's associated tab.
        */
       if (0 === focusIndex && null !== theTab) {
         event.preventDefault();
+
         theTab.focus();
       }
     }
@@ -227,7 +241,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Handle tablist key presses.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   handleTabsKeydown(event) {
     const {
@@ -241,18 +255,20 @@ export default class Tablist extends AriaComponent {
     const hasInteractiveChildren = (0 < this.interactiveChildren.length);
 
     switch (keyCode) {
-      /**
+      /*
        * Move focus from the active tab to the active panel's first child.
        */
       case TAB: {
         if (! shiftKey && hasInteractiveChildren) {
           event.preventDefault();
+
           this.interactiveChildren[0].focus();
         }
+
         break;
       }
 
-      /**
+      /*
        * Move to and activate the previous or next tab.
        */
       case LEFT:
@@ -263,19 +279,23 @@ export default class Tablist extends AriaComponent {
 
         if (undefined !== this.tabs[newIndex]) {
           event.preventDefault();
+
           this.switchTo(newIndex);
           this.tabs[newIndex].focus();
         }
+
         break;
       }
 
-      /**
+      /*
        * Focus the active panel itself with the down arrow.
        */
       case DOWN: {
         event.preventDefault();
+
         this.panels[currentIndex].setAttribute('tabindex', '-1');
         this.panels[currentIndex].focus();
+
         break;
       }
 
@@ -288,7 +308,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Activate the tab panel when a tab is clicked.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   handleTabsClick(event) {
     const { target } = event;
@@ -304,7 +324,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Switch directly to a tab.
    *
-   * @param {Number} index The zero-based tab index to activate.
+   * @param {number} index The zero-based tab index to activate.
    */
   switchTo(index) {
     this.setState({ activeIndex: index });
@@ -349,7 +369,7 @@ export default class Tablist extends AriaComponent {
       );
     });
 
-    // Run the onDestroy callback.
+    // Run {destroyCallback}
     this.onDestroy.call(this);
   }
 }

@@ -3,57 +3,64 @@ import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 
 /**
- * Popup class.
- * Sets up an interactive popup element, such as menu or dialog, that can be
- * triggered by a controlling element.
+ * Class for setting up an interactive popup element, such as menu or dialog,
+ * that can be triggered by a controlling element.
  */
 export default class Popup extends AriaComponent {
   /**
-   * Start the component
+   * Create a MenuBar.
+   * @constructor
+   *
+   * @param {object} config The config object.
    */
   constructor(config) {
     super(config);
 
     /**
      * The component name.
-     * @type {String}
+     *
+     * @type {string}
      */
     this.componentName = 'popup';
 
     /**
      * Component configuration options.
-     * @type {Object}
+     *
+     * @type {object}
      */
     const options = {
       /**
-       * The element used to trigger the popup element.
-       * @type {HTMLElement}
+       * The element used to trigger the Popup element.
+       *
+       * @type {htmlelement}
        */
       controller: null,
       /**
-       * The popup element.
-       * @type {HTMLElement}
+       * The Popup's target element.
+       *
+       * @type {htmlelement}
        */
       target: null,
       /**
-       * The value of aria-haspopup must match the role of the popup container.
+       * The value of `aria-haspopup` must match the role of the Popup container.
        * Options: menu, listbox, tree, grid, or dialog,
-       * @type {String}
+       *
+       * @type {string}
        */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
       /**
        * Callback to run after the component initializes.
-       * @type {Function}
+       * @callback initCallback
        */
       onInit: () => {},
       /**
        * Callback to run after component state is updated.
-       * @type {Function}
+       * @callback stateChangeCallback
        */
       onStateChange: () => {},
       /**
        * Callback to run after the component is destroyed.
-       * @type {Function}
+       * @callback destroyCallback
        */
       onDestroy: () => {},
     };
@@ -88,11 +95,12 @@ export default class Popup extends AriaComponent {
   init() {
     /**
      * Collect the target element's interactive child elements.
-     * @type {Array}
+     *
+     * @type {array}
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    /**
+    /*
      * Collect first and last interactive child elements from target and merge
      * them in as instance properties.
      */
@@ -105,7 +113,7 @@ export default class Popup extends AriaComponent {
       Object.assign(this, { firstChild, lastChild });
     }
 
-    /**
+    /*
      * Add a reference to the class instance to enable external interactions
      * with this instance.
      */
@@ -116,12 +124,13 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', 'false');
     this.controller.setAttribute('aria-controls', this.target.id);
 
+    // Use the button role on non-button elements.
     if ('BUTTON' !== this.controller.nodeName) {
       this.controller.setAttribute('role', 'button');
       this.controller.setAttribute('tabindex', '0');
     }
 
-    /**
+    /*
      * Establishes a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
      */
@@ -129,7 +138,7 @@ export default class Popup extends AriaComponent {
       this.controller.setAttribute('aria-owns', this.target.id);
     }
 
-    /**
+    /*
      * Set the taget as hidden by default. Using the `aria-hidden` attribute,
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
@@ -142,27 +151,27 @@ export default class Popup extends AriaComponent {
     this.target.addEventListener('keydown', this.targetKeyDownHandler);
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
-    // Call the onInit callback.
+    // Run {initCallback}
     this.onInit.call(this);
   }
 
   /**
    * Update the component attributes based on updated state.
    *
-   * @param {Object} state The component state.
+   * @param {object} state The component state.
    */
   stateWasUpdated({ expanded }) {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.target.setAttribute('aria-hidden', `${! expanded}`);
 
-    // Call the onStateChange callback.
+    // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
   }
 
   /**
-   * Handle keydown events on the popup controller.
+   * Handle keydown events on the Popup controller.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   controllerKeyDownHandler(event) {
     const { expanded } = this.state;
@@ -175,13 +184,17 @@ export default class Popup extends AriaComponent {
     const { keyCode } = event;
 
     if ([SPACE, RETURN].includes(keyCode)) {
+      /*
+       * Treat the Spacebar and Return keys as clicks in case the controller is
+       * not a <button>.
+       */
       this.controllerClickHandler(event);
     } else if (expanded) {
       if (ESC === keyCode) {
         event.preventDefault();
 
-        /**
-         * Close the popup when the Escape key is pressed. Because focus is not
+        /*
+         * Close the Popup when the Escape key is pressed. Because focus is not
          * inside the target (based on the fact that the event was fired on the
          * controller), there's no need to move focus.
          */
@@ -189,7 +202,7 @@ export default class Popup extends AriaComponent {
       } else if (TAB === keyCode) {
         event.preventDefault();
 
-        /**
+        /*
          * When the Popup is open, pressing the TAB key should move focus to the
          * first interctive child of the target element. This would likely be
          * the default behavior in most cases, but this patches the behavior in
@@ -201,9 +214,9 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Handle keydown events on the popup target.
+   * Handle keydown events on the Popup target.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   targetKeyDownHandler(event) {
     const { ESC, TAB } = keyCodes;
@@ -214,13 +227,13 @@ export default class Popup extends AriaComponent {
     if (ESC === keyCode && expanded) {
       event.preventDefault();
 
-      /**
-       * Close the popup when the Escape key is pressed.
+      /*
+       * Close the Popup when the Escape key is pressed.
        */
       this.hide();
 
-      /**
-       * Because the activeElement is within the popup, move focus to the popup
+      /*
+       * Because the activeElement is within the Popup, move focus to the Popup
        * controller to avoid the confusion of focus being within a hidden
        * element.
        */
@@ -231,15 +244,15 @@ export default class Popup extends AriaComponent {
         && ([this.firstChild, this.target].includes(activeElement))
       ) {
         event.preventDefault();
-        /**
+        /*
          * Move focus back to the controller if the Shift key is pressed with
-         * the Tab key, but only if the event target is the popup's first
-         * interactive child or the popup itself.
+         * the Tab key, but only if the Event target is the Popup's first
+         * interactive child or the Popup itself.
          */
         this.controller.focus();
       } else if (this.lastChild === activeElement) {
-        /**
-         * Close the popup when tabbing from the last child.
+        /*
+         * Close the Popup when tabbing from the last child.
          * @todo Is this correct behavior?
          */
         this.hide();
@@ -250,7 +263,7 @@ export default class Popup extends AriaComponent {
   /**
    * Toggle the popup state.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   controllerClickHandler(event) {
     event.preventDefault();
@@ -260,10 +273,10 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Close the list if the Tab key is pressed if the last interactive child of
-   * the popup is the event target.
+   * Close the Popup if the Tab key is pressed and the last interactive child of
+   * the Popup is the event target.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   hideOnTabOut(event) {
     const { expanded } = this.state;
@@ -276,10 +289,10 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Close the popup when clicking anywhere outsideof the target or controller
+   * Close the Popup when clicking anywhere outside of the target or controller
    * elements.
    *
-   * @param {Event}
+   * @param {Event} event The event object.
    */
   hideOnOutsideClick(event) {
     const { expanded } = this.state;
@@ -323,12 +336,13 @@ export default class Popup extends AriaComponent {
     // Reset initial state.
     this.state.expanded = false;
 
-    // Run the onDestroy callback.
+    // Run {destroyCallback}
     this.onDestroy.call(this);
   }
 
   /**
    * Update component state to show the target element.
+   * @public
    */
   show() {
     this.setState({ expanded: true });
@@ -336,6 +350,7 @@ export default class Popup extends AriaComponent {
 
   /**
    * Update component state to hide the target element.
+   * @public
    */
   hide() {
     this.setState({ expanded: false });

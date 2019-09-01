@@ -4,14 +4,13 @@ import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 
 /**
- * Class to set up an interactive popup dialog element.
+ * Class to set up an interactive Popup Dialog element.
  * @extends AriaComponent
  */
 export default class Dialog extends AriaComponent {
   /**
    * Create the dialog close button, in case one doesn't exist. Will be inserted
    * as the dialog element's first child.
-   * @static
    *
    * @return {HTMLElement} The HTML button element.
    */

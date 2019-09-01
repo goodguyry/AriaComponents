@@ -6,9 +6,8 @@ import { setUniqueId } from '../lib/uniqueId';
 /**
  * Class to set up a controller-target relationship for independently revealing
  * and hiding content.
- * @extends AriaComponent
  *
- * @see {@link https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure|W3C WAI-ARIA Authoring Practices 1.1}
+ * https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure
  */
 export default class Disclosure extends AriaComponent {
   /**

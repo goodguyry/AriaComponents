@@ -4,10 +4,9 @@ import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
 
 /**
- * Class to set up a single-select listbox based on WAI-ARIA Authoring Practices 1.1
- * @extends AriaComponent
+ * Class to set up an interactive Listbox element.
  *
- * @see {@link https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox|W3C WAI-ARIA Authoring Practices 1.1}
+ * https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
  */
 export default class ListBox extends AriaComponent {
   /**
@@ -80,6 +79,15 @@ export default class ListBox extends AriaComponent {
      */
     this.options = Array.prototype.slice.call(this.target.children, 0);
 
+    /*
+     * Set the `option` role for each list itme and ensure each has a unique ID.
+     * The ID here is what will be used to track the active descendant.
+     */
+    this.options.forEach((listItem) => {
+      setUniqueId(listItem);
+      listItem.setAttribute('role', 'option');
+    });
+
     /**
      * First [role="option"]
      *
@@ -97,15 +105,6 @@ export default class ListBox extends AriaComponent {
     // Save first and last option as properties.
     Object.assign(this, { firstOption, lastOption });
 
-    /*
-     * Set the `option` role for each list itme and ensure each has a unique ID.
-     * The ID here is what will be used to track the active descendant.
-     */
-    this.options.forEach((listItem) => {
-      setUniqueId(listItem);
-      listItem.setAttribute('role', 'option');
-    });
-
     /**
      * The default state.
      *
@@ -121,7 +120,7 @@ export default class ListBox extends AriaComponent {
      * instantiate a Popup and subscribe to state changes to act on the Listbox
      * when the Popup is shown and hidden.
      *
-     * @type {popup}
+     * @type {Popup}
      */
     this.popup = new Popup({
       controller: this.controller,
@@ -163,7 +162,7 @@ export default class ListBox extends AriaComponent {
 
   /**
    * Track the selected Listbox option.
-   * @see {@link https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant|W3C WAI-ARIA Authoring Practices 1.1}
+   * https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant
    *
    * @param {object} state The component state.
    * @param {HTMLElement} state.activeDescendant The expected `activeDescendant` state.
@@ -281,6 +280,7 @@ export default class ListBox extends AriaComponent {
 
         // Move focus to the controller when the Listbox is closed.
         this.controller.focus();
+
         break;
       }
 
@@ -299,6 +299,7 @@ export default class ListBox extends AriaComponent {
           event.preventDefault();
           this.setState({ activeDescendant: moveTo });
         }
+
         break;
       }
 
@@ -308,6 +309,7 @@ export default class ListBox extends AriaComponent {
       case HOME: {
         event.preventDefault();
         this.setState({ activeDescendant: this.firstOption });
+
         break;
       }
 
@@ -317,6 +319,7 @@ export default class ListBox extends AriaComponent {
       case END: {
         event.preventDefault();
         this.setState({ activeDescendant: this.lastOption });
+
         break;
       }
 
@@ -329,6 +332,7 @@ export default class ListBox extends AriaComponent {
         if (null !== itemToFocus) {
           this.setState({ activeDescendant: itemToFocus });
         }
+
         break;
       }
     }

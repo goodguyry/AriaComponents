@@ -12,16 +12,14 @@ import {
 /**
  * MenuBar class for managing a visually persistent menu.
  *
- * @see https://www.w3.org/TR/wai-aria-practices-1.1/#menu
- * @see https://www.w3.org/TR/wai-aria-1.1/#menubar
- *
- * @param {HTMLElement} menu The menu <ul>
+ * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
+ * https://www.w3.org/TR/wai-aria-1.1/#menubar
  */
 export default class MenuBar extends AriaComponent {
   /**
    * HTML IDs for elements containing help text
    *
-   * @return {Array}
+   * @return {array}
    */
   static getHelpIds() {
     return [
@@ -32,27 +30,62 @@ export default class MenuBar extends AriaComponent {
   }
 
   /**
-   * Start the component
+   * Create a MenuBar.
+   * @constructor
+   *
+   * @param {object} config The config object.
    */
   constructor(config) {
     super(config);
 
     /**
      * The component name.
-     * @type {String}
+     *
+     * @type {string}
      */
     this.componentName = 'menuBar';
 
     /**
      * Options shape.
-     * @type {Object}
+     *
+     * @type {object}
      */
     const options = {
+      /**
+       * The menubar element.
+       *
+       * @type {HTMLElement}
+       */
       menu: null,
+      /**
+       * Callback to run after the component initializes.
+       * @callback initCallback
+       */
       onInit: () => {},
+      /**
+       * Callback to run after the component is destroyed.
+       * @callback destroyCallback
+       */
       onDestroy: () => {},
+      /**
+       * Callback to run after component state is updated.
+       * @callback stateChangeCallback
+       */
+      onStateChange: () => {},
+      /**
+       * Callback to run after Popup state is updated.
+       * @callback popupStateChangeCallback
+       */
       onPopupStateChange: () => {},
+      /**
+       * Callback to run after Popup initializes.
+       * @callback popupInitCallback
+       */
       onPopupInit: () => {},
+      /**
+       * Callback to run after Popup is destroyed.
+       * @callback popupDestroyCallback
+       */
       onPopupDestroy: () => {},
     };
 
@@ -65,6 +98,7 @@ export default class MenuBar extends AriaComponent {
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.destroy = this.destroy.bind(this);
 
+    // Only initialize if we passed in a <ul>.
     if (null !== this.menu && 'UL' === this.menu.nodeName) {
       this.init();
     }
@@ -77,10 +111,19 @@ export default class MenuBar extends AriaComponent {
     // Set the menu role.
     this.menu.setAttribute('role', 'menubar');
 
+    /**
+     * The menubar's child elements.
+     *
+     * @type {array}
+     */
     this.menuItemsCollection = this.menu.children;
     this.menuItemsArray = Array.prototype.slice.call(this.menuItemsCollection);
 
-    // Collect menu links.
+    /**
+     * Collected menubar links.
+     *
+     * @type {array}
+     */
     this.menuBarItems = this.menuItemsArray.reduce((acc, item) => {
       const itemLink = item.firstElementChild;
 
@@ -92,15 +135,22 @@ export default class MenuBar extends AriaComponent {
     }, []);
 
     /**
-     * The number of menu items.
-     * @type {Number}
+     * The number of menubar items.
+     *
+     * @type {number}
      */
     this.menuLength = this.menuBarItems.length;
 
-    // Warn if aria-decribedby elements are not found.
+    /*
+     * Warn if aria-decribedby elements are not found.
+     * Without these elements, the references will be broken and potentially
+     * confusing to users.
+     */
     missingDescribedByWarning(Menu.getHelpIds());
 
-    // Set menu link attributes and event listeners.
+    /*
+     * Set menubar item attributes.
+     */
     this.menuBarItems.forEach((link, index) => {
       // Add a reference to the help text.
       link.setAttribute(
@@ -119,13 +169,15 @@ export default class MenuBar extends AriaComponent {
 
     /**
      * The index of the last menubar item
-     * @type {Number}
+     *
+     * @type {number}
      */
     this.lastIndex = (this.menuLength - 1);
 
     /**
      * Set initial state.
-     * @type {Object}
+     *
+     * @type {object}
      */
     [this.state.menubarItem] = this.menuBarItems;
 
@@ -156,11 +208,12 @@ export default class MenuBar extends AriaComponent {
     // Set up initial tabindex.
     rovingTabIndex(this.menuBarItems, this.state.menubarItem);
 
+    // Run {initCallback}
     this.onInit.call(this);
   }
 
   /**
-   * Manage menu menubarItem state.
+   * Manage menubar state.
    *
    * @param {Object} state The component state.
    */
@@ -226,7 +279,7 @@ export default class MenuBar extends AriaComponent {
   }
 
   /**
-   * Recursively destroy Menu, MenuItems, and Popups.
+   * Recursively destroy MenuBar and Popups.
    */
   destroy() {
     // Remove the menu role.
@@ -240,6 +293,7 @@ export default class MenuBar extends AriaComponent {
       link.removeAttribute('aria-setsize');
       link.removeAttribute('aria-posinset');
 
+      // Remove event listeners.
       link.removeEventListener('keydown', this.handleMenuBarKeydown);
       link.removeEventListener('click', this.handleMenuBarClick);
     });
@@ -252,8 +306,10 @@ export default class MenuBar extends AriaComponent {
       popup.destroy();
     });
 
+    // Revert tabindex attributes.
     tabIndexAllow(this.menuBarItems);
 
+    // Run {destroyCallback}
     this.onDestroy.call(this);
   }
 }

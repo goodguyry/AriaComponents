@@ -7,17 +7,15 @@ import {
 } from '../lib/checkForAriaDescribedbyElements';
 
 /**
- * MenuItem class for managing menu items' keyboard interactions.
+ * Class to set up an interactive Menu element.
  *
- * @see https://www.w3.org/TR/wai-aria-practices-1.1/#menu
- *
- * @param {HTMLElement} list The list to manage.
+ * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
  */
 export default class Menu extends AriaComponent {
   /**
    * HTML IDs for elements containing help text
    *
-   * @return {Array}
+   * @return {array}
    */
   static getHelpIds() {
     return [
@@ -32,8 +30,7 @@ export default class Menu extends AriaComponent {
    * Test for a list as the next sibling element.
    *
    * @param {HTMLElement} element The element for which we're looking for a sibling.
-   *
-   * @return {HTMLElement|Boolean}
+   * @return {HTMLElement|boolean}
    */
   static nextElementIsUl(element) {
     const next = element.nextElementSibling;
@@ -41,24 +38,42 @@ export default class Menu extends AriaComponent {
   }
 
   /**
-   * Start the component
+   * Create a Menu.
+   * @constructor
+   *
+   * @param {object} config The config object.
    */
   constructor(config) {
     super(config);
 
     /**
      * The component name.
-     * @type {String}
+     *
+     * @type {string}
      */
     this.componentName = 'menuItem';
 
     /**
      * Options shape.
-     * @type {Object}
+     *
+     * @type {object}
      */
     const options = {
+      /**
+       * The menu element.
+       *
+       * @type {HTMLElement}
+       */
       menu: null,
+      /**
+       * Callback to run after the component initializes.
+       * @callback initCallback
+       */
       onInit: () => {},
+      /**
+       * Callback to run after the component is destroyed.
+       * @callback destroyCallback
+       */
       onDestroy: () => {},
     };
 
@@ -79,21 +94,23 @@ export default class Menu extends AriaComponent {
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init() {
-    // Set the menu role.
-    this.menu.setAttribute('role', 'menu');
-
-    // Add a reference to the class instance
+    /*
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
+     */
     this.setSelfReference([this.menu]);
 
     /**
      * The list's child elements.
-     * @type {Array}
+     *
+     * @type {array}
      */
     this.listItems = Array.prototype.slice.call(this.menu.children);
 
     /**
-     * Collected list item links.
-     * @array
+     * Collected menu links.
+     *
+     * @type {array}
      */
     this.menuItems = this.listItems.reduce((acc, item) => {
       const itemLink = item.firstElementChild;
@@ -107,7 +124,8 @@ export default class Menu extends AriaComponent {
 
     /**
      * The number of menu items.
-     * @type {Number}
+     *
+     * @type {number}
      */
     this.menuItemsLength = this.menuItems.length;
 
@@ -116,10 +134,16 @@ export default class Menu extends AriaComponent {
      */
     this.menu.addEventListener('keydown', this.handleListKeydown);
 
-    // Warn if aria-decribedby elements are not found.
+    /*
+     * Warn if aria-decribedby elements are not found.
+     * Without these elements, the references will be broken and potentially
+     * confusing to users.
+     */
     missingDescribedByWarning(Menu.getHelpIds());
 
-    // Set menu item link attributes and event listeners.
+    /*
+     * Set menu item attributes and instantiate submenus.
+     */
     this.menuItems.forEach((link, index) => {
       link.setAttribute(
         'aria-describedby',
@@ -143,13 +167,14 @@ export default class Menu extends AriaComponent {
     const [firstItem] = this.menuItems;
     Object.assign(this, { firstItem });
 
+    // Run {initCallback}
     this.onInit.call(this);
   }
 
   /**
    * Handle keydown events on menu items.
    *
-   * @param {Object} event The event object.
+   * @param {Event} event The event object.
    */
   handleListKeydown(event) {
     const { keyCode } = event;
@@ -201,7 +226,7 @@ export default class Menu extends AriaComponent {
   }
 
   /**
-   * Destroy the MenuItem (recursively)
+   * Destroy the Menu and any submenus.
    */
   destroy() {
     this.menu.menuItem = null;
@@ -215,13 +240,14 @@ export default class Menu extends AriaComponent {
 
       link.removeEventListener('keydown', this.handleListKeydown);
 
-      // Destroy nested MenuItems.
+      // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList && instanceOf(siblingList.menuItem, Menu)) {
         siblingList.menuItem.destroy();
       }
     });
 
+    // Run {destroyCallback}
     this.onDestroy.call(this);
   }
 }
