@@ -83,7 +83,7 @@ describe('Listbox with default configuration', () => {
       expect(target.getAttribute('role')).toEqual('listbox');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
       // expect(target.getAttribute('aria-labelledby')).toEqual('label');
-      expect(target.getAttribute('tabindex')).toEqual('-1');
+      expect(target.getAttribute('tabindex')).toEqual('0');
 
       listItems.forEach((listItem) => {
         expect(listItem.id).not.toBeNull();

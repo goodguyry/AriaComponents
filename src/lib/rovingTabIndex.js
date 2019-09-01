@@ -24,7 +24,7 @@ function toArray(maybeAnArray) {
 /**
  * Remove the tabIndex attribute from all elements.
  *
- * @param  {Mixed} items And HTMLElement, NodeList, or Array of elements.
+ * @param {Mixed} items And HTMLElement, NodeList, or array of elements.
  */
 function tabIndexAllow(items) {
   const allowedElements = Array.isArray(items) ? items : toArray(items);
@@ -37,7 +37,7 @@ function tabIndexAllow(items) {
 /**
  * Add a negative tabIndex attribute to all elements.
  *
- * @param  {Mixed} items And HTMLElement, NodeList, or Array of elements.
+ * @param {Mixed} items And HTMLElement, NodeList, or Array of elements.
  */
 function tabIndexDeny(items) {
   const deniedElements = Array.isArray(items) ? items : toArray(items);

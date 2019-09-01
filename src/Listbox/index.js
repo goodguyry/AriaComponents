@@ -163,7 +163,7 @@ export default class ListBox extends AriaComponent {
      *
      * @see this.stateWasUpdated()
      */
-    this.target.setAttribute('tabindex', '-1');
+    this.target.setAttribute('tabindex', '0');
 
     // Add event listeners.
     this.controller.addEventListener('keyup', this.handleControllerKeyup);
@@ -471,14 +471,7 @@ export default class ListBox extends AriaComponent {
 
     // Remove the listbox role.
     this.target.removeAttribute('role');
-
-    /*
-     * Set up the target element to allow programatically setting focus to it
-     * when the Listbox opens.
-     *
-     * @see this.stateWasUpdated()
-     */
-    this.target.setAttribute('tabindex', '-1');
+    this.target.removeAttribute('tabindex');
 
     // Add event listeners.
     this.controller.removeEventListener('keyup', this.handleControllerKeyup);

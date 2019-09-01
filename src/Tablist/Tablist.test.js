@@ -250,6 +250,7 @@ describe('Tablist with default configuration', () => {
       secondTab.focus();
       secondTab.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(secondPanel);
+      expect(secondPanel.getAttribute('tabindex')).toEqual('0');
     });
   });
 });

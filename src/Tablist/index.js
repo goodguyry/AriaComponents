@@ -310,7 +310,7 @@ export default class Tablist extends AriaComponent {
       case DOWN: {
         event.preventDefault();
 
-        this.panels[currentIndex].setAttribute('tabindex', '-1');
+        this.panels[currentIndex].setAttribute('tabindex', '0');
         this.panels[currentIndex].focus();
 
         break;
