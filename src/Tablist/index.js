@@ -9,6 +9,7 @@ import keyCodes from '../lib/keyCodes';
  * one at a time.
  *
  * https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
+ * https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html
  */
 export default class Tablist extends AriaComponent {
   /**
@@ -116,7 +117,11 @@ export default class Tablist extends AriaComponent {
     // Component state is initially set in the constructor.
     const { activeIndex } = this.state;
 
-    // The`tablist` role indicates that the list is a container for a set of tabs.
+    /*
+     * The`tablist` role indicates that the list is a container for a set of tabs.
+     *
+     * https://www.w3.org/TR/wai-aria-1.1/#tablist
+     */
     this.tablist.setAttribute('role', 'tablist');
 
     /*
