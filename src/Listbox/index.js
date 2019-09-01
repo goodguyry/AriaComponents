@@ -72,6 +72,12 @@ export default class ListBox extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
+    /*
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
+     */
+    this.setSelfReference([this.controller, this.target]);
+
     /**
      * Collect list items.
      *

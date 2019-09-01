@@ -56,6 +56,9 @@ describe('Listbox with default configuration', () => {
       expect(listbox.getState().activeDescendant).toEqual(firstListItem);
 
       expect(controller.popup).toBeInstanceOf(Popup);
+
+      expect(controller.listbox).toBeInstanceOf(Listbox);
+      expect(target.listbox).toBeInstanceOf(Listbox);
     });
 
     it('Should add the correct attributes', () => {

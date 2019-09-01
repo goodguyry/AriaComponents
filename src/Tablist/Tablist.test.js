@@ -85,6 +85,9 @@ describe('Tablist with default configuration', () => {
 
       expect(tablist.getState().activeIndex).toEqual(0);
 
+      expect(firstTab.tablist).toBeInstanceOf(Tablist);
+      expect(secondPanel.tablist).toBeInstanceOf(Tablist);
+
       expect(onInit).toHaveBeenCalled();
     });
 

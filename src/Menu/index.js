@@ -100,6 +100,12 @@ export default class Menu extends AriaComponent {
      */
     this.setSelfReference([this.menu]);
 
+    /*
+     * Add the 'menu' role to signify a widget that offers a list of choices to
+     * the user, such as a set of actions or functions.
+     */
+    this.menu.setAttribute('role', 'menu');
+
     /**
      * The list's child elements.
      *

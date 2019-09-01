@@ -84,6 +84,7 @@ const menuBar = new MenuBar({
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menuBar).toBeInstanceOf(MenuBar);
+    expect(domElements.list.menuBar).toBeInstanceOf(MenuBar);
     expect(onInit).toHaveBeenCalled();
 
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
