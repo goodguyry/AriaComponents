@@ -242,10 +242,14 @@ export default class MenuBar extends AriaComponent {
     const { keyCode } = event;
     const { menubarItem, popup } = this.state;
 
-    if ([LEFT, RIGHT].includes(keyCode)) {
-      // Move through sibling list items.
-      const nextItem = nextPreviousFromLeftRight(
-        keyCode,
+    switch (keyCode) {
+      /*
+       * Move through sibling list items.
+       */
+      case LEFT:
+      case RIGHT: {
+        const nextItem = nextPreviousFromLeftRight(
+          keyCode,
         menubarItem,
         this.menuBarItems
       );
@@ -255,21 +259,34 @@ export default class MenuBar extends AriaComponent {
         event.preventDefault();
 
         this.setState({
-          menubarItem: nextItem,
-        });
+            menubarItem: nextItem,
+          });
+        }
+
+        break;
       }
-    } else if (DOWN === keyCode) {
-      // Open the popup if it exists and is not expanded.
-      if (popup) {
-        event.stopPropagation();
+
+      /*
+       * Open the popup if it exists and is not expanded.
+       */
+      case DOWN: {
+        if (popup) {
+          event.stopPropagation();
         event.preventDefault();
 
         if (! popup.state.expanded) {
           popup.setState({ expanded: true });
         }
 
-        popup.firstChild.focus();
+          popup.firstChild.focus();
+        }
+
+        break;
       }
+
+      // fuggitaboutit.
+      default:
+        break;
     }
   }
 

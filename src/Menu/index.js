@@ -195,38 +195,62 @@ export default class Menu extends AriaComponent {
       ? activeElement
       : this.menuItems[0]);
 
-    if ([UP, DOWN].includes(keyCode)) {
-      // Move through sibling list items.
-      const nextItem = nextPreviousFromUpDown(
-        keyCode,
-        activeDescendant,
-        this.menuItems
-      );
+    switch (keyCode) {
+      /*
+       * Move through sibling list items.
+       */
+      case UP:
+      case DOWN: {
+        const nextItem = nextPreviousFromUpDown(
+          keyCode,
+          activeDescendant,
+          this.menuItems
+        );
 
-      if (nextItem) {
-        event.stopPropagation();
-        event.preventDefault();
+        if (nextItem) {
+          event.stopPropagation();
+          event.preventDefault();
 
-        nextItem.focus();
+          nextItem.focus();
+        }
+
+        break;
       }
-    } else if (RIGHT === keyCode) {
-      // Drill down into a nested list, if present.
-      const siblingElement = this.constructor.nextElementIsUl(activeDescendant);
 
-      if (siblingElement && instanceOf(siblingElement.menuItem, Menu)) {
-        event.stopPropagation();
-        event.preventDefault();
+      /*
+       * Drill down into a nested list, if present.
+       */
+      case RIGHT: {
+        const siblingElement = this.constructor.nextElementIsUl(activeDescendant); // eslint-disable-line max-len
 
-        const { menuItem } = siblingElement;
-        menuItem.firstItem.focus();
+        if (siblingElement && instanceOf(siblingElement.menuItem, Menu)) {
+          event.stopPropagation();
+          event.preventDefault();
+
+          const { menuItem } = siblingElement;
+          menuItem.firstItem.focus();
+        }
+
+        break;
       }
-    } else if (LEFT === keyCode) {
-      // Move up to the list's previous sibling, if present.
-      if (undefined !== this.previousSibling) {
-        event.stopPropagation();
-        event.preventDefault();
 
-        this.previousSibling.focus();
+      /*
+       * Move up to the list's previous sibling, if present.
+       */
+      case LEFT: {
+        if (undefined !== this.previousSibling) {
+          event.stopPropagation();
+          event.preventDefault();
+
+          this.previousSibling.focus();
+        }
+
+        break;
+      }
+
+      // fuggitaboutit.
+      default: {
+        break;
       }
     }
   }
