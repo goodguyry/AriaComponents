@@ -80,6 +80,11 @@ export default class Dialog extends AriaComponent {
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+      /**
+       * Callback to run after the component is destroyed.
+       * @callback destroyCallback
+       */
+      onDestroy: () => {},
     };
 
     // Merge config options with defaults and save all as instance properties.
@@ -94,6 +99,7 @@ export default class Dialog extends AriaComponent {
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
+    this.destroy = this.destroy.bind(this);
 
     /*
      * Initialize the component if all required elements are accounted for. The
@@ -242,5 +248,24 @@ export default class Dialog extends AriaComponent {
     if (ESC === keyCode) {
       this.popup.hide();
     }
+  }
+
+  /**
+   * Destroy the Dialog and Popup.
+   */
+  destroy() {
+    // Remove the self refereneces.
+    delete this.controller.dialog;
+    delete this.target.dialog;
+
+    // Destroy the Dialog Popup.
+    this.popup.destroy();
+
+    // Remove event listeners.
+    this.close.removeEventListener('click', this.popup.hide);
+    this.target.removeEventListener('keydown', this.handleTargetKeydown);
+
+    /* Run {destroyCallback} */
+    this.onDestroy.call(this);
   }
 }

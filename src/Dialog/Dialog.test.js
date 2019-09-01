@@ -1,4 +1,5 @@
 import Dialog from '.';
+import Popup from '../Popup';
 import events from '../../utils/events';
 
 const {
@@ -43,8 +44,9 @@ const content = document.querySelector('main');
 const lastItem = document.querySelector('.last-item');
 
 // Mock functions.
-const onStateChange = jest.fn();
 const onInit = jest.fn();
+const onStateChange = jest.fn();
+const onDestroy = jest.fn();
 
 const modal = new Dialog({
   controller,
@@ -53,6 +55,7 @@ const modal = new Dialog({
   content,
   onStateChange,
   onInit,
+  onDestroy,
 });
 
 describe('Dialog with default configuration', () => {
@@ -67,6 +70,7 @@ describe('Dialog with default configuration', () => {
       expect(controller.dialog).toBeInstanceOf(Dialog);
       expect(target.dialog).toBeInstanceOf(Dialog);
 
+      expect(modal.popup).toBeInstanceOf(Popup);
       expect(modal.popup.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalled();
@@ -132,6 +136,21 @@ describe('Dialog with default configuration', () => {
     it('Should close on outside click', () => {
       document.body.dispatchEvent(click);
       expect(modal.popup.getState().expanded).toBeFalsy();
+    });
+  });
+
+  describe('Destroying the Dialog removes attributes', () => {
+    it('Should remove properties and attributes on destroy', () => {
+      modal.destroy();
+
+      expect(controller.dialog).toBeUndefined();
+      expect(target.dialog).toBeUndefined();
+
+      expect(controller.getAttribute('aria-haspopup')).toBeNull();
+      expect(controller.getAttribute('aria-expanded')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toBeNull();
+
+      expect(onDestroy).toHaveBeenCalled();
     });
   });
 });
