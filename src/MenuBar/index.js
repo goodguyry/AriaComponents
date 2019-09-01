@@ -57,31 +57,37 @@ export default class MenuBar extends AriaComponent {
        * @type {HTMLElement}
        */
       menu: null,
+
       /**
        * Callback to run after the component initializes.
        * @callback initCallback
        */
       onInit: () => {},
+
       /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+
       /**
        * Callback to run after the component is destroyed.
        * @callback destroyCallback
        */
       onDestroy: () => {},
+
       /**
        * Callback to run after Popup initializes.
        * @callback popupInitCallback
        */
       onPopupInit: () => {},
+
       /**
        * Callback to run after Popup state is updated.
        * @callback popupStateChangeCallback
        */
       onPopupStateChange: () => {},
+
       /**
        * Callback to run after Popup is destroyed.
        * @callback popupDestroyCallback

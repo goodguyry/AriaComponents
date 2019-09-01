@@ -35,12 +35,14 @@ export default class Popup extends AriaComponent {
        * @type {htmlelement}
        */
       controller: null,
+
       /**
        * The Popup's target element.
        *
        * @type {htmlelement}
        */
       target: null,
+
       /**
        * The value of `aria-haspopup` must match the role of the Popup container.
        * Options: menu, listbox, tree, grid, or dialog,
@@ -48,16 +50,19 @@ export default class Popup extends AriaComponent {
        * @type {string}
        */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+
       /**
        * Callback to run after the component initializes.
        * @callback initCallback
        */
       onInit: () => {},
+
       /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+
       /**
        * Callback to run after the component is destroyed.
        * @callback destroyCallback

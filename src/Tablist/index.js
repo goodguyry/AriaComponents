@@ -46,22 +46,26 @@ export default class Tablist extends AriaComponent {
        * @type {HTMLElement}
        */
       tablist: null,
+
       /**
        * The Tablist panel elements.
        *
        * @type {NodeList}
        */
       panels: null,
+
       /**
        * Callback to run after the component initializes.
        * @callback initCallback
        */
       onInit: () => {},
+
       /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+
       /**
        * Callback to run after the component is destroyed.
        * @callback destroyCallback

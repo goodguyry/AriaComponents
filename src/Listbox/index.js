@@ -37,22 +37,26 @@ export default class ListBox extends AriaComponent {
        * @type {HTMLElement}
        */
       controller: null,
+
       /**
        * The Listbox element.
        *
        * @type {HTMLElement}
        */
       target: null,
+
       /**
        * Callback to run after the component initializes.
        * @callback initCallback
        */
       onInit: () => {},
+
       /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+
       /**
        * Callback to run after the component is destroyed.
        * @callback destroyCallback

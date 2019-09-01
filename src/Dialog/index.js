@@ -48,12 +48,14 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement}
        */
       controller: null,
+
       /**
        * The dialog element.
        *
        * @type {HTMLElement}
        */
       target: null,
+
       /**
        * The site content wrapper. NOT necessarily <main>, but the element
        * wrapping all site content (including header and footer) with the sole
@@ -62,6 +64,7 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement}
        */
       content: null,
+
       /**
        * The button used to close the dialog. Required to be the very first
        * element inside the dialog. If none is passed, one will be created.
@@ -69,16 +72,19 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement}
        */
       close: this.constructor.createCloseButton(),
+
       /**
        * Callback to run after the component initializes.
        * @callback initCallback
        */
       onInit: () => {},
+
       /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+
       /**
        * Callback to run after the component is destroyed.
        * @callback destroyCallback

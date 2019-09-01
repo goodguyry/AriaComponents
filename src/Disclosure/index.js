@@ -37,34 +37,40 @@ export default class Disclosure extends AriaComponent {
        * @type {HTMLElement}
        */
       controller: null,
+
       /**
        * The Disclosure element.
        *
        * @type {HTMLElement}
        */
       target: null,
+
       /**
        * Load the Disclosure open by default.
        *
        * @type {boolean}
        */
       loadOpen: false,
+
       /**
        * Keep the Disclosure open when the user clicks outside of it.
        *
        * @type {boolean}
        */
       allowOutsideClick: true,
+
       /**
        * Callback to run after the component initializes.
        * @callback initCallback
        */
       onInit: () => {},
+
       /**
        * Callback to run after component state is updated.
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
+
       /**
        * Callback to run after the component is destroyed.
        * @callback destroyCallback
