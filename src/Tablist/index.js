@@ -91,7 +91,9 @@ export default class Tablist extends AriaComponent {
      *
      * @type {array}
      */
-    this.panels = Array.prototype.slice.call(this.panels);
+    if (! Array.isArray(this.panels)) {
+      this.panels = Array.prototype.slice.call(this.panels);
+    }
 
     /**
      * Collect the anchor inside of each list item. Using anchors makes

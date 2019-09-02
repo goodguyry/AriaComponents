@@ -9,7 +9,7 @@ at a time.
 **config.tablist** `HTMLElement`  
 The UL parent of the Tablist tabs.
 
-**config.panels** `NodeList`  
+**config.panels** `NodeList|Array`  
 The Tablist panel elements.
 
 ### Callbacks
