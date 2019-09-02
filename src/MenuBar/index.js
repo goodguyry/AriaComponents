@@ -191,7 +191,10 @@ export default class MenuBar extends AriaComponent {
      * @type {object}
      */
     const [menubarItem] = this.menuBarItems;
-    this.state = { menubarItem };
+    this.state = {
+      menubarItem,
+      popup: false,
+    };
 
     // Initialize popups for nested lists.
     this.popups = this.menuBarItems.reduce((acc, controller) => {
