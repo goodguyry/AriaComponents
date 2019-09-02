@@ -118,7 +118,7 @@ export default class MenuBar extends AriaComponent {
      * Add a reference to the class instance to enable external interactions
      * with this instance.
      */
-    this.setSelfReference([this.menu]);
+    super.setSelfReference([this.menu]);
 
     // Set the menu role.
     this.menu.setAttribute('role', 'menubar');

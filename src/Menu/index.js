@@ -100,7 +100,7 @@ export default class Menu extends AriaComponent {
      * Add a reference to the class instance to enable external interactions
      * with this instance.
      */
-    this.setSelfReference([this.menu]);
+    super.setSelfReference([this.menu]);
 
     /*
      * Add the 'menu' role to signify a widget that offers a list of choices to

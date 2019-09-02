@@ -102,6 +102,12 @@ export default class Disclosure extends AriaComponent {
    * Add initial attributes, establish relationships, and listen for events
    */
   init() {
+    /*
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
+     */
+    super.setSelfReference([this.controller, this.target]);
+
     // Component state is initially set in the constructor.
     const { expanded } = this.state;
 
@@ -115,12 +121,6 @@ export default class Disclosure extends AriaComponent {
     [this.controller, this.target].forEach((element) => {
       setUniqueId(element);
     });
-
-    /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
-     */
-    this.setSelfReference([this.controller, this.target]);
 
     // Add controller attributes
     this.controller.setAttribute('aria-expanded', `${expanded}`);

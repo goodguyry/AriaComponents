@@ -48,7 +48,11 @@ export default class AriaComponent {
    */
   setSelfReference(elements) {
     [...elements].forEach((element) => {
-      Object.assign(element, { [this.componentName]: this });
+      Object.defineProperty(
+        element,
+        this.componentName,
+        { value: this, configurable: true }
+      );
     });
   }
 

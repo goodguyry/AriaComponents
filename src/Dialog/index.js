@@ -130,7 +130,7 @@ export default class Dialog extends AriaComponent {
      * Add a reference to the class instance to enable external interactions
      * with this instance.
      */
-    this.setSelfReference([this.controller, this.target]);
+    super.setSelfReference([this.controller, this.target]);
 
     /**
      * Create the Popup to control the Dialog.
