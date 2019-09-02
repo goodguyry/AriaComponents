@@ -179,7 +179,10 @@ export default class Tablist extends AriaComponent {
       // Create a relationship between the tab and its panel.
       panel.setAttribute('aria-labelledby', this.tabs[index].id);
       // All but the first tab should be hidden by default.
-      panel.setAttribute('aria-hidden', `${activeIndex !== index}`);
+      if (activeIndex !== index) {
+        panel.setAttribute('aria-hidden', 'true');
+      }
+
       // Listen for panel keydown events.
       panel.addEventListener('keydown', this.handleTabKeydown);
     });
@@ -217,7 +220,7 @@ export default class Tablist extends AriaComponent {
     // Actvate the newly active tab.
     this.tabs[activeIndex].removeAttribute('tabindex');
     this.tabs[activeIndex].setAttribute('aria-selected', 'true');
-    this.panels[activeIndex].setAttribute('aria-hidden', 'false');
+    this.panels[activeIndex].removeAttribute('aria-hidden');
 
     // Allow tabbing to the newly-active panel.
     this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);

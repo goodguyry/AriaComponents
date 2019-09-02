@@ -139,7 +139,9 @@ export default class Disclosure extends AriaComponent {
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
      */
-    this.target.setAttribute('aria-hidden', `${! expanded}`);
+    if (! expanded) {
+      this.target.setAttribute('aria-hidden', 'true');
+    }
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
@@ -167,7 +169,19 @@ export default class Disclosure extends AriaComponent {
    */
   stateWasUpdated({ expanded }) {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
-    this.target.setAttribute('aria-hidden', `${! expanded}`);
+
+    /*
+     * https://developer.paciellogroup.com/blog/2016/01/the-state-of-hidden-content-support-in-2016/
+     *
+     * > In some browser and screen reader combinations aria-hidden=false on an
+     *   element that is hidden using the hidden attribute or CSS display:none
+     *   results in the content being unhidden.
+     */
+    if (expanded) {
+      this.target.removeAttribute('aria-hidden');
+    } else {
+      this.target.setAttribute('aria-hidden', 'true');
+    }
 
     // Allow or deny keyboard focus depending on component state.
     if (expanded) {

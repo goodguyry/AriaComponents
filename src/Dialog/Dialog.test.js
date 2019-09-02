@@ -116,7 +116,7 @@ describe('Dialog with default configuration', () => {
       expect(modal.popup.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
+      expect(target.getAttribute('aria-hidden')).toBeNull();
     });
 
     it('Should trap keyboard tabs within the modal', () => {

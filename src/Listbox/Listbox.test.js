@@ -97,7 +97,7 @@ describe('Listbox with default configuration', () => {
 
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
 
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
+      expect(target.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
       expect(document.activeElement).toEqual(target);
 
