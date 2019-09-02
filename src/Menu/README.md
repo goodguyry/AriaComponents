@@ -22,8 +22,8 @@ Callback to run after the component is destroyed.
 **getHelpIds()** `static`  
 Get HTML IDs for elements containing help text.
 
-**nextElementIsUl()** `static`  
-Test for a list as the next sibling element.
+**nextElementIsUl(element)** `static`  
+Test for a list as the next sibling element.  
 
 **destroy()**  
 Destroy the Menu, removing attributes, event listeners, and element properties.

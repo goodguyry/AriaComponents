@@ -29,7 +29,7 @@ export default class Menu extends AriaComponent {
   /**
    * Test for a list as the next sibling element.
    *
-   * @param {HTMLElement} element The element for which we're looking for a sibling.
+   * @param {HTMLElement} element The element whose sibling we're testing.
    * @return {HTMLElement|boolean}
    */
   static nextElementIsUl(element) {
