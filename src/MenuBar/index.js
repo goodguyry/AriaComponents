@@ -5,9 +5,7 @@ import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import isInstanceOf from '../lib/isInstanceOf';
-import {
-  missingDescribedByWarning,
-} from '../lib/ariaDescribedbyElementsFound';
+import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
 
 /**
  * Class for managing a visually persistent (horizontally-oriented) menubar,

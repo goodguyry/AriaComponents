@@ -2,9 +2,7 @@ import AriaComponent from '../AriaComponent';
 import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
-import {
-  missingDescribedByWarning,
-} from '../lib/ariaDescribedbyElementsFound';
+import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
