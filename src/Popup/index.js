@@ -98,6 +98,12 @@ export default class Popup extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
+    /*
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
+     */
+    super.setSelfReference([this.controller, this.target]);
+
     /**
      * Collect the target element's interactive child elements.
      *
@@ -117,12 +123,6 @@ export default class Popup extends AriaComponent {
 
       Object.assign(this, { firstChild, lastChild });
     }
-
-    /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
-     */
-    super.setSelfReference([this.controller, this.target]);
 
     // Add controller attributes
     this.controller.setAttribute('aria-haspopup', this.type);
