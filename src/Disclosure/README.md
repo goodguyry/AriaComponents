@@ -33,6 +33,8 @@ Callback to run after the component is destroyed.
 
 ## Methods
 
+> See also [`src/README`](../).
+
 **open()**  
 Update component state to show the target element.
 

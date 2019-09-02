@@ -33,6 +33,8 @@ Callback to run after the component is destroyed.
 
 ## Methods
 
+> See also [`src/README`](../).
+
 **createCloseButton()**  `static`  
 Static method to create a button element with 'Close' as its label.
 

@@ -17,6 +17,8 @@ Callback to run after the component is destroyed.
 
 ## Methods
 
+> See also [`src/README`](../).
+
 **getHelpIds()** `static`  
 Get HTML IDs for elements containing help text.
 

@@ -25,6 +25,8 @@ Callback to run after the component is destroyed.
 
 ## Methods
 
+> See also [`src/README`](../).
+
 **switchTo(index)**  
 Switch directly to a given tab.
 

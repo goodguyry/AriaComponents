@@ -32,6 +32,8 @@ Callback to run after a Popup is destroyed.
 
 ## Methods
 
+> See also [`src/README`](../).
+
 **getHelpIds()** `static`  
 Get HTML IDs for elements containing help text.
 
