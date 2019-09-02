@@ -2,18 +2,18 @@ Disclosure
 ==========
 
 Class to set up a controller-target relationship for independently revealing and 
-hiding content.
+hiding inline content.
 
 ## Config `object`
 
 **config.controller** `HTMLElement`  
-The element used to trigger the dialog popup.
+The element used to trigger the Disclosure.
 
 **config.target** `HTMLElement`  
-The dialog element.
+The Disclosure element.
 
 **config.loadOpen** `boolean`  
-Load the Disclosure open by default.  
+Load the Disclosure open.  
 _Default:_ `false`
 
 **config.allowOutsideClick** `boolean`  
@@ -37,7 +37,7 @@ Callback to run after the component is destroyed.
 Update component state to show the target element.
 
 **close()**  
-Update component state to show the target element.
+Update component state to hide the target element.
 
 **destroy()**  
 Destroy the Disclosure, removing attributes, event listeners, and element 
@@ -58,6 +58,8 @@ properties.
 ```
 
 ```javascript
+import { Disclosure } from 'AriaComponents';
+
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');
 

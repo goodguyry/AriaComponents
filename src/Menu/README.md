@@ -5,7 +5,7 @@ Class to set up an vertically oriented interactive Menu element.
 ## Config `object`
 
 **config.menu** `HTMLElement`  
-The menu element.
+The Menu element.
 
 ### Callbacks
 
@@ -52,6 +52,8 @@ Destroy the Menu, removing attributes, event listeners, and element properties.
 ```
 
 ```javascript
+import { Menu } from 'AriaComponents';
+
 const menu = document.querySelector('.menu');
 
 const menu = new Menu({

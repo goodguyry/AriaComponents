@@ -22,13 +22,13 @@ Callback to run after component state is updated.
 Callback to run after the component is destroyed.
 
 **config.onPopupInit** `Function`  
-Callback to run after Popup initializes.
+Callback to run after a Popup initializes.
 
 **config.onPopupStateChange** `Function`  
-Callback to run after Popup state is updated.
+Callback to run after a Popup state is updated.
 
 **config.onPopupDestroy** `Function`  
-Callback to run after Popup is destroyed.
+Callback to run after a Popup is destroyed.
 
 ## Methods
 
@@ -67,6 +67,8 @@ properties. Also destroys submenu Popup instances.
 ```
 
 ```javascript
+import { MenuBar } from 'AriaComponents';
+
 const menu = document.querySelector('.menubar');
 
 const menuBar = new MenuBar({

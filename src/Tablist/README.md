@@ -72,6 +72,8 @@ Destroy the Tablist, removing attributes, event listeners, and element propertie
 ```
 
 ```javascript
+import { Tablist } from 'AriaComponents';
+
 const tabs = document.querySelector('.tablist');
 const panels = document.querySelectorAll('.panel');
 

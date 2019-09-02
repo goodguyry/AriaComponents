@@ -16,9 +16,10 @@ Component documentation:
 - [Popup](src/Popup/)
 - [Tablist](src/Tablist/)
 
-Each of the above extends [AriaComponent](src/AriaComponent.js), which provides
+Each of the above extends [AriaComponent](src/), which provides
 basic state management and component structure.
 
 **Note**:  
+<!-- @todo is this still true? -->
 This package is provided without processing; you'll likely need to run these 
 through [Babel](https://babeljs.io) to use them in your projects.

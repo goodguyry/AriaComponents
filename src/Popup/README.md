@@ -1,8 +1,8 @@
 Popup
 =====
 
-Class for setting up an interactive popup element, such as menu or dialog, that 
-can be triggered by a controlling element.
+Class for setting up an interactive popup element that can be triggered by a 
+controlling element.
 
 ## Config `object`
 
@@ -54,6 +54,8 @@ Destroy the Popup, removing attributes, event listeners, and element properties.
 ```
 
 ```javascript
+import { Popup } from 'AriaComponents';
+
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');
 

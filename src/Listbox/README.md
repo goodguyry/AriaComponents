@@ -6,7 +6,7 @@ Class to set up an interactive Listbox element.
 ## Config `object`
 
 **config.controller** `HTMLElement`  
-The element used to trigger the Listbox Popup.
+The element used to trigger the Listbox.
 
 **config.target** `HTMLElement`  
 The Listbox element.
@@ -45,9 +45,10 @@ Destroy the Listbox, removing attributes, event listeners, and element propertie
 ```
 
 ```javascript
+import { Listbox } from 'AriaComponents';
+
 const controller = document.querySelector('button');
 const target = document.querySelector('ul');
-const listItems = Array.from(target.children);
 
 const listbox = new Listbox({
   controller,
