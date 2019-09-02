@@ -5,7 +5,7 @@ import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class to set up a controller-target relationship for independently revealing
- * and hiding content.
+ * and hiding inline content.
  *
  * https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure
  */

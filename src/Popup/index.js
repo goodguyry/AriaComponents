@@ -3,8 +3,8 @@ import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 
 /**
- * Class for setting up an interactive popup element, such as menu or dialog,
- * that can be triggered by a controlling element.
+ * Class for setting up an interactive popup element that can be triggered by a
+ * controlling element.
  */
 export default class Popup extends AriaComponent {
   /**

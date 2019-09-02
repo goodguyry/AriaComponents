@@ -4,7 +4,7 @@ import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 
 /**
- * Class to set up an interactive Popup Dialog element.
+ * Class to set up an interactive Dialog element.
  */
 export default class Dialog extends AriaComponent {
   /**

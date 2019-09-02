@@ -1,9 +1,8 @@
 MenuBar
 =======
 
-MenuBar class for managing a visually persistent (horizontally-oriented) menubar.
-
-Each submenu item is instantiated as a Popup.
+Class for managing a visually persistent (horizontally-oriented) menubar, with 
+each submenu item is instantiated as a Popup.
 
 ## Config `object`
 

@@ -10,7 +10,8 @@ import {
 } from '../lib/ariaDescribedbyElementsFound';
 
 /**
- * Class for managing a visually persistent (horizontally-oriented) menubar.
+ * Class for managing a visually persistent (horizontally-oriented) menubar,
+ * with each submenu item is instantiated as a Popup.
  *
  * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
  * https://www.w3.org/TR/wai-aria-1.1/#menubar

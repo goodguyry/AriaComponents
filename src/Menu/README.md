@@ -1,5 +1,6 @@
 Menu
 ====
+
 Class to set up an vertically oriented interactive Menu element.
 
 ## Config `object`
