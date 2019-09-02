@@ -36,6 +36,12 @@ Callback to run after the component is destroyed.
 **createCloseButton()**  `static`  
 Static method to create a button element with 'Close' as its label.
 
+**show()**  
+Update component state to show the target element.
+
+**hide()**  
+Update component state to hide the target element.
+
 **destroy()**  
 Destroy the Dialog, removing attributes, event listeners, and element properties.
 

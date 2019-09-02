@@ -104,6 +104,8 @@ export default class Dialog extends AriaComponent {
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
     /*
@@ -149,7 +151,7 @@ export default class Dialog extends AriaComponent {
     this.interactiveChildren = interactiveChildren(this.target);
 
     // Add event listeners.
-    this.close.addEventListener('click', this.popup.hide);
+    this.close.addEventListener('click', this.hide);
     this.target.addEventListener('keydown', this.handleTargetKeydown);
 
     /*
@@ -200,7 +202,7 @@ export default class Dialog extends AriaComponent {
     const { expanded } = this.popup.getState();
 
     if (expanded && ! this.target.contains(event.target)) {
-      this.popup.hide();
+      this.hide();
     }
   }
 
@@ -249,7 +251,7 @@ export default class Dialog extends AriaComponent {
     const { keyCode } = event;
 
     if (ESC === keyCode) {
-      this.popup.hide();
+      this.hide();
     }
   }
 
@@ -265,10 +267,24 @@ export default class Dialog extends AriaComponent {
     this.popup.destroy();
 
     // Remove event listeners.
-    this.close.removeEventListener('click', this.popup.hide);
+    this.close.removeEventListener('click', this.hide);
     this.target.removeEventListener('keydown', this.handleTargetKeydown);
 
     /* Run {destroyCallback} */
     this.onDestroy.call(this);
+  }
+
+  /**
+   * Show the Dialog.
+   */
+  show() {
+    this.popup.show();
+  }
+
+  /**
+   * Hide the Dialog.
+   */
+  hide() {
+    this.popup.hide();
   }
 }

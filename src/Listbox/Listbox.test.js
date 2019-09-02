@@ -92,7 +92,7 @@ describe('Listbox with default configuration', () => {
     });
 
     it('Should update Listbox attributes correctly when opened', () => {
-      listbox.popup.show();
+      listbox.show();
       expect(listbox.popup.getState().expanded).toBeTruthy();
 
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
@@ -107,7 +107,7 @@ describe('Listbox with default configuration', () => {
 
   describe('Listbox controller should respond to events as expected', () => {
     beforeEach(() => {
-      listbox.popup.hide();
+      listbox.hide();
       expect(listbox.popup.getState().expanded).toBeFalsy();
     });
 
@@ -128,7 +128,7 @@ describe('Listbox with default configuration', () => {
 
   describe('Listbox target should respond to events as expected', () => {
     beforeEach(() => {
-      listbox.popup.show();
+      listbox.show();
     });
 
     it('Should close the popup and focus the controller on RETURN key', () => {

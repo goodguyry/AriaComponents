@@ -24,6 +24,12 @@ Callback to run after the component is destroyed.
 
 ## Methods
 
+**show()**  
+Update component state to show the target element.
+
+**hide()**  
+Update component state to hide the target element.
+
 **destroy()**  
 Destroy the Listbox, removing attributes, event listeners, and element properties.
 

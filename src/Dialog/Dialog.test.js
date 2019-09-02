@@ -86,12 +86,12 @@ describe('Dialog with default configuration', () => {
 
   describe('Dialog class methods', () => {
     it('Should reflect the accurate state', () => {
-      modal.popup.show();
+      modal.show();
       expect(modal.popup.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(modal.close);
       expect(onStateChange).toHaveBeenCalled();
 
-      modal.popup.hide();
+      modal.hide();
       expect(modal.popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
       expect(onStateChange).toHaveBeenCalled();

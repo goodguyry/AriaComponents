@@ -83,6 +83,8 @@ export default class ListBox extends AriaComponent {
     this.clearSearchString = this.clearSearchString.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.popupStateWasUpdated = this.popupStateWasUpdated.bind(this);
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
@@ -277,7 +279,7 @@ export default class ListBox extends AriaComponent {
     if ([UP, DOWN].includes(event.keyCode)) {
       event.preventDefault();
 
-      this.popup.show();
+      this.show();
     }
   }
 
@@ -309,7 +311,7 @@ export default class ListBox extends AriaComponent {
       case RETURN:
       case SPACE: {
         event.preventDefault();
-        this.popup.hide();
+        this.hide();
 
         // Move focus to the controller when the Listbox is closed.
         this.controller.focus();
@@ -379,7 +381,7 @@ export default class ListBox extends AriaComponent {
    */
   handleTargetClicks(event) {
     this.setState({ activeDescendant: event.target });
-    this.popup.hide();
+    this.hide();
   }
 
   /**
@@ -391,7 +393,7 @@ export default class ListBox extends AriaComponent {
   handleTargetBlur(event) {
     if (this.popup.getState().expanded) {
       this.setState({ activeDescendant: event.target });
-      this.popup.hide();
+      this.hide();
     }
   }
 
@@ -495,5 +497,19 @@ export default class ListBox extends AriaComponent {
 
     // Run {destroyCallback}
     this.onDestroy.call(this);
+  }
+
+  /**
+   * Show the Listbox.
+   */
+  show() {
+    this.popup.show();
+  }
+
+  /**
+   * Hide the Listbox.
+   */
+  hide() {
+    this.popup.hide();
   }
 }
