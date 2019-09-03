@@ -32,14 +32,14 @@ export default class Popup extends AriaComponent {
       /**
        * The element used to trigger the Popup element.
        *
-       * @type {htmlelement}
+       * @type {HTMLElement}
        */
       controller: null,
 
       /**
        * The Popup's target element.
        *
-       * @type {htmlelement}
+       * @type {HTMLElement}
        */
       target: null,
 
