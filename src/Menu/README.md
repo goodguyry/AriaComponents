@@ -10,10 +10,10 @@ The Menu element.
 
 ### Callbacks
 
-**config.onInit** `Function`  
+**config.onInit**  
 Callback to run after the component initializes.
 
-**config.onDestroy** `Function`  
+**config.onDestroy**  
 Callback to run after the component is destroyed.
 
 ## Methods

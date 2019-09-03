@@ -13,13 +13,13 @@ The Listbox element.
 
 ### Callbacks
 
-**config.onInit** `Function`  
+**config.onInit**  
 Callback to run after the component initializes.
 
-**config.onStateChange** `Function`  
+**config.onStateChange**  
 Callback to run after component state is updated.
 
-**config.onDestroy** `Function`  
+**config.onDestroy**  
 Callback to run after the component is destroyed.
 
 ## Methods

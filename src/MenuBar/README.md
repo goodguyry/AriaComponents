@@ -11,22 +11,22 @@ The menubar element.
 
 ### Callbacks
 
-**config.onInit** `Function`  
+**config.onInit**  
 Callback to run after the component initializes.
 
-**config.onStateChange** `Function`  
+**config.onStateChange**  
 Callback to run after component state is updated.
 
-**config.onDestroy** `Function`  
+**config.onDestroy**  
 Callback to run after the component is destroyed.
 
-**config.onPopupInit** `Function`  
+**config.onPopupInit**  
 Callback to run after a Popup initializes.
 
-**config.onPopupStateChange** `Function`  
+**config.onPopupStateChange**  
 Callback to run after a Popup state is updated.
 
-**config.onPopupDestroy** `Function`  
+**config.onPopupDestroy**  
 Callback to run after a Popup is destroyed.
 
 ## Methods
