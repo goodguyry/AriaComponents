@@ -1,0 +1,10 @@
+.button {
+  /* tbd */
+}
+
+.info {
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
+}
