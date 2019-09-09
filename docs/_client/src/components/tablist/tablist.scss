@@ -1,0 +1,10 @@
+.list {
+  /* tbd */
+}
+
+.panel {
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
+}
