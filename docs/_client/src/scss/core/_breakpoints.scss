@@ -1,0 +1,42 @@
+/* stylelint-disable at-rule-empty-line-before */
+
+$bp-values: (
+  full: 1280,
+  lg: 1024,
+  md: 768,
+);
+
+/**
+ * Create the breakpoint media conditions based on the above Map.
+ *
+ * @return {map}
+ */
+@function _create-breakpoints() {
+  $merged: ();
+
+  @each $name, $value in $bp-values {
+    $merged: map_merge($merged, (
+      '#{$name}': 'min-width: #{$value / 16}rem',
+    ));
+  }
+
+  @return $merged;
+}
+
+// Get the media condition map.
+$media-queries: _create-breakpoints();
+
+/**
+ * Get a min-width media condition.
+ *
+ * @param  {string} $key The breakpoint size.
+ * @return {string}
+ */
+@function min($key) {
+  @if (not map-has-key($media-queries, #{$key})) {
+    @error "$media-queries[#{$key}] doesn't exist.";
+    @return false;
+  }
+
+  @return map-get($media-queries, #{$key});
+}

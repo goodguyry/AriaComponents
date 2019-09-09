@@ -1,0 +1,162 @@
+/* stylelint-disable selector-list-comma-newline-after */
+
+/**
+ * Reset styles and setup.
+ */
+
+:root {
+  font-size: medium;
+}
+
+html {
+  background-color: white;
+}
+
+html, body, div, span,
+article, aside, footer, header, nav, section,
+h1, h2, h3, h4, h5, h6,
+p, em, strike, strong, code,
+a, button,
+figure, figcaption, img {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  // font-size: 100%;
+  // font-style: normal;
+  font: inherit;
+  vertical-align: baseline;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+  }
+}
+
+article,
+aside,
+footer,
+header,
+main,
+nav,
+section {
+  display: block;
+}
+
+a {
+  color: inherit;
+  font-weight: 700;
+  transition: color 250ms ease;
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: rem(24);
+  margin-bottom: rem(12);
+
+  @media (min(lg)) {
+    font-size: rem(36);
+  }
+}
+
+h2 {
+  font-size: rem(18);
+
+  @media (min(lg)) {
+    font-size: rem(30);
+  }
+}
+
+p {
+
+  &:not(:last-child) {
+    margin-bottom: rem(28);
+  }
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+ol, ul {
+  list-style-type: circle;
+  margin: 0 0 rem(28) 0;
+  padding: 0;
+}
+
+button {
+  appearance: none;
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+figure {
+  display: block;
+  height: auto;
+  margin: 0;
+  max-width: 100%;
+}
+
+figcaption {
+  font-size: rem(12);
+}
+
+img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+svg {
+  display: block;
+  height: auto;
+  pointer-events: none;
+  width: 100%;
+}
+
+code {
+
+  p &,
+  li & {
+    background-color: aliceblue;
+    border: 1px solid lightgray;
+    border-radius: 2px;
+    font: 400 90% 'Courier', monospace;
+    padding: 0 0.3em;
+  }
+}
+
+hr {
+  @include auto-margins;
+  height: 1px;
+  border: none;
+  background-color: lightgray;
+  width: 80%;
+  margin-bottom: rem(28);
+}
+
+[role="main"] {
+  /* tbd */
+}
