@@ -6,3 +6,4 @@ import 'scss/index.scss';
 import 'components/popup';
 import 'components/tablist';
 import 'components/listbox';
+import 'components/menu';

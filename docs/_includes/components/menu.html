@@ -1,0 +1,28 @@
+{% assign classes = site.data.classnames.menu %}
+
+<section class="section">
+	<header class="section-header">
+		<h2>Example of Menu Class</h2>
+	</header>
+
+	<ul class="{{ classes.list }}">
+		<li><a href="example.com">First Item</a>
+			<ul>
+				<li><a href="example.com">Submenu One - Item One</a></li>
+				<li><a href="example.com">Submenu One - Item Two</a></li>
+				<li><a href="example.com">Submenu One - Item Three</a></li>
+			</ul>
+		</li>
+		<li><a href="example.com">Second Item</a></li>
+		<li><a href="example.com">Third Item</a>
+			<ul>
+				<li><a href="example.com">Submenu Two - Item One</a></li>
+				<li><a href="example.com">Submenu Two - Item Two</a></li>
+				<li><a href="example.com">Submenu Two - Item Three</a></li>
+				<li><a href="example.com">Submenu Two - Item Four</a></li>
+			</ul>
+		</li>
+		<li><a href="example.com">Fourth Item</a></li>
+		<li><a href="example.com">Fifth Item</a></li>
+	</ul>
+</section>
