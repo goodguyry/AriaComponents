@@ -1,3 +1,5 @@
 index: { screen-reader-text: 'index__screen-reader-text___2E0Dc', skip-link: 'index__skip-link___3pSIX' }
-popup: { wrapper: 'popup__wrapper___1Yxsi', header: 'popup__header___y_9WU', button: 'popup__button___1zeIK', info: 'popup__info___3WtzY' }
-tablist: { list: 'tablist__list___38cjI', panel: 'tablist__panel___2LnvB' }
+popup: { button: 'popup__button___1zeIK', info: 'popup__info___3WtzY' }
+tablist: { panel: 'tablist__panel___2LnvB' }
+listbox: { list: 'listbox__list___1o2B-' }
+menu: { list: 'menu__list___3cUrD' }
