@@ -8,3 +8,4 @@ import 'components/tablist';
 import 'components/listbox';
 import 'components/menu';
 import 'components/dialog';
+import 'components/menubar';
