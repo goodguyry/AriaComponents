@@ -4,3 +4,5 @@ tablist: { panel: 'tablist__panel___2LnvB' }
 listbox: { list: 'listbox__list___1o2B-' }
 menu: { list: 'menu__list___3cUrD' }
 dialog: { dialog: 'dialog__dialog___7PAfy' }
+menubar: { list: 'menubar__list___TswFO' }
+disclosure: { info: 'disclosure__info___XvS-8' }
