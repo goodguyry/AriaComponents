@@ -3,3 +3,4 @@ popup: { button: 'popup__button___1zeIK', info: 'popup__info___3WtzY' }
 tablist: { panel: 'tablist__panel___2LnvB' }
 listbox: { list: 'listbox__list___1o2B-' }
 menu: { list: 'menu__list___3cUrD' }
+dialog: { dialog: 'dialog__dialog___7PAfy' }
