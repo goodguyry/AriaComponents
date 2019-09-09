@@ -18,7 +18,6 @@ module.exports = (env, argv) => {
     mode,
 
     entry: {
-      popup: '_client/entries/popup',
       global: '_client/entries',
     },
 

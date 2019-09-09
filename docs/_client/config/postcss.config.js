@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const fs = require('fs');
 const readYaml = require('read-yaml');
@@ -27,8 +28,7 @@ module.exports = () => ({
     modules({
       generateScopedName: '[name]__[local]___[hash:base64:5]',
       globalModulePaths: [
-        /_client\/src\/scss\/global/,
-        /_client\/entries\/code/,
+        /_client\/src\/scss/,
       ],
       getJSON: (cssFileName, json) => {
         const { name } = path.parse(cssFileName);
