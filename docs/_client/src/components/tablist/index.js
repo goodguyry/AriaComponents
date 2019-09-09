@@ -9,6 +9,7 @@ const { list, panel } = getClassnames(siteClassNames.tablist);
 const tabs = document.querySelector(list);
 const panels = document.querySelectorAll(panel);
 
+// Create the Tablist.
 const tablist = new Tablist({ // eslint-disable-line no-unused-vars
   tablist: tabs,
   panels,

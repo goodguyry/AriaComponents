@@ -48,6 +48,18 @@ abbr {
   text-decoration: none;
 }
 
+.site {
+  @include container;
+}
+
+.section {
+  margin-bottom: rem(40);
+}
+
+.section-header {
+  /* tbd */
+}
+
 .screen-reader-text {
   @include screen-reader-text;
 }
