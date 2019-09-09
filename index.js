@@ -1,4 +1,5 @@
 import AriaComponent from './src/AriaComponent';
+import Listbox from './src/Listbox';
 import MenuBar from './src/MenuBar';
 import Menu from './src/Menu';
 import Popup from './src/Popup';
@@ -8,6 +9,7 @@ import Tablist from './src/Tablist';
 
 export {
   AriaComponent,
+  Listbox,
   MenuBar,
   Menu,
   Popup,
