@@ -1,6 +1,7 @@
 import AriaComponent from '../AriaComponent';
 import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
+import { tabIndexDeny } from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
 
 /**
@@ -183,8 +184,13 @@ export default class Popup extends AriaComponent {
      */
     if (expanded) {
       this.target.removeAttribute('aria-hidden');
+
+      tabIndexAllow(this.interactiveChildElements);
     } else {
       this.target.setAttribute('aria-hidden', 'true');
+
+      // Focusable content should have tabindex='-1' or be removed from the DOM.
+      tabIndexDeny(this.interactiveChildElements);
     }
 
     // Run {stateChangeCallback}

@@ -1,3 +1,6 @@
 .list {
-  /* tbd */
+
+  [aria-hidden="true"] {
+    display: none;
+  }
 }
