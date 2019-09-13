@@ -1,4 +1,13 @@
 .dialog {
+  background-color: white;
+  border: 1px solid black;
+  left: 50%;
+  padding: rem(20);
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: rem(500);
+  z-index: 1;
 
   &[aria-hidden="true"] {
     display: none;
@@ -6,9 +15,21 @@
 }
 
 .link {
-  /* tbd */
+  @include role-button;
+  align-items: center;
+  border: 1px solid black;
+  display: inline-flex;
+  justify-content: center;
+  padding: rem(10);
 }
 
 .closeButton {
   /* tbd */
+}
+
+:global(.site) {
+
+  &[aria-hidden="true"] {
+    opacity: 0.3;
+  }
 }
