@@ -1,7 +1,7 @@
 import AriaComponent from '../AriaComponent';
 import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
-import { tabIndexDeny } from '../lib/rovingTabIndex';
+import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
 
 /**
