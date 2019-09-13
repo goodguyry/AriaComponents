@@ -342,8 +342,9 @@ export default class Tablist extends AriaComponent {
 
     // Don't act when an active tab is clicked.
     if ('true' !== target.getAttribute('aria-selected')) {
-      const index = this.tabs.indexOf(target);
-      this.switchTo(index);
+      if (this.tabs.includes(target)) {
+        this.switchTo(this.tabs.indexOf(target));
+      }
     }
   }
 
