@@ -6,8 +6,13 @@ import './disclosure.scss';
 const { button, info } = getClassnames(siteClassNames.disclosure);
 
 // Get the elements.
-const controller = document.querySelector(button);
-const target = document.querySelector(info);
+const controllers = document.querySelectorAll(button);
+const targets = document.querySelectorAll(info);
 
-// Create the Disclosure.
-const popup = new Disclosure({ controller, target }); // eslint-disable-line no-unused-vars
+// Create the Disclosures.
+if (controllers.length === targets.length) {
+  // eslint-disable-next-line no-unused-vars
+  const maps = Array.prototype.map.call(controllers, (controller, index) => (
+    new Disclosure({ controller, target: targets[index] })
+  ));
+}
