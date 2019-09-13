@@ -178,7 +178,7 @@ export default class MenuBar extends AriaComponent {
       link.setAttribute(
         'aria-describedby',
         // eslint-disable-next-line max-len
-        'menu-class-top-level-help menu-class-submenu-help menu-class-esc-help'
+        'ac-describe-top-level-help ac-describe-submenu-help ac-describe-esc-help'
       );
 
       link.addEventListener('click', this.handleMenuBarClick);

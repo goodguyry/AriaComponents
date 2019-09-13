@@ -164,7 +164,7 @@ export default class Menu extends AriaComponent {
       link.setAttribute(
         'aria-describedby',
         // eslint-disable-next-line max-len
-        'menu-class-submenu-explore menu-class-submenu-help menu-class-submenu-back menu-class-esc-help'
+        'ac-describe-submenu-explore ac-describe-submenu-help ac-describe-submenu-back ac-describe-esc-help'
       );
 
       const siblingList = this.constructor.nextElementIsUl(link);
