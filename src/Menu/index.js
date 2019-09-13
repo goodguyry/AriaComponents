@@ -148,18 +148,23 @@ export default class Menu extends AriaComponent {
     missingDescribedByWarning(Menu.getHelpIds());
 
     /*
-     * Set menu item attributes and instantiate submenus.
+     * Set menu item attributes.
      */
-    this.menuItems.forEach((link, index) => {
+    this.listItems.forEach((item, index) => {
+      // Add size and position attributes.
+      item.setAttribute('aria-setsize', this.menuItemsLength);
+      item.setAttribute('aria-posinset', index + 1);
+    });
+
+    /*
+     * Set menu link attributes and instantiate submenus.
+     */
+    this.menuItems.forEach((link) => {
       link.setAttribute(
         'aria-describedby',
         // eslint-disable-next-line max-len
         'menu-class-submenu-explore menu-class-submenu-help menu-class-submenu-back menu-class-esc-help'
       );
-
-      // Add size and position attributes.
-      link.setAttribute('aria-setsize', this.menuItemsLength);
-      link.setAttribute('aria-posinset', index + 1);
 
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
@@ -265,8 +270,8 @@ export default class Menu extends AriaComponent {
       link.removeAttribute('aria-describedby');
 
       // Add size and position attributes.
-      link.removeAttribute('aria-setsize');
-      link.removeAttribute('aria-posinset');
+      link.parentElement.removeAttribute('aria-setsize');
+      link.parentElement.removeAttribute('aria-posinset');
 
       link.removeEventListener('keydown', this.handleListKeydown);
 

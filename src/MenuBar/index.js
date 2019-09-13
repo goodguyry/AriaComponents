@@ -161,7 +161,18 @@ export default class MenuBar extends AriaComponent {
     /*
      * Set menubar item attributes.
      */
-    this.menuBarItems.forEach((link, index) => {
+    this.menuBarChildren.forEach((item, index) => {
+      // Add size and position attributes.
+      item.setAttribute('aria-setsize', this.menuLength);
+      item.setAttribute('aria-posinset', index + 1);
+
+      item.addEventListener('keydown', this.handleMenuBarKeydown);
+    });
+
+    /*
+     * Set menubar link attributes.
+     */
+    this.menuBarItems.forEach((link) => {
       // Add a reference to the help text.
       link.setAttribute(
         'aria-describedby',
@@ -169,11 +180,6 @@ export default class MenuBar extends AriaComponent {
         'menu-class-top-level-help menu-class-submenu-help menu-class-esc-help'
       );
 
-      // Add size and position attributes.
-      link.setAttribute('aria-setsize', this.menuLength);
-      link.setAttribute('aria-posinset', index + 1);
-
-      link.parentElement.addEventListener('keydown', this.handleMenuBarKeydown);
       link.addEventListener('click', this.handleMenuBarClick);
     });
 
@@ -329,11 +335,11 @@ export default class MenuBar extends AriaComponent {
       link.removeAttribute('aria-describedby');
 
       // Remove size and position attributes.
-      link.removeAttribute('aria-setsize');
-      link.removeAttribute('aria-posinset');
+      link.parentElement.removeAttribute('aria-setsize');
+      link.parentElement.removeAttribute('aria-posinset');
 
       // Remove event listeners.
-      link.removeEventListener('keydown', this.handleMenuBarKeydown);
+      link.parentElement.removeEventListener('keydown', this.handleMenuBarKeydown);
       link.removeEventListener('click', this.handleMenuBarClick);
     });
 

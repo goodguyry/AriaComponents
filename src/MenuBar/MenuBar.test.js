@@ -94,14 +94,14 @@ describe('Menu collects DOM elements and adds attributes', () => {
   it('Should add the correct DOM attributes and collect elements', () => {
     expect(domElements.list.getAttribute('role')).toEqual('menubar');
 
-    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toEqual('5');
+    expect(domElements.listFirstItem.parentElement.getAttribute('aria-setsize')).toEqual('5');
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).not.toBeNull();
-    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
+    expect(domElements.listThirdItem.parentElement.getAttribute('aria-posinset')).toEqual('3');
 
     expect(menuBar.getState().menubarItem).toEqual(domElements.listFirstItem);
 
-    expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toEqual('4');
-    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toEqual('4');
+    expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('aria-setsize')).toEqual('4');
+    expect(domElements.sublistTwoLastItem.parentElement.getAttribute('aria-posinset')).toEqual('4');
 
     expect(domElements.listThirdItem.getAttribute('aria-haspopup')).toEqual('menu');
     expect(domElements.sublistTwo.getAttribute('role')).toEqual('menu');
@@ -164,13 +164,13 @@ describe('Menu should destroy properly', () => {
     menuBar.destroy();
     expect(domElements.list.getAttribute('role')).toBeNull();
 
-    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listFirstItem.parentElement.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).toBeNull();
-    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.listThirdItem.parentElement.getAttribute('aria-posinset')).toBeNull();
 
     // Sub-lists should be instantiated as MenuItems as well.
-    expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.sublistTwoLastItem.parentElement.getAttribute('aria-posinset')).toBeNull();
 
     expect(domElements.list.menuBar).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();
