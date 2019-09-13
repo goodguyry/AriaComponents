@@ -60,8 +60,8 @@ abbr {
   /* tbd */
 }
 
-.screen-reader-text {
-  @include screen-reader-text;
+.screen-reader-only {
+  @include screen-reader-only;
 }
 
 .skip-link {
