@@ -102,6 +102,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
 
     expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('aria-setsize')).toEqual('4');
     expect(domElements.sublistTwoLastItem.parentElement.getAttribute('aria-posinset')).toEqual('4');
+    expect(domElements.sublistTwoFirstItem.parentElement.getAttribute('role')).toEqual('menuitem');
 
     expect(domElements.listThirdItem.getAttribute('aria-haspopup')).toEqual('menu');
     expect(domElements.sublistTwo.getAttribute('role')).toEqual('menu');

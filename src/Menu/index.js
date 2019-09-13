@@ -154,6 +154,7 @@ export default class Menu extends AriaComponent {
       // Add size and position attributes.
       item.setAttribute('aria-setsize', this.menuItemsLength);
       item.setAttribute('aria-posinset', index + 1);
+      item.setAttribute('role', 'menuitem');
     });
 
     /*

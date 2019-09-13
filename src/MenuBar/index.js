@@ -165,6 +165,7 @@ export default class MenuBar extends AriaComponent {
       // Add size and position attributes.
       item.setAttribute('aria-setsize', this.menuLength);
       item.setAttribute('aria-posinset', index + 1);
+      item.setAttribute('role', 'menuitem');
 
       item.addEventListener('keydown', this.handleMenuBarKeydown);
     });

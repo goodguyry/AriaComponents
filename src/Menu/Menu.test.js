@@ -91,6 +91,8 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.listThirdItem.parentElement.getAttribute('aria-posinset')).toEqual('3');
     expect(domElements.sublistOneSecondItem.parentElement.getAttribute('aria-posinset')).toEqual('2');
     expect(domElements.sublistTwoLastItem.parentElement.getAttribute('aria-posinset')).toEqual('4');
+
+    expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('role')).toEqual('menuitem');
   });
 
   test('constructor.nextElementIsUl() correctly detects list siblings', () => {
