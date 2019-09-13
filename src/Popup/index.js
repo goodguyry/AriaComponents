@@ -1,6 +1,7 @@
 import AriaComponent from '../AriaComponent';
 import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
+import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class for setting up an interactive popup element that can be triggered by a
@@ -124,10 +125,14 @@ export default class Popup extends AriaComponent {
       Object.assign(this, { firstChild, lastChild });
     }
 
+    // Add target attribute.
+    setUniqueId(this.target);
+
     // Add controller attributes
     this.controller.setAttribute('aria-haspopup', this.type);
     this.controller.setAttribute('aria-expanded', 'false');
     this.controller.setAttribute('aria-controls', this.target.id);
+    setUniqueId(this.controller);
 
     // Use the button role on non-button elements.
     if ('BUTTON' !== this.controller.nodeName) {
