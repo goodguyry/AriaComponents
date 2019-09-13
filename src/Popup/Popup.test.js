@@ -1,5 +1,5 @@
-import Popup from '.';
-import events from '../../utils/events';
+import { Popup } from 'root';
+import events from 'root/utils/events';
 
 const {
   click,

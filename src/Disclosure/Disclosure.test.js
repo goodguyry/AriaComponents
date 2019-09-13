@@ -1,5 +1,5 @@
-import Disclosure from '.';
-import events from '../../utils/events';
+import { Disclosure } from 'root';
+import events from 'root/utils/events';
 
 const { click } = events;
 

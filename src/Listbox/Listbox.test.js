@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
-import Listbox from '.';
-import Popup from '../Popup';
-import events from '../../utils/events';
+import { Listbox, Popup } from 'root';
+import events from 'root/utils/events';
 
 const {
   click,

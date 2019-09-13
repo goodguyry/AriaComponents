@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import Tablist from '.';
-import events from '../../utils/events';
+import { Tablist } from 'root';
+import events from 'root/utils/events';
 
 const {
   click,

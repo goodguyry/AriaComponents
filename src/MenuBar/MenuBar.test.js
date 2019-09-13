@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
-import MenuBar from '.';
-import Popup from '../Popup';
-import events from '../../utils/events';
-import Menu from '../Menu';
+import { MenuBar, Popup, Menu } from 'root';
+import events from 'root/utils/events';
 
 // Create the help text elements for both MenuBar and Menu.
 const ariaDescribedbyTestMarkup = Array.from(new Set([
