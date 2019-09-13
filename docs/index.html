@@ -2,12 +2,22 @@
 layout: default
 title: Aria Components
 permalink: /
+all_components:
+- dialog
+- disclosure
+- listbox
+- menu
+- menubar
+- popup
+- tablist
 ---
 
-{% include components/popup.html %}
-{% include components/tablist.html %}
-{% include components/listbox.html %}
-{% include components/menu.html %}
-{% include components/dialog.html %}
-{% include components/menubar.html %}
-{% include components/disclosure.html %}
+{% for component in page.all_components %}
+	<section class="section">
+		<header class="section-header">
+			<h2>Example of the {{ component | capitalize }} Class</h2>
+		</header>
+
+		{% include {{ component | prepend: 'components/' | append: '.html' }} %}
+	</section>
+{% endfor %}
