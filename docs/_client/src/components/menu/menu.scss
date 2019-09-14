@@ -1,3 +1,27 @@
+.nav {
+  /* tbd */
+}
+
 .list {
   /* tbd */
+}
+
+.list-item {
+  /* tbd */
+}
+
+.has-children {
+  /* tbd */
+}
+
+.sub-list {
+  margin-left: rem(20);
+  margin-top: rem(10);
+}
+
+.list-item {
+
+  &:not(:last-child) {
+    margin-bottom: rem(10);
+  }
 }
