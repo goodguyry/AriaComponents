@@ -32,12 +32,9 @@
  * Remove hover and focus underline for a given link.
  */
 @mixin remove-helpful-link-hover-styles {
-  transition: background-color 200ms, color 200ms;
 
   &:hover,
   &:focus {
-    background-color: black;
-    color: white;
     text-decoration: none;
   }
 }
@@ -49,6 +46,7 @@
 
   &[role="button"] {
     @include remove-helpful-link-hover-styles;
+    @include button;
   }
 }
 

@@ -1,0 +1,24 @@
+/**
+ * Invert text background and color.
+ */
+@mixin invert-text {
+  background-color: black;
+  color: white;
+}
+
+/**
+ * Button styles.
+ */
+@mixin button {
+  align-items: center;
+  border: 1px solid black;
+  display: inline-flex;
+  justify-content: center;
+  padding: rem(10);
+  transition: background-color 200ms, color 200ms;
+
+  &:hover,
+  &:focus {
+    @include invert-text;
+  }
+}

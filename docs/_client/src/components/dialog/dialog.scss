@@ -16,11 +16,6 @@
 
 .link {
   @include role-button;
-  align-items: center;
-  border: 1px solid black;
-  display: inline-flex;
-  justify-content: center;
-  padding: rem(10);
 }
 
 .closeButton {

@@ -79,3 +79,23 @@
 @function negate($number) {
   @return ($number * -1);
 }
+
+/**
+ * Remove browser default form element styles.
+ */
+@mixin form-element-reset {
+  appearance: none;
+  border-radius: 0;
+  border: none;
+  font: inherit;
+  margin: 0;
+}
+
+/**
+ * Remove browser default button styles.
+ */
+@mixin button-reset {
+  @include form-element-reset;
+  background-color: transparent;
+  padding: 0;
+}

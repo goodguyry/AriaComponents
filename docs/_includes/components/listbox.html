@@ -1,14 +1,16 @@
 {% assign classes = site.data.classnames.listbox %}
 
-<button class="{{ classes.button }}">Choose</button>
-<ul class="{{ classes.list }}">
-	<li>Anchorage</li>
-	<li>Baltimore</li>
-	<li>Chicago</li>
-	<li>Dallas</li>
-	<li>El Paso</li>
-	<li>Fort Lauderdale</li>
-	<li>Grand Rapids</li>
-	<li>Hartford</li>
-	<li>Idaho Falls</li>
-</ul>
+<div class="{{ classes.wrapper }}">
+	<button class="{{ classes.button }}">Choose</button>
+	<ul class="{{ classes.list }}">
+		<li class="{{ classes.list-item }}">Anchorage</li>
+		<li class="{{ classes.list-item }}">Baltimore</li>
+		<li class="{{ classes.list-item }}">Chicago</li>
+		<li class="{{ classes.list-item }}">Dallas</li>
+		<li class="{{ classes.list-item }}">El Paso</li>
+		<li class="{{ classes.list-item }}">Fort Lauderdale</li>
+		<li class="{{ classes.list-item }}">Grand Rapids</li>
+		<li class="{{ classes.list-item }}">Hartford</li>
+		<li class="{{ classes.list-item }}">Idaho Falls</li>
+	</ul>
+</div>
