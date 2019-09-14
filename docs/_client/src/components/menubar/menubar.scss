@@ -1,6 +1,46 @@
+.nav {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+  padding: rem(20);
+  width: 100%;
+}
+
 .list {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
 
   [aria-hidden="true"] {
     display: none;
   }
+}
+
+.list-item {
+  position: relative;
+}
+
+.has-children {
+  /* tbd */
+}
+
+.sub-list {
+  background-color: white;
+  border: 1px solid;
+  left: 0;
+  list-style-type: none;
+  padding: 10px;
+  position: absolute;
+  top: calc(100% + #{rem(20)});
+  width: max-content;
+
+  .list-item {
+
+    &:not(:last-child) { /* stylelint-disable-line selector-max-specificity */
+      margin-bottom: rem(10);
+    }
+  }
+}
+
+.list-item {
+  /* tbd */
 }
