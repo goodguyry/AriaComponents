@@ -32,6 +32,25 @@ svg {
   width: 100%;
 }
 
+h1 {
+  font-size: rem(36);
+}
+
+h2 {
+  font-size: rem(30);
+}
+
+h3 {
+  font-size: rem(20);
+}
+
+p {
+
+  &:not(:last-child) {
+    margin-bottom: rem(28);
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -48,16 +67,20 @@ abbr {
   text-decoration: none;
 }
 
+::selection {
+  @include invert-text;
+}
+
 .site {
   @include container;
 }
 
 .section {
-  margin-bottom: rem(40);
+  margin-bottom: rem(100);
 }
 
 .section-header {
-  /* tbd */
+  margin-bottom: rem(20);
 }
 
 .screen-reader-only {

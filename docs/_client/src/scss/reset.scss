@@ -22,9 +22,9 @@ figure, figcaption, img {
   padding: 0;
   border: 0;
   box-sizing: border-box;
-  // font-size: 100%;
-  // font-style: normal;
   font: inherit;
+  font-size: 100%;
+  font-style: normal;
   vertical-align: baseline;
 
   &::before,
@@ -61,30 +61,6 @@ h4,
 h5,
 h6 {
   font-weight: 700;
-}
-
-h1 {
-  font-size: rem(24);
-  margin-bottom: rem(12);
-
-  @media (min(lg)) {
-    font-size: rem(36);
-  }
-}
-
-h2 {
-  font-size: rem(18);
-
-  @media (min(lg)) {
-    font-size: rem(30);
-  }
-}
-
-p {
-
-  &:not(:last-child) {
-    margin-bottom: rem(28);
-  }
 }
 
 em {
