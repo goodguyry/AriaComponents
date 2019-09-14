@@ -1,8 +1,18 @@
+.list {
+  list-style-type: none;
+  width: 50%;
+}
+
+.list-item {
+  margin-bottom: rem(16);
+}
+
 .button {
-  /* tbd */
+  cursor: pointer;
 }
 
 .info {
+  padding: rem(10);
 
   &[aria-hidden="true"] {
     display: none;
