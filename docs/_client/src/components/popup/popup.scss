@@ -1,11 +1,21 @@
+.wrapper {
+  display: inline-block;
+  position: relative;
+}
+
 .button {
-  display: block;
-  margin-bottom: rem(20);
+  @include role-button;
+  @include button;
 }
 
 .info {
-  border: 1px solid rgba(gray, 0.3);
-  padding: rem(16);
+  background-color: white;
+  border: 1px solid;
+  left: calc(100% + #{rem(20)});
+  padding: rem(20);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 
   @media (min(lg)) {
     tidy-span: 6;
