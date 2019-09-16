@@ -1,5 +1,5 @@
 {
-  "name": "aria-components",
+  "name": "AriaComponents",
   "version": "0.0.1",
   "description": "JavaScript classes to aid in accessible web development.",
   "keywords": [
@@ -9,11 +9,11 @@
   "main": "index.js",
   "author": "Ryan Domingue <ryan@ryandomingue.com>",
   "license": "GPL-2.0",
-  "repository": "goodguyry/aria-components",
+  "repository": "goodguyry/AriaComponents",
   "bugs": {
-    "url": "https://github.com/goodguyry/aria-components/issues"
+    "url": "https://github.com/goodguyry/AriaComponents/issues"
   },
-  "homepage": "https://github.com/goodguyry/aria-components",
+  "homepage": "https://github.com/goodguyry/AriaComponents",
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
