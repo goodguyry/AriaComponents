@@ -97,5 +97,6 @@ const menuBar = new MenuBar({
 
 ## References
 
+- https://www.w3.org/TR/wai-aria-practices-1.1/examples/menubar/menubar-1/menubar-1.html
 - https://www.w3.org/TR/wai-aria-1.1/#menubar
 - https://www.w3.org/TR/wai-aria-practices-1.1/#menu

@@ -105,3 +105,8 @@ const dialog = new Dialog({
   },
 });
 ```
+
+## References
+
+- https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html
+- https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal

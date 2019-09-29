@@ -75,5 +75,6 @@ const listbox = new Listbox({
 
 ## References
 
+- https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html
 - https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
 - https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant
