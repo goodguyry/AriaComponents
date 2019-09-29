@@ -182,7 +182,7 @@ export default class ListBox extends AriaComponent {
       const { UP, DOWN } = keyCodes;
       const { target: keydownTarget, keyCode } = event;
 
-      if (keydownTarget === this.controller && [UP, DOWN].includes(keyCode)) {
+      if (keydownTarget === this.target && [UP, DOWN].includes(keyCode)) {
         event.preventDefault();
       }
     });
