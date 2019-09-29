@@ -1,0 +1,19 @@
+{% assign classes = site.data.classnames.dialog %}
+
+<div id="dialog" class="{{ classes.dialog }}">
+	<button class="{{ classes.closeButton }}">Close</button>
+
+	<p>This is a Dialog Popup. The site's content wrapper is given an `aria-hidden` attribute in order to hide the main content while the Dialog is open. The "Close" button is required; if a reference to an existing close button is not passed in to the component, a very basic button will be created and inserted.</p>
+
+	<p>Keyboard focus is "trapped" within the Dialog, which prevents elements outside the Dialog from gaining focus until the Dialog is closed. Close the Dialog by clicking the close button, clicking outside of the Dialog, or by pressing the Escape key.</p>
+
+	<a
+		class="{{ classes.doc-link }}"
+		href="https://github.com/goodguyry/AriaComponents/tree/master/src/Dialog"
+	>More about the Dialog Class</a>
+
+	<a
+		class="{{ classes.doc-link }}"
+		href="https://github.com/goodguyry/AriaComponents/tree/master/src/Popup"
+	>More about the Popup Class</a>
+</div>

@@ -12,6 +12,7 @@
 @mixin button {
   align-items: center;
   border: 1px solid black;
+  color: black;
   display: inline-flex;
   justify-content: center;
   padding: rem(10);
