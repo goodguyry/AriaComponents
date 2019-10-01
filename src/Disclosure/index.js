@@ -1,4 +1,5 @@
 import AriaComponent from '../AriaComponent';
+import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
@@ -89,6 +90,7 @@ export default class Disclosure extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
+    this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
     this.toggleExpandedState = this.toggleExpandedState.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
 
@@ -153,6 +155,7 @@ export default class Disclosure extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
+    this.controller.addEventListener('keydown', this.handleControllerKeydown);
     if (! this.allowOutsideClick) {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
@@ -200,6 +203,25 @@ export default class Disclosure extends AriaComponent {
 
     // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
+  }
+
+  /**
+   * Handle keydown events on the Disclosure controller.
+   *
+   * @param {Event} event The event object.
+   */
+  handleControllerKeydown(event) {
+    const { SPACE, RETURN } = keyCodes;
+    const { keyCode } = event;
+
+    if ([SPACE, RETURN].includes(keyCode)) {
+      event.preventDefault();
+      /*
+       * Treat the Spacebar and Return keys as clicks in case the controller is
+       * not a <button>.
+       */
+      this.toggleExpandedState(event);
+    }
   }
 
   /**
