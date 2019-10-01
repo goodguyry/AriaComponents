@@ -1,7 +1,11 @@
 import { Disclosure } from 'root';
 import events from 'root/utils/events';
 
-const { click } = events;
+const {
+  click,
+  keydownReturn,
+  keydownSpace,
+} = events;
 
 // Set up our document body
 document.body.innerHTML = `
@@ -72,6 +76,20 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toBeNull();
+    });
+
+    it('Should update attributes when Return or Spacebar are pressed', () => {
+      // Return to open.
+      controller.dispatchEvent(keydownReturn);
+      expect(disclosure.getState().expanded).toBeTruthy();
+      expect(controller.getAttribute('aria-expanded')).toEqual('true');
+      expect(target.getAttribute('aria-hidden')).toBeNull();
+
+      // Spacebar to close.
+      controller.dispatchEvent(keydownSpace);
+      expect(disclosure.getState().expanded).toBeFalsy();
+      expect(controller.getAttribute('aria-expanded')).toEqual('false');
+      expect(target.getAttribute('aria-hidden')).toEqual('true');
     });
   });
 });
