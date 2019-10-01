@@ -128,12 +128,18 @@ export default class Disclosure extends AriaComponent {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.controller.setAttribute('aria-controls', this.target.id);
 
-    // Ensure we can TAB to the controllers.
-    if (
-      ! ['A', 'BUTTON'].includes(this.controller.nodeName)
-      || null === this.controller.getAttribute('tabindex')
-    ) {
-      this.controller.setAttribute('tabindex', '0');
+    // Patch button role and behavior for non-button controller.
+    if ('BUTTON' !== this.controller.nodeName) {
+      this.controller.setAttribute('role', 'button');
+      this.controller.addEventListener('keydown', this.handleControllerKeydown);
+
+      // Ensure we can TAB to the controller if it's not a button or anchor.
+      if (
+        'A' !== this.controller.nodeName
+        || null === this.controller.getAttribute('tabindex')
+      ) {
+        this.controller.setAttribute('tabindex', '0');
+      }
     }
 
     /*
@@ -155,7 +161,6 @@ export default class Disclosure extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
-    this.controller.addEventListener('keydown', this.handleControllerKeydown);
     if (! this.allowOutsideClick) {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
