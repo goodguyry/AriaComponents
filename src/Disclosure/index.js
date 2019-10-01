@@ -126,6 +126,14 @@ export default class Disclosure extends AriaComponent {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
     this.controller.setAttribute('aria-controls', this.target.id);
 
+    // Ensure we can TAB to the controllers.
+    if (
+      ! ['A', 'BUTTON'].includes(this.controller.nodeName)
+      || null === this.controller.getAttribute('tabindex')
+    ) {
+      this.controller.setAttribute('tabindex', '0');
+    }
+
     /*
      * Establishes a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
