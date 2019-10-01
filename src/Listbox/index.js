@@ -169,7 +169,7 @@ export default class ListBox extends AriaComponent {
      *
      * @see this.stateWasUpdated()
      */
-    this.target.setAttribute('tabindex', '0');
+    this.target.setAttribute('tabindex', '-1');
 
     // Add event listeners.
     this.controller.addEventListener('keyup', this.handleControllerKeyup);
