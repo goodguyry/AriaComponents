@@ -5,7 +5,7 @@ const { click } = events;
 
 // Set up our document body
 document.body.innerHTML = `
-  <button>Open</button>
+  <h3 class="button">Open</h3>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a href="example.com"></a></li>
@@ -16,7 +16,7 @@ document.body.innerHTML = `
   </div>
 `;
 
-const controller = document.querySelector('button');
+const controller = document.querySelector('.button');
 const target = document.querySelector('.wrapper');
 
 let disclosure;
@@ -40,6 +40,7 @@ describe('Disclosure with default configuration', () => {
       () => {
         expect(controller.getAttribute('aria-expanded')).toEqual('false');
         expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
+        expect(controller.getAttribute('tabindex')).toEqual('0');
         // The test markup isn't detatched, so this doesn't apply.
         expect(controller.getAttribute('aria-own')).toBeFalsy();
       });
