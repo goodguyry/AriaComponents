@@ -46,7 +46,7 @@ describe('Disclosure with default configuration', () => {
         expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
         expect(controller.getAttribute('tabindex')).toEqual('0');
         // The test markup isn't detatched, so this doesn't apply.
-        expect(controller.getAttribute('aria-own')).toBeFalsy();
+        expect(controller.getAttribute('aria-owns')).toBeFalsy();
       });
 
     it('Should add the correct attributes to the disclosure target',
@@ -91,6 +91,21 @@ describe('Disclosure with default configuration', () => {
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
     });
+  });
+
+  it('Should remove all DOM attributes when destroyed', () => {
+    disclosure.destroy();
+
+    expect(controller.getAttribute('aria-expanded')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toBeNull();
+    expect(controller.getAttribute('tabindex')).toBeNull();
+    // The test markup isn't detatched, so this doesn't apply.
+    expect(controller.getAttribute('aria-owns')).toBeNull();
+
+    expect(target.getAttribute('aria-hidden')).toBeNull();
+
+    expect(disclosure.controller.disclosure).toBeUndefined();
+    expect(disclosure.target.disclosure).toBeUndefined();
   });
 });
 
