@@ -100,11 +100,13 @@ describe('Tablist with default configuration', () => {
           expect(child.getAttribute('role')).toEqual('presentation');
         });
 
-        Array.from(tabs.querySelectorAll('a[href]')).forEach((tab, index) => {
+        const tabLinks = tabs.querySelectorAll('a[href]');
+        Array.from(tabLinks).forEach((tab, index) => {
           expect(tab.getAttribute('role')).toEqual('tab');
           expect(tab.getAttribute('aria-selected')).toEqual((0 === index) ? 'true' : null);
           expect(tab.getAttribute('tabindex')).toEqual((0 === index) ? null : '-1');
           expect(tab.id).not.toBeNull();
+          expect(tabLinks[index].getAttribute('aria-controls')).toEqual(panels[index].id);
         });
 
         Array.from(panels).forEach((panel, index) => {
@@ -162,10 +164,12 @@ describe('Tablist with default configuration', () => {
         expect(child.getAttribute('role')).toBeNull();
       });
 
-      Array.from(tabs.querySelectorAll('a[href]')).forEach((tab) => {
+      const tabLinks = tabs.querySelectorAll('a[href]');
+      Array.from(tabLinks).forEach((tab, index) => {
         expect(tab.getAttribute('role')).toBeNull();
         expect(tab.getAttribute('aria-selected')).toBeNull();
         expect(tab.getAttribute('tabindex')).toBeNull();
+        expect(tabLinks[index].getAttribute('aria-controls')).toBeNull();
       });
 
       Array.from(panels).forEach((panel) => {

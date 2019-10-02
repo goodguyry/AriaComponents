@@ -160,6 +160,8 @@ export default class Tablist extends AriaComponent {
         // Set the first tab as selected by default.
         tab.setAttribute('aria-selected', 'true');
       }
+
+      tab.setAttribute('aria-controls', this.panels[index].id);
     });
 
     // Add event listeners.
@@ -379,6 +381,7 @@ export default class Tablist extends AriaComponent {
       tab.removeAttribute('role');
       tab.removeAttribute('aria-selected');
       tab.removeAttribute('tabindex');
+      tab.removeAttribute('aria-controls');
 
       tab.removeEventListener('click', this.handleTabsClick);
       tab.removeEventListener('keydown', this.handleTabsKeydown);
