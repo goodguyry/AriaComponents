@@ -137,6 +137,10 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
+      expect(firstPanel.getAttribute('tabindex')).toEqual('0');
+      expect(secondPanel.getAttribute('tabindex')).toBeNull();
+      expect(thirdPanel.getAttribute('tabindex')).toBeNull();
+
       expect(onStateChange).toHaveBeenCalled();
 
       tablist.switchTo(2);
@@ -151,6 +155,10 @@ describe('Tablist with default configuration', () => {
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toBeNull();
+
+      expect(firstPanel.getAttribute('tabindex')).toBeNull();
+      expect(secondPanel.getAttribute('tabindex')).toBeNull();
+      expect(thirdPanel.getAttribute('tabindex')).toEqual('0');
 
       expect(onStateChange).toHaveBeenCalled();
     });
@@ -175,6 +183,7 @@ describe('Tablist with default configuration', () => {
       Array.from(panels).forEach((panel) => {
         expect(panel.getAttribute('role')).toBeNull();
         expect(panel.getAttribute('aria-hidden')).toBeNull();
+        expect(panel.getAttribute('tabindex')).toBeNull();
 
         const firstChild = panel.querySelector('a[href]');
         expect(firstChild.getAttribute('tabindex')).toBeNull();
@@ -202,6 +211,10 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
+      expect(firstPanel.getAttribute('tabindex')).toEqual('0');
+      expect(secondPanel.getAttribute('tabindex')).toBeNull();
+      expect(thirdPanel.getAttribute('tabindex')).toBeNull();
+
       thirdTab.dispatchEvent(click);
       expect(firstTab.getAttribute('aria-selected')).toBeNull();
       expect(secondTab.getAttribute('aria-selected')).toBeNull();
@@ -214,6 +227,10 @@ describe('Tablist with default configuration', () => {
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toBeNull();
+
+      expect(firstPanel.getAttribute('tabindex')).toBeNull();
+      expect(secondPanel.getAttribute('tabindex')).toBeNull();
+      expect(thirdPanel.getAttribute('tabindex')).toEqual('0');
     });
 
     it('Should handle keyboard evets to and from tabs', () => {
