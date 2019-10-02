@@ -271,6 +271,7 @@ export default class Disclosure extends AriaComponent {
     this.controller.removeAttribute('aria-expanded');
     this.controller.removeAttribute('aria-controls');
     this.controller.removeAttribute('aria-owns');
+    this.controller.removeAttribute('tabindex');
 
     // Remove target attributes.
     this.target.removeAttribute('aria-hidden');
