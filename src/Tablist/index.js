@@ -80,7 +80,7 @@ export default class Tablist extends AriaComponent {
     this.state = { activeIndex: 0 };
 
     // Bind class methods.
-    this.handleTabKeydown = this.handleTabKeydown.bind(this);
+    this.handlePanelKeydown = this.handlePanelKeydown.bind(this);
     this.handleTabsKeydown = this.handleTabsKeydown.bind(this);
     this.handleTabsClick = this.handleTabsClick.bind(this);
     this.switchTo = this.switchTo.bind(this);
@@ -190,7 +190,7 @@ export default class Tablist extends AriaComponent {
       }
 
       // Listen for panel keydown events.
-      panel.addEventListener('keydown', this.handleTabKeydown);
+      panel.addEventListener('keydown', this.handlePanelKeydown);
     });
 
     // Save the active panel's interactive children.
@@ -243,7 +243,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTabKeydown(event) {
+  handlePanelKeydown(event) {
     const { TAB } = keyCodes;
     const { activeIndex } = this.state;
     const { keyCode, shiftKey } = event;
@@ -406,7 +406,7 @@ export default class Tablist extends AriaComponent {
 
       panel.removeEventListener(
         'keydown',
-        this.handleTabKeydown
+        this.handlePanelKeydown
       );
     });
 
