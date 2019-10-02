@@ -238,9 +238,15 @@ describe('Tablist with default configuration', () => {
       const firstPanelChild = firstPanel.querySelector('a[href]');
 
       firstTab.dispatchEvent(keydownTab);
+      expect(document.activeElement).toEqual(firstPanel);
+
+      firstPanel.dispatchEvent(keydownTab);
       expect(document.activeElement).toEqual(firstPanelChild);
 
       firstPanelChild.dispatchEvent(keydownShiftTab);
+      expect(document.activeElement).toEqual(firstPanel);
+
+      firstPanel.dispatchEvent(keydownShiftTab);
       expect(document.activeElement).toEqual(firstTab);
     });
 
