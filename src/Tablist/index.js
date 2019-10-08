@@ -20,6 +20,7 @@ export default class Tablist extends AriaComponent {
    */
   constructor(config) {
     super();
+    this.runs = 0;
 
     // The Tablist element is required to be a UL.
     if ('UL' !== config.tablist.nodeName) {
@@ -246,26 +247,21 @@ export default class Tablist extends AriaComponent {
   handlePanelKeydown(event) {
     const { TAB } = keyCodes;
     const { activeIndex } = this.state;
-    const { keyCode, shiftKey } = event;
+    const { keyCode, shiftKey, target } = event;
     const { activeElement } = document;
+    const [firstChild] = this.interactiveChildren;
 
     if (keyCode === TAB && shiftKey) {
-      // Get the index of the activeElement within the active panel.
-      const focusIndex = this.interactiveChildren.indexOf(activeElement);
-      // Get the tab associated with the active panel via the panel's aria-labelledby attribute.
-      const panelLabelledby = (
-        this.panels[activeIndex].getAttribute('aria-labelledby')
-      );
-      const theTab = document.getElementById(panelLabelledby);
-
-      /*
-       * Ensure navigating with Shift-TAB from the first interactive child of
-       * the active panel returns focus to the active panel's associated tab.
-       */
-      if (0 === focusIndex && null !== theTab) {
+      if (activeElement === this.panels[activeIndex]) {
         event.preventDefault();
-
-        theTab.focus();
+        this.tabs[activeIndex].focus();
+      } else if (activeElement === firstChild) {
+        /*
+         * Ensure navigating with Shift-TAB from the first interactive child of
+         * the active panel returns focus to the active panel.
+         */
+        event.preventDefault();
+        this.panels[activeIndex].focus();
       }
     }
   }
@@ -288,10 +284,10 @@ export default class Tablist extends AriaComponent {
 
     switch (keyCode) {
       /*
-       * Move focus from the active tab to the active panel's first child.
+       * Move focus from the active tab to the active panel.
        */
       case TAB: {
-        if (! shiftKey && hasInteractiveChildren) {
+        if (! shiftKey) {
           event.preventDefault();
 
           this.panels[currentIndex].focus();
