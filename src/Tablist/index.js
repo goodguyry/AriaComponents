@@ -278,6 +278,8 @@ export default class Tablist extends AriaComponent {
       LEFT,
       RIGHT,
       DOWN,
+      HOME,
+      END,
     } = keyCodes;
     const { keyCode, shiftKey, target } = event;
     const currentIndex = this.tabs.indexOf(target);
@@ -326,6 +328,29 @@ export default class Tablist extends AriaComponent {
 
         this.panels[currentIndex].setAttribute('tabindex', '0');
         this.panels[currentIndex].focus();
+
+        break;
+      }
+
+      /*
+       * Select the first Tablist tab.
+       */
+      case HOME: {
+        event.preventDefault();
+        this.switchTo(0);
+        this.tabs[0].focus();
+
+        break;
+      }
+
+      /*
+       * Select the last Tablist tab.
+       */
+      case END: {
+        event.preventDefault();
+        const lastIndex = this.tabs.length - 1;
+        this.switchTo(lastIndex);
+        this.tabs[lastIndex].focus();
 
         break;
       }

@@ -9,6 +9,8 @@ const {
   keydownLeft,
   keydownRight,
   keydownDown,
+  keydownHome,
+  keydownEnd,
 } = events;
 
 // Set up our document body
@@ -282,6 +284,26 @@ describe('Tablist with default configuration', () => {
 
       firstTab.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(thirdTab); // cycle
+      expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
+    });
+
+    it('Should set first element as activedescendant on target HOME key', () => {
+      tablist.switchTo(1);
+
+      secondTab.focus();
+      secondTab.dispatchEvent(keydownHome);
+      expect(document.activeElement).toEqual(firstTab);
+      expect(tablist.getState().activeIndex).toEqual(0);
+      expect(firstTab.getAttribute('aria-selected')).toEqual('true');
+    });
+
+    it('Should set last element as activedescendant on target END key', () => {
+      tablist.switchTo(1);
+
+      secondTab.focus();
+      secondTab.dispatchEvent(keydownEnd);
+      expect(document.activeElement).toEqual(thirdTab);
+      expect(tablist.getState().activeIndex).toEqual(2);
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
     });
 
