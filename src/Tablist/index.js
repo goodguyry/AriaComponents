@@ -2,6 +2,7 @@ import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
 import { setUniqueId } from '../lib/uniqueId';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
+import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import keyCodes from '../lib/keyCodes';
 
 /**
@@ -301,15 +302,17 @@ export default class Tablist extends AriaComponent {
        */
       case LEFT:
       case RIGHT: {
-        const newIndex = (LEFT === keyCode)
-          ? currentIndex - 1
-          : currentIndex + 1;
+        const newItem = nextPreviousFromLeftRight(
+          keyCode,
+          target,
+          this.tabs
+        );
 
-        if (undefined !== this.tabs[newIndex]) {
+        if (newItem) {
           event.preventDefault();
 
-          this.switchTo(newIndex);
-          this.tabs[newIndex].focus();
+          this.switchTo(this.tabs.indexOf(newItem));
+          newItem.focus();
         }
 
         break;

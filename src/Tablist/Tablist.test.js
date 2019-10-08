@@ -269,8 +269,8 @@ describe('Tablist with default configuration', () => {
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
       thirdTab.dispatchEvent(keydownRight);
-      expect(document.activeElement).toEqual(thirdTab); // don't cycle
-      expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
+      expect(document.activeElement).toEqual(firstTab); // cycle
+      expect(firstTab.getAttribute('aria-selected')).toEqual('true');
 
       thirdTab.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(secondTab);
@@ -281,8 +281,8 @@ describe('Tablist with default configuration', () => {
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
 
       firstTab.dispatchEvent(keydownLeft);
-      expect(document.activeElement).toEqual(firstTab); // don't cycle
-      expect(firstTab.getAttribute('aria-selected')).toEqual('true');
+      expect(document.activeElement).toEqual(thirdTab); // cycle
+      expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
     });
 
     it('Should focus the panel from tab when down arrow pressed', () => {
