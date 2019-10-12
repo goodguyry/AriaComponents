@@ -371,7 +371,10 @@ export default class MenuBar extends AriaComponent {
       link.parentElement.removeAttribute('aria-posinset');
 
       // Remove event listeners.
-      link.parentElement.removeEventListener('keydown', this.handleMenuBarKeydown);
+      link.parentElement.removeEventListener(
+        'keydown',
+        this.handleMenuBarKeydown
+      );
       link.removeEventListener('click', this.handleMenuBarClick);
     });
 
