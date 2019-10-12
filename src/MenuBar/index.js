@@ -259,7 +259,13 @@ export default class MenuBar extends AriaComponent {
    * @param {Object} event The event object.
    */
   handleMenuBarKeydown(event) {
-    const { LEFT, RIGHT, DOWN } = keyCodes;
+    const {
+      LEFT,
+      RIGHT,
+      DOWN,
+      HOME,
+      END,
+    } = keyCodes;
     const { keyCode } = event;
     const { menubarItem, popup } = this.state;
 
@@ -301,6 +307,31 @@ export default class MenuBar extends AriaComponent {
 
           popup.firstChild.focus();
         }
+
+        break;
+      }
+
+      /*
+       * Select the first MenuBar item.
+       */
+      case HOME: {
+        event.preventDefault();
+        const [firstItem] = this.menuBarItems;
+        this.setState({
+          menubarItem: firstItem,
+        });
+
+        break;
+      }
+
+      /*
+       * Select the last MenuBar item.
+       */
+      case END: {
+        event.preventDefault();
+        this.setState({
+          menubarItem: this.menuBarItems[this.lastIndex],
+        });
 
         break;
       }
