@@ -175,9 +175,10 @@ export default class Menu extends AriaComponent {
       }
     });
 
-    // Save the menu's first item.
+    // Save the menu's first and last items.
     const [firstItem] = this.menuItems;
-    Object.assign(this, { firstItem });
+    const lastItem = this.menuItems[this.menuItems.length - 1];
+    Object.assign(this, { firstItem, lastItem });
 
     // Run {initCallback}
     this.onInit.call(this);
@@ -195,6 +196,8 @@ export default class Menu extends AriaComponent {
       DOWN,
       LEFT,
       RIGHT,
+      HOME,
+      END,
     } = keyCodes;
     const { activeElement } = document;
     const activeDescendant = (this.menu.contains(activeElement)
@@ -219,6 +222,28 @@ export default class Menu extends AriaComponent {
 
           nextItem.focus();
         }
+
+        break;
+      }
+
+      /*
+       * Select the first Menu item.
+       */
+      case HOME: {
+        event.preventDefault();
+
+        this.firstItem.focus();
+
+        break;
+      }
+
+      /*
+       * Select the last Menu item.
+       */
+      case END: {
+        event.preventDefault();
+
+        this.lastItem.focus();
 
         break;
       }

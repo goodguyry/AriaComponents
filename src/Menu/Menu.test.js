@@ -12,6 +12,8 @@ const {
   keydownUp,
   keydownRight,
   keydownLeft,
+  keydownEnd,
+  keydownHome,
 } = events;
 
 // Set up our document body
@@ -113,6 +115,20 @@ describe('MenuItem correctly responds to events', () => {
     () => {
       domElements.listLastItem.focus();
       domElements.listLastItem.dispatchEvent(keydownDown);
+      expect(document.activeElement).toEqual(domElements.listFirstItem);
+    });
+
+  it('Should move to the last list item with end key',
+    () => {
+      domElements.listSecondItem.focus();
+      domElements.listSecondItem.dispatchEvent(keydownEnd);
+      expect(document.activeElement).toEqual(domElements.listLastItem);
+    });
+
+  it('Should move to the first list item with home key',
+    () => {
+      domElements.listThirdItem.focus();
+      domElements.listThirdItem.dispatchEvent(keydownHome);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
     });
 
