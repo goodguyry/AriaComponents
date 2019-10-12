@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Disclosure } from 'root';
 import events from 'root/utils/events';
 
@@ -9,19 +10,18 @@ const {
 
 // Set up our document body
 document.body.innerHTML = `
-  <h3 class="button">Open</h3>
-  <div class="wrapper" id="dropdown">
-    <ul>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
-    </ul>
-  </div>
+  <dl>
+    <dt class="question">
+      <button class="button">What is Lorem Ipsum?</button>
+    </dt>
+    <dd class="answer">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </dd>
+  </dl>
 `;
 
 const controller = document.querySelector('.button');
-const target = document.querySelector('.wrapper');
+const target = document.querySelector('.answer');
 
 let disclosure;
 
@@ -43,10 +43,9 @@ describe('Disclosure with default configuration', () => {
     it('Should add the correct attributes to the disclosure controller',
       () => {
         expect(controller.getAttribute('aria-expanded')).toEqual('false');
-        expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
-        expect(controller.getAttribute('tabindex')).toEqual('0');
-        // The test markup isn't detatched, so this doesn't apply.
-        expect(controller.getAttribute('aria-owns')).toBeFalsy();
+        expect(controller.getAttribute('aria-controls')).toEqual(target.id);
+        expect(controller.getAttribute('tabindex')).toBeNull();
+        expect(controller.getAttribute('aria-owns')).toEqual(target.id);
       });
 
     it('Should add the correct attributes to the disclosure target',
@@ -79,6 +78,9 @@ describe('Disclosure with default configuration', () => {
     });
 
     it('Should update attributes when Return or Spacebar are pressed', () => {
+      // Ensure the disclosure is closed.
+      disclosure.setState({ expanded: false });
+
       // Return to open.
       controller.dispatchEvent(keydownReturn);
       expect(disclosure.getState().expanded).toBeTruthy();

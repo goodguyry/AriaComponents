@@ -130,13 +130,16 @@ export default class Disclosure extends AriaComponent {
 
     // Patch button role and behavior for non-button controller.
     if ('BUTTON' !== this.controller.nodeName) {
+      /*
+       * Some elements semantics conflict with the button role. You really
+       * should just use a button.
+       */
       this.controller.setAttribute('role', 'button');
-      this.controller.addEventListener('keydown', this.handleControllerKeydown);
 
       // Ensure we can TAB to the controller if it's not a button or anchor.
       if (
         'A' !== this.controller.nodeName
-        || null === this.controller.getAttribute('tabindex')
+        && null === this.controller.getAttribute('tabindex')
       ) {
         this.controller.setAttribute('tabindex', '0');
       }
@@ -161,6 +164,7 @@ export default class Disclosure extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
+    this.controller.addEventListener('keydown', this.handleControllerKeydown);
     if (! this.allowOutsideClick) {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
@@ -220,7 +224,6 @@ export default class Disclosure extends AriaComponent {
     const { keyCode } = event;
 
     if ([SPACE, RETURN].includes(keyCode)) {
-      event.preventDefault();
       /*
        * Treat the Spacebar and Return keys as clicks in case the controller is
        * not a <button>.
