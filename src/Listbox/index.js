@@ -67,20 +67,11 @@ export default class ListBox extends AriaComponent {
     // Merge config options with defaults.
     Object.assign(this, options, config);
 
-    /**
-     * Save search characters
-     *
-     * @type {string}
-     */
-    this.searchString = '';
-
     // Bind class methods.
     this.handleControllerKeyup = this.handleControllerKeyup.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleTargetClicks = this.handleTargetClicks.bind(this);
     this.handleTargetBlur = this.handleTargetBlur.bind(this);
-    this.typeAhead = this.typeAhead.bind(this);
-    this.clearSearchString = this.clearSearchString.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.popupStateWasUpdated = this.popupStateWasUpdated.bind(this);
     this.show = this.show.bind(this);
@@ -363,7 +354,7 @@ export default class ListBox extends AriaComponent {
        * collecting key presses.
        */
       default: {
-        const itemToFocus = this.typeAhead(keyCode);
+        const itemToFocus = this.typeAhead(keyCode, this.options);
         if (null !== itemToFocus) {
           this.setState({ activeDescendant: itemToFocus });
         }
@@ -413,46 +404,6 @@ export default class ListBox extends AriaComponent {
         this.target.scrollTop = offsetTop;
       }
     }
-  }
-
-  /**
-   * Select the Listbox option that matches the search string. If a match is
-   * found, return it so that it can be selected.
-   *
-   * @param {Number} key A keyCode value.
-   * @return {HTMLElement|null} The matched element or null if no match.
-   */
-  typeAhead(key) {
-    const character = String.fromCharCode(key);
-
-    // Append the new character to the searchString
-    this.searchString += character;
-    this.clearSearchString();
-
-    // Find the option by matching the search string to the option text.
-    const match = Array.prototype
-      .slice.call(this.options)
-      .filter((option) => {
-        const optionText = option.textContent.toLowerCase();
-        return 0 === optionText.indexOf(this.searchString.toLowerCase());
-      });
-
-    return match.length ? match[0] : null;
-  }
-
-  /**
-   * Clear the typed string after timeout.
-   */
-  clearSearchString() {
-    if (this.keyClear) {
-      clearTimeout(this.keyClear);
-      this.keyClear = null;
-    }
-
-    this.keyClear = setTimeout(() => {
-      this.searchString = '';
-      this.keyClear = null;
-    }, 500);
   }
 
   /**
