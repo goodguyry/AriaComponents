@@ -192,23 +192,17 @@ describe('Listbox with default configuration', () => {
 
     it('Should select the correct option by keyword search', () => {
       // Typing 'El Paso'
-      const typeE = typeCharacter('e');
-      const typeL = typeCharacter('l');
-
-      // Typing 'Hartford'
-      const typeH = typeCharacter('h');
-      const typeA = typeCharacter('a');
-
-      target.dispatchEvent(typeE);
-      target.dispatchEvent(typeL);
+      target.dispatchEvent(typeCharacter('e'));
+      target.dispatchEvent(typeCharacter('l'));
 
       expect(listbox.getState().activeDescendant).toEqual(target.children[4]);
       expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
 
       // Make sure the search string it cleared as expected.
       setTimeout(() => {
-        target.dispatchEvent(typeH);
-        target.dispatchEvent(typeA);
+        // Typing 'Hartford'
+        target.dispatchEvent(typeCharacter('h'));
+        target.dispatchEvent(typeCharacter('a'));
 
         expect(listbox.getState().activeDescendant).toEqual(target.children[7]);
         expect(target.children[7].getAttribute('aria-selected')).toEqual('true');
