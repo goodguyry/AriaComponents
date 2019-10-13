@@ -336,9 +336,18 @@ export default class MenuBar extends AriaComponent {
         break;
       }
 
-      // fuggitaboutit.
-      default:
+      /*
+       * Select the MenuBar item based on a search string created by
+       * collecting key presses.
+       */
+      default: {
+        const itemToFocus = this.typeAhead(keyCode, this.menuBarItems);
+        if (null !== itemToFocus) {
+          this.setState({ menubarItem: itemToFocus });
+        }
+
         break;
+      }
     }
   }
 

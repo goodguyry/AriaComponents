@@ -69,6 +69,10 @@ const domElements = {
   sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
 };
 
+function typeCharacter(character) {
+  return new KeyboardEvent('keydown', { keyCode: character.charCodeAt(), bubbles: true });
+}
+
 // Mock functions.
 const onInit = jest.fn();
 const onStateChange = jest.fn();
@@ -178,6 +182,27 @@ describe('Menu correctly responds to events', () => {
     domElements.sublistTwoThirdItem.dispatchEvent(keydownRight);
     expect(document.activeElement).toEqual(domElements.listFourthItem);
     expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
+  });
+
+  it('Should select the correct option by keyword search', () => {
+    menuBar.setState({
+      menubarItem: domElements.listSecondItem,
+    });
+
+    // Typing 'Pie'
+    domElements.listSecondItem.dispatchEvent(typeCharacter('p'));
+    domElements.listSecondItem.dispatchEvent(typeCharacter('i'));
+
+    expect(document.activeElement).toEqual(domElements.listFourthItem);
+
+    // Make sure the search string it cleared as expected.
+    setTimeout(() => {
+      // Typing 'Fruit'
+      domElements.listFourthItem.dispatchEvent(typeCharacter('f'));
+      domElements.listFourthItem.dispatchEvent(typeCharacter('r'));
+
+      expect(document.activeElement).toEqual(domElements.listFirstItem);
+    }, 500);
   });
 });
 
