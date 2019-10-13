@@ -1,5 +1,5 @@
 import { Dialog, Popup } from 'root';
-import events from 'root/utils/events';
+import { events } from 'root/utils/events';
 
 const {
   click,

@@ -89,4 +89,20 @@ const events = {
   ),
 };
 
-export default events;
+/**
+ * Create a KeyboardEvent for typing a character.
+ *
+ * @param  {string} character The character to type.
+ * @return {KeyboardEvent}
+ */
+function typeCharacter(character) {
+  return new KeyboardEvent(
+    'keydown',
+    { keyCode: character.charCodeAt(), bubbles: true }
+  );
+}
+
+export {
+  events,
+  typeCharacter,
+};

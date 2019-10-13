@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { MenuBar, Popup, Menu } from 'root';
-import events from 'root/utils/events';
+import { events, typeCharacter } from 'root/utils/events';
 
 // Create the help text elements for both MenuBar and Menu.
 const ariaDescribedbyTestMarkup = Array.from(new Set([
@@ -68,10 +68,6 @@ const domElements = {
   sublistTwoThirdItem: document.querySelector('.sublist2-third-item'),
   sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
 };
-
-function typeCharacter(character) {
-  return new KeyboardEvent('keydown', { keyCode: character.charCodeAt(), bubbles: true });
-}
 
 // Mock functions.
 const onInit = jest.fn();

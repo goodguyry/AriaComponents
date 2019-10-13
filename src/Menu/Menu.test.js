@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Menu } from 'root';
-import events from 'root/utils/events';
+import { events, typeCharacter } from 'root/utils/events';
 
 // Create the help text elements.
 const ariaDescribedbyTestMarkup = Menu.getHelpIds().reduce((acc, id) => (
@@ -66,10 +66,6 @@ const domElements = {
   sublistTwoThirdItem: document.querySelector('.sublist2-third-item'),
   sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
 };
-
-function typeCharacter(character) {
-  return new KeyboardEvent('keydown', { keyCode: character.charCodeAt(), bubbles: true });
-}
 
 // Mock functions.
 const onInit = jest.fn();

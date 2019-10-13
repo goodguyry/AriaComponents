@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Listbox, Popup } from 'root';
-import events from 'root/utils/events';
+import { events, typeCharacter } from 'root/utils/events';
 
 const {
   click,
@@ -36,10 +36,6 @@ const target = document.querySelector('ul');
 const listItems = Array.from(target.children);
 
 let listbox = {};
-
-function typeCharacter(character) {
-  return new KeyboardEvent('keydown', { keyCode: character.charCodeAt(), bubbles: true });
-}
 
 // Mock functions.
 const onStateChange = jest.fn();
