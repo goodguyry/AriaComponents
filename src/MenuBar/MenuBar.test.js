@@ -20,26 +20,30 @@ const {
 
 // Set up our document body
 document.body.innerHTML = `
-  <ul class="menubar">
-    <li><a class="first-item" href="example.com"></a>
-      <ul class="sublist1">
-        <li><a class="sublist1-first-item" href="example.com"></a></li>
-        <li><a class="sublist1-second-item" href="example.com"></a></li>
-        <li><a class="sublist1-last-item" href="example.com"></a></li>
-      </ul>
-    </li>
-    <li><a class="second-item" href="example.com"></a></li>
-    <li><a class="third-item" href="example.com"></a>
-      <ul class="sublist2">
-        <li><a class="sublist2-first-item" href="example.com"></a></li>
-        <li><a class="sublist2-second-item" href="example.com"></a></li>
-        <li><a class="sublist2-third-item" href="example.com"></a></li>
-        <li><a class="sublist2-last-item" href="example.com"></a></li>
-      </ul>
-    </li>
-    <li><a class="fourth-item" href="example.com"></a></li>
-    <li><a class="last-item" href="example.com"></a></li>
-  </ul>
+  <nav class="nav" aria-label="Menu Class Example">
+    <ul class="menubar">
+      <li>
+        <a class="first-item" href="example.com">Fruit</a>
+        <ul class="sublist1">
+          <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
+          <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
+          <li><a class="sublist1-last-item" href="example.com">Cantaloupe</a></li>
+        </ul>
+      </li>
+      <li><a class="second-item" href="example.com">Cake</a></li>
+      <li>
+        <a class="third-item" href="example.com">Vegetables</a>
+        <ul class="sublist2">
+          <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
+          <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>
+          <li><a class="sublist2-third-item" href="example.com">Brussel Sprouts</a></li>
+          <li><a class="sublist2-last-item" href="example.com">Asparagus</a></li>
+        </ul>
+      </li>
+      <li><a class="fourth-item" href="example.com">Pie</a></li>
+      <li><a class="last-item" href="example.com">Ice Cream</a></li>
+    </ul>
+  </nav>
 
   ${ariaDescribedbyTestMarkup}
 `;

@@ -18,26 +18,30 @@ const {
 
 // Set up our document body
 document.body.innerHTML = `
-  <ul class="menu">
-    <li><a class="first-child" href="example.com"></a>
-      <ul class="sublist1">
-        <li><a class="sublist1-first-child" href="example.com"></a></li>
-        <li><a class="sublist1-second-child" href="example.com"></a></li>
-        <li><a class="sublist1-last-child" href="example.com"></a></li>
-      </ul>
-    </li>
-    <li><a class="second-child" href="example.com"></a></li>
-    <li><a class="third-child" href="example.com"></a>
-      <ul class="sublist2">
-        <li><a class="sublist2-first-child" href="example.com"></a></li>
-        <li><a class="sublist2-second-child" href="example.com"></a></li>
-        <li><a class="sublist2-third-child" href="example.com"></a></li>
-        <li><a class="sublist2-last-child" href="example.com"></a></li>
-      </ul>
-    </li>
-    <li><a class="fourth-child" href="example.com"></a></li>
-    <li><a class="last-child" href="example.com"></a></li>
-  </ul>
+  <nav class="nav" aria-label="Menu Class Example">
+    <ul class="menu">
+      <li>
+        <a class="first-item" href="example.com">Fruit</a>
+        <ul class="sublist1">
+          <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
+          <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
+          <li><a class="sublist1-last-item" href="example.com">Cantaloupe</a></li>
+        </ul>
+      </li>
+      <li><a class="second-item" href="example.com">Cake</a></li>
+      <li>
+        <a class="third-item" href="example.com">Vegetables</a>
+        <ul class="sublist2">
+          <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
+          <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>
+          <li><a class="sublist2-third-item" href="example.com">Brussel Sprouts</a></li>
+          <li><a class="sublist2-last-item" href="example.com">Asparagus</a></li>
+        </ul>
+      </li>
+      <li><a class="fourth-item" href="example.com">Pie</a></li>
+      <li><a class="last-item" href="example.com">Ice Cream</a></li>
+    </ul>
+  </nav>
 
   ${ariaDescribedbyTestMarkup}
 `;
@@ -45,22 +49,22 @@ document.body.innerHTML = `
 // Collect references to DOM elements.
 const domElements = {
   list: document.querySelector('.menu'),
-  listFirstItem: document.querySelector('.first-child'),
-  listSecondItem: document.querySelector('.second-child'),
-  listThirdItem: document.querySelector('.third-child'),
-  listFourthItem: document.querySelector('.fourth-child'),
-  listLastItem: document.querySelector('.last-child'),
+  listFirstItem: document.querySelector('.first-item'),
+  listSecondItem: document.querySelector('.second-item'),
+  listThirdItem: document.querySelector('.third-item'),
+  listFourthItem: document.querySelector('.fourth-item'),
+  listLastItem: document.querySelector('.last-item'),
 
   sublistOne: document.querySelector('.sublist1'),
-  sublistOneFirstItem: document.querySelector('.sublist1-first-child'),
-  sublistOneSecondItem: document.querySelector('.sublist1-second-child'),
-  sublistOneLastItem: document.querySelector('.sublist1-last-child'),
+  sublistOneFirstItem: document.querySelector('.sublist1-first-item'),
+  sublistOneSecondItem: document.querySelector('.sublist1-second-item'),
+  sublistOneLastItem: document.querySelector('.sublist1-last-item'),
 
   sublistTwo: document.querySelector('.sublist2'),
-  sublistTwoFirstItem: document.querySelector('.sublist2-first-child'),
-  sublistTwoSecondItem: document.querySelector('.sublist2-second-child'),
-  sublistTwoThirdItem: document.querySelector('.sublist2-third-child'),
-  sublistTwoLastItem: document.querySelector('.sublist2-last-child'),
+  sublistTwoFirstItem: document.querySelector('.sublist2-first-item'),
+  sublistTwoSecondItem: document.querySelector('.sublist2-second-item'),
+  sublistTwoThirdItem: document.querySelector('.sublist2-third-item'),
+  sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
 };
 
 // Mock functions.
@@ -78,7 +82,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(menu).toBeInstanceOf(Menu);
     expect(domElements.list.menu).toBeInstanceOf(Menu);
 
-    expect(menu.firstItem.className).toEqual('first-child');
+    expect(menu.firstItem.className).toEqual('first-item');
 
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
