@@ -279,8 +279,16 @@ export default class Menu extends AriaComponent {
         break;
       }
 
-      // fuggitaboutit.
+      /*
+       * Select the Menu item based on a search string created by
+       * collecting key presses.
+       */
       default: {
+        const itemToFocus = this.typeAhead(keyCode, this.menuItems);
+        if (null !== itemToFocus) {
+          itemToFocus.focus();
+        }
+
         break;
       }
     }

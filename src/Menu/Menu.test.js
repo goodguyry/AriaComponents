@@ -67,6 +67,10 @@ const domElements = {
   sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
 };
 
+function typeCharacter(character) {
+  return new KeyboardEvent('keydown', { keyCode: character.charCodeAt(), bubbles: true });
+}
+
 // Mock functions.
 const onInit = jest.fn();
 const onDestroy = jest.fn();
@@ -163,6 +167,26 @@ describe('MenuItem correctly responds to events', () => {
       domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listThirdItem);
     });
+
+  it('Should select the correct option by keyword search', () => {
+    domElements.sublistTwoLastItem.focus();
+
+    // Typing 'Broccoli'
+    domElements.sublistTwoLastItem.dispatchEvent(typeCharacter('b'));
+    domElements.sublistTwoLastItem.dispatchEvent(typeCharacter('r'));
+    domElements.sublistTwoLastItem.dispatchEvent(typeCharacter('o'));
+
+    expect(document.activeElement).toEqual(domElements.sublistTwoSecondItem);
+
+    // Make sure the search string it cleared as expected.
+    setTimeout(() => {
+      // Typing 'Asparagus'
+      domElements.sublistTwoSecondItem.dispatchEvent(typeCharacter('a'));
+      domElements.sublistTwoSecondItem.dispatchEvent(typeCharacter('s'));
+
+      expect(document.activeElement).toEqual(domElements.sublistTwoLastItem);
+    }, 500);
+  });
 
   // Down: When focus is on a menuitem that does not have a submenu, activates the menuitem and closes the menu.
 });
