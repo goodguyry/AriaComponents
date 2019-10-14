@@ -33,7 +33,6 @@ export default class AriaComponent {
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
     this.typeAhead = this.typeAhead.bind(this);
-    this.clearSearchString = this.clearSearchString.bind(this);
   }
 
   /**
@@ -86,7 +85,17 @@ export default class AriaComponent {
 
     // Append the new character to the searchString
     this.searchString += character;
-    this.clearSearchString();
+
+    if (this.keyClear) {
+      clearTimeout(this.keyClear);
+      this.keyClear = null;
+    }
+
+    // Clear the typed string after timeout.
+    this.keyClear = setTimeout(() => {
+      this.searchString = '';
+      this.keyClear = null;
+    }, 500);
 
     // Find the item by matching the search string to the item text.
     const match = items.filter((item) => {
@@ -95,20 +104,5 @@ export default class AriaComponent {
     });
 
     return match.length ? match[0] : null;
-  }
-
-  /**
-   * Clear the typed string after timeout.
-   */
-  clearSearchString() {
-    if (this.keyClear) {
-      clearTimeout(this.keyClear);
-      this.keyClear = null;
-    }
-
-    this.keyClear = setTimeout(() => {
-      this.searchString = '';
-      this.keyClear = null;
-    }, 500);
   }
 }
