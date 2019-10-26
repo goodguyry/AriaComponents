@@ -180,6 +180,16 @@ describe('Menu correctly responds to events', () => {
     expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
   });
 
+  it('Should close the submenu on left arrow key on a menu item with no parent menu', () => {
+    menuBar.setState({
+      menubarItem: domElements.listThirdItem,
+    });
+    domElements.sublistTwoThirdItem.focus();
+    domElements.sublistTwoThirdItem.dispatchEvent(keydownLeft);
+    expect(document.activeElement).toEqual(domElements.listSecondItem);
+    expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
+  });
+
   it('Should select the correct option by keyword search', () => {
     menuBar.setState({
       menubarItem: domElements.listSecondItem,
