@@ -269,10 +269,13 @@ export default class Menu extends AriaComponent {
        * Move up to the list's previous sibling, if present.
        */
       case LEFT: {
-        if (undefined !== this.previousSibling) {
-          event.stopPropagation();
+        if (
+          undefined !== this.previousSibling
+          && ! this.previousSibling.hasAttribute('aria-haspopup')
+        ) {
+          // The previous sibling is not a Popup.
           event.preventDefault();
-
+          event.stopPropagation();
           this.previousSibling.focus();
         }
 

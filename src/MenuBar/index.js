@@ -239,12 +239,13 @@ export default class MenuBar extends AriaComponent {
    * @param {Object} state The component state.
    */
   stateWasUpdated({ menubarItem }) {
-    // Add the current popup (or false) to state.
     const popup = isInstanceOf(menubarItem.popup, Popup)
       ? menubarItem.popup
       : false;
 
+    // Add the current popup (or false) to state.
     Object.assign(this.state, { popup });
+
     rovingTabIndex(this.menuBarItems, menubarItem);
 
     menubarItem.focus();
@@ -284,6 +285,11 @@ export default class MenuBar extends AriaComponent {
         if (nextItem) {
           event.stopPropagation();
           event.preventDefault();
+
+          // Close the popup.
+          if (popup) {
+            popup.setState({ expanded: false });
+          }
 
           this.setState({
             menubarItem: nextItem,
