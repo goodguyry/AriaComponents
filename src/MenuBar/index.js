@@ -16,6 +16,18 @@ import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
  */
 export default class MenuBar extends AriaComponent {
   /**
+   * Save the menuBar item's popup, if it exists.
+   *
+   * @param {HTMLElement} menubarItem The current menubarItem from state.
+   * @return {Popup|Boolean} The menubarItem's popup, or false if none.
+   */
+  static getPopupFromMenubarItem(menubarItem) {
+    return isInstanceOf(menubarItem.popup, Popup)
+      ? menubarItem.popup
+      : false;
+  }
+
+  /**
    * HTML IDs for elements containing help text
    *
    * @return {array}
@@ -191,17 +203,6 @@ export default class MenuBar extends AriaComponent {
      */
     this.lastIndex = (this.menuLength - 1);
 
-    /**
-     * Set initial state.
-     *
-     * @type {object}
-     */
-    const [menubarItem] = this.menuBarItems;
-    this.state = {
-      menubarItem,
-      popup: false,
-    };
-
     // Initialize popups for nested lists.
     this.popups = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
@@ -226,6 +227,17 @@ export default class MenuBar extends AriaComponent {
       return acc;
     }, []);
 
+    /**
+     * Set initial state.
+     *
+     * @type {object}
+     */
+    const [menubarItem] = this.menuBarItems;
+    this.state = {
+      menubarItem,
+      popup: this.constructor.getPopupFromMenubarItem(menubarItem),
+    };
+
     // Set up initial tabindex.
     rovingTabIndex(this.menuBarItems, menubarItem);
 
@@ -239,9 +251,7 @@ export default class MenuBar extends AriaComponent {
    * @param {Object} state The component state.
    */
   stateWasUpdated({ menubarItem }) {
-    const popup = isInstanceOf(menubarItem.popup, Popup)
-      ? menubarItem.popup
-      : false;
+    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
 
     // Add the current popup (or false) to state.
     Object.assign(this.state, { popup });
@@ -266,6 +276,8 @@ export default class MenuBar extends AriaComponent {
       DOWN,
       HOME,
       END,
+      SPACE,
+      RETURN,
     } = keyCodes;
     const { keyCode } = event;
     const { menubarItem, popup } = this.state;
@@ -302,6 +314,8 @@ export default class MenuBar extends AriaComponent {
       /*
        * Open the popup if it exists and is not expanded.
        */
+      case SPACE:
+      case RETURN:
       case DOWN: {
         if (popup) {
           event.stopPropagation();

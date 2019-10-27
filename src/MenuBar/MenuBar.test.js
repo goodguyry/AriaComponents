@@ -16,6 +16,8 @@ const {
   keydownLeft,
   keydownEnd,
   keydownHome,
+  keydownSpace,
+  keydownReturn,
 } = events;
 
 // Set up our document body
@@ -168,6 +170,22 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(domElements.sublistOneFirstItem);
       expect(onPopupStateChange).toHaveBeenCalled();
+    });
+
+  it('Should move focus to the first popup child with spacebar from Menu bar',
+    () => {
+      domElements.listFirstItem.focus();
+      domElements.listFirstItem.dispatchEvent(keydownSpace);
+      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstChild);
+      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
+    });
+
+  it('Should move focus to the first popup child with return key from Menu bar',
+    () => {
+      domElements.listFirstItem.focus();
+      domElements.listFirstItem.dispatchEvent(keydownReturn);
+      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstChild);
+      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
     });
 
   it('Should close the submenu on right arrow key on a menu item with no submenu', () => {
