@@ -68,6 +68,7 @@ export default class ListBox extends AriaComponent {
     Object.assign(this, options, config);
 
     // Bind class methods.
+    this.preventWindowScroll = this.preventWindowScroll.bind(this);
     this.handleControllerKeyup = this.handleControllerKeyup.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleTargetClicks = this.handleTargetClicks.bind(this);
@@ -169,14 +170,7 @@ export default class ListBox extends AriaComponent {
     this.target.addEventListener('blur', this.handleTargetBlur);
 
     // Prevent scrolling when using UP/DOWN arrows on the button
-    window.addEventListener('keydown', (event) => {
-      const { UP, DOWN } = keyCodes;
-      const { target: keydownTarget, keyCode } = event;
-
-      if (keydownTarget === this.target && [UP, DOWN].includes(keyCode)) {
-        event.preventDefault();
-      }
-    });
+    window.addEventListener('keydown', this.preventWindowScroll);
 
     // Run {initCallback}
     this.onInit.call(this);
@@ -255,6 +249,20 @@ export default class ListBox extends AriaComponent {
       if (this.target.contains(document.activeElement)) {
         this.controller.focus();
       }
+    }
+  }
+
+  /**
+   * Prevent the page from scrolling when the arrow keys are used.
+   *
+   * @param {Event} event The event object.
+   */
+  preventWindowScroll(event) {
+    const { UP, DOWN } = keyCodes;
+    const { target: keydownTarget, keyCode } = event;
+
+    if (keydownTarget === this.target && [UP, DOWN].includes(keyCode)) {
+      event.preventDefault();
     }
   }
 
@@ -414,7 +422,7 @@ export default class ListBox extends AriaComponent {
     delete this.controller.listbox;
     delete this.target.listbox;
 
-    // Remvoe the role attribute from each of the options.
+    // Remove the role attribute from each of the options.
     this.options.forEach((listItem) => {
       listItem.removeAttribute('role');
     });
@@ -426,21 +434,12 @@ export default class ListBox extends AriaComponent {
     this.target.removeAttribute('role');
     this.target.removeAttribute('tabindex');
 
-    // Add event listeners.
+    // Remove event listeners.
     this.controller.removeEventListener('keyup', this.handleControllerKeyup);
     this.target.removeEventListener('keydown', this.handleTargetKeydown);
     this.target.removeEventListener('click', this.handleTargetClicks);
     this.target.removeEventListener('blur', this.handleTargetBlur);
-
-    // Prevent scrolling when using UP/DOWN arrows on the button
-    window.addEventListener('keydown', (event) => {
-      const { UP, DOWN } = keyCodes;
-      const { target: keydownTarget, keyCode } = event;
-
-      if (keydownTarget === this.controller && [UP, DOWN].includes(keyCode)) {
-        event.preventDefault();
-      }
-    });
+    window.removeEventListener('keydown', this.preventWindowScroll);
 
     // Run {destroyCallback}
     this.onDestroy.call(this);
