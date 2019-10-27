@@ -171,21 +171,12 @@ export default class MenuBar extends AriaComponent {
     missingDescribedByWarning(Menu.getHelpIds());
 
     /*
-     * Set menubar item attributes.
-     */
-    this.menuBarChildren.forEach((item, index) => {
-      // Add size and position attributes.
-      item.setAttribute('aria-setsize', this.menuLength);
-      item.setAttribute('aria-posinset', index + 1);
-      item.setAttribute('role', 'menuitem');
-
-      item.addEventListener('keydown', this.handleMenuBarKeydown);
-    });
-
-    /*
      * Set menubar link attributes.
      */
-    this.menuBarItems.forEach((link) => {
+    this.menuBarItems.forEach((link, index) => {
+      // Set the item's role.
+      link.setAttribute('role', 'menuitem');
+
       // Add a reference to the help text.
       link.setAttribute(
         'aria-describedby',
@@ -193,6 +184,14 @@ export default class MenuBar extends AriaComponent {
         'ac-describe-top-level-help ac-describe-submenu-help ac-describe-esc-help'
       );
 
+      // Add size and position attributes.
+      link.setAttribute('aria-setsize', this.menuLength);
+      link.setAttribute('aria-posinset', index + 1);
+
+      // Set menubar item role.
+      link.parentElement.setAttribute('role', 'presentation');
+
+      link.parentElement.addEventListener('keydown', this.handleMenuBarKeydown);
       link.addEventListener('click', this.handleMenuBarClick);
     });
 
@@ -392,12 +391,16 @@ export default class MenuBar extends AriaComponent {
     this.menu.removeAttribute('role');
 
     this.menuBarItems.forEach((link) => {
+      // Remove list item role.
+      link.parentElement.removeAttribute('role');
+
       // Remove reference to the help text.
       link.removeAttribute('aria-describedby');
 
       // Remove size and position attributes.
-      link.parentElement.removeAttribute('aria-setsize');
-      link.parentElement.removeAttribute('aria-posinset');
+      link.removeAttribute('aria-setsize');
+      link.removeAttribute('aria-posinset');
+      link.removeAttribute('role');
 
       // Remove event listeners.
       link.parentElement.removeEventListener(

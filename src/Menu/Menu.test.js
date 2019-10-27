@@ -91,14 +91,15 @@ describe('Menu collects DOM elements and adds attributes', () => {
   });
 
   it('Should set element attributes correctly', () => {
-    expect(domElements.listFirstItem.parentElement.getAttribute('aria-setsize')).toEqual('5');
-    expect(domElements.sublistOneFirstItem.parentElement.getAttribute('aria-setsize')).toEqual('3');
-    expect(domElements.sublistTwoFirstItem.parentElement.getAttribute('aria-setsize')).toEqual('4');
-    expect(domElements.listThirdItem.parentElement.getAttribute('aria-posinset')).toEqual('3');
-    expect(domElements.sublistOneSecondItem.parentElement.getAttribute('aria-posinset')).toEqual('2');
-    expect(domElements.sublistTwoLastItem.parentElement.getAttribute('aria-posinset')).toEqual('4');
+    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toEqual('5');
+    expect(domElements.sublistOneFirstItem.getAttribute('aria-setsize')).toEqual('3');
+    expect(domElements.sublistTwoFirstItem.getAttribute('aria-setsize')).toEqual('4');
+    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
+    expect(domElements.sublistOneSecondItem.getAttribute('aria-posinset')).toEqual('2');
+    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toEqual('4');
 
-    expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('role')).toEqual('menuitem');
+    expect(domElements.sublistTwoSecondItem.getAttribute('role')).toEqual('menuitem');
+    expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('role')).toEqual('presentation');
   });
 
   test('constructor.nextElementIsUl() correctly detects list siblings', () => {
@@ -194,13 +195,16 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.list.menu).toBeUndefined();
     expect(domElements.sublistOne.menu).toBeUndefined();
 
-    expect(domElements.listFirstItem.parentElement.getAttribute('aria-describedby')).toBeNull();
-    expect(domElements.listFirstItem.parentElement.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.sublistOneFirstItem.parentElement.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.sublistTwoFirstItem.parentElement.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.listThirdItem.parentElement.getAttribute('aria-posinset')).toBeNull();
-    expect(domElements.sublistOneSecondItem.parentElement.getAttribute('aria-posinset')).toBeNull();
-    expect(domElements.sublistTwoLastItem.parentElement.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.sublistOneFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.sublistTwoFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistOneSecondItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+
+    expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
+    expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('role')).toBeNull();
 
     expect(onDestroy).toHaveBeenCalled();
   });

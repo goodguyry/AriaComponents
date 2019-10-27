@@ -148,24 +148,24 @@ export default class Menu extends AriaComponent {
     missingDescribedByWarning(Menu.getHelpIds());
 
     /*
-     * Set menu item attributes.
-     */
-    this.listItems.forEach((item, index) => {
-      // Add size and position attributes.
-      item.setAttribute('aria-setsize', this.menuItemsLength);
-      item.setAttribute('aria-posinset', index + 1);
-      item.setAttribute('role', 'menuitem');
-    });
-
-    /*
      * Set menu link attributes and instantiate submenus.
      */
-    this.menuItems.forEach((link) => {
+    this.menuItems.forEach((link, index) => {
+      // Remove semantics from list items.
+      link.parentElement.setAttribute('role', 'presentation');
+
+      // Set the menuitem role.
+      link.setAttribute('role', 'menuitem');
+
       link.setAttribute(
         'aria-describedby',
         // eslint-disable-next-line max-len
         'ac-describe-submenu-explore ac-describe-submenu-help ac-describe-submenu-back ac-describe-esc-help'
       );
+
+      // Add size and position attributes.
+      link.setAttribute('aria-setsize', this.menuItemsLength);
+      link.setAttribute('aria-posinset', index + 1);
 
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
@@ -304,12 +304,16 @@ export default class Menu extends AriaComponent {
     delete this.menu.menu;
 
     this.menuItems.forEach((link) => {
+      // Remove list item role.
+      link.parentElement.removeAttribute('role');
+
+      // Remove menuitem attributes.
+      link.removeAttribute('role');
       link.removeAttribute('aria-describedby');
+      link.removeAttribute('aria-setsize');
+      link.removeAttribute('aria-posinset');
 
-      // Add size and position attributes.
-      link.parentElement.removeAttribute('aria-setsize');
-      link.parentElement.removeAttribute('aria-posinset');
-
+      // Remove event listeners.
       link.removeEventListener('keydown', this.handleListKeydown);
 
       // Destroy nested Menus.
