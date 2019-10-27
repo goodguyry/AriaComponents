@@ -6,6 +6,7 @@ import Popup from './src/Popup';
 import Disclosure from './src/Disclosure';
 import Dialog from './src/Dialog';
 import Tablist from './src/Tablist';
+import MenuButton from './src/MenuButton';
 
 export {
   AriaComponent,
@@ -16,4 +17,5 @@ export {
   Disclosure,
   Dialog,
   Tablist,
+  MenuButton,
 };

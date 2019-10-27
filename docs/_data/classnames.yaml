@@ -6,3 +6,4 @@ menu: { nav: 'menu__nav___thnp5', list: 'menu__list___3cUrD', list-item: 'menu__
 dialog: { dialog: 'dialog__dialog___7PAfy', link: 'dialog__link___C0Tx0', closeButton: 'dialog__closeButton___2neHI', doc-link: 'dialog__doc-link___3Yu20' }
 menubar: { nav: 'menubar__nav___31nXg', list: 'menubar__list___TswFO', list-item: 'menubar__list-item___24Io6', has-children: 'menubar__has-children___2hyqj', sub-list: 'menubar__sub-list___qWbR9' }
 disclosure: { list: 'disclosure__list___104OE', list-item: 'disclosure__list-item___nmKr2', button: 'disclosure__button___3PGMt', info: 'disclosure__info___XvS-8' }
+menubutton: { wrapper: 'menubutton__wrapper___2cwmG', button: 'menubutton__button___26www', menu-wrapper: 'menubutton__menu-wrapper___1khK-', nav: 'menubutton__nav___B5bsq', list: 'menubutton__list___2K63F', list-item: 'menubutton__list-item___3p5m0', has-children: 'menubutton__has-children___vO2_j', sub-list: 'menubutton__sub-list___2BK1S' }

@@ -1,0 +1,35 @@
+{% assign classes = site.data.classnames.menubutton %}
+
+<span class="{{ classes.wrapper }}">
+	<nav class="{{ classes.nav }}" aria-label="Menu Class Example">
+		<button
+			href="#menu"
+			class="{{ classes.button }}"
+		>Menu</button>
+
+		<div
+			class="{{ classes.menu-wrapper }}"
+			id="menu"
+		>
+			<ul class="{{ classes.list }}">
+				<li class="{{ classes.list-item }} {{ classes.has-children }}">
+					<a href="example.com">Popups</a>
+					<ul class="{{ classes.sub-list }}">
+						<li class="{{ classes.list-item }}"><a href="example.com">Dialog</a></li>
+						<li class="{{ classes.list-item }}"><a href="example.com">Listbox</a></li>
+						<li class="{{ classes.list-item }}"><a href="example.com">Generic Popup</a></li>
+					</ul>
+				</li>
+				<li class="{{ classes.list-item }}"><a href="example.com">Disclosure</a></li>
+				<li class="{{ classes.list-item }} {{ classes.has-children }}">
+					<a href="example.com">Menus</a>
+					<ul class="{{ classes.sub-list }}">
+						<li class="{{ classes.list-item }}"><a href="example.com">Menu</a></li>
+						<li class="{{ classes.list-item }}"><a href="example.com">MenuBar</a></li>
+					</ul>
+				</li>
+				<li class="{{ classes.list-item }}"><a href="example.com">Tablist</a></li>
+			</ul>
+		</div>
+	</nav>
+</span>

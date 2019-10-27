@@ -1,0 +1,54 @@
+.wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.button {
+  @include role-button;
+  @include button;
+}
+
+.menu-wrapper {
+  background-color: white;
+  border: 1px solid;
+  left: 0;
+  padding: rem(20);
+  position: absolute;
+  top: 100%;
+
+  @media (min(lg)) {
+    tidy-span: 6;
+  }
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+.nav {
+  /* tbd */
+}
+
+.list {
+  padding-left: rem(20);
+}
+
+.list-item {
+  /* tbd */
+}
+
+.has-children {
+  /* tbd */
+}
+
+.sub-list {
+  margin-left: rem(20);
+  margin-top: rem(10);
+}
+
+.list-item {
+
+  &:not(:last-child) {
+    margin-bottom: rem(10);
+  }
+}

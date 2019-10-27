@@ -216,6 +216,7 @@ export default class MenuBar extends AriaComponent {
           type: 'menu',
         });
 
+        // Initialize submenu Menus.
         const subList = new Menu({ menu: target });
         // Save the list's previous sibling.
         subList.previousSibling = controller;
