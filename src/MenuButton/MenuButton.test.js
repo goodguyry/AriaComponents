@@ -34,7 +34,7 @@ const domLastChild = document.querySelector('.last-child');
 
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');
-const menu = document.querySelector('ul');
+const list = document.querySelector('ul');
 
 // Mock functions.
 const onStateChange = jest.fn();
@@ -44,7 +44,7 @@ const onDestroy = jest.fn();
 const menuButton = new MenuButton({
   controller,
   target,
-  menu,
+  list,
   onStateChange,
   onInit,
   onDestroy,
@@ -56,7 +56,7 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
     expect(controller.popup).toBeInstanceOf(Popup);
     expect(target.popup).toBeInstanceOf(Popup);
-    expect(menu.menu).toBeInstanceOf(Menu);
+    expect(list.menu).toBeInstanceOf(Menu);
 
     expect(menuButton.popup.getState().expanded).toBeFalsy();
 

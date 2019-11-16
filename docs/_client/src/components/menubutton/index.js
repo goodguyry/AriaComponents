@@ -6,18 +6,18 @@ import './menubutton.scss';
 const {
   button,
   'menu-wrapper': menuWrapper,
-  list,
+  menu,
 } = getClassnames(siteClassNames.menubutton);
 
 // Get the elements.
 const controller = document.querySelector(button);
 const target = document.querySelector(menuWrapper);
-const menuList = document.querySelector(list);
+const list = document.querySelector(menu);
 
-// Create the Menu.
+// Create the MenuButton.
 // eslint-disable-next-line no-unused-vars
-const menu = new MenuButton({
+const menuButton = new MenuButton({
   controller,
   target,
-  menu: menuList,
+  list,
 });

@@ -29,11 +29,11 @@
   /* tbd */
 }
 
-.list {
+.menu {
   padding-left: rem(20);
 }
 
-.list-item {
+.menu-item {
   /* tbd */
 }
 
@@ -41,12 +41,12 @@
   /* tbd */
 }
 
-.sub-list {
+.sub-menu {
   margin-left: rem(20);
   margin-top: rem(10);
 }
 
-.list-item {
+.menu-item {
 
   &:not(:last-child) {
     margin-bottom: rem(10);
