@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { MenuButton, Popup, Menu } from 'root';
 import { events } from 'root/utils/events';
 import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
@@ -7,6 +8,10 @@ const {
   keydownEsc,
   keydownTab,
   keydownShiftTab,
+  keydownReturn,
+  keydownSpace,
+  keydownUp,
+  keydownDown,
 } = events;
 
 // Set up our document body
@@ -85,10 +90,6 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 });
 
 describe('MenuButton correctly responds to events', () => {
-  // Enter, Space: Opens the menu and places focus on the first menu item.
-  // Down Arrow: opens the menu and moves focus to the first menu item
-  // Up Arrow: opens the menu and moves focus to the last menu item.
-
   // Ensure the menuButton is open before all tests.
   beforeEach(() => {
     menuButton.setState({ expanded: true });
@@ -102,15 +103,45 @@ describe('MenuButton correctly responds to events', () => {
       expect(document.activeElement).toEqual(controller);
     });
 
-  // eslint-disable-next-line max-len
-  it.skip('Should move focus to the first menuButton child on TAB from controller',
+  it('Should move focus to the first menu item with Return key from controller',
+    () => {
+      controller.focus();
+      controller.dispatchEvent(keydownReturn);
+      expect(document.activeElement)
+        .toEqual(domFirstChild);
+    });
+
+  it('Should move focus to the first menu item with Spacebar from controller',
+    () => {
+      controller.focus();
+      controller.dispatchEvent(keydownSpace);
+      expect(document.activeElement)
+        .toEqual(domFirstChild);
+    });
+
+  it('Should move focus to the first menu item with down arrow from controller',
+    () => {
+      controller.focus();
+      controller.dispatchEvent(keydownDown);
+      expect(document.activeElement)
+        .toEqual(domFirstChild);
+    });
+
+  it('Should move focus to the last menu item with up arrow from controller',
+    () => {
+      controller.focus();
+      controller.dispatchEvent(keydownUp);
+      expect(document.activeElement)
+        .toEqual(domLastChild);
+    });
+
+  it('Should move focus to the first menu child on TAB from controller',
     () => {
       controller.dispatchEvent(keydownTab);
       expect(document.activeElement)
         .toEqual(domFirstChild);
     });
 
-  // eslint-disable-next-line max-len
   it('Should close the menuButton and focus the controller when the ESC key is pressed',
     () => {
       target.dispatchEvent(keydownEsc);

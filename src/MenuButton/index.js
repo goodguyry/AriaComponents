@@ -2,7 +2,7 @@ import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import Menu from '../Menu';
 // import { setUniqueId } from '../lib/uniqueId';
-// import keyCodes from '../lib/keyCodes';
+import keyCodes from '../lib/keyCodes';
 
 /**
  * Class to set up an interactive Menu Button element.
@@ -25,7 +25,7 @@ export default class MenuButton extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'listbox';
+    this.componentName = 'menuButton';
 
     /**
      * Options shape.
@@ -77,6 +77,7 @@ export default class MenuButton extends AriaComponent {
     Object.assign(this, options, config);
 
     // Bind class methods.
+    this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -120,11 +121,13 @@ export default class MenuButton extends AriaComponent {
       this.menu = new Menu({ menu: this.target });
     }
 
+    this.controller.addEventListener('keydown', this.handleControllerKeydown);
+
     // Run {initCallback}
     this.onInit.call(this);
   }
 
-  // @todo Track Popup state like th eListbox does.
+  // @todo Track Popup state like the Listbox does.
   /**
    * Manage MenuButton state.
    *
@@ -133,10 +136,57 @@ export default class MenuButton extends AriaComponent {
   // stateWasUpdated({ expanded }) {
   // }
 
-  // @todo keydown handler.
-  // Enter, Space: Opens the menu and places focus on the first menu item.
-  // Down Arrow: opens the menu and moves focus to the first menu item
-  // Up Arrow: opens the menu and moves focus to the last menu item.
+  /**
+   * Handle keydown events on the MenuButton controller.
+   *
+   * @param {Event} event The event object.
+   */
+  handleControllerKeydown(event) {
+    const { keyCode } = event;
+    const {
+      RETURN,
+      UP,
+      DOWN,
+      SPACE,
+    } = keyCodes;
+
+    switch (keyCode) {
+      /*
+       * Open the menu and move focus to the first menu item.
+       */
+      case RETURN:
+      case SPACE:
+      case DOWN: {
+        event.preventDefault();
+        this.show();
+
+        // Move focus to the first menu item.
+        if (this.menu.firstItem) {
+          this.menu.firstItem.focus();
+        }
+
+        break;
+      }
+
+      /*
+       * Opens the menu and move focus to the last menu item.
+       */
+      case UP: {
+        event.preventDefault();
+        this.show();
+
+        // Move focus to the last menu item.
+        if (this.menu.lastItem) {
+          this.menu.lastItem.focus();
+        }
+
+        break;
+      }
+
+      default:
+        break;
+    }
+  }
 
   /**
    * Destroy the Popup and Menu.
