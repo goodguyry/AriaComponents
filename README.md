@@ -13,6 +13,7 @@ Component documentation:
 - [Listbox](src/Listbox/)
 - [Menu](src/Menu/)
 - [MenuBar](src/MenuBar/)
+- [MenuButton](src/MenuButton/)
 - [Popup](src/Popup/)
 - [Tablist](src/Tablist/)
 
