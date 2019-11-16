@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import Menu from '../Menu';
-// import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
 
 /**
@@ -92,16 +91,10 @@ export default class MenuButton extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
-    /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
-     */
-    // super.setSelfReference([this.controller, this.target]);
-
     /**
-     * The MenuButton is basically a Popup to present a Menu, so we
-     * instantiate a Popup and subscribe to state changes to act on the MenuButton
-     * when the Popup is shown and hidden.
+     * The MenuButton is basically a Popup to present a Menu, so we instantiate
+     * a Popup and subscribe to state changes to act on the MenuButton when the
+     * Popup is shown and hidden.
      *
      * @type {Popup}
      */
@@ -115,12 +108,12 @@ export default class MenuButton extends AriaComponent {
     // Initialize the Menu if we passed one in.
     if (null !== this.menu && 'UL' === this.menu.nodeName) {
       this.menu = new Menu({ menu: this.menu });
-      // @todo Update aria-controls to reference menu.
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
       this.menu = new Menu({ menu: this.target });
     }
 
+    // Additional event listener(s).
     this.controller.addEventListener('keydown', this.handleControllerKeydown);
 
     // Run {initCallback}
