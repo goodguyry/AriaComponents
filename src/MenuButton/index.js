@@ -120,15 +120,6 @@ export default class MenuButton extends AriaComponent {
     this.onInit.call(this);
   }
 
-  // @todo Track Popup state like the Listbox does.
-  /**
-   * Manage MenuButton state.
-   *
-   * @param {Object} state The component state.
-   */
-  // stateWasUpdated({ expanded }) {
-  // }
-
   /**
    * Handle keydown events on the MenuButton controller.
    *
