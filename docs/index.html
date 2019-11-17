@@ -2,25 +2,70 @@
 layout: default
 title: Aria Components
 permalink: /
-all_components:
-- Dialog
-- Disclosure
-- Listbox
-- MenuButton
-- Menu
-- MenuBar
-- Popup
-- Tablist
 ---
 
 <h1>Aria Components</h1>
 
-{% for component in page.all_components %}
-	<section class="section">
-		<header class="section-header">
-			<h2>{{ component }}</h2>
-		</header>
+<section class="section">
+	<header class="section-header">
+		<h2>Dialog</h2>
+	</header>
 
-		{% include {{ component | lowercase | prepend: 'components/' | append: '.html' }} %}
-	</section>
-{% endfor %}
+	{% include components/dialog.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>Disclosure</h2>
+	</header>
+
+	{% include components/disclosure.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>Listbox</h2>
+	</header>
+
+	{% include components/listbox.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>MenuButton</h2>
+	</header>
+
+	{% include components/menubutton.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>Menu</h2>
+	</header>
+
+	{% include components/menu.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>MenuBar</h2>
+	</header>
+
+	{% include components/menubar.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>Popup</h2>
+	</header>
+
+	{% include components/popup.html %}
+</section>
+
+<section class="section">
+	<header class="section-header">
+		<h2>Tablist</h2>
+	</header>
+
+	{% include components/tablist.html %}
+</section>
