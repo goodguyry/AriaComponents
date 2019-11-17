@@ -221,8 +221,7 @@ describe('Listbox with default configuration', () => {
 
       expect(listbox.popup.getState().expanded).toBeFalsy();
       expect(listbox.getState().activeDescendant).toEqual(target.children[5]);
-      // @todo Is this beyond the capabilities of JSDOM?
-      // expect(document.activeElement).not.toEqual(controller);
+      expect(document.activeElement).not.toEqual(target);
 
       expect(controller.getAttribute('aria-activedescendant')).toBeNull();
       expect(controller.textContent).toEqual(target.children[5].textContent);
