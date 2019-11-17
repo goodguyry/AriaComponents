@@ -21,11 +21,11 @@ export default class Tablist extends AriaComponent {
    */
   constructor(config) {
     super();
-    this.runs = 0;
 
     // The Tablist element is required to be a UL.
     if ('UL' !== config.tablist.nodeName) {
-      // @todo Maybe throw an error here?
+      // eslint-disable-next-line no-console
+      console.warn('Tablist requires a <ul> for the tabs.');
       return;
     }
 

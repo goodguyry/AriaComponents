@@ -282,7 +282,6 @@ export default class Popup extends AriaComponent {
       } else if (this.lastChild === activeElement) {
         /*
          * Close the Popup when tabbing from the last child.
-         * @todo Is this correct behavior?
          */
         this.hide();
       }

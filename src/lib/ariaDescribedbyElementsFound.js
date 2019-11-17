@@ -18,7 +18,7 @@ function ariaDescribedbyElementsFound(helpIds) {
  */
 function missingDescribedByWarning(helpIds) {
   if (! ariaDescribedbyElementsFound(helpIds)) {
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-console, max-len
     console.warn('Some or all elements referenced by `aria-describedby` attributes are missing');
   }
 }
