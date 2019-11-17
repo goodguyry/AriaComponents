@@ -1,6 +1,7 @@
 # Site settings
 title: 'Aria Components'
 repo: https://github.com/goodguyry/aria-components
+baseurl: /AriaComponents
 
 # Development/Serve
 port: 8080

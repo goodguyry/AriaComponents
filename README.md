@@ -50,7 +50,7 @@ through [Babel](https://babeljs.io) to use them in your projects.
 Run Jest and watch files for changes.
 
 `npm run dev`  
-Run Webpack in `development` mode and Jekyll serve the example page at http://127.0.0.1:8080/
+Run Webpack in `development` mode and Jekyll serve the example page at http://127.0.0.1:8080/AriaComponents/
 
 `npm run build`  
 Run Webpack in `production` mode. This is required prior to merging to ensure assets are ready for GitHub Pages.

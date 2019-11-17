@@ -14,7 +14,7 @@
 		// eslint-disable
 		window.siteClassNames = {{ site.data.classnames | jsonify }};</script>
 
-	<link rel="stylesheet" href="{{ site.baseurl}}/build/{{ assets.global.css }}">
+	<link rel="stylesheet" href="{{ assets.global.css | relative_url }}">
 
 	<title>{% if page.title %}{{ page.title | append: " | github/goodguyry" }}{% else %}{{ site.title }}{% endif %}</title>
 

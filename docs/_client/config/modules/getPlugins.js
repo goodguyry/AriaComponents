@@ -38,7 +38,8 @@ module.exports = (productionMode) => {
             .filter((asset) => '.map' !== path.parse(asset).ext)
             .reduce((lines, line) => {
               const { ext } = path.parse(line);
-              return Object.assign({}, lines, { [ext.replace('.', '')]: line });
+              // eslint-disable-next-line max-len
+              return Object.assign({}, lines, { [ext.replace('.', '')]: `build/${line}` });
             }, {});
 
           return { ...acc, [key]: assetList };

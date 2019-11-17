@@ -10,7 +10,7 @@
 		{% include help-text.html %}
 	</main>
 
-	<script src="{{ site.baseurl}}/build/{{ assets.global.js }}"></script>
+	<script src="{{ assets.global.js | relative_url }}"></script>
 
 	{% include components/dialog-popup.html %}
 </body>
