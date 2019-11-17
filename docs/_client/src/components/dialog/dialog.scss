@@ -2,7 +2,7 @@
   background-color: white;
   border: 1px solid black;
   left: 50%;
-  padding: rem(20);
+  padding: rem(28);
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -19,7 +19,12 @@
 }
 
 .closeButton {
-  /* tbd */
+  background-color: black;
+  color: white;
+  padding: rem(3);
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 :global(.site) {
