@@ -67,14 +67,11 @@
     "test": "jest",
     "watch": "jest --watchAll",
     "watch:verbose": "jest --watchAll  --verbose",
-    "webpack:watch": "webpack --config docs/_client/config/webpack.config.js --mode development --watch",
-    "webpack:prod": "webpack --config docs/_client/config/webpack.config.js --mode production",
-    "jekyll": "jekyll serve --source docs --destination docs/_site",
-    "jekyll:watch": "jekyll build --source docs --destination docs/_site --config docs/_config.yaml --watch",
-    "jekyll:dev": "jekyll build --source docs --destination docs/_site --config docs/_config.yaml",
-    "jekyll:build": "JEKYLL_ENV=production jekyll build --source docs --destination docs/_site --config docs/_config.yaml,docs/_config-prod.yaml",
-    "dev": "concurrently 'npm run webpack:watch' 'npm run jekyll'",
-    "build": "npm run webpack:prod && npm run jekyll:build"
+    "jekyll:build": "JEKYLL_ENV=production jekyll build --source docs --destination docs/_site --config docs/_config.yaml",
+    "webpack:dev": "webpack --config docs/_client/config/webpack.config.js --mode development --watch",
+    "serve": "jekyll serve --source docs --destination docs/_site",
+    "dev": "concurrently 'npm run webpack:dev' 'npm run serve'",
+    "build": "webpack --config docs/_client/config/webpack.config.js --mode production"
   },
   "jest": {
     "testEnvironment": "jsdom"
