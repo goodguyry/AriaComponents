@@ -164,7 +164,7 @@ export default class ListBox extends AriaComponent {
     this.target.setAttribute('tabindex', '-1');
 
     // Add event listeners.
-    this.controller.addEventListener('keyup', this.handleControllerKeyup);
+    this.controller.addEventListener('keydown', this.handleControllerKeyup);
     this.target.addEventListener('keydown', this.handleTargetKeydown);
     this.target.addEventListener('click', this.handleTargetClicks);
     this.target.addEventListener('blur', this.handleTargetBlur);

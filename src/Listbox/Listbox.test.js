@@ -11,8 +11,6 @@ const {
   keydownDown,
   keydownHome,
   keydownEnd,
-  keyUpUp,
-  keyUpDown,
 } = events;
 
 // Set up our document body
@@ -107,14 +105,14 @@ describe('Listbox with default configuration', () => {
     });
 
     it('Should open the popup on controller DOWN arrow key', () => {
-      controller.dispatchEvent(keyUpDown);
+      controller.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(target);
       // @todo Why does this fail?!?!
       // expect(listbox.popup.getState().expanded).toBeTruthy();
     });
 
     it('Should open the popup on controller UP arrow key', () => {
-      controller.dispatchEvent(keyUpUp);
+      controller.dispatchEvent(keydownUp);
       expect(document.activeElement).toEqual(target);
       // @todo Why does this fail?!?!
       // expect(listbox.popup.getState().expanded).toBeTruthy();
