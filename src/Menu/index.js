@@ -85,7 +85,7 @@ export default class Menu extends AriaComponent {
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
-    if (null !== this.menu || 'UL' !== this.menu.nodeName) {
+    if (null !== this.menu && 'UL' === this.menu.nodeName) {
       this.init();
     }
   }
