@@ -22,10 +22,11 @@ basic state management and component structure.
 
 ## Help text elements
 
-Elements used for keyboard navigation description and referenced on the element 
-via aria-labelledby need to exist in the DOM. The Menu and MenuBar components
-reference such elements. As a result, authors will need to manually add the 
-elements to their page(s). 
+> Elements used for keyboard navigation description and referenced on the 
+element via `aria-labelledby` need to exist in the DOM. 
+
+The Menu and MenuBar components reference such elements. As a result, authors 
+will need to manually add the elements to their page(s). 
 
 Examples can be found in the docs directory:
 
