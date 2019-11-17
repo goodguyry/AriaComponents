@@ -43,3 +43,14 @@ elements.
 <!-- @todo is this still true? -->
 This package is provided without processing; you'll likely need to run these 
 through [Babel](https://babeljs.io) to use them in your projects.
+
+## Contributing
+
+`npm run watch`  
+Run Jest and watch files for changes.
+
+`npm run dev`  
+Run Webpack in `development` mode and Jekyll serve the example page at http://127.0.0.1:8080/
+
+`npm run webpack:prod`  
+Run Webpack in `production` mode. This is required prior to merging to ensure assets are ready for GitHub Pages.
