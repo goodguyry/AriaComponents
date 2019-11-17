@@ -248,7 +248,7 @@ export default class Tablist extends AriaComponent {
   handlePanelKeydown(event) {
     const { TAB } = keyCodes;
     const { activeIndex } = this.state;
-    const { keyCode, shiftKey, target } = event;
+    const { keyCode, shiftKey } = event;
     const { activeElement } = document;
     const [firstChild] = this.interactiveChildren;
 
@@ -283,7 +283,6 @@ export default class Tablist extends AriaComponent {
     } = keyCodes;
     const { keyCode, shiftKey, target } = event;
     const currentIndex = this.tabs.indexOf(target);
-    const hasInteractiveChildren = (0 < this.interactiveChildren.length);
 
     switch (keyCode) {
       /*
