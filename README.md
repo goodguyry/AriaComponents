@@ -34,6 +34,10 @@ Examples can be found in the docs directory:
 
 See also the [Menu](src/Menu/) and [Menubar](src/MenuBar/) components' README
 
+Aside from the help text examples above, authors are responsible for adding all 
+necessary `aria-labelledby`, `aria-label` and `aria-describedby` to the revelant 
+elements.
+
 **Note**:  
 <!-- @todo is this still true? -->
 This package is provided without processing; you'll likely need to run these 
