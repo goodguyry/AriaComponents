@@ -1,3 +1,5 @@
+[![npm version][npmjs-img]][npmjs]
+
 AriaComponents
 ==============
 
@@ -5,6 +7,12 @@ Quickly create accessible interactive components based on the W3C spec and examp
 
 - https://www.w3.org/TR/wai-aria-1.1/
 - https://www.w3.org/TR/wai-aria-practices-1.1/examples/
+
+## Installation
+
+```shell
+npm i aria-components
+```
 
 ## Component documentation:
 
@@ -54,3 +62,6 @@ Run Webpack in `development` mode and Jekyll serve the example page at http://12
 
 `npm run build`  
 Run Webpack in `production` mode. This is required prior to merging to ensure assets are ready for GitHub Pages.
+
+[npmjs-img]: https://badge.fury.io/js/aria-components.svg
+[npmjs]: https://badge.fury.io/js/aria-components
