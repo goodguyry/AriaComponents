@@ -135,8 +135,14 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-controls', this.target.id);
     setUniqueId(this.controller);
 
-    // Use the button role on non-button elements.
-    if ('BUTTON' !== this.controller.nodeName) {
+    /*
+     * Use the button role on non-button elements.
+     * But only if it doesn't already have a role attribute.
+     */
+    if (
+      'BUTTON' !== this.controller.nodeName
+      && null === this.controller.getAttribute('role')
+    ) {
       // https://www.w3.org/TR/wai-aria-1.1/#button
       this.controller.setAttribute('role', 'button');
       this.controller.setAttribute('tabindex', '0');
