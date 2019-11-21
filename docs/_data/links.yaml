@@ -1,0 +1,13 @@
+# General.
+repo: https://github.com/goodguyry/AriaComponents/
+src: https://github.com/goodguyry/AriaComponents/tree/master/src/
+
+# Components.
+dialog: https://github.com/goodguyry/AriaComponents/tree/master/src/Dialog
+disclosure: https://github.com/goodguyry/AriaComponents/tree/master/src/Disclosure
+listbox: https://github.com/goodguyry/AriaComponents/tree/master/src/Listbox
+menu: https://github.com/goodguyry/AriaComponents/tree/master/src/Menu
+menubar: https://github.com/goodguyry/AriaComponents/tree/master/src/MenuBar
+menubutton: https://github.com/goodguyry/AriaComponents/tree/master/src/MenuButton
+popup: https://github.com/goodguyry/AriaComponents/tree/master/src/Popup
+tablist: https://github.com/goodguyry/AriaComponents/tree/master/src/Tablist

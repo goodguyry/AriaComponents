@@ -1,4 +1,5 @@
 {% assign classes = site.data.classnames.menubutton %}
+{% assign links = site.data.links %}
 
 <span class="{{ classes.wrapper }}">
 	<nav class="{{ classes.nav }}" aria-label="Menu Class Example">
@@ -13,22 +14,23 @@
 		>
 			<ul class="{{ classes.menu }}">
 				<li class="{{ classes.menu-item }} {{ classes.has-children }}">
-					<a href="example.com">Popups</a>
+					<a href="{{ links.src }}">Popups</a>
 					<ul class="{{ classes.sub-menu }}">
-						<li class="{{ classes.menu-item }}"><a href="example.com">Dialog</a></li>
-						<li class="{{ classes.menu-item }}"><a href="example.com">Listbox</a></li>
-						<li class="{{ classes.menu-item }}"><a href="example.com">Generic Popup</a></li>
+						<li class="{{ classes.menu-item }}"><a href="{{ links.dialog }}">Dialog</a></li>
+						<li class="{{ classes.menu-item }}"><a href="{{ links.listbox }}">Listbox</a></li>
+						<li class="{{ classes.menu-item }}"><a href="{{ links.menubutton }}">MenuButton</a></li>
+						<li class="{{ classes.menu-item }}"><a href="{{ links.popup }}">Popup (Generic)</a></li>
 					</ul>
 				</li>
-				<li class="{{ classes.menu-item }}"><a href="example.com">Disclosure</a></li>
+				<li class="{{ classes.menu-item }}"><a href="{{ links.disclosure }}">Disclosure</a></li>
 				<li class="{{ classes.menu-item }} {{ classes.has-children }}">
-					<a href="example.com">Menus</a>
+					<a href="{{ links.src }}">Menus</a>
 					<ul class="{{ classes.sub-menu }}">
-						<li class="{{ classes.menu-item }}"><a href="example.com">Menu</a></li>
-						<li class="{{ classes.menu-item }}"><a href="example.com">MenuBar</a></li>
+						<li class="{{ classes.menu-item }}"><a href="{{ links.menu }}">Menu</a></li>
+						<li class="{{ classes.menu-item }}"><a href="{{ links.menubar }}">MenuBar</a></li>
 					</ul>
 				</li>
-				<li class="{{ classes.menu-item }}"><a href="example.com">Tablist</a></li>
+				<li class="{{ classes.menu-item }}"><a href="{{ links.tablist }}">Tablist</a></li>
 			</ul>
 		</div>
 	</nav>

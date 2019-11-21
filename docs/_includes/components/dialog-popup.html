@@ -1,4 +1,5 @@
 {% assign classes = site.data.classnames.dialog %}
+{% assign links = site.data.links %}
 
 <div id="dialog" class="{{ classes.dialog }}">
 	<button class="{{ classes.closeButton }}">Close</button>
@@ -9,11 +10,11 @@
 
 	<a
 		class="{{ classes.doc-link }}"
-		href="https://github.com/goodguyry/AriaComponents/tree/master/src/Dialog"
+		href="{{ links.dialog }}"
 	>More about the Dialog Class</a>
 
 	<a
 		class="{{ classes.doc-link }}"
-		href="https://github.com/goodguyry/AriaComponents/tree/master/src/Popup"
+		href="{{ links.popup }}"
 	>More about the Popup Class</a>
 </div>
