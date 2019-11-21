@@ -35,7 +35,7 @@ svg {
 h1 {
   border-bottom: 1px solid rgba(black, 0.3);
   font-size: rem(36);
-  margin-bottom: rem(100);
+  margin-bottom: rem(20);
   padding: rem(20) 0;
 }
 
@@ -76,6 +76,10 @@ abbr {
 
 .site {
   @include container;
+}
+
+.header {
+  margin-bottom: rem(100);
 }
 
 .section {
