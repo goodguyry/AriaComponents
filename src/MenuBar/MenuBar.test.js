@@ -113,6 +113,8 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.sublistTwoFirstItem.getAttribute('role')).toEqual('menuitem');
 
     expect(domElements.listThirdItem.getAttribute('aria-haspopup')).toEqual('menu');
+    // Popups should not override the item's role.
+    expect(domElements.listThirdItem.getAttribute('role')).toEqual('menuitem');
 
     expect(domElements.sublistTwoFirstItem.parentElement.getAttribute('role')).toEqual('presentation');
     expect(domElements.sublistTwo.getAttribute('role')).toEqual('menu');
