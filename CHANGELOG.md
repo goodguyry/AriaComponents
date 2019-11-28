@@ -10,3 +10,4 @@ Initial release.
 **Fixed**
 
 - Prevents the Popup component from overwriting an existing role attribute (#2)
+- Activates MenuBar sublist `menuitem` links with the spacebar or return key (#3)
