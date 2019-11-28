@@ -1,8 +1,12 @@
 .nav {
   border-bottom: 1px solid;
   border-top: 1px solid;
-  padding: rem(20);
+  padding: rem(20) 0;
   width: 100%;
+
+  @media (min(lg)) {
+    padding: rem(20);
+  }
 }
 
 .list {

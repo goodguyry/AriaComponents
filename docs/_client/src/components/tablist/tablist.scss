@@ -29,7 +29,11 @@
   padding: rem(20);
   position: relative;
   top: -1px;
-  width: 50%;
+  width: 100%;
+
+  @media (min(lg)) {
+    width: 50%;
+  }
 
   &[aria-hidden="true"] {
     display: none;

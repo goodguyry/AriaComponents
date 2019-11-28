@@ -1,6 +1,7 @@
 .wrapper {
   display: inline-block;
   position: relative;
+  width: 100%;
 }
 
 .button {
@@ -11,14 +12,19 @@
 .info {
   background-color: white;
   border: 1px solid;
-  left: calc(100% + #{rem(20)});
-  padding: rem(20);
+  left: 0;
+  padding: rem(10);
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 100%;
+  width: 100%;
+  z-index: 2;
 
   @media (min(lg)) {
+    left: calc(100% + #{rem(20)});
+    padding: rem(20);
     tidy-span: 6;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &[aria-hidden="true"] {

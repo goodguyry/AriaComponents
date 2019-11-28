@@ -1,9 +1,11 @@
 .wrapper {
   display: inline-block;
   position: relative;
+  width: 100%;
 }
 
 .button {
+  @include button-reset;
   @include role-button;
   @include button;
 }

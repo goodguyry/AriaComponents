@@ -2,15 +2,23 @@
   background-color: white;
   border: 1px solid black;
   left: 50%;
-  padding: rem(28);
+  max-height: calc(100vh - tidy-var(edge) * 2);
+  max-width: rem(500);
+  overflow-y: scroll;
+  padding: rem(28 10 10 10);
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: rem(500);
+  width: calc(100vw - tidy-var(edge) * 2);
   z-index: 1;
 
   &[aria-hidden="true"] {
     display: none;
+  }
+
+  @media (min(lg)) {
+    padding: rem(28);
+    width: rem(500);
   }
 }
 

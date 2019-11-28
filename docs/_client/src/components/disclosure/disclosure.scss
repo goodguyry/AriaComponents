@@ -1,6 +1,9 @@
 .list {
   list-style-type: none;
-  width: 50%;
+
+  @media (min(lg)) {
+    width: 50%;
+  }
 }
 
 .list-item {
@@ -8,6 +11,7 @@
 }
 
 .button {
+  @include button-reset;
   cursor: pointer;
 }
 
