@@ -71,7 +71,7 @@
     "webpack:dev": "webpack --config docs/_client/config/webpack.config.js --mode development --watch",
     "serve": "jekyll serve --source docs --destination docs/_site",
     "dev": "concurrently 'npm run webpack:dev' 'npm run serve'",
-    "build": "webpack --config docs/_client/config/webpack.config.js --mode production"
+    "build": "jest && webpack --config docs/_client/config/webpack.config.js --mode production"
   },
   "jest": {
     "testEnvironment": "jsdom"
