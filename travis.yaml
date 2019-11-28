@@ -1,0 +1,8 @@
+language: node_js
+cache: yarn
+node_js:
+  - node
+  - "12"
+  - "10"
+install:
+  - YARN_IGNORE_ENGINES=true yarn
