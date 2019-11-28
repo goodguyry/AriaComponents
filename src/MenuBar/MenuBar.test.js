@@ -212,6 +212,14 @@ describe('Menu correctly responds to events', () => {
     expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
   });
 
+  it('Should click the submenu item on spacebar or return key', () => {
+    const onclick = jest.fn();
+    domElements.sublistOneSecondItem.addEventListener('click', onclick);
+    domElements.sublistOneSecondItem.focus();
+    domElements.sublistOneSecondItem.dispatchEvent(keydownSpace);
+    expect(onclick).toHaveBeenCalled();
+  });
+
   it('Should select the correct option by keyword search', () => {
     menuBar.setState({
       menubarItem: domElements.listSecondItem,
