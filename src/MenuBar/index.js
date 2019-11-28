@@ -112,6 +112,7 @@ export default class MenuBar extends AriaComponent {
     // Bind class methods.
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
+    this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.destroy = this.destroy.bind(this);
 
@@ -202,6 +203,17 @@ export default class MenuBar extends AriaComponent {
      */
     this.lastIndex = (this.menuLength - 1);
 
+    /**
+     * A mouse 'click' event.
+     *
+     * @type {MouseEvent}
+     */
+    this.clickEvent = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+
     // Initialize popups for nested lists.
     this.popups = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
@@ -218,6 +230,8 @@ export default class MenuBar extends AriaComponent {
 
         // Initialize submenu Menus.
         const subList = new Menu({ menu: target });
+        target.addEventListener('keydown', this.handleMenuItemKeydown);
+
         // Save the list's previous sibling.
         subList.previousSibling = controller;
 
@@ -380,6 +394,24 @@ export default class MenuBar extends AriaComponent {
     this.setState({
       menubarItem: event.target,
     });
+  }
+
+  /**
+   * Handle keydown events on sublist menuitems.
+   *
+   * @param {Object} event The event object.
+   */
+  handleMenuItemKeydown(event) {
+    const { SPACE, RETURN } = keyCodes;
+    const { keyCode, target } = event;
+
+    if ([SPACE, RETURN].includes(keyCode) && 'A' === target.nodeName) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      // Simulate a mouse event to activate the menuitem.
+      target.dispatchEvent(this.clickEvent);
+    }
   }
 
   /**
