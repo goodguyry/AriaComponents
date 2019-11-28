@@ -1,0 +1,17 @@
+language: node_js
+cache: yarn
+node_js:
+  - node
+  - "12"
+  - "10"
+install:
+  - YARN_IGNORE_ENGINES=true yarn
+script: build
+deploy:
+  provider: pages
+  edge: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  target_branch: master
+  on:
+    branch: master
