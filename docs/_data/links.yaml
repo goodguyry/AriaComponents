@@ -1,5 +1,6 @@
 # General.
 repo: https://github.com/goodguyry/AriaComponents/
+package: https://www.npmjs.com/package/aria-components
 src: https://github.com/goodguyry/AriaComponents/tree/master/src/
 
 # Components.
