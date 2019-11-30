@@ -6,6 +6,7 @@ import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import isInstanceOf from '../lib/isInstanceOf';
 import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
+import Search from '../lib/Search';
 
 /**
  * Class for managing a visually persistent (horizontally-oriented) menubar,
@@ -156,6 +157,12 @@ export default class MenuBar extends AriaComponent {
 
       return acc;
     }, []);
+
+    /**
+     * Initialize search.
+     * @type {Search}
+     */
+    this.search = new Search(this.menuBarItems);
 
     /**
      * The number of menubar items.
@@ -375,7 +382,7 @@ export default class MenuBar extends AriaComponent {
        * collecting key presses.
        */
       default: {
-        const itemToFocus = this.typeAhead(keyCode, this.menuBarItems);
+        const itemToFocus = this.search.getItem(keyCode);
         if (null !== itemToFocus) {
           this.setState({ menubarItem: itemToFocus });
         }

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { MenuBar, Popup, Menu } from 'root';
-import { events, typeCharacter } from 'root/utils/events';
+import { events } from 'root/utils/events';
 
 // Create the help text elements for both MenuBar and Menu.
 const ariaDescribedbyTestMarkup = Array.from(new Set([
@@ -218,27 +218,6 @@ describe('Menu correctly responds to events', () => {
     domElements.sublistOneSecondItem.focus();
     domElements.sublistOneSecondItem.dispatchEvent(keydownSpace);
     expect(onclick).toHaveBeenCalled();
-  });
-
-  it('Should select the correct option by keyword search', () => {
-    menuBar.setState({
-      menubarItem: domElements.listSecondItem,
-    });
-
-    // Typing 'Pie'
-    domElements.listSecondItem.dispatchEvent(typeCharacter('p'));
-    domElements.listSecondItem.dispatchEvent(typeCharacter('i'));
-
-    expect(document.activeElement).toEqual(domElements.listFourthItem);
-
-    // Make sure the search string it cleared as expected.
-    setTimeout(() => {
-      // Typing 'Fruit'
-      domElements.listFourthItem.dispatchEvent(typeCharacter('f'));
-      domElements.listFourthItem.dispatchEvent(typeCharacter('r'));
-
-      expect(document.activeElement).toEqual(domElements.listFirstItem);
-    }, 500);
   });
 });
 
