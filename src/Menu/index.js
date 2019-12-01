@@ -294,6 +294,7 @@ export default class Menu extends AriaComponent {
        * collecting key presses.
        */
       default: {
+        event.stopPropagation();
         const itemToFocus = this.search.getItem(keyCode);
         if (null !== itemToFocus) {
           itemToFocus.focus();
