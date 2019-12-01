@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Menu } from 'root';
-import { events } from 'root/utils/events';
+import { events, typeCharacter } from 'root/utils/events';
 
 // Create the help text elements.
 const ariaDescribedbyTestMarkup = Menu.getHelpIds().reduce((acc, id) => (
@@ -164,6 +164,16 @@ describe('MenuItem correctly responds to events', () => {
       domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listThirdItem);
     });
+
+  it('Should scope search to the current list', () => {
+    domElements.sublistTwoLastItem.focus();
+
+    // Should find 'Carrots' (not Cantaloupe or Cake)
+    domElements.sublistTwoLastItem.dispatchEvent(typeCharacter('c'));
+    domElements.sublistTwoLastItem.dispatchEvent(typeCharacter('a'));
+
+    expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
+  });
 
   // Down: When focus is on a menuitem that does not have a submenu, activates the menuitem and closes the menu.
 });
