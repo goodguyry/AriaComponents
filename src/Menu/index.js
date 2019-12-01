@@ -3,6 +3,7 @@ import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
 import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
+import Search from '../lib/Search';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -127,6 +128,12 @@ export default class Menu extends AriaComponent {
 
       return acc;
     }, []);
+
+    /**
+     * Initialize search.
+     * @type {Search}
+     */
+    this.search = new Search(this.menuItems);
 
     /**
      * The number of menu items.
@@ -287,7 +294,7 @@ export default class Menu extends AriaComponent {
        * collecting key presses.
        */
       default: {
-        const itemToFocus = this.typeAhead(keyCode, this.menuItems);
+        const itemToFocus = this.search.getItem(keyCode);
         if (null !== itemToFocus) {
           itemToFocus.focus();
         }

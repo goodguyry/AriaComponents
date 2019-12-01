@@ -2,6 +2,7 @@ import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
+import Search from '../lib/Search';
 
 /**
  * Class to set up an interactive Listbox element.
@@ -98,6 +99,12 @@ export default class ListBox extends AriaComponent {
      * @type {array}
      */
     this.options = Array.prototype.slice.call(this.target.children, 0);
+
+    /**
+     * Initialize search.
+     * @type {Search}
+     */
+    this.search = new Search(this.options);
 
     /*
      * Set the `option` role for each list itme and ensure each has a unique ID.
@@ -362,7 +369,7 @@ export default class ListBox extends AriaComponent {
        * collecting key presses.
        */
       default: {
-        const itemToFocus = this.typeAhead(keyCode, this.options);
+        const itemToFocus = this.search.getItem(keyCode);
         if (null !== itemToFocus) {
           this.setState({ activeDescendant: itemToFocus });
         }

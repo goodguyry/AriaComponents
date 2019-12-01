@@ -32,7 +32,6 @@ export default class AriaComponent {
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
-    this.typeAhead = this.typeAhead.bind(this);
   }
 
   /**
@@ -71,38 +70,5 @@ export default class AriaComponent {
    */
   getState() {
     return this.state;
-  }
-
-  /**
-   * Select the item that matches a search string.
-   * If a match is found, return it so that it can be selected.
-   *
-   * @param {Number} key A keyCode value.
-   * @return {HTMLElement|null} The matched element or null if no match.
-   */
-  typeAhead(key, items) {
-    const character = String.fromCharCode(key);
-
-    // Append the new character to the searchString
-    this.searchString += character;
-
-    if (this.keyClear) {
-      clearTimeout(this.keyClear);
-      this.keyClear = null;
-    }
-
-    // Clear the typed string after timeout.
-    this.keyClear = setTimeout(() => {
-      this.searchString = '';
-      this.keyClear = null;
-    }, 500);
-
-    // Find the item by matching the search string to the item text.
-    const match = items.filter((item) => {
-      const itemText = item.textContent.toLowerCase();
-      return 0 === itemText.indexOf(this.searchString.toLowerCase());
-    });
-
-    return match.length ? match[0] : null;
   }
 }

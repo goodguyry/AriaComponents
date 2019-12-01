@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Listbox, Popup } from 'root';
-import { events, typeCharacter } from 'root/utils/events';
+import { events } from 'root/utils/events';
 
 const {
   click,
@@ -182,25 +182,6 @@ describe('Listbox with default configuration', () => {
       expect(document.activeElement).toEqual(target);
       expect(listbox.getState().activeDescendant).toEqual(lastChild);
       expect(lastChild.getAttribute('aria-selected')).toEqual('true');
-    });
-
-    it('Should select the correct option by keyword search', () => {
-      // Typing 'El Paso'
-      target.dispatchEvent(typeCharacter('e'));
-      target.dispatchEvent(typeCharacter('l'));
-
-      expect(listbox.getState().activeDescendant).toEqual(target.children[4]);
-      expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
-
-      // Make sure the search string it cleared as expected.
-      setTimeout(() => {
-        // Typing 'Hartford'
-        target.dispatchEvent(typeCharacter('h'));
-        target.dispatchEvent(typeCharacter('a'));
-
-        expect(listbox.getState().activeDescendant).toEqual(target.children[7]);
-        expect(target.children[7].getAttribute('aria-selected')).toEqual('true');
-      }, 500);
     });
 
     it('Should select the clicked listbox item and close', () => {

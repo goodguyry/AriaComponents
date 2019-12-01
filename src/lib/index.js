@@ -4,8 +4,8 @@ import isInstanceOf from './isInstanceOf';
 import keyCodes from './keyCodes';
 import nextPrevious from './nextPrevious';
 import rovingTabIndex from './rovingTabIndex';
-import typeAhead from './typeAhead';
 import uniqueId from './uniqueId';
+import Search from './Search';
 
 export {
   ariaDescribedbyElementsFound,
@@ -14,6 +14,6 @@ export {
   keyCodes,
   nextPrevious,
   rovingTabIndex,
-  typeAhead,
   uniqueId,
+  Search,
 };
