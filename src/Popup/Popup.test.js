@@ -135,6 +135,13 @@ describe('Popup correctly responds to events', () => {
       expect(popup.getState().expanded).toBeFalsy();
     });
 
+  it('Should not close the popup when tabbing back from the last child',
+    () => {
+      domLastChild.focus();
+      target.dispatchEvent(keydownShiftTab);
+      expect(popup.getState().expanded).toBeTruthy();
+    });
+
   it('Should focus the controller when tabbing back from the first child',
     () => {
       domFirstChild.focus();
