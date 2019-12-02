@@ -205,6 +205,7 @@ export default class Menu extends AriaComponent {
       RIGHT,
       HOME,
       END,
+      ESC,
     } = keyCodes;
     const { activeElement } = document;
     const activeDescendant = (this.menu.contains(activeElement)
@@ -286,6 +287,10 @@ export default class Menu extends AriaComponent {
           this.previousSibling.focus();
         }
 
+        break;
+      }
+
+      case ESC: {
         break;
       }
 
