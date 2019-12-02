@@ -2,6 +2,10 @@
   display: inline-block;
   position: relative;
   width: 100%;
+
+  @media (min(lg)) {
+    width: auto;
+  }
 }
 
 .button {
