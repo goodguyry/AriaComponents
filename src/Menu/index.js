@@ -290,7 +290,12 @@ export default class Menu extends AriaComponent {
         break;
       }
 
+      /*
+       * Listen for the ESC key to prevent it from being caught as a search
+       * string. Otherwise the MenuButton won't close as expected.
+       */
       case ESC: {
+        // do nothing.
         break;
       }
 
