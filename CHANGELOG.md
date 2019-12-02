@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Fixed**
 
 - Corrects Menu search scoping (#8)
+- Shift-TAB from a Popup's last interactive child no longer closes the Popup (#10)
 
 ## 0.1.1
 
