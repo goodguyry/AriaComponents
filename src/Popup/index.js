@@ -274,17 +274,16 @@ export default class Popup extends AriaComponent {
        */
       this.controller.focus();
     } else if (TAB === keyCode) {
-      if (
-        shiftKey
-        && ([this.firstChild, this.target].includes(activeElement))
-      ) {
-        event.preventDefault();
-        /*
-         * Move focus back to the controller if the Shift key is pressed with
-         * the Tab key, but only if the Event target is the Popup's first
-         * interactive child or the Popup itself.
-         */
-        this.controller.focus();
+      if (shiftKey) {
+        if ([this.firstChild, this.target].includes(activeElement)) {
+          event.preventDefault();
+          /*
+           * Move focus back to the controller if the Shift key is pressed with
+           * the Tab key, but only if the Event target is the Popup's first
+           * interactive child or the Popup itself.
+           */
+          this.controller.focus();
+        }
       } else if (this.lastChild === activeElement) {
         /*
          * Close the Popup when tabbing from the last child.
