@@ -4,7 +4,7 @@ import isInstanceOf from './isInstanceOf';
 import keyCodes from './keyCodes';
 import { nextPrevious } from './nextPrevious';
 import { rovingTabIndex } from './rovingTabIndex';
-import setUniqueId from './uniqueId';
+import { setUniqueId } from './uniqueId';
 import Search from './Search';
 
 export {
