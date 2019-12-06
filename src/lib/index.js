@@ -1,10 +1,10 @@
-import ariaDescribedbyElementsFound from './ariaDescribedbyElementsFound';
+import { ariaDescribedbyElementsFound } from './ariaDescribedbyElementsFound';
 import interactiveChildren from './interactiveChildren';
 import isInstanceOf from './isInstanceOf';
 import keyCodes from './keyCodes';
-import nextPrevious from './nextPrevious';
-import rovingTabIndex from './rovingTabIndex';
-import uniqueId from './uniqueId';
+import { nextPrevious } from './nextPrevious';
+import { rovingTabIndex } from './rovingTabIndex';
+import { setUniqueId } from './uniqueId';
 import Search from './Search';
 
 export {
@@ -14,6 +14,6 @@ export {
   keyCodes,
   nextPrevious,
   rovingTabIndex,
-  uniqueId,
+  setUniqueId,
   Search,
 };
