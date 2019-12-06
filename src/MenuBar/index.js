@@ -176,7 +176,7 @@ export default class MenuBar extends AriaComponent {
      * Without these elements, the references will be broken and potentially
      * confusing to users.
      */
-    missingDescribedByWarning(Menu.getHelpIds());
+    missingDescribedByWarning(MenuBar.getHelpIds());
 
     /*
      * Set menubar link attributes.
