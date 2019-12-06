@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Corrects Menu search scoping (#8)
 - Shift-TAB from a Popup's last interactive child no longer closes the Popup (#10)
 - Corrects `lib/` exports (#12)
+- Corrects MenuBar static method reference (#13)
 
 ## 0.1.1
 
