@@ -64,7 +64,7 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class Dialog extends AriaComponent {
+class Disclosure extends AriaComponent {
   /**
    * Update component state to open the Disclosure.
    */

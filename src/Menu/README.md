@@ -47,7 +47,7 @@ class Menu extends AriaComponent {
 
 ```javascript
 /**
- * The menu list element.
+ * The config.menu property.
  *
  * @type {HTMLUListElement}
  */
