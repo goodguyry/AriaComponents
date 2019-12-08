@@ -79,6 +79,17 @@ class MenuBar extends AriaComponent {
 }
 ```
 
+## Properties
+
+```javascript
+/**
+ * The config.menu property.
+ *
+ * @type {HTMLUListElement}
+ */
+MenuBar.menu
+```
+
 ## Example
 
 ```html

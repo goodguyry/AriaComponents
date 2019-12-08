@@ -79,6 +79,27 @@ class MenuButtton extends AriaComponent {
 
 ```javascript
 /**
+ * The config.controller property.
+ */
+MenuButton.controller
+```
+
+```javascript
+/**
+ * The config.target property.
+ */
+MenuButton.target
+```
+
+```javascript
+/**
+ * The config.list property.
+ */
+MenuButton.list
+```
+
+```javascript
+/**
  * The Popup instance controlling the MenuButton.
  * 
  * @type {Popup}

@@ -83,6 +83,22 @@ class Popup extends AriaComonents {
 }
 ```
 
+## Properties
+
+```javascript
+/**
+ * The config.controller property.
+ */
+Popup.controller
+```
+
+```javascript
+/**
+ * The config.target property.
+ */
+Popup.target
+```
+
 ## Example
 
 ```html

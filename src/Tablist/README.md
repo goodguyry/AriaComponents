@@ -72,6 +72,23 @@ class Tablist extends AriaComponent {
 }
 ```
 
+## Properties
+
+```javascript
+/**
+ * The config.tablist property.
+ */
+Tablist.tablist
+```
+
+```javascript
+/**
+ * The config.panels property.
+ */
+Tablist.panels
+```
+
+
 ## Example
 
 ```html

@@ -78,6 +78,20 @@ class ListBox extends AriaComponent {
 
 ```javascript
 /**
+ * The config.controller property.
+ */
+ListBox.controller
+```
+
+```javascript
+/**
+ * The config.target property.
+ */
+ListBox.target
+```
+
+```javascript
+/**
  * The Popup instance controlling the ListBox.
  * 
  * @type {Popup}

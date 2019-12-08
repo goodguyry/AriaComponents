@@ -98,6 +98,27 @@ class Dialog extends AriaComponent {
 
 ```javascript
 /**
+ * The config.controller property.
+ */
+Dialog.controller
+```
+
+```javascript
+/**
+ * The config.target property.
+ */
+Dialog.target
+```
+
+```javascript
+/**
+ * The config.content property.
+ */
+Dialog.content
+```
+
+```javascript
+/**
  * The Popup instance controlling the Dialog.
  * 
  * @type {Popup}
