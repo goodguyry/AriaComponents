@@ -64,7 +64,7 @@ export default class AriaComponent {
   }
 
   /**
-   * Return the current compoennt state.
+   * Return the current component state.
    *
    * @return {object}
    */

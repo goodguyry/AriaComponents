@@ -4,40 +4,88 @@ MenuButton
 Class for setting up an interactive popup menu that can be triggered by a 
 controlling element.
 
-## Config `object`
+## Config Object
 
-**config.controller** `HTMLElement`  
-The element used to trigger the MenuButton's target element.
+```javascript
+const config = {
+  /**
+   * The element used to trigger the Menu Popup.
+   *
+   * @type {HTMLButtonElement}
+   */
+  controller: null,
 
-**config.target** `HTMLElement`  
-The MenuButton's target element.
+  /**
+   * The Menu wrapper element.
+   *
+   * @type {HTMLElement}
+   */
+  target: null,
 
-**config.list** `HTMLElement`  
-The MenuButton's menu element.
+  /**
+   * The Menu element.
+   *
+   * @type {HTMLUListElement}
+   */
+  list: null,
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
+  /**
+   * Callback to run after component state is updated.
+   * 
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.onStateChange**  
-Callback to run after component state is updated.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**show()**  
-Update component state to show the target element.
+```javascript
+class MenuButtton extends AriaComponent {
+  /**
+   * Show the menu Popup.
+   */
+  show();
 
-**hide()**  
-Update component state to hide the target element.
+  /**
+   * Hide the menu Popup.
+   */
+  hide();
 
-**destroy()**  
-Destroy the Popup, removing attributes, event listeners, and element properties.
+  /**
+   * Destroy the Popup and Menu.
+   */
+  destroy();
+}
+```
+
+## Properties
+
+```javascript
+/**
+ * The Popup instance controlling the MenuButton.
+ * 
+ * @type {Popup}
+ * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
+ */
+MenuButton.popup
+```
 
 ## Example
 

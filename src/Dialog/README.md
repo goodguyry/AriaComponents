@@ -3,49 +3,108 @@ Dialog
 
 Class to set up an interactive Dialog element.
 
-## Config `object`
+## Config Object
 
-**config.controller** `HTMLElement`  
-The element used to trigger the Dialog.
+```javascript
+const config = {
+  /**
+   * The button element used to trigger the dialog popup.
+   *
+   * @type {HTMLButtonElement}
+   */
+  controller: null,
 
-**config.target** `HTMLElement`  
-The Dialog element.
+  /**
+   * The element used as the dialog window.
+   *
+   * @type {HTMLElement}
+   */
+  target: null,
 
-**config.content** `HTMLElement`  
-The site content wrapper; the element wrapping all site content (including 
-header and footer) with the sole exception of the Dialog element.
+  /**
+   * The site content wrapper. 
+   * NOT necessarily <main>, but the element wrapping all site content (including 
+   * header and footer) with the sole exception of the dialog element.
+   *
+   * @type {HTMLElement}
+   */
+  content: null,
 
-**config.close** `HTMLElement`  
-The button used to close the Dialog. Required to be the very first element 
-inside the Dialog. If none is passed, one will be created.  
-_Default:_ `<button>Close</button>`
+  /**
+   * The button used to close the dialog.
+   * Required to be the very first element inside the dialog. If none is passed, 
+   * one will be created.
+   * 
+   * @type {HTMLButtonElement}
+   * @see createCloseButton
+   */
+  close: Dialog.createCloseButton(),
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
+  /**
+   * Callback to run after component state is updated.
+   * 
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.onStateChange**  
-Callback to run after component state is updated.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**createCloseButton()**  `static`  
-Static method to create a button element with 'Close' as its label.
+```javascript
+class Dialog extends AriaComponent {
+  /**
+   * Create the dialog close button.
+   *
+   * @return {HTMLElement} The HTML button element with 'Close' as its label.
+   * @static
+   */
+  createCloseButton();
 
-**show()**  
-Update component state to show the target element.
+  /**
+   * Show the Dialog.
+   */
+  show();
 
-**hide()**  
-Update component state to hide the target element.
+  /**
+   * Hide the Dialog.
+   */
+  hide();
 
-**destroy()**  
-Destroy the Dialog, removing attributes, event listeners, and element properties.
+  /**
+   * Destroy the Dialog and Popup.
+   */
+  destroy();
+}
+```
+
+## Properties
+
+```javascript
+/**
+ * The Popup instance controlling the Dialog.
+ * 
+ * @type {Popup}
+ * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
+ */
+Dialog.popup
+```
 
 ## Example
 

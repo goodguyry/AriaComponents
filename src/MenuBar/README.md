@@ -4,41 +4,80 @@ MenuBar
 Class for managing a visually persistent (horizontally-oriented) menubar, with 
 each submenu item is instantiated as a Popup.
 
-## Config `object`
+## Config Object
 
-**config.menu** `HTMLElement`  
-The menubar element.
+```javascript
+const config = {
+  /**
+   * The menubar element.
+   *
+   * @type {HTMLUListElement}
+   */
+  menu: null,
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
+  /**
+   * Callback to run after component state is updated.
+   * 
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.onStateChange**  
-Callback to run after component state is updated.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
 
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after Popup initializes.
+   * 
+   * @callback popupInitCallback
+   */
+  onPopupInit: () => {},
 
-**config.onPopupInit**  
-Callback to run after a Popup initializes.
+  /**
+   * Callback to run after Popup state is updated.
+   * 
+   * @callback popupStateChangeCallback
+   */
+  onPopupStateChange: () => {},
 
-**config.onPopupStateChange**  
-Callback to run after a Popup state is updated.
-
-**config.onPopupDestroy**  
-Callback to run after a Popup is destroyed.
+  /**
+   * Callback to run after Popup is destroyed.
+   * 
+   * @callback popupDestroyCallback
+   */
+  onPopupDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**getHelpIds()** `static`  
-Get HTML IDs for elements containing help text.
+```javascript
+class MenuBar extends AriaComponent {
+  /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
 
-**destroy()**  
-Destroy the MenuBar, removing attributes, event listeners, and element 
-properties. Also destroys submenu Popup instances.
+  /**
+   * Destroy the MenuBar and any submenu Popups.
+   */
+  destroy();
+}
+```
 
 ## Example
 

@@ -4,33 +4,84 @@ Popup
 Class for setting up an interactive popup element that can be triggered by a 
 controlling element.
 
-## Config `object`
+## Config Object
 
-**config.controller** `HTMLElement`  
-The element used to trigger the Popup element.
+```javascript
+const config = {
+  /**
+   * The element used to trigger the Popup element.
+   *
+   * @type {HTMLElement}
+   */
+  controller: null,
 
-**config.target** `HTMLElement`  
-The Popup's target element.
+  /**
+   * The Popup's target element.
+   *
+   * @type {HTMLElement}
+   */
+  target: null,
 
-**config.type** `string`  
-The value of `aria-haspopup` must match the role of the Popup container.  
-_Default:_ `'true'`  
-_Options:_ `'menu'`, `'listbox'`, `'tree'`, `'grid'`, `'dialog'`
+  /**
+   * The value of `aria-haspopup` must match the role of the Popup container.
+   * Options: menu, listbox, tree, grid, or dialog,
+   *
+   * @type {string}
+   */
+  type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
+  /**
+   * Callback to run after component state is updated.
+   * 
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.onStateChange**  
-Callback to run after component state is updated.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
+
+```javascript
+class Popup extends AriaComonents {
+  /**
+   * Update component state to show the target element.
+   */
+  show();
+
+  /**
+   * Update component state to hide the target element.
+   */
+  hide();
+
+  /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+
+  /**
+   * Remove all attributes and event listeners added by this class.
+   */
+  destroy();
+}
+```
 
 **show()**  
 Update component state to show the target element.
