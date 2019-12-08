@@ -4,34 +4,90 @@ Tablist
 Class for implimenting a tabs widget for sectioning content and displaying one 
 at a time.
 
-## Config `object`
+## Config Object
 
-**config.tablist** `HTMLElement`  
-The UL parent of the Tablist tabs.
+```javascript
+const config = {
+  /**
+   * The UL parent of the Tablist tabs.
+   *
+   * @type {HTMLElement}
+   */
+  tablist: null,
 
-**config.panels** `NodeList|Array`  
-The Tablist panel elements.
+  /**
+   * The Tablist panel elements.
+   *
+   * @type {NodeList}
+   */
+  panels: null,
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
+  /**
+   * Callback to run after component state is updated.
+   * 
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.onStateChange**  
-Callback to run after component state is updated.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**switchTo(index)**  
-Switch directly to a given tab.
+```javascript
+class Tablist extends AriaComponent {
+  /**
+   * Switch directly to a tab.
+   *
+   * @param {number} index The zero-based tab index to activate.
+   */
+  switchTo(index);
 
-**destroy()**  
-Destroy the Tablist, removing attributes, event listeners, and element properties.
+  /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+
+  /**
+   * Destroy the tablist, removing ARIA attributes and event listeners
+   */
+  destroy();
+}
+```
+
+## Properties
+
+```javascript
+/**
+ * The config.tablist property.
+ */
+Tablist.tablist
+```
+
+```javascript
+/**
+ * The config.panels property.
+ */
+Tablist.panels
+```
+
 
 ## Example
 

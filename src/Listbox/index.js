@@ -35,31 +35,34 @@ export default class ListBox extends AriaComponent {
       /**
        * The element used to trigger the Listbox Popup.
        *
-       * @type {HTMLElement}
+       * @type {HTMLButtonElement}
        */
       controller: null,
 
       /**
        * The Listbox element.
        *
-       * @type {HTMLElement}
+       * @type {HTMLUListElement}
        */
       target: null,
 
       /**
        * Callback to run after the component initializes.
+       *
        * @callback initCallback
        */
       onInit: () => {},
 
       /**
        * Callback to run after component state is updated.
+       *
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
 
       /**
        * Callback to run after the component is destroyed.
+       *
        * @callback destroyCallback
        */
       onDestroy: () => {},
@@ -88,13 +91,13 @@ export default class ListBox extends AriaComponent {
    */
   init() {
     /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
      */
     super.setSelfReference([this.controller, this.target]);
 
     /**
-     * Collect list items.
+     * The target list items.
      *
      * @type {array}
      */

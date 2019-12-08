@@ -3,31 +3,56 @@ Menu
 
 Class to set up an vertically oriented interactive Menu element.
 
-## Config `object`
+## Config Object
 
-**config.menu** `HTMLElement`  
-The Menu element.
+```javascript
+const config = {
+  /**
+   * The menu element.
+   *
+   * @type {HTMLUListElement}
+   */
+  menu: null,
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**getHelpIds()** `static`  
-Get HTML IDs for elements containing help text.
+```javascript
+class Menu extends AriaComponent {
+  /**
+   * Destroy the Menu and any submenus.
+   */
+  destroy();
+}
+```
 
-**nextElementIsUl(element)** `static`  
-Test for a list as the next sibling element.  
+## Properties
 
-**destroy()**  
-Destroy the Menu, removing attributes, event listeners, and element properties.
+```javascript
+/**
+ * The config.menu property.
+ *
+ * @type {HTMLUListElement}
+ */
+Menu.menu
+```
 
 ## Example
 

@@ -3,37 +3,102 @@ Listbox
 
 Class to set up an interactive Listbox element.
 
-## Config `object`
+## Config Object
 
-**config.controller** `HTMLElement`  
-The element used to trigger the Listbox.
+```javascript
+const config = {
+  /**
+   * The element used to trigger the Listbox Popup.
+   *
+   * @type {HTMLButtonElement}
+   */
+  controller: null,
 
-**config.target** `HTMLElement`  
-The Listbox element.
+  /**
+   * The Listbox element.
+   *
+   * @type {HTMLUListElement}
+   */
+  target: null,
 
-### Callbacks
+  /**
+   * Callback to run after the component initializes.
+   *
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.onInit**  
-Callback to run after the component initializes.
+  /**
+   * Callback to run after component state is updated.
+   *
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.onStateChange**  
-Callback to run after component state is updated.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   *
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**show()**  
-Update component state to show the target element.
+```javascript
+class ListBox extends AriaComponent {
+  /**
+   * Show the Listbox.
+   */
+  show();
 
-**hide()**  
-Update component state to hide the target element.
+  /**
+   * Hide the Listbox.
+   */
+  hide();
 
-**destroy()**  
-Destroy the Listbox, removing attributes, event listeners, and element properties.
+  /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+
+  /**
+   * Destroy the Listbox and Popup.
+   */
+  destroy();
+}
+```
+
+## Properties
+
+```javascript
+/**
+ * The config.controller property.
+ */
+ListBox.controller
+```
+
+```javascript
+/**
+ * The config.target property.
+ */
+ListBox.target
+```
+
+```javascript
+/**
+ * The Popup instance controlling the ListBox.
+ * 
+ * @type {Popup}
+ * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
+ */
+ListBox.popup
+```
 
 ## Example
 

@@ -11,7 +11,7 @@ export default class Dialog extends AriaComponent {
    * Create the dialog close button, in case one doesn't exist. Will be inserted
    * as the dialog element's first child.
    *
-   * @return {HTMLElement} The HTML button element.
+   * @return {HTMLElement} The HTML button element with 'Close' as its label.
    */
   static createCloseButton() {
     const button = document.createElement('button');
@@ -45,7 +45,7 @@ export default class Dialog extends AriaComponent {
       /**
        * The element used to trigger the dialog popup.
        *
-       * @type {HTMLElement}
+       * @type {HTMLButtonElement}
        */
       controller: null,
 
@@ -69,24 +69,27 @@ export default class Dialog extends AriaComponent {
        * The button used to close the dialog. Required to be the very first
        * element inside the dialog. If none is passed, one will be created.
        *
-       * @type {HTMLElement}
+       * @type {HTMLButtonElement}
        */
       close: this.constructor.createCloseButton(),
 
       /**
        * Callback to run after the component initializes.
+       *
        * @callback initCallback
        */
       onInit: () => {},
 
       /**
        * Callback to run after component state is updated.
+       *
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
 
       /**
        * Callback to run after the component is destroyed.
+       *
        * @callback destroyCallback
        */
       onDestroy: () => {},
@@ -127,13 +130,13 @@ export default class Dialog extends AriaComponent {
    */
   init() {
     /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
      */
     super.setSelfReference([this.controller, this.target]);
 
     /**
-     * Create the Popup to control the Dialog.
+     * The Popup instance controlling the Dialog.
      * @type {Popup}
      */
     this.popup = new Popup({

@@ -4,46 +4,106 @@ Disclosure
 Class to set up a controller-target relationship for independently revealing and 
 hiding inline content.
 
-## Config `object`
+## Config Object
 
-**config.controller** `HTMLElement`  
-The element used to trigger the Disclosure.
+```javascript
+const config = {
+  /**
+   * The element used to trigger the Disclosure Popup.
+   *
+   * @type {HTMLButtonElement}
+   */
+  controller: null,
+  
+  /**
+   * The Disclosure element.
+   *
+   * @type {HTMLElement}
+   */
+  target: null,
+  
+  /**
+   * Load the Disclosure open by default.
+   *
+   * @type {boolean}
+   */
+  loadOpen: false,
+  
+  /**
+   * Keep the Disclosure open when the user clicks outside of it.
+   *
+   * @type {boolean}
+   */
+  allowOutsideClick: true,
+  
+  /**
+   * Callback to run after the component initializes.
+   * 
+   * @callback initCallback
+   */
+  onInit: () => {},
 
-**config.target** `HTMLElement`  
-The Disclosure element.
+  /**
+   * Callback to run after component state is updated.
+   * 
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
 
-**config.loadOpen** `boolean`  
-Load the Disclosure open.  
-_Default:_ `false`
-
-**config.allowOutsideClick** `boolean`  
-Keep the Disclosure open when the user clicks outside of it.  
-_Default:_ `true`
-
-### Callbacks
-
-**config.onInit**  
-Callback to run after the component initializes.
-
-**config.onStateChange**  
-Callback to run after component state is updated.
-
-**config.onDestroy**  
-Callback to run after the component is destroyed.
+  /**
+   * Callback to run after the component is destroyed.
+   * 
+   * @callback destroyCallback
+   */
+  onDestroy: () => {},
+};
+```
 
 ## Methods
 
 > See also [`src/README`](../).
 
-**open()**  
-Update component state to show the target element.
+```javascript
+class Disclosure extends AriaComponent {
+  /**
+   * Update component state to open the Disclosure.
+   */
+  open();
 
-**close()**  
-Update component state to hide the target element.
+  /**
+   * Update component state to close the Disclosure.
+   */
+  close();
 
-**destroy()**  
-Destroy the Disclosure, removing attributes, event listeners, and element 
-properties.
+  /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+
+  /**
+   * Remove all ARIA attributes added by this class.
+   */
+  destroy();
+}
+```
+
+## Properties
+
+```javascript
+/**
+ * The config.controller property.
+ */
+Disclosure.controller
+```
+
+```javascript
+/**
+ * The config.target property.
+ */
+Disclosure.target
+```
 
 ## Example
 

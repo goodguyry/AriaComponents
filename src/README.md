@@ -7,15 +7,23 @@ Extend the `AriaComponent` class to get access to the methods below.
 
 ### Methods
 
-**setSelfReference()**  
-Set a reference to the class instance on the element upon which the class is 
-instantiated.
+```javascript
+class AriaComponent {
+  /**
+   * Set component state.
+   *
+   * @param {object} newState The new state to merge with existing state.
+   */
+  setState(newState);
 
-**setState(newState)**  
-Set component state.
-
-**getState()**  
-Return the current component state.
+  /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+}
+```
 
 ## lib/ Modules
 

@@ -61,18 +61,20 @@ export default class Menu extends AriaComponent {
       /**
        * The menu element.
        *
-       * @type {HTMLElement}
+       * @type {HTMLUListElement}
        */
       menu: null,
 
       /**
        * Callback to run after the component initializes.
+       *
        * @callback initCallback
        */
       onInit: () => {},
 
       /**
        * Callback to run after the component is destroyed.
+       *
        * @callback destroyCallback
        */
       onDestroy: () => {},
@@ -96,8 +98,8 @@ export default class Menu extends AriaComponent {
    */
   init() {
     /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
      */
     super.setSelfReference([this.menu]);
 

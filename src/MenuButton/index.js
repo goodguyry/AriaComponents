@@ -35,7 +35,7 @@ export default class MenuButton extends AriaComponent {
       /**
        * The element used to trigger the Menu Popup.
        *
-       * @type {HTMLElement}
+       * @type {HTMLButtonElement}
        */
       controller: null,
 
@@ -49,24 +49,27 @@ export default class MenuButton extends AriaComponent {
       /**
        * The Menu element.
        *
-       * @type {HTMLElement}
+       * @type {HTMLUListElement}
        */
       list: null,
 
       /**
        * Callback to run after the component initializes.
+       *
        * @callback initCallback
        */
       onInit: () => {},
 
       /**
        * Callback to run after component state is updated.
+       *
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
 
       /**
        * Callback to run after the component is destroyed.
+       *
        * @callback destroyCallback
        */
       onDestroy: () => {},
@@ -187,14 +190,14 @@ export default class MenuButton extends AriaComponent {
   }
 
   /**
-   * Show the MenuButton.
+   * Show the menu Popup.
    */
   show() {
     this.popup.show();
   }
 
   /**
-   * Hide the MenuButton.
+   * Hide the menu Popup.
    */
   hide() {
     this.popup.hide();

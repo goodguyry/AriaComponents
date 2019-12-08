@@ -45,7 +45,7 @@ export default class Tablist extends AriaComponent {
       /**
        * The UL parent of the Tablist tabs.
        *
-       * @type {HTMLElement}
+       * @type {HTMLUListElement}
        */
       tablist: null,
 
@@ -58,18 +58,21 @@ export default class Tablist extends AriaComponent {
 
       /**
        * Callback to run after the component initializes.
+       *
        * @callback initCallback
        */
       onInit: () => {},
 
       /**
        * Callback to run after component state is updated.
+       *
        * @callback stateChangeCallback
        */
       onStateChange: () => {},
 
       /**
        * Callback to run after the component is destroyed.
+       *
        * @callback destroyCallback
        */
       onDestroy: () => {},
@@ -145,8 +148,8 @@ export default class Tablist extends AriaComponent {
     // Set attributes for each tab.
     this.tabs.forEach((tab, index) => {
       /*
-       * Add a reference to the class instance to enable external interactions
-       * with this instance.
+       * A reference to the class instance added to the controller and target
+       * elements to enable external interactions with this instance.
        */
       super.setSelfReference([tab]);
 
