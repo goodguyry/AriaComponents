@@ -13,7 +13,7 @@ function toArray(maybeAnArray) {
   if (maybeAnArray instanceof HTMLElement) {
     // Convert element(s) to an Array.
     shouldBeAnArray = new Array(maybeAnArray);
-  } else if (maybeAnArray instanceof NodeList) {
+  } else if (maybeAnArray instanceof NodeList || maybeAnArray instanceof HTMLCollection) {
     // Array.from(maybeAnArray);
     shouldBeAnArray = Array.prototype.slice.call(maybeAnArray, 0);
   }
