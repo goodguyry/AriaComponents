@@ -1,6 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.1.3
+
+**Fixed**
+
+- Corrects the Popup's focusable elements' initial tabindex (#15)
+
 ## 0.1.2
 
 **Fixed**
