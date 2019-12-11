@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - BREAKING: Moves helper functions to `utils/` (#17)
 
+**Added**
+
+- Roving tabIndex helpers accept an HTMLCollection (#18)
+
 **Fixed**
 
 - Corrects the Popup's focusable elements' initial tabindex (#15)
