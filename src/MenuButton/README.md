@@ -69,6 +69,13 @@ class MenuButtton extends AriaComponent {
   hide();
 
   /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+
+  /**
    * Destroy the Popup and Menu.
    */
   destroy();
