@@ -86,7 +86,7 @@ describe('Listbox with default configuration', () => {
 
     it('Should update Listbox attributes correctly when opened', () => {
       listbox.show();
-      expect(listbox.popup.getState().expanded).toBeTruthy();
+      expect(listbox.getState().expanded).toBeTruthy();
 
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
 
@@ -101,21 +101,21 @@ describe('Listbox with default configuration', () => {
   describe('Listbox controller should respond to events as expected', () => {
     beforeEach(() => {
       listbox.hide();
-      expect(listbox.popup.getState().expanded).toBeFalsy();
+      expect(listbox.getState().expanded).toBeFalsy();
     });
 
     it('Should open the popup on controller DOWN arrow key', () => {
       controller.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(target);
       // @todo Why does this fail?!?!
-      // expect(listbox.popup.getState().expanded).toBeTruthy();
+      // expect(listbox.getState().expanded).toBeTruthy();
     });
 
     it('Should open the popup on controller UP arrow key', () => {
       controller.dispatchEvent(keydownUp);
       expect(document.activeElement).toEqual(target);
       // @todo Why does this fail?!?!
-      // expect(listbox.popup.getState().expanded).toBeTruthy();
+      // expect(listbox.getState().expanded).toBeTruthy();
     });
   });
 
@@ -126,19 +126,19 @@ describe('Listbox with default configuration', () => {
 
     it('Should close the popup and focus the controller on RETURN key', () => {
       target.dispatchEvent(keydownReturn);
-      expect(listbox.popup.getState().expanded).toBeFalsy();
+      expect(listbox.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
     it('Should close the popup and focus the controller on ESC key', () => {
       target.dispatchEvent(keydownEsc);
-      expect(listbox.popup.getState().expanded).toBeFalsy();
+      expect(listbox.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
     it('Should close the popup and focus the controller on SPACE key', () => {
       target.dispatchEvent(keydownSpace);
-      expect(listbox.popup.getState().expanded).toBeFalsy();
+      expect(listbox.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
@@ -187,7 +187,7 @@ describe('Listbox with default configuration', () => {
     it('Should select the clicked listbox item and close', () => {
       target.children[3].dispatchEvent(click);
 
-      expect(listbox.popup.getState().expanded).toBeFalsy();
+      expect(listbox.getState().expanded).toBeFalsy();
       expect(listbox.getState().activeDescendant).toEqual(target.children[3]);
       expect(document.activeElement).toEqual(controller);
 
@@ -200,7 +200,7 @@ describe('Listbox with default configuration', () => {
 
       document.body.dispatchEvent(click);
 
-      expect(listbox.popup.getState().expanded).toBeFalsy();
+      expect(listbox.getState().expanded).toBeFalsy();
       expect(listbox.getState().activeDescendant).toEqual(target.children[5]);
       expect(document.activeElement).not.toEqual(target);
 

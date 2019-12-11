@@ -70,7 +70,7 @@ describe('Dialog with default configuration', () => {
       expect(target.dialog).toBeInstanceOf(Dialog);
 
       expect(modal.popup).toBeInstanceOf(Popup);
-      expect(modal.popup.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalled();
     });
@@ -86,12 +86,12 @@ describe('Dialog with default configuration', () => {
   describe('Dialog class methods', () => {
     it('Should reflect the accurate state', () => {
       modal.show();
-      expect(modal.popup.getState().expanded).toBeTruthy();
+      expect(modal.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(modal.close);
       expect(onStateChange).toHaveBeenCalled();
 
       modal.hide();
-      expect(modal.popup.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
       expect(onStateChange).toHaveBeenCalled();
     });
@@ -105,14 +105,14 @@ describe('Dialog with default configuration', () => {
     it('Should update attributes when the controller is clicked', () => {
       // Click to close (it is opened by `beforeEach`)
       modal.close.dispatchEvent(click);
-      expect(modal.popup.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
 
       // Click to re-open.
       controller.dispatchEvent(click);
-      expect(modal.popup.getState().expanded).toBeTruthy();
+      expect(modal.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toBeNull();
@@ -129,12 +129,12 @@ describe('Dialog with default configuration', () => {
     it('Should close when the ESC key is pressed', () => {
       lastItem.focus();
       lastItem.dispatchEvent(keydownEsc);
-      expect(modal.popup.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeFalsy();
     });
 
     it('Should close on outside click', () => {
       document.body.dispatchEvent(click);
-      expect(modal.popup.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeFalsy();
     });
   });
 
