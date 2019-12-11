@@ -1,8 +1,6 @@
 src/lib/
 =============
 
-The following modules are likely the most suitable in this directory for general use.
-
 ## `interactiveChildren`
 
 ```javascript
@@ -31,7 +29,7 @@ document.querySelector('ul').addEventListener('keydown', (event) => {
   const { SPACE, RETURN } = keyCodes;
 
   if ([SPACE, RETURN].includes(event.keyCode)) {
-    this.popup.hide();
+    console.log('😎 You pressed the Spacebar or the Return key');
   }
 });
 ```
@@ -55,18 +53,20 @@ tabIndexAllow(interactiveChildElements);
 // Deny tabbing to interactive child elements.
 tabIndexDeny(interactiveChildElements);
 
-// Denay tabbing to all but the first interactive child element.
+// Deny tabbing to all but the first interactive child element.
 const [firstChild] = interactiveChildElements;
 rovingTabIndex(interactiveChildElements, firstChild);
 ```
 
-## `setUniqueId`
+## `uniqueId`
 
 ```javascript
-import { setUniqueId } from 'aria-components/utils';
+import { setUniqueId, getUniqueId } from 'aria-components/utils';
 
 const button = document.querySelector('button');
 setUniqueId(button); // button.id = 'id_5c16045tmd'
+
+const newId = getUniqueId(button); // 'id_9y0541qs1tk'
 ```
 
 ## `Search`
