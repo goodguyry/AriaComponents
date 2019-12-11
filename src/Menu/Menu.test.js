@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Menu } from 'root';
-import { events, typeCharacter } from 'root/utils/events';
+import { events, typeCharacter } from 'root/src/lib/events';
 
 // Create the help text elements.
 const ariaDescribedbyTestMarkup = Menu.getHelpIds().reduce((acc, id) => (

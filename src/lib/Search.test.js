@@ -1,5 +1,5 @@
 import { Search } from 'root/src/lib';
-import { typeCharacter } from 'root/utils/events';
+import { typeCharacter } from 'root/src/lib/events';
 
 // Set up our document body
 document.body.innerHTML = `

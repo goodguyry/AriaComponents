@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Disclosure } from 'root';
-import { events } from 'root/utils/events';
+import { events } from 'root/src/lib/events';
 
 const {
   click,
