@@ -116,6 +116,9 @@ export default class Popup extends AriaComponent {
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
+    // Focusable content should initially have tabindex='-1'.
+    tabIndexDeny(this.interactiveChildElements);
+
     /*
      * Collect first and last interactive child elements from target and merge
      * them in as instance properties.
