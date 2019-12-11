@@ -1,4 +1,4 @@
-import Menu from '../Menu';
+import Menu from 'root/src/Menu';
 import {
   ariaDescribedbyElementsFound,
 } from './ariaDescribedbyElementsFound';

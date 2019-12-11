@@ -1,5 +1,5 @@
-import Popup from '../Popup';
-import Menu from '../Menu';
+import Popup from 'root/src/Popup';
+import Menu from 'root/src/Menu';
 import isInstanceOf from './isInstanceOf';
 // Because we're instantiating Menu.
 import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
