@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { MenuButton, Popup, Menu } from 'root';
-import { events } from 'root/src/lib/events';
+import { events } from '../lib/events';
 import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
 
 const {
