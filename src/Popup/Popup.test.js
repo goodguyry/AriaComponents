@@ -56,6 +56,11 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(controller.popup).toBeInstanceOf(Popup);
     expect(target.popup).toBeInstanceOf(Popup);
 
+    // All interactive children should initially have a negative tabindex.
+    popup.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toEqual('-1');
+    });
+
     expect(onInit).toHaveBeenCalled();
   });
 
@@ -83,11 +88,21 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toBeNull();
 
+    // All interactive children should initially have a negative tabindex.
+    popup.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toBeNull();
+    });
+
     // Click again to close.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeFalsy();
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
+
+    // All interactive children should initially have a negative tabindex.
+    popup.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toEqual('-1');
+    });
   });
 
   it('Should run class methods and subscriber functions', () => {
