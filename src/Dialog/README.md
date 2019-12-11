@@ -88,6 +88,13 @@ class Dialog extends AriaComponent {
   hide();
 
   /**
+   * Return the current component state.
+   *
+   * @return {object}
+   */
+  getState();
+
+  /**
    * Destroy the Dialog and Popup.
    */
   destroy();

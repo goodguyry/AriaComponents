@@ -58,7 +58,7 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
     expect(target.popup).toBeInstanceOf(Popup);
     expect(list.menu).toBeInstanceOf(Menu);
 
-    expect(menuButton.popup.getState().expanded).toBeFalsy();
+    expect(menuButton.getState().expanded).toBeFalsy();
 
     expect(onInit).toHaveBeenCalled();
   });
@@ -99,7 +99,7 @@ describe('MenuButton correctly responds to events', () => {
     () => {
       controller.focus();
       controller.dispatchEvent(keydownEsc);
-      expect(menuButton.popup.getState().expanded).toBeFalsy();
+      expect(menuButton.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
@@ -145,7 +145,7 @@ describe('MenuButton correctly responds to events', () => {
   it('Should close the menuButton and focus the controller when the ESC key is pressed',
     () => {
       target.dispatchEvent(keydownEsc);
-      expect(menuButton.popup.getState().expanded).toBeFalsy();
+      expect(menuButton.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
@@ -153,7 +153,7 @@ describe('MenuButton correctly responds to events', () => {
     () => {
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
-      expect(menuButton.popup.getState().expanded).toBeFalsy();
+      expect(menuButton.getState().expanded).toBeFalsy();
     });
 
   it('Should focus the controller when tabbing back from the first child',
@@ -166,7 +166,7 @@ describe('MenuButton correctly responds to events', () => {
   it('Should close the menuButton when an outside element it clicked',
     () => {
       document.body.dispatchEvent(click);
-      expect(menuButton.popup.getState().expanded).toBeFalsy();
+      expect(menuButton.getState().expanded).toBeFalsy();
     });
 });
 
@@ -182,7 +182,7 @@ it('Should destroy the menuButton as expected', () => {
   expect(target.menuButton).toBeUndefined();
 
   controller.dispatchEvent(click);
-  expect(menuButton.popup.getState().expanded).toBeFalsy();
+  expect(menuButton.getState().expanded).toBeFalsy();
 
   expect(onDestroy).toHaveBeenCalled();
 });
