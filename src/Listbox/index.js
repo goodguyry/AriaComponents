@@ -87,6 +87,16 @@ export default class ListBox extends AriaComponent {
   }
 
   /**
+   * Get component state.
+   *
+   * @return {object} The component state, with it's nested Popup state.
+   */
+  getState() {
+    // Add the Popup state to this component's state.
+    return Object.assign(super.getState(), this.popup.getState());
+  }
+
+  /**
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
