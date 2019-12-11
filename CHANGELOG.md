@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Added**
 
 - Roving tabIndex helpers accept an HTMLCollection (#18)
+- Merge nested component state with the parent component's state (#19)
 
 **Fixed**
 
