@@ -13,7 +13,7 @@ The following modules are likely the most suitable in this directory for general
  *
  * @return {Array}
  */
-import { interactiveChildren } from 'aria-components/src/lib';
+import { interactiveChildren } from 'aria-components/utils';
 
 const element = document.querySelector('div');
 const interactiveChildElements = interactiveChildren(element);
@@ -25,7 +25,7 @@ const interactiveChildElements = interactiveChildren(element);
 /**
  * Event keyCode values mapped to a key name.
  */
-import { keyCodes } from 'aria-components/src/lib';
+import { keyCodes } from 'aria-components/utils';
 
 document.querySelector('ul').addEventListener('keydown', (event) => {
   const { SPACE, RETURN } = keyCodes;
@@ -44,7 +44,7 @@ import {
   tabIndexAllow, 
   tabIndexDeny,
   interactiveChildren,
-} from 'aria-components/src/lib';
+} from 'aria-components/utils';
 
 const element = document.querySelector('div');
 const interactiveChildElements = interactiveChildren(element);
@@ -63,7 +63,7 @@ rovingTabIndex(interactiveChildElements, firstChild);
 ## `setUniqueId`
 
 ```javascript
-import { setUniqueId } from 'aria-components/src/lib';
+import { setUniqueId } from 'aria-components/utils';
 
 const button = document.querySelector('button');
 setUniqueId(button); // button.id = 'id_5c16045tmd'
@@ -72,7 +72,7 @@ setUniqueId(button); // button.id = 'id_5c16045tmd'
 ## `Search`
 
 ```javascript
-import { Search } from 'aria-components/src/lib';
+import { Search } from 'aria-components/utils';
 
 const list = document.querySelector('ul');
 const search = new Search(list);
