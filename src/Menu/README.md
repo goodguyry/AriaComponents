@@ -8,11 +8,11 @@ Class to set up an vertically oriented interactive Menu element.
 ```javascript
 const config = {
   /**
-   * The menu element.
+   * The menu list element.
    *
    * @type {HTMLUListElement}
    */
-  menu: null,
+  list: null,
 
   /**
    * Callback to run after the component initializes.
@@ -94,10 +94,10 @@ Menu.menu
 ```javascript
 import { Menu } from 'AriaComponents';
 
-const menu = document.querySelector('.menu');
+const list = document.querySelector('.menu');
 
 const menu = new Menu({
-  menu,
+  list,
   onInit: () => {
     console.log('Menu initialized.');
   },

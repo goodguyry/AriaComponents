@@ -9,4 +9,4 @@ const { list } = getClassnames(siteClassNames.menubar);
 const menuBarList = document.querySelector(list);
 
 // Create the MenuBar.
-const menuBar = new MenuBar({ menu: menuBarList }); // eslint-disable-line no-unused-vars
+const menuBar = new MenuBar({ list: menuBarList }); // eslint-disable-line no-unused-vars

@@ -9,4 +9,4 @@ const { list } = getClassnames(siteClassNames.menu);
 const menuList = document.querySelector(list);
 
 // Create the Menu.
-const menu = new Menu({ menu: menuList }); // eslint-disable-line no-unused-vars
+const menu = new Menu({ list: menuList }); // eslint-disable-line no-unused-vars

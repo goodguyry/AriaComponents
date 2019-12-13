@@ -9,11 +9,11 @@ each submenu item is instantiated as a Popup.
 ```javascript
 const config = {
   /**
-   * The menubar element.
+   * The menubar menu list element.
    *
    * @type {HTMLUListElement}
    */
-  menu: null,
+  list: null,
 
   /**
    * Callback to run after the component initializes.
@@ -93,7 +93,7 @@ MenuBar.menu
 ## Example
 
 ```html
-<ul class="menubar">
+<ul class="menu">
   <li>
     <a href="example.com"></a>
     <ul>
@@ -131,10 +131,10 @@ MenuBar.menu
 ```javascript
 import { MenuBar } from 'AriaComponents';
 
-const menu = document.querySelector('.menubar');
+const list = document.querySelector('.menu');
 
 const menuBar = new MenuBar({
-  menu,
+  list,
   onInit: () => {
     console.log('MenuBar initialized.');
   },

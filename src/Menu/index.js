@@ -52,6 +52,14 @@ export default class Menu extends AriaComponent {
      */
     this.componentName = 'menu';
 
+    // Warn about deprecated config value.
+    if (config.menu) {
+      const { menu } = config;
+      // delete config.menu;
+      Object.assign(config, { list: menu, menu: undefined });
+      AriaComponent.warnDeprecated('config.menu', 'config.list');
+    }
+
     /**
      * Options shape.
      *
@@ -59,11 +67,11 @@ export default class Menu extends AriaComponent {
      */
     const options = {
       /**
-       * The menu element.
+       * The menu's list element.
        *
        * @type {HTMLUListElement}
        */
-      menu: null,
+      list: null,
 
       /**
        * Callback to run after the component initializes.
@@ -88,7 +96,7 @@ export default class Menu extends AriaComponent {
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
-    if (null !== this.menu && 'UL' === this.menu.nodeName) {
+    if (null !== this.list && 'UL' === this.list.nodeName) {
       this.init();
     }
   }
@@ -101,20 +109,20 @@ export default class Menu extends AriaComponent {
      * A reference to the class instance added to the controller and target
      * elements to enable external interactions with this instance.
      */
-    super.setSelfReference([this.menu]);
+    super.setSelfReference([this.list]);
 
     /*
      * Add the 'menu' role to signify a widget that offers a list of choices to
      * the user, such as a set of actions or functions.
      */
-    this.menu.setAttribute('role', 'menu');
+    this.list.setAttribute('role', 'menu');
 
     /**
      * The list's child elements.
      *
      * @type {array}
      */
-    this.listItems = Array.prototype.slice.call(this.menu.children);
+    this.listItems = Array.prototype.slice.call(this.list.children);
 
     /**
      * Collected menu links.
@@ -147,7 +155,7 @@ export default class Menu extends AriaComponent {
     /**
      * Listen for keydown events on the menu.
      */
-    this.menu.addEventListener('keydown', this.handleListKeydown);
+    this.list.addEventListener('keydown', this.handleListKeydown);
 
     /*
      * Warn if aria-decribedby elements are not found.
@@ -178,7 +186,7 @@ export default class Menu extends AriaComponent {
 
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
-        const subList = new Menu({ menu: siblingList });
+        const subList = new Menu({ list: siblingList });
         // Save the list's previous sibling.
         subList.previousSibling = link;
       }
@@ -210,7 +218,7 @@ export default class Menu extends AriaComponent {
       ESC,
     } = keyCodes;
     const { activeElement } = document;
-    const activeDescendant = (this.menu.contains(activeElement)
+    const activeDescendant = (this.list.contains(activeElement)
       ? activeElement
       : this.menuItems[0]);
 
@@ -321,7 +329,7 @@ export default class Menu extends AriaComponent {
    * Destroy the Menu and any submenus.
    */
   destroy() {
-    delete this.menu.menu;
+    delete this.list.menu;
 
     this.menuItems.forEach((link) => {
       // Remove list item role.

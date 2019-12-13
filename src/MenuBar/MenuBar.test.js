@@ -78,9 +78,10 @@ const onDestroy = jest.fn();
 const onPopupStateChange = jest.fn();
 const onPopupInit = jest.fn();
 const onPopupDestroy = jest.fn();
+const { list } = domElements;
 
 const menuBar = new MenuBar({
-  menu: domElements.list,
+  list,
   onInit,
   onStateChange,
   onDestroy,

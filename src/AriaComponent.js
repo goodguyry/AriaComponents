@@ -3,6 +3,17 @@
  */
 export default class AriaComponent {
   /**
+   * Warn about deprecated config properties.
+   *
+   * @param  {string} unsupported The deprecated config value.
+   * @param  {string} supported   The newly supported config value.
+   */
+  static warnDeprecated(unsupported, supported) {
+    // eslint-disable-next-line no-console, max-len
+    console.warn(`aria-components: ${unsupported} is deprecated. Use ${supported} instead.`);
+  }
+
+  /**
    * Create an AriaComponent.
    * @constructor
    */
