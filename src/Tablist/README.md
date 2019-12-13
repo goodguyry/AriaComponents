@@ -13,7 +13,7 @@ const config = {
    *
    * @type {HTMLElement}
    */
-  tablist: null,
+  tabs: null,
 
   /**
    * The Tablist panel elements.
@@ -92,7 +92,7 @@ Tablist.panels
 ## Example
 
 ```html
-<ul class="tablist">
+<ul class="tabs">
   <li><a href="#first-panel"></a></li>
   <li><a href="#second-panel"></a></li>
   <li><a href="#third-panel"></a></li>
@@ -132,11 +132,11 @@ Tablist.panels
 ```javascript
 import { Tablist } from 'AriaComponents';
 
-const tabs = document.querySelector('.tablist');
+const tabs = document.querySelector('.tabs');
 const panels = document.querySelectorAll('.panel');
 
 const tablist = new Tablist({
-  tablist: tabs,
+  tabs,
   panels,
   onInit: () => {
     console.log('Tablist initialized.');

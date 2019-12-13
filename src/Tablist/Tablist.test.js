@@ -73,7 +73,7 @@ const onDestroy = jest.fn();
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
     tablist = new Tablist({
-      tablist: tabs,
+      tabs,
       panels,
       onStateChange,
       onInit,

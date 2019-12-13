@@ -11,6 +11,6 @@ const panels = document.querySelectorAll(panel);
 
 // Create the Tablist.
 const tablist = new Tablist({ // eslint-disable-line no-unused-vars
-  tablist: tabs,
+  tabs,
   panels,
 });
