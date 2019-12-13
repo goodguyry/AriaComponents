@@ -60,13 +60,9 @@ export default class MenuBar extends AriaComponent {
     // Warn about deprecated config value.
     if (config.menu) {
       const { menu } = config;
-      // delete config.menu;
       Object.assign(config, { list: menu, menu: undefined });
-      AriaComponent.warnDeprecated(
-        this.constructor.name,
-        'config.menu',
-        'config.list'
-      );
+
+      AriaComponent.warnDeprecated(this.constructor.name, 'menu', 'list');
     }
 
     /**

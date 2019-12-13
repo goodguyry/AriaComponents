@@ -11,7 +11,7 @@ export default class AriaComponent {
    */
   static warnDeprecated(name, unsupported, supported) {
     // eslint-disable-next-line no-console, max-len
-    console.warn(`${name}: ${unsupported} is deprecated. Use ${supported} instead.`);
+    console.warn(`${name}: config.${unsupported} is deprecated. Use config.${supported} instead.`);
   }
 
   /**
