@@ -34,7 +34,11 @@ export default class Tablist extends AriaComponent {
       const { tablist } = config;
       // delete config.tablist;
       Object.assign(config, { tabs: tablist, tablist: undefined });
-      AriaComponent.warnDeprecated('config.tablist', 'config.tabs');
+      AriaComponent.warnDeprecated(
+        this.constructor.name,
+        'config.tablist',
+        'config.tabs'
+      );
     }
 
     // The tabs element is required to be a UL.

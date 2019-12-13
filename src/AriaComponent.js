@@ -5,12 +5,13 @@ export default class AriaComponent {
   /**
    * Warn about deprecated config properties.
    *
-   * @param  {string} unsupported The deprecated config value.
-   * @param  {string} supported   The newly supported config value.
+   * @param {string} name The name of the class instance.
+   * @param {string} unsupported The deprecated config value.
+   * @param {string} supported The newly supported config value.
    */
-  static warnDeprecated(unsupported, supported) {
+  static warnDeprecated(name, unsupported, supported) {
     // eslint-disable-next-line no-console, max-len
-    console.warn(`aria-components: ${unsupported} is deprecated. Use ${supported} instead.`);
+    console.warn(`${name}: ${unsupported} is deprecated. Use ${supported} instead.`);
   }
 
   /**
