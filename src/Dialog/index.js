@@ -265,9 +265,8 @@ export default class Dialog extends AriaComponent {
    * Destroy the Dialog and Popup.
    */
   destroy() {
-    // Remove the self refereneces.
-    delete this.controller[this.componentName];
-    delete this.target[this.componentName];
+    // Remove the references to the class instance.
+    this.deleteSelfReferences();
 
     // Destroy the Dialog Popup.
     this.popup.destroy();

@@ -76,6 +76,13 @@ export default class AriaComponent {
 
     this.referenceElements = [...this.referenceElements, ...referenceElements];
   }
+
+  /**
+   * Delete self references from component elements.
+   */
+  deleteSelfReferences() {
+    this.referenceElements.forEach((element) => {
+      delete element[this.componentName];
     });
   }
 

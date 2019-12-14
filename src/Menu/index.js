@@ -322,7 +322,8 @@ export default class Menu extends AriaComponent {
    * Destroy the Menu and any submenus.
    */
   destroy() {
-    delete this.list[this.componentName];
+    // Remove the reference to the class instance.
+    this.deleteSelfReferences();
 
     this.menuItems.forEach((link) => {
       // Remove list item role.

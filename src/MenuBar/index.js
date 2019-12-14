@@ -432,7 +432,8 @@ export default class MenuBar extends AriaComponent {
    * Recursively destroy MenuBar and Popups.
    */
   destroy() {
-    delete this.list[this.componentName];
+    // Remove the reference to the class instance.
+    this.deleteSelfReferences();
 
     // Remove the menu role.
     this.list.removeAttribute('role');
