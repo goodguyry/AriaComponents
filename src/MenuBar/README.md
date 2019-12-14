@@ -42,20 +42,6 @@ const config = {
    * @callback popupInitCallback
    */
   onPopupInit: () => {},
-
-  /**
-   * Callback to run after Popup state is updated.
-   * 
-   * @callback popupStateChangeCallback
-   */
-  onPopupStateChange: () => {},
-
-  /**
-   * Callback to run after Popup is destroyed.
-   * 
-   * @callback popupDestroyCallback
-   */
-  onPopupDestroy: () => {},
 };
 ```
 
@@ -146,12 +132,6 @@ const menuBar = new MenuBar({
   },
   onPopupInit: () => {
     console.log('MenuBar Popup initialized.');
-  },
-  onPopupStateChange: () => {
-    console.log('MenuBar Popup state was updated.');
-  },
-  onPopupDestroy: () => {
-    console.log('MenuBar Popup destroyed.');
   },
 });
 ```

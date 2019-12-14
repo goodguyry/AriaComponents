@@ -98,20 +98,6 @@ export default class MenuBar extends AriaComponent {
        * @callback popupInitCallback
        */
       onPopupInit: () => {},
-
-      /**
-       * Callback to run after Popup state is updated.
-       *
-       * @callback popupStateChangeCallback
-       */
-      onPopupStateChange: () => {},
-
-      /**
-       * Callback to run after Popup is destroyed.
-       *
-       * @callback popupDestroyCallback
-       */
-      onPopupDestroy: () => {},
     };
 
     // Merge config options with defaults.
@@ -236,9 +222,7 @@ export default class MenuBar extends AriaComponent {
         const popup = new Popup({
           controller,
           target,
-          onStateChange: this.onPopupStateChange,
           onInit: this.onPopupInit,
-          onDestroy: this.onPopupDestroy,
           type: 'menu',
         });
 
@@ -264,6 +248,7 @@ export default class MenuBar extends AriaComponent {
     this.state = {
       menubarItem,
       popup: this.constructor.getPopupFromMenubarItem(menubarItem),
+      expanded: false,
     };
 
     // Set up initial tabindex.
@@ -274,16 +259,26 @@ export default class MenuBar extends AriaComponent {
   }
 
   /**
+   * Get component state.
+   *
+   * @return {object} The component state merged with it's nested Popup state.
+   */
+  getState() {
+    const { menubarItem } = super.getState();
+    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+    const popupState = popup ? popup.getState() : { expanded: false };
+
+    // Add the Popup state to this component's state.
+    return Object.assign(super.getState(), popup, popupState);
+  }
+
+  /**
    * Manage menubar state.
    *
    * @param {Object} state The component state.
    */
   stateWasUpdated({ menubarItem }) {
-    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
-
-    // Add the current popup (or false) to state.
-    Object.assign(this.state, { popup });
-
+    // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
 
     menubarItem.focus();
@@ -308,7 +303,8 @@ export default class MenuBar extends AriaComponent {
       RETURN,
     } = keyCodes;
     const { keyCode } = event;
-    const { menubarItem, popup } = this.state;
+    // Use this.getState() to get the merged component states.
+    const { menubarItem, popup } = this.getState();
 
     switch (keyCode) {
       /*
