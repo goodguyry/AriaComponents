@@ -70,9 +70,10 @@ const domElements = {
 // Mock functions.
 const onInit = jest.fn();
 const onDestroy = jest.fn();
+const { list } = domElements;
 
 const menu = new Menu({
-  menu: domElements.list,
+  list,
   onInit,
   onDestroy,
 });
@@ -182,7 +183,7 @@ describe('Destroying the Menu removes attributes', () => {
   it('Should remove attributes on destroy', () => {
     menu.destroy();
 
-    expect(domElements.list.menu).toBeUndefined();
+    expect(domElements.list.list).toBeUndefined();
     expect(domElements.sublistOne.menu).toBeUndefined();
 
     expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();

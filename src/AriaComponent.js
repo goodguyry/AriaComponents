@@ -32,6 +32,7 @@ export default class AriaComponent {
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
+    this.warnDeprecated = this.warnDeprecated.bind(this);
   }
 
   /**
@@ -70,5 +71,17 @@ export default class AriaComponent {
    */
   getState() {
     return this.state;
+  }
+
+  /**
+   * Warn about deprecated config properties.
+   *
+   * @param {string} name The name of the class instance.
+   * @param {string} unsupported The deprecated config value.
+   * @param {string} supported The newly supported config value.
+   */
+  warnDeprecated(unsupported, supported) {
+    // eslint-disable-next-line no-console, max-len
+    console.warn(`${this.constructor.name}: config.${unsupported} is deprecated. Use config.${supported} instead.`);
   }
 }

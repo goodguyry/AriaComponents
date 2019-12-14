@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Changed**
 
 - BREAKING: Moves helper functions to `utils/` (#17)
+- BREAKING: Deprecates the Menu and MenuBar `menu` config property in favor of `list` (#20)
+- BREAKING: Deprecates the Tablist `tablist` config property in favor of `tabs` (#20)
 
 **Added**
 

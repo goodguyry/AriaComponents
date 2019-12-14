@@ -120,10 +120,10 @@ export default class MenuButton extends AriaComponent {
 
     // Initialize the Menu if we passed one in.
     if (null !== this.list && 'UL' === this.list.nodeName) {
-      this.menu = new Menu({ menu: this.list });
+      this.menu = new Menu({ list: this.list });
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
-      this.menu = new Menu({ menu: this.target });
+      this.menu = new Menu({ list: this.target });
     }
 
     // Additional event listener(s).

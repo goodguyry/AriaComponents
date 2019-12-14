@@ -57,6 +57,14 @@ export default class MenuBar extends AriaComponent {
      */
     this.componentName = 'menuBar';
 
+    // Warn about deprecated config value.
+    if (config.menu) {
+      const { menu } = config;
+      Object.assign(config, { list: menu, menu: undefined });
+
+      this.warnDeprecated('menu', 'list');
+    }
+
     /**
      * Options shape.
      *
@@ -64,11 +72,11 @@ export default class MenuBar extends AriaComponent {
      */
     const options = {
       /**
-       * The menubar element.
+       * The menubar list element.
        *
        * @type {HTMLUListElement}
        */
-      menu: null,
+      list: null,
 
       /**
        * Callback to run after the component initializes.
@@ -124,7 +132,7 @@ export default class MenuBar extends AriaComponent {
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
-    if (null !== this.menu && 'UL' === this.menu.nodeName) {
+    if (null !== this.list && 'UL' === this.list.nodeName) {
       this.init();
     }
   }
@@ -137,17 +145,17 @@ export default class MenuBar extends AriaComponent {
      * A reference to the class instance added to the controller and target
      * elements to enable external interactions with this instance.
      */
-    super.setSelfReference([this.menu]);
+    super.setSelfReference([this.list]);
 
     // Set the menu role.
-    this.menu.setAttribute('role', 'menubar');
+    this.list.setAttribute('role', 'menubar');
 
     /**
      * The menubar's child elements.
      *
      * @type {array}
      */
-    this.menuBarChildren = Array.prototype.slice.call(this.menu.children);
+    this.menuBarChildren = Array.prototype.slice.call(this.list.children);
 
     /**
      * Collected menubar links.
@@ -242,7 +250,7 @@ export default class MenuBar extends AriaComponent {
         });
 
         // Initialize submenu Menus.
-        const subList = new Menu({ menu: target });
+        const subList = new Menu({ list: target });
         target.addEventListener('keydown', this.handleMenuItemKeydown);
 
         // Save the list's previous sibling.
@@ -431,10 +439,10 @@ export default class MenuBar extends AriaComponent {
    * Recursively destroy MenuBar and Popups.
    */
   destroy() {
-    delete this.menu.menuBar;
+    delete this.list.menuBar;
 
     // Remove the menu role.
-    this.menu.removeAttribute('role');
+    this.list.removeAttribute('role');
 
     this.menuBarItems.forEach((link) => {
       // Remove list item role.

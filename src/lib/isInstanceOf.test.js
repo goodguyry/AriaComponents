@@ -25,7 +25,7 @@ const target = document.querySelector('.wrapper');
 const list = document.querySelector('.menu');
 
 const popup = new Popup({ controller, target }); // eslint-disable-line no-unused-vars
-const menu = new Menu({ menu: list }); // eslint-disable-line no-unused-vars
+const menu = new Menu({ list }); // eslint-disable-line no-unused-vars
 
 describe('', () => {
   it('Should be a Popup instance',
