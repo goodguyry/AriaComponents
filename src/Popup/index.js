@@ -19,13 +19,6 @@ export default class Popup extends AriaComponent {
     super(config);
 
     /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = 'popup';
-
-    /**
      * Component configuration options.
      *
      * @type {object}
@@ -351,8 +344,8 @@ export default class Popup extends AriaComponent {
    */
   destroy() {
     // Remove the reference to the class instance.
-    delete this.controller.popup;
-    delete this.target.popup;
+    delete this.controller[this.componentName];
+    delete this.target[this.componentName];
 
     // Remove controller attributes.
     this.controller.removeAttribute('aria-haspopup');

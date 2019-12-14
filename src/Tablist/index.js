@@ -22,13 +22,6 @@ export default class Tablist extends AriaComponent {
   constructor(config) {
     super();
 
-    /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = 'tablist';
-
     // Warn about deprecated config value.
     if (config.tablist) {
       const { tablist } = config;
@@ -414,7 +407,7 @@ export default class Tablist extends AriaComponent {
     // Remove tab attributes and event listeners.
     this.tabLinks.forEach((tab) => {
       // Remove the self reference.
-      delete tab.tablist; // eslint-disable-line no-param-reassign
+      delete tab[this.componentName]; // eslint-disable-line no-param-reassign
 
       tab.removeAttribute('role');
       tab.removeAttribute('aria-selected');
@@ -428,7 +421,7 @@ export default class Tablist extends AriaComponent {
     // Remove panel attributes and event listeners.
     this.panels.forEach((panel) => {
       // Remove the self reference.
-      delete panel.tablist; // eslint-disable-line no-param-reassign
+      delete panel[this.componentName]; // eslint-disable-line no-param-reassign
 
       panel.removeAttribute('role');
       panel.removeAttribute('aria-hidden');

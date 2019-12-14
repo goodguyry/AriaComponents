@@ -20,13 +20,6 @@ export default class ListBox extends AriaComponent {
     super(config);
 
     /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = 'listbox';
-
-    /**
      * Options shape.
      *
      * @type {object}
@@ -439,8 +432,8 @@ export default class ListBox extends AriaComponent {
    */
   destroy() {
     // Remove the self references.
-    delete this.controller.listbox;
-    delete this.target.listbox;
+    delete this.controller[this.componentName];
+    delete this.target[this.componentName];
 
     // Remove the role attribute from each of the options.
     this.options.forEach((listItem) => {

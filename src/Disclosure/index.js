@@ -21,12 +21,6 @@ export default class Disclosure extends AriaComponent {
     super(config);
 
     /**
-     * The component name.
-     * @type {string}
-     */
-    this.componentName = 'disclosure';
-
-    /**
      * Options shape.
      *
      * @type {object}
@@ -270,8 +264,8 @@ export default class Disclosure extends AriaComponent {
    */
   destroy() {
     // Add a reference to the class instance.
-    delete this.controller.disclosure;
-    delete this.target.disclosure;
+    delete this.controller[this.componentName];
+    delete this.target[this.componentName];
 
     // Remove controller attributes.
     this.controller.removeAttribute('aria-expanded');

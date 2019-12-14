@@ -8,13 +8,6 @@ export default class AriaComponent {
    */
   constructor() {
     /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = '';
-
-    /**
      * Component state.
      *
      * @type {object}
@@ -33,6 +26,15 @@ export default class AriaComponent {
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
     this.warnDeprecated = this.warnDeprecated.bind(this);
+  }
+
+  /**
+   * The component name.
+   *
+   * @return {string}
+   */
+  get componentName() {
+    return this.constructor.name.toLowerCase();
   }
 
   /**

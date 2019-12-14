@@ -50,13 +50,6 @@ export default class MenuBar extends AriaComponent {
   constructor(config) {
     super(config);
 
-    /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = 'menuBar';
-
     // Warn about deprecated config value.
     if (config.menu) {
       const { menu } = config;
@@ -439,7 +432,7 @@ export default class MenuBar extends AriaComponent {
    * Recursively destroy MenuBar and Popups.
    */
   destroy() {
-    delete this.list.menuBar;
+    delete this.list[this.componentName];
 
     // Remove the menu role.
     this.list.removeAttribute('role');
