@@ -21,6 +21,13 @@ export default class AriaComponent {
      */
     this.searchString = '';
 
+    /**
+     * Saved reference elements.
+     *
+     * @type {Array}
+     */
+    this.referenceElements = [];
+
     // Bind class methods.
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
@@ -57,12 +64,18 @@ export default class AriaComponent {
    * @param {array} elements An array of elements upon which to add a reference to `this`.
    */
   setSelfReference(elements) {
-    [...elements].forEach((element) => {
+    const referenceElements = [...elements].map((element) => {
       Object.defineProperty(
         element,
         this.componentName,
         { value: this, configurable: true }
       );
+
+      return element;
+    });
+
+    this.referenceElements = [...this.referenceElements, ...referenceElements];
+  }
     });
   }
 
