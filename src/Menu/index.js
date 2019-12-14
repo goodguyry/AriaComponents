@@ -45,13 +45,6 @@ export default class Menu extends AriaComponent {
   constructor(config) {
     super(config);
 
-    /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = 'menu';
-
     // Warn about deprecated config value.
     if (config.menu) {
       const { menu } = config;
@@ -329,7 +322,8 @@ export default class Menu extends AriaComponent {
    * Destroy the Menu and any submenus.
    */
   destroy() {
-    delete this.list.menu;
+    // Remove the reference to the class instance.
+    this.deleteSelfReferences();
 
     this.menuItems.forEach((link) => {
       // Remove list item role.

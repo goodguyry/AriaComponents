@@ -30,13 +30,6 @@ export default class Dialog extends AriaComponent {
     super(config);
 
     /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = 'dialog';
-
-    /**
      * Options shape.
      *
      * @type {object}
@@ -272,9 +265,8 @@ export default class Dialog extends AriaComponent {
    * Destroy the Dialog and Popup.
    */
   destroy() {
-    // Remove the self refereneces.
-    delete this.controller.dialog;
-    delete this.target.dialog;
+    // Remove the references to the class instance.
+    this.deleteSelfReferences();
 
     // Destroy the Dialog Popup.
     this.popup.destroy();

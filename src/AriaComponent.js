@@ -8,13 +8,6 @@ export default class AriaComponent {
    */
   constructor() {
     /**
-     * The component name.
-     *
-     * @type {string}
-     */
-    this.componentName = '';
-
-    /**
      * Component state.
      *
      * @type {object}
@@ -28,11 +21,27 @@ export default class AriaComponent {
      */
     this.searchString = '';
 
+    /**
+     * Saved reference elements.
+     *
+     * @type {Array}
+     */
+    this.referenceElements = [];
+
     // Bind class methods.
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
     this.warnDeprecated = this.warnDeprecated.bind(this);
+  }
+
+  /**
+   * The component name.
+   *
+   * @return {string}
+   */
+  get componentName() {
+    return this.constructor.name.toLowerCase();
   }
 
   /**
@@ -55,12 +64,25 @@ export default class AriaComponent {
    * @param {array} elements An array of elements upon which to add a reference to `this`.
    */
   setSelfReference(elements) {
-    [...elements].forEach((element) => {
+    const referenceElements = [...elements].map((element) => {
       Object.defineProperty(
         element,
         this.componentName,
         { value: this, configurable: true }
       );
+
+      return element;
+    });
+
+    this.referenceElements = [...this.referenceElements, ...referenceElements];
+  }
+
+  /**
+   * Delete self references from component elements.
+   */
+  deleteSelfReferences() {
+    this.referenceElements.forEach((element) => {
+      delete element[this.componentName];
     });
   }
 
