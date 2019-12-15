@@ -50,13 +50,21 @@ export default class MenuBar extends AriaComponent {
   constructor(config) {
     super(config);
 
-    // Warn about deprecated config value.
-    if (config.menu) {
-      const { menu } = config;
-      Object.assign(config, { list: menu, menu: undefined });
+    // Warn about deprecated config values.
+    Object.keys(config).forEach((prop) => {
+      if ('menu' === prop) {
+        const { menu } = config;
+        // Correct the config property.
+        Object.assign(config, { list: menu, menu: undefined });
 
-      this.warnDeprecated('menu', 'list');
-    }
+        this.warnDeprecated('config.menu', 'config.list');
+      }
+
+      // Deprecated callbacks.
+      if (['onPopupDestroy', 'onPopupStateChange'].includes(prop)) {
+        this.warnDeprecated(`config.${prop}`);
+      }
+    });
 
     /**
      * Options shape.
