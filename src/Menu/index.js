@@ -50,7 +50,7 @@ export default class Menu extends AriaComponent {
       const { menu } = config;
       Object.assign(config, { list: menu, menu: undefined });
 
-      this.warnDeprecated('menu', 'list');
+      this.warnDeprecated('config.menu', 'config.list');
     }
 
     /**
