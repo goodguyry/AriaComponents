@@ -73,6 +73,7 @@ export default class MenuButton extends AriaComponent {
 
     // Bind class methods.
     this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
+    this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -81,16 +82,6 @@ export default class MenuButton extends AriaComponent {
     if (null !== this.controller && null !== this.target) {
       this.init();
     }
-  }
-
-  /**
-   * Get component state.
-   *
-   * @return {object} The component state, with it's nested Popup state.
-   */
-  getState() {
-    // Add the Popup state to this component's state.
-    return Object.assign(super.getState(), this.popup.getState());
   }
 
   /**
@@ -108,7 +99,7 @@ export default class MenuButton extends AriaComponent {
       controller: this.controller,
       target: this.target,
       type: 'menu',
-      onStateChange: this.onStateChange,
+      onStateChange: this.onPopupStateChange,
     });
 
     // Initialize the Menu if we passed one in.
@@ -122,8 +113,27 @@ export default class MenuButton extends AriaComponent {
     // Additional event listener(s).
     this.controller.addEventListener('keydown', this.handleControllerKeydown);
 
+    /**
+     * Set initial state.
+     *
+     * @type {object}
+     */
+    this.state = { expanded: false };
+
     // Run {initCallback}
     this.onInit.call(this);
+  }
+
+  /**
+   * Keep this component's state synced with the Popup's state.
+   *
+   * @param {Object} state The Popup state.
+   */
+  onPopupStateChange(state) {
+    this.setState(state);
+
+    // Run {stateChangeCallback}
+    this.onStateChange.call(this, this.state);
   }
 
   /**

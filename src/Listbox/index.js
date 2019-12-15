@@ -71,22 +71,12 @@ export default class ListBox extends AriaComponent {
     this.handleTargetClicks = this.handleTargetClicks.bind(this);
     this.handleTargetBlur = this.handleTargetBlur.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
-    this.popupStateWasUpdated = this.popupStateWasUpdated.bind(this);
+    this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
-  }
-
-  /**
-   * Get component state.
-   *
-   * @return {object} The component state, with it's nested Popup state.
-   */
-  getState() {
-    // Add the Popup state to this component's state.
-    return Object.assign(super.getState(), this.popup.getState());
   }
 
   /**
@@ -159,7 +149,7 @@ export default class ListBox extends AriaComponent {
       controller: this.controller,
       target: this.target,
       type: 'listbox',
-      onStateChange: this.popupStateWasUpdated,
+      onStateChange: this.onPopupStateChange,
     });
 
     /*
@@ -196,29 +186,31 @@ export default class ListBox extends AriaComponent {
    * @param {object} state The component state.
    * @param {HTMLElement} state.activeDescendant The expected `activeDescendant` state.
    */
-  stateWasUpdated({ activeDescendant }) {
-    /*
-     * Remove the `aria-selected` attribute form the previously-selected option
-     * and add it to the newly-selected option.
-     */
-    const selected = this.target.querySelector('[aria-selected="true"]');
-    if (null !== selected) {
-      selected.removeAttribute('aria-selected');
+  stateWasUpdated({ activeDescendant, expanded }) {
+    if (expanded) {
+      /*
+       * Remove the `aria-selected` attribute from the previously-selected option
+       * and add it to the newly-selected option.
+       */
+      const selected = this.target.querySelector('[aria-selected="true"]');
+      if (null !== selected) {
+        selected.removeAttribute('aria-selected');
+      }
+      activeDescendant.setAttribute('aria-selected', 'true');
+
+      /*
+       * Track the newly selected option via the `aria-activedescendant` attribute
+       * on the target.
+       */
+      this.target.setAttribute('aria-activedescendant', activeDescendant.id);
+
+      /*
+       * If the selected option is beyond the bounds of the list, scroll it into
+       * view. Check this every time state is updated to ensure the selected
+       * option is always visible.
+       */
+      this.scrollOptionIntoView(activeDescendant);
     }
-    activeDescendant.setAttribute('aria-selected', 'true');
-
-    /*
-     * Track the newly selected option via the `aria-activedescendant` attribute
-     * on the target.
-     */
-    this.target.setAttribute('aria-activedescendant', activeDescendant.id);
-
-    /*
-     * If the selected option is beyond the bounds of the list, scroll it into
-     * view. Check this every time state is updated to ensure the selected
-     * option is always visible.
-     */
-    this.scrollOptionIntoView(activeDescendant);
 
     // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
@@ -230,13 +222,10 @@ export default class ListBox extends AriaComponent {
    * @param {object} popup.state the Popup state.
    * @param {boolean} popup.state.expanded The Popup `expanded` state.
    */
-  popupStateWasUpdated({ expanded }) {
+  onPopupStateChange({ expanded }) {
     const { activeDescendant } = this.state;
 
     if (expanded) {
-      // Update component state.
-      this.setState({ activeDescendant });
-
       /*
        * Focus the target (list) element when the Listbox is shown. Focus
        * remains on the target element, with option selection coming through a
@@ -263,6 +252,9 @@ export default class ListBox extends AriaComponent {
         this.controller.focus();
       }
     }
+
+    // Update component state.
+    this.setState({ activeDescendant, expanded });
   }
 
   /**

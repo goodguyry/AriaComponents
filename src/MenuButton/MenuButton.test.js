@@ -92,7 +92,7 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 describe('MenuButton correctly responds to events', () => {
   // Ensure the menuButton is open before all tests.
   beforeEach(() => {
-    menuButton.setState({ expanded: true });
+    menuButton.show();
   });
 
   it('Should close the menuButton when the ESC key is pressed',

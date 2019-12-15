@@ -119,16 +119,6 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
-   * Get component state.
-   *
-   * @return {object} The component state, with it's nested Popup state.
-   */
-  getState() {
-    // Add the Popup state to this component's state.
-    return Object.assign(super.getState(), this.popup.getState());
-  }
-
-  /**
    * Set the component's DOM attributes and event listeners.
    */
   init() {
@@ -169,20 +159,32 @@ export default class Dialog extends AriaComponent {
       this.popup.targetKeyDownHandler
     );
 
+    /**
+     * Set initial state.
+     *
+     * @type {object}
+     */
+    this.state = { expanded: false };
+
     /* Run {initCallback} */
     this.onInit.call(this);
   }
 
   /**
-   * Update element attributes and event listeners when the Popup's state
-   * changes. The Dialog component has no state of its own, but run the
-   * onStateChange callback regardless so authors can tie in additional
-   * functionality necessary for their design.
+   * Keep this component's state synced with the Popup's state.
    *
-   * @param {object} state The Popup component state.
-   * @param {boolean} state.expanded The expected `expanded` state.
+   * @param {Object} state The Popup state.
    */
   onPopupStateChange({ expanded }) {
+    this.setState({ expanded });
+  }
+
+  /**
+   * Update element attributes and event listeners when the Popup's state changes.
+   *
+   * @param {Object} state The component state.
+   */
+  stateWasUpdated({ expanded }) {
     this.interactiveChildren = interactiveChildren(this.target);
 
     if (expanded) {
