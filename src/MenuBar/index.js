@@ -294,8 +294,8 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} state The component state.
    */
-  stateWasUpdated(state) {
-    const { menubarItem } = state;
+  stateWasUpdated() {
+    const { menubarItem } = this.state;
 
     // Make sure we're tracking the Popup state along with this.
     this.trackPopupState();

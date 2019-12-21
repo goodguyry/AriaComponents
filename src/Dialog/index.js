@@ -103,6 +103,7 @@ export default class Dialog extends AriaComponent {
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     /*
      * Initialize the component if all required elements are accounted for. The
@@ -184,7 +185,9 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Object} state The component state.
    */
-  stateWasUpdated({ expanded }) {
+  stateWasUpdated() {
+    const { expanded } = this.state;
+
     this.interactiveChildren = interactiveChildren(this.target);
 
     if (expanded) {

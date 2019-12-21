@@ -177,7 +177,9 @@ export default class Popup extends AriaComponent {
    *
    * @param {object} state The component state.
    */
-  stateWasUpdated({ expanded }) {
+  stateWasUpdated() {
+    const { expanded } = this.state;
+
     this.controller.setAttribute('aria-expanded', `${expanded}`);
 
     /*

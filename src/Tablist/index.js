@@ -91,6 +91,7 @@ export default class Tablist extends AriaComponent {
     this.handleTabsClick = this.handleTabsClick.bind(this);
     this.switchTo = this.switchTo.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     /**
      * Tablist panels.
@@ -212,7 +213,9 @@ export default class Tablist extends AriaComponent {
    * @param {object} state The component state.
    * @param {number} state.activeIndex The active index of both tabs and panels.
    */
-  stateWasUpdated({ activeIndex }) {
+  stateWasUpdated() {
+    const { activeIndex } = this.state;
+
     // Get the tab currently designated as `aria-selected`.
     const [deactivate] = this.tabLinks.filter((tab) => (
       'true' === tab.getAttribute('aria-selected')
