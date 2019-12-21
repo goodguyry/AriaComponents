@@ -116,7 +116,7 @@ export default class MenuBar extends AriaComponent {
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
-    this.mergeComponentStates = this.mergeComponentStates.bind(this);
+    this.trackPopupState = this.trackPopupState.bind(this);
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
@@ -232,7 +232,7 @@ export default class MenuBar extends AriaComponent {
           controller,
           target,
           onInit: this.onPopupInit,
-          onStateChange: this.mergeComponentStates,
+          onStateChange: this.trackPopupState,
           type: 'menu',
         });
 
@@ -273,7 +273,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @return {object} The component state merged with it's nested Popup state.
    */
-  mergeComponentStates({ expanded }) {
+  trackPopupState({ expanded }) {
     const { menubarItem } = this.state;
     const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
 
@@ -290,7 +290,7 @@ export default class MenuBar extends AriaComponent {
     const { menubarItem, expanded } = state;
 
     // Make sure we're tracking the Popup state along with this.
-    this.mergeComponentStates({ expanded });
+    this.trackPopupState({ expanded });
 
     // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
