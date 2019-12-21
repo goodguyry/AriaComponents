@@ -274,11 +274,11 @@ export default class MenuBar extends AriaComponent {
    * @return {object} The component state merged with it's nested Popup state.
    */
   mergeComponentStates({ expanded }) {
-    const { menubarItem } = super.getState();
+    const { menubarItem } = this.state;
     const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
 
     // Add the Popup state to this component's state.
-    this.state = Object.assign(super.getState(), { popup, expanded });
+    this.state = Object.assign({ menubarItem, popup, expanded });
   }
 
   /**
