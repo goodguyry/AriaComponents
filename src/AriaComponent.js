@@ -52,8 +52,8 @@ export default class AriaComponent {
   setState(newState) {
     Object.assign(this.state, newState);
 
-    if (undefined !== this.stateWasUpdated) {
-      this.stateWasUpdated(this.state);
+    if ('function' === typeof this.stateWasUpdated) {
+      this.stateWasUpdated();
     }
   }
 

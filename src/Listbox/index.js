@@ -75,6 +75,7 @@ export default class ListBox extends AriaComponent {
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     this.init();
   }
@@ -186,7 +187,9 @@ export default class ListBox extends AriaComponent {
    * @param {object} state The component state.
    * @param {HTMLElement} state.activeDescendant The expected `activeDescendant` state.
    */
-  stateWasUpdated({ activeDescendant, expanded }) {
+  stateWasUpdated() {
+    const { activeDescendant, expanded } = this.state;
+
     if (expanded) {
       /*
        * Remove the `aria-selected` attribute from the previously-selected option

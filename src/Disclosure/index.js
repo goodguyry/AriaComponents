@@ -90,6 +90,7 @@ export default class Disclosure extends AriaComponent {
     this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
     this.toggleExpandedState = this.toggleExpandedState.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     // Check for a valid controller and target before initializing.
     if (null !== this.controller && null !== this.target) {
@@ -184,7 +185,9 @@ export default class Disclosure extends AriaComponent {
    * @param {object} state The component state.
    * @param {boolean} state.expanded The expected `expanded` state.
    */
-  stateWasUpdated({ expanded }) {
+  stateWasUpdated() {
+    const { expanded } = this.state;
+
     this.controller.setAttribute('aria-expanded', `${expanded}`);
 
     /*
