@@ -50,13 +50,21 @@ export default class MenuBar extends AriaComponent {
   constructor(config) {
     super(config);
 
-    // Warn about deprecated config value.
-    if (config.menu) {
-      const { menu } = config;
-      Object.assign(config, { list: menu, menu: undefined });
+    // Warn about deprecated config values.
+    Object.keys(config).forEach((prop) => {
+      if ('menu' === prop) {
+        const { menu } = config;
+        // Correct the config property.
+        Object.assign(config, { list: menu, menu: undefined });
 
-      this.warnDeprecated('menu', 'list');
-    }
+        this.warnDeprecated('config.menu', 'config.list');
+      }
+
+      // Deprecated callbacks.
+      if (['onPopupDestroy', 'onPopupStateChange'].includes(prop)) {
+        this.warnDeprecated(`config.${prop}`);
+      }
+    });
 
     /**
      * Options shape.
@@ -98,20 +106,6 @@ export default class MenuBar extends AriaComponent {
        * @callback popupInitCallback
        */
       onPopupInit: () => {},
-
-      /**
-       * Callback to run after Popup state is updated.
-       *
-       * @callback popupStateChangeCallback
-       */
-      onPopupStateChange: () => {},
-
-      /**
-       * Callback to run after Popup is destroyed.
-       *
-       * @callback popupDestroyCallback
-       */
-      onPopupDestroy: () => {},
     };
 
     // Merge config options with defaults.
@@ -122,6 +116,7 @@ export default class MenuBar extends AriaComponent {
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.trackPopupState = this.trackPopupState.bind(this);
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
@@ -236,9 +231,8 @@ export default class MenuBar extends AriaComponent {
         const popup = new Popup({
           controller,
           target,
-          onStateChange: this.onPopupStateChange,
           onInit: this.onPopupInit,
-          onDestroy: this.onPopupDestroy,
+          onStateChange: this.trackPopupState,
           type: 'menu',
         });
 
@@ -264,6 +258,7 @@ export default class MenuBar extends AriaComponent {
     this.state = {
       menubarItem,
       popup: this.constructor.getPopupFromMenubarItem(menubarItem),
+      expanded: false,
     };
 
     // Set up initial tabindex.
@@ -274,16 +269,38 @@ export default class MenuBar extends AriaComponent {
   }
 
   /**
+   * Refresh component state when Popup state is updated.
+   *
+   * @param {object} state The Popup state.
+   */
+  trackPopupState(state = {}) {
+    const { menubarItem } = this.state;
+    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+    /*
+     * Use the current MenuBar state if there's no popup or if an expanded state
+     * was passed in, otherwise make sure to use the current popup's state.
+     */
+    const expanded = (
+      false === popup
+      || Object.prototype.hasOwnProperty.call(state, 'expanded')
+    ) ? state.expanded : popup.getState();
+
+    // Add the Popup state to this component's state.
+    this.state = Object.assign({ menubarItem, popup, expanded });
+  }
+
+  /**
    * Manage menubar state.
    *
    * @param {Object} state The component state.
    */
-  stateWasUpdated({ menubarItem }) {
-    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+  stateWasUpdated(state) {
+    const { menubarItem } = state;
 
-    // Add the current popup (or false) to state.
-    Object.assign(this.state, { popup });
+    // Make sure we're tracking the Popup state along with this.
+    this.trackPopupState();
 
+    // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
 
     menubarItem.focus();

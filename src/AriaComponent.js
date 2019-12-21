@@ -100,10 +100,15 @@ export default class AriaComponent {
    *
    * @param {string} name The name of the class instance.
    * @param {string} unsupported The deprecated config value.
-   * @param {string} supported The newly supported config value.
+   * @param {string} supported The newly supported config value, if any.
    */
-  warnDeprecated(unsupported, supported) {
+  warnDeprecated(unsupported, supported = false) {
+    const use = supported ? `Use ${supported} instead.` : '';
     // eslint-disable-next-line no-console, max-len
-    console.warn(`${this.constructor.name}: config.${unsupported} is deprecated. Use config.${supported} instead.`);
+    console.warn(
+      `${this.constructor.name}:`,
+      `${unsupported} is deprecated.`,
+      `${use}`
+    );
   }
 }
