@@ -271,11 +271,19 @@ export default class MenuBar extends AriaComponent {
   /**
    * Refresh component state when Popup state is updated.
    *
-   * @return {object} The component state merged with it's nested Popup state.
+   * @param {object} state The Popup state.
    */
-  trackPopupState({ expanded }) {
+  trackPopupState(state = {}) {
     const { menubarItem } = this.state;
     const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+    /*
+     * Use the current MenuBar state if there's no popup or if an expanded state
+     * was passed in, otherwise make sure to use the current popup's state.
+     */
+    const expanded = (
+      false === popup
+      || Object.prototype.hasOwnProperty.call(state, 'expanded')
+    ) ? state.expanded : popup.getState();
 
     // Add the Popup state to this component's state.
     this.state = Object.assign({ menubarItem, popup, expanded });
@@ -287,10 +295,10 @@ export default class MenuBar extends AriaComponent {
    * @param {Object} state The component state.
    */
   stateWasUpdated(state) {
-    const { menubarItem, expanded } = state;
+    const { menubarItem } = state;
 
     // Make sure we're tracking the Popup state along with this.
-    this.trackPopupState({ expanded });
+    this.trackPopupState();
 
     // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
