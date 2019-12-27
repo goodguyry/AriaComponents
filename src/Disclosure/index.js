@@ -21,6 +21,13 @@ export default class Disclosure extends AriaComponent {
     super(config);
 
     /**
+     * The component name.
+     *
+     * @type {string}
+     */
+    this.componentName = 'disclosure';
+
+    /**
      * Options shape.
      *
      * @type {object}

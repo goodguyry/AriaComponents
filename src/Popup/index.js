@@ -19,6 +19,13 @@ export default class Popup extends AriaComponent {
     super(config);
 
     /**
+     * The component name.
+     *
+     * @type {string}
+     */
+    this.componentName = 'popup';
+
+    /**
      * Component configuration options.
      *
      * @type {object}

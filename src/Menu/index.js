@@ -45,6 +45,13 @@ export default class Menu extends AriaComponent {
   constructor(config) {
     super(config);
 
+    /**
+     * The component name.
+     *
+     * @type {string}
+     */
+    this.componentName = 'menu';
+
     // Warn about deprecated config value.
     if (config.menu) {
       const { menu } = config;

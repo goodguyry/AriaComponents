@@ -20,6 +20,13 @@ export default class ListBox extends AriaComponent {
     super(config);
 
     /**
+     * The component name.
+     *
+     * @type {string}
+     */
+    this.componentName = 'listbox';
+
+    /**
      * Options shape.
      *
      * @type {object}

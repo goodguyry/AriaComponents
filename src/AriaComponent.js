@@ -36,15 +36,6 @@ export default class AriaComponent {
   }
 
   /**
-   * The component name.
-   *
-   * @return {string}
-   */
-  get componentName() {
-    return this.constructor.name.toLowerCase();
-  }
-
-  /**
    * Set component state.
    *
    * @param {object} newState The new state to merge with existing state.
