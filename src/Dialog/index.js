@@ -30,6 +30,13 @@ export default class Dialog extends AriaComponent {
     super(config);
 
     /**
+     * The component name.
+     *
+     * @type {string}
+     */
+    this.componentName = 'Dialog';
+
+    /**
      * Options shape.
      *
      * @type {object}

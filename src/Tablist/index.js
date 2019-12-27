@@ -22,6 +22,13 @@ export default class Tablist extends AriaComponent {
   constructor(config) {
     super();
 
+    /**
+     * The component name.
+     *
+     * @type {string}
+     */
+    this.componentName = 'Tablist';
+
     // Warn about deprecated config value.
     if (config.tablist) {
       const { tablist } = config;
