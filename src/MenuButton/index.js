@@ -24,7 +24,7 @@ export default class MenuButton extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'menubutton';
+    this.componentName = 'MenuButton';
 
     /**
      * Options shape.

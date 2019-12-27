@@ -24,7 +24,7 @@ export default class ListBox extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'listbox';
+    this.componentName = 'ListBox';
 
     /**
      * Options shape.

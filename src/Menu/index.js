@@ -50,7 +50,7 @@ export default class Menu extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'menu';
+    this.componentName = 'Menu';
 
     // Warn about deprecated config value.
     if (config.menu) {

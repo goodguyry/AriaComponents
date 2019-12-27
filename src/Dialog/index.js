@@ -34,7 +34,7 @@ export default class Dialog extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'dialog';
+    this.componentName = 'Dialog';
 
     /**
      * Options shape.

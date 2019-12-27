@@ -55,7 +55,7 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {string}
      */
-    this.componentName = 'menubar';
+    this.componentName = 'MenuBar';
 
     // Warn about deprecated config values.
     Object.keys(config).forEach((prop) => {

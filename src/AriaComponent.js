@@ -58,7 +58,7 @@ export default class AriaComponent {
     const referenceElements = [...elements].map((element) => {
       Object.defineProperty(
         element,
-        this.componentName,
+        this.componentName.toLowerCase(),
         { value: this, configurable: true }
       );
 
@@ -73,7 +73,7 @@ export default class AriaComponent {
    */
   deleteSelfReferences() {
     this.referenceElements.forEach((element) => {
-      delete element[this.componentName];
+      delete element[this.componentName.toLowerCase()];
     });
   }
 
@@ -97,7 +97,7 @@ export default class AriaComponent {
     const use = supported ? `Use ${supported} instead.` : '';
     // eslint-disable-next-line no-console, max-len
     console.warn(
-      `${this.constructor.name}:`,
+      `${this.componentName}:`,
       `${unsupported} is deprecated.`,
       `${use}`
     );
