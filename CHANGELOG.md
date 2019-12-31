@@ -1,6 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Next
+
+**Fixed**
+
+- Updates NPM dependencies (#25)
+
 ## 0.2.0
 
 **Changed**
