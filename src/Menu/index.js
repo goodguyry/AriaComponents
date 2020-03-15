@@ -332,6 +332,9 @@ export default class Menu extends AriaComponent {
     // Remove the reference to the class instance.
     this.deleteSelfReferences();
 
+    // Remove the list's role attritbute.
+    this.list.removeAttribute('role');
+
     this.menuItems.forEach((link) => {
       // Remove list item role.
       link.parentElement.removeAttribute('role');

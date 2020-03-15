@@ -194,8 +194,10 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistOneSecondItem.getAttribute('aria-posinset')).toBeNull();
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
 
-    expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
+    expect(domElements.list.getAttribute('role')).toBeNull();
     expect(domElements.sublistTwoSecondItem.parentElement.getAttribute('role')).toBeNull();
+    expect(domElements.sublistOne.getAttribute('role')).toBeNull();
+    expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
 
     expect(onDestroy).toHaveBeenCalled();
   });
