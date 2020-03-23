@@ -1,4 +1,5 @@
 import AriaComponent from '../AriaComponent';
+import Disclosure from '../Disclosure';
 import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
@@ -74,6 +75,13 @@ export default class Menu extends AriaComponent {
       list: null,
 
       /**
+       * Instantiate submenus as Disclosures.
+       *
+       * @type {Boolean}
+       */
+      collapse: false,
+
+      /**
        * Callback to run after the component initializes.
        *
        * @callback initCallback
@@ -81,11 +89,25 @@ export default class Menu extends AriaComponent {
       onInit: () => {},
 
       /**
+       * Callback to run after component state is updated.
+       *
+       * @callback stateChangeCallback
+       */
+      onStateChange: () => {},
+
+      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback
        */
       onDestroy: () => {},
+
+      /**
+       * Callback to run after each Disclosure initializes.
+       *
+       * @callback disclosureInitCallback
+       */
+      onDisclosureInit: () => {},
     };
 
     // Merge config options with defaults.
@@ -164,6 +186,8 @@ export default class Menu extends AriaComponent {
      */
     missingDescribedByWarning(Menu.getHelpIds());
 
+    this.disclosures = [];
+
     /*
      * Set menu link attributes and instantiate submenus.
      */
@@ -186,6 +210,18 @@ export default class Menu extends AriaComponent {
 
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
+        // Instantiate submenu Disclosures
+        if (this.collapse) {
+          const disclosure = new Disclosure({
+            controller: link,
+            target: siblingList,
+            onInit: this.onDisclosureInit,
+          });
+
+          this.disclosures.push(disclosure);
+        }
+
+        // Instantiate sub-Menus.
         const subList = new Menu({ list: siblingList });
         // Save the list's previous sibling.
         subList.previousSibling = link;
@@ -353,6 +389,11 @@ export default class Menu extends AriaComponent {
       if (siblingList && isInstanceOf(siblingList.menu, Menu)) {
         siblingList.menu.destroy();
       }
+    });
+
+    // Destroy inner Disclosure(s).
+    this.disclosures.forEach((disclosure) => {
+      disclosure.destroy();
     });
 
     // Run {destroyCallback}
