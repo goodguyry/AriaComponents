@@ -15,6 +15,13 @@ const config = {
   list: null,
 
   /**
+   * Instantiate submenus as Disclosures.
+   *
+   * @type {Boolean}
+   */
+  collapse: false,
+
+  /**
    * Callback to run after the component initializes.
    * 
    * @callback initCallback
@@ -22,11 +29,25 @@ const config = {
   onInit: () => {},
 
   /**
+   * Callback to run after component state is updated.
+   *
+   * @callback stateChangeCallback
+   */
+  onStateChange: () => {},
+
+  /**
    * Callback to run after the component is destroyed.
    * 
    * @callback destroyCallback
    */
   onDestroy: () => {},
+
+  /**
+   * Callback to run after each Disclosure initializes.
+   * 
+   * @callback disclosureInitCallback
+   */
+  onDisclosureInit: () => {},
 };
 ```
 
@@ -98,6 +119,7 @@ const list = document.querySelector('.menu');
 
 const menu = new Menu({
   list,
+  collapse: true,
   onInit: () => {
     console.log('Menu initialized.');
   },
