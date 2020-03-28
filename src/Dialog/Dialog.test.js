@@ -107,7 +107,7 @@ describe('Dialog with default configuration', () => {
       modal.close.dispatchEvent(click);
       expect(modal.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      expect(content.getAttribute('aria-hidden')).toBeNull();
+      expect(content.getAttribute('aria-hidden')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
 
       // Click to re-open.
@@ -115,7 +115,7 @@ describe('Dialog with default configuration', () => {
       expect(modal.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toEqual('false');
     });
 
     it('Should trap keyboard tabs within the modal', () => {
