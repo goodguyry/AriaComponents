@@ -34,13 +34,6 @@ const config = {
    * @callback destroyCallback
    */
   onDestroy: () => {},
-
-  /**
-   * Callback to run after each Disclosure initializes.
-   * 
-   * @callback disclosureInitCallback
-   */
-  onDisclosureInit: () => {},
 };
 ```
 

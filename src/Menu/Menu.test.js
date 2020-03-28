@@ -204,13 +204,10 @@ describe('Destroying the Menu removes attributes', () => {
 });
 
 describe('Menu instatiates submenus as Disclosures', () => {
-  const onDisclosureInit = jest.fn();
-
   beforeAll(() => {
     menu = new Menu({
       list,
       collapse: true,
-      onDisclosureInit,
     });
   });
 
@@ -227,8 +224,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
 
     expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
     expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
-
-    expect(onDisclosureInit).toHaveBeenCalled();
   });
 
   describe('MenuItem Disclosure correctly responds to events', () => {

@@ -94,13 +94,6 @@ export default class Menu extends AriaComponent {
        * @callback destroyCallback
        */
       onDestroy: () => {},
-
-      /**
-       * Callback to run after each Disclosure initializes.
-       *
-       * @callback disclosureInitCallback
-       */
-      onDisclosureInit: () => {},
     };
 
     // Merge config options with defaults.
@@ -208,7 +201,6 @@ export default class Menu extends AriaComponent {
           const disclosure = new Disclosure({
             controller: link,
             target: siblingList,
-            onInit: this.onDisclosureInit,
           });
 
           this.disclosures.push(disclosure);
