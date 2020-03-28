@@ -312,6 +312,10 @@ export default class Menu extends AriaComponent {
           event.stopPropagation();
           event.preventDefault();
 
+          if (isInstanceOf(activeDescendant.disclosure, Disclosure)) {
+            activeDescendant.disclosure.open();
+          }
+
           const { menu } = siblingElement;
           menu.firstItem.focus();
         }
@@ -330,6 +334,11 @@ export default class Menu extends AriaComponent {
           // The previous sibling is not a Popup.
           event.preventDefault();
           event.stopPropagation();
+
+          if (isInstanceOf(this.previousSibling.disclosure, Disclosure)) {
+            this.previousSibling.disclosure.close();
+          }
+
           this.previousSibling.focus();
         }
 
