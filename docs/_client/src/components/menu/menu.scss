@@ -17,6 +17,11 @@
 .sub-list {
   margin-left: rem(20);
   margin-top: rem(10);
+
+  // With submenus collapsed as Disclosures.
+  &[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 .list-item {
