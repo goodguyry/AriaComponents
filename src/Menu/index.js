@@ -172,6 +172,11 @@ export default class Menu extends AriaComponent {
      */
     missingDescribedByWarning(Menu.getHelpIds());
 
+    /**
+     * The submenu Disclosures.
+     *
+     * @type {array}
+     */
     this.disclosures = [];
 
     /*

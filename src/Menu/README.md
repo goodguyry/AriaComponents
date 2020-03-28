@@ -59,6 +59,13 @@ class Menu extends AriaComponent {
  * @type {HTMLUListElement}
  */
 Menu.menu
+
+/**
+ * The submenu Disclosures.
+ *
+ * @type {array}
+ */
+Menu.disclosures
 ```
 
 ## Example
