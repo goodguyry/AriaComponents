@@ -332,6 +332,12 @@ export default class Menu extends AriaComponent {
     // Remove the reference to the class instance.
     this.deleteSelfReferences();
 
+    // Remove the list's role attritbute.
+    this.list.removeAttribute('role');
+
+    // Remove event listener.
+    this.list.removeEventListener('keydown', this.handleListKeydown);
+
     this.menuItems.forEach((link) => {
       // Remove list item role.
       link.parentElement.removeAttribute('role');
@@ -341,9 +347,6 @@ export default class Menu extends AriaComponent {
       link.removeAttribute('aria-describedby');
       link.removeAttribute('aria-setsize');
       link.removeAttribute('aria-posinset');
-
-      // Remove event listeners.
-      link.removeEventListener('keydown', this.handleListKeydown);
 
       // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
