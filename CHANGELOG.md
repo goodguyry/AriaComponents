@@ -3,6 +3,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Next
 
+**Added**
+
+- Menu submenus can be instantiated as Disclosures by passing `collapse: true` (#27)
+
 **Fixed**
 
 - Updates NPM dependencies (#25)
