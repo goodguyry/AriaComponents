@@ -302,6 +302,7 @@ export default class Menu extends AriaComponent {
           event.stopPropagation();
           event.preventDefault();
 
+          // Open the submenu Disclosure.
           if (isInstanceOf(activeDescendant.disclosure, Disclosure)) {
             activeDescendant.disclosure.open();
           }
@@ -325,6 +326,7 @@ export default class Menu extends AriaComponent {
           event.preventDefault();
           event.stopPropagation();
 
+          // Close the submenu Disclosure.
           if (isInstanceOf(this.previousSibling.disclosure, Disclosure)) {
             this.previousSibling.disclosure.close();
           }
