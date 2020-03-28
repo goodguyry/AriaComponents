@@ -15,6 +15,13 @@ const config = {
   list: null,
 
   /**
+   * Instantiate submenus as Disclosures.
+   *
+   * @type {Boolean}
+   */
+  collapse: false,
+
+  /**
    * Callback to run after the component initializes.
    * 
    * @callback initCallback
@@ -52,6 +59,13 @@ class Menu extends AriaComponent {
  * @type {HTMLUListElement}
  */
 Menu.menu
+
+/**
+ * The submenu Disclosures.
+ *
+ * @type {array}
+ */
+Menu.disclosures
 ```
 
 ## Example
@@ -98,6 +112,7 @@ const list = document.querySelector('.menu');
 
 const menu = new Menu({
   list,
+  collapse: true,
   onInit: () => {
     console.log('Menu initialized.');
   },

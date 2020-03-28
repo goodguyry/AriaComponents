@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Menu } from 'root';
+import { Menu, Disclosure } from 'root';
 import { events, typeCharacter } from '../lib/events';
 
 // Create the help text elements.
@@ -72,7 +72,7 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
-const menu = new Menu({
+let menu = new Menu({
   list,
   onInit,
   onDestroy,
@@ -203,4 +203,71 @@ describe('Destroying the Menu removes attributes', () => {
   });
 });
 
+describe('Menu instatiates submenus as Disclosures', () => {
+  beforeAll(() => {
+    menu = new Menu({
+      list,
+      collapse: true,
+    });
+  });
+
+  it('Should instantiate the Menu class with correct instance values', () => {
+    expect(menu).toBeInstanceOf(Menu);
+    expect(domElements.list.menu).toBeInstanceOf(Menu);
+
+    expect(menu.firstItem.className).toEqual('first-item');
+
+    expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
+    expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
+
+    expect(domElements.listFirstItem.disclosure.getState().expanded).toBe(false);
+
+    expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
+    expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
+  });
+
+  describe('MenuItem Disclosure correctly responds to events', () => {
+    it('Should expand the Disclosure and move to the first sublist item with right arrow key',
+      () => {
+        domElements.listThirdItem.focus();
+        domElements.listThirdItem.dispatchEvent(keydownRight);
+        expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(true);
+        expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
+      });
+
+    it('Should move to the next sibling list item with down arrow key',
+      () => {
+        domElements.sublistTwoFirstItem.dispatchEvent(keydownDown);
+        expect(document.activeElement).toEqual(domElements.sublistTwoSecondItem);
+      });
+
+    it('Should collapse the Disclosure and move to the parent list with left arrow key',
+      () => {
+        domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
+        expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(false);
+        expect(document.activeElement).toEqual(domElements.listThirdItem);
+      });
+
+    it('Should move to the next sibling list item with down arrow key',
+      () => {
+        domElements.listThirdItem.dispatchEvent(keydownDown);
+        expect(document.activeElement).toEqual(domElements.listFourthItem);
+      });
+  });
+
+  it('Should remove all Menu Disclosure DOM attributes when destroyed', () => {
+    menu.destroy();
+
+    expect(domElements.listFirstItem.getAttribute('aria-expanded')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-controls')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
+    // The test markup isn't detatched, so this doesn't apply.
+    expect(domElements.listFirstItem.getAttribute('aria-owns')).toBeNull();
+
+    expect(domElements.sublistOne.getAttribute('aria-hidden')).toBeNull();
+
+    expect(domElements.listFirstItem.disclosure).toBeUndefined();
+    expect(domElements.sublistOne.disclosure).toBeUndefined();
+  });
+});
 export default ariaDescribedbyTestMarkup;

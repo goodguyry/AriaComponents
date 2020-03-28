@@ -1,4 +1,5 @@
 import AriaComponent from '../AriaComponent';
+import Disclosure from '../Disclosure';
 import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
@@ -72,6 +73,13 @@ export default class Menu extends AriaComponent {
        * @type {HTMLUListElement}
        */
       list: null,
+
+      /**
+       * Instantiate submenus as Disclosures.
+       *
+       * @type {Boolean}
+       */
+      collapse: false,
 
       /**
        * Callback to run after the component initializes.
@@ -164,6 +172,13 @@ export default class Menu extends AriaComponent {
      */
     missingDescribedByWarning(Menu.getHelpIds());
 
+    /**
+     * The submenu Disclosures.
+     *
+     * @type {array}
+     */
+    this.disclosures = [];
+
     /*
      * Set menu link attributes and instantiate submenus.
      */
@@ -186,6 +201,17 @@ export default class Menu extends AriaComponent {
 
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
+        // Instantiate submenu Disclosures
+        if (this.collapse) {
+          const disclosure = new Disclosure({
+            controller: link,
+            target: siblingList,
+          });
+
+          this.disclosures.push(disclosure);
+        }
+
+        // Instantiate sub-Menus.
         const subList = new Menu({ list: siblingList });
         // Save the list's previous sibling.
         subList.previousSibling = link;
@@ -276,6 +302,11 @@ export default class Menu extends AriaComponent {
           event.stopPropagation();
           event.preventDefault();
 
+          // Open the submenu Disclosure.
+          if (isInstanceOf(activeDescendant.disclosure, Disclosure)) {
+            activeDescendant.disclosure.open();
+          }
+
           const { menu } = siblingElement;
           menu.firstItem.focus();
         }
@@ -294,6 +325,12 @@ export default class Menu extends AriaComponent {
           // The previous sibling is not a Popup.
           event.preventDefault();
           event.stopPropagation();
+
+          // Close the submenu Disclosure.
+          if (isInstanceOf(this.previousSibling.disclosure, Disclosure)) {
+            this.previousSibling.disclosure.close();
+          }
+
           this.previousSibling.focus();
         }
 
@@ -353,6 +390,11 @@ export default class Menu extends AriaComponent {
       if (siblingList && isInstanceOf(siblingList.menu, Menu)) {
         siblingList.menu.destroy();
       }
+    });
+
+    // Destroy inner Disclosure(s).
+    this.disclosures.forEach((disclosure) => {
+      disclosure.destroy();
     });
 
     // Run {destroyCallback}

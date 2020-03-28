@@ -9,4 +9,5 @@ const { list } = getClassnames(siteClassNames.menu);
 const menuList = document.querySelector(list);
 
 // Create the Menu.
+// Alteratively pass `collapse: true` to collapse submenus as Disclosures.
 const menu = new Menu({ list: menuList }); // eslint-disable-line no-unused-vars
