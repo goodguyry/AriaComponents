@@ -190,14 +190,10 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', `${expanded}`);
 
     /*
-     * https://developer.paciellogroup.com/blog/2016/01/the-state-of-hidden-content-support-in-2016/
-     *
-     * > In some browser and screen reader combinations aria-hidden=false on an
-     *   element that is hidden using the hidden attribute or CSS display:none
-     *   results in the content being unhidden.
+     * Update Popup and interactive children's attributes.
      */
     if (expanded) {
-      this.target.removeAttribute('aria-hidden');
+      this.target.setAttribute('aria-hidden', 'false');
 
       tabIndexAllow(this.interactiveChildElements);
     } else {
