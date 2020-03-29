@@ -51,6 +51,7 @@ describe('Disclosure with default configuration', () => {
     it('Should add the correct attributes to the disclosure target',
       () => {
         expect(target.getAttribute('aria-hidden')).toEqual('true');
+        expect(target.getAttribute('hidden')).toEqual('');
       });
   });
 
@@ -61,12 +62,14 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
+      expect(target.getAttribute('hidden')).toBeNull();
 
       // Click again to close.
       controller.dispatchEvent(click);
       expect(disclosure.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
 
       // Re-open the disclosure.
       disclosure.setState({ expanded: true });
@@ -75,6 +78,7 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
+      expect(target.getAttribute('hidden')).toBeNull();
     });
 
     it('Should update attributes when Return or Spacebar are pressed', () => {
@@ -86,12 +90,14 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
+      expect(target.getAttribute('hidden')).toBeNull();
 
       // Spacebar to close.
       controller.dispatchEvent(keydownSpace);
       expect(disclosure.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
     });
   });
 
@@ -105,6 +111,7 @@ describe('Disclosure with default configuration', () => {
     expect(controller.getAttribute('aria-owns')).toBeNull();
 
     expect(target.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('hidden')).toBeNull();
 
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
@@ -138,6 +145,7 @@ describe('Disclosure with non-default configuration', () => {
     expect(disclosure.getState().expanded).toBeFalsy();
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
+    expect(target.getAttribute('hidden')).toEqual('');
   });
 
   it('Should run class methods and subscriber functions', () => {
