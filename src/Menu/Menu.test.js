@@ -2,11 +2,6 @@
 import { Menu, Disclosure } from 'root';
 import { events, typeCharacter } from '../lib/events';
 
-// Create the help text elements.
-const ariaDescribedbyTestMarkup = Menu.getHelpIds().reduce((acc, id) => (
-  `${acc}<div id="${id.replace('#', '')}"></div>`
-), '');
-
 const {
   keydownDown,
   keydownUp,
@@ -43,7 +38,10 @@ document.body.innerHTML = `
     </ul>
   </nav>
 
-  ${ariaDescribedbyTestMarkup}
+  <div id="ac-describe-submenu-help"></div>
+  <div id="ac-describe-esc-help"></div>
+  <div id="ac-describe-submenu-explore"></div>
+  <div id="ac-describe-submenu-back"></div>
 `;
 
 // Collect references to DOM elements.
@@ -278,4 +276,3 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(domElements.sublistOne.disclosure).toBeUndefined();
   });
 });
-export default ariaDescribedbyTestMarkup;

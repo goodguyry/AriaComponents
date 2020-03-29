@@ -2,14 +2,6 @@
 import { MenuBar, Popup, Menu } from 'root';
 import { events } from '../lib/events';
 
-// Create the help text elements for both MenuBar and Menu.
-const ariaDescribedbyTestMarkup = Array.from(new Set([
-  ...MenuBar.getHelpIds(),
-  ...Menu.getHelpIds(),
-])).reduce((acc, id) => (
-  `${acc}<div id="${id.replace('#', '')}"></div>`
-), '');
-
 const {
   keydownDown,
   keydownRight,
@@ -47,7 +39,11 @@ document.body.innerHTML = `
     </ul>
   </nav>
 
-  ${ariaDescribedbyTestMarkup}
+  <div id="ac-describe-submenu-help"></div>
+  <div id="ac-describe-esc-help"></div>
+  <div id="ac-describe-submenu-explore"></div>
+  <div id="ac-describe-submenu-back"></div>
+  <div id="ac-describe-top-level-help"></div>
 `;
 
 // Collect references to DOM elements.

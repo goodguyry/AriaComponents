@@ -1,8 +1,6 @@
 import Popup from 'root/src/Popup';
 import Menu from 'root/src/Menu';
 import isInstanceOf from './isInstanceOf';
-// Because we're instantiating Menu.
-import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
 
 // Set up our document body
 document.body.innerHTML = `
@@ -16,7 +14,11 @@ document.body.innerHTML = `
     </ul>
   </div>
 
-  ${ariaDescribedbyTestMarkup}
+  <div id="ac-describe-submenu-help"></div>
+  <div id="ac-describe-esc-help"></div>
+  <div id="ac-describe-submenu-explore"></div>
+  <div id="ac-describe-submenu-back"></div>
+  <div id="ac-describe-top-level-help"></div>
 `;
 
 const controller = document.querySelector('button');
