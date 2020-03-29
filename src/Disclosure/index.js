@@ -279,18 +279,33 @@ export default class Disclosure extends AriaComponent {
     // Remove the references to the class instance.
     this.deleteSelfReferences();
 
+    // Remove IDs set by this class.
+    [this.controller, this.target].forEach((element) => {
+      if (element.getAttribute('id').includes('id_')) {
+        element.removeAttribute('id');
+      }
+    });
+
     // Remove controller attributes.
     this.controller.removeAttribute('aria-expanded');
     this.controller.removeAttribute('aria-controls');
     this.controller.removeAttribute('aria-owns');
     this.controller.removeAttribute('tabindex');
 
+    if ('BUTTON' !== this.controller.nodeName) {
+      this.controller.removeAttribute('role');
+    }
+
     // Remove target attributes.
     this.target.removeAttribute('aria-hidden');
     this.target.removeAttribute('hidden');
 
+    // Remove tabindex attributes.
+    tabIndexAllow(this.interactiveChildElements);
+
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggleExpandedState);
+    this.controller.removeEventListener('keydown', this.handleControllerKeydown);
     document.body.removeEventListener('click', this.closeOnOutsideClick);
 
     // Reset initial state.

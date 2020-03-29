@@ -2,11 +2,6 @@
 import { Menu, Disclosure } from 'root';
 import { events, typeCharacter } from '../lib/events';
 
-// Create the help text elements.
-const ariaDescribedbyTestMarkup = Menu.getHelpIds().reduce((acc, id) => (
-  `${acc}<div id="${id.replace('#', '')}"></div>`
-), '');
-
 const {
   keydownDown,
   keydownUp,
@@ -16,8 +11,7 @@ const {
   keydownHome,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
@@ -43,8 +37,14 @@ document.body.innerHTML = `
     </ul>
   </nav>
 
-  ${ariaDescribedbyTestMarkup}
+  <div id="ac-describe-submenu-help"></div>
+  <div id="ac-describe-esc-help"></div>
+  <div id="ac-describe-submenu-explore"></div>
+  <div id="ac-describe-submenu-back"></div>
 `;
+
+// Set up our document body
+document.body.innerHTML = menuMarkup;
 
 // Collect references to DOM elements.
 const domElements = {
@@ -258,17 +258,26 @@ describe('Menu instatiates submenus as Disclosures', () => {
   it('Should remove all Menu Disclosure DOM attributes when destroyed', () => {
     menu.destroy();
 
+    expect(list.getAttribute('role')).toBeNull();
+
     expect(domElements.listFirstItem.getAttribute('aria-expanded')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-controls')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
     // The test markup isn't detatched, so this doesn't apply.
     expect(domElements.listFirstItem.getAttribute('aria-owns')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('role')).toBeNull();
+    expect(domElements.listFirstItem.parentElement.getAttribute('role')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-posinset')).toBeNull();
 
     expect(domElements.sublistOne.getAttribute('aria-hidden')).toBeNull();
     expect(domElements.sublistOne.getAttribute('hidden')).toBeNull();
 
     expect(domElements.listFirstItem.disclosure).toBeUndefined();
     expect(domElements.sublistOne.disclosure).toBeUndefined();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(menuMarkup);
   });
 });
-export default ariaDescribedbyTestMarkup;

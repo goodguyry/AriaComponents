@@ -439,6 +439,12 @@ export default class ListBox extends AriaComponent {
     // Remove the role attribute from each of the options.
     this.options.forEach((listItem) => {
       listItem.removeAttribute('role');
+      listItem.removeAttribute('aria-selected');
+
+      // Remove IDs set by this class.
+      if (listItem.getAttribute('id').includes('id_')) {
+        listItem.removeAttribute('id');
+      }
     });
 
     // Destroy the Popup.
@@ -447,6 +453,7 @@ export default class ListBox extends AriaComponent {
     // Remove the listbox role.
     this.target.removeAttribute('role');
     this.target.removeAttribute('tabindex');
+    this.target.removeAttribute('aria-activedescendant');
 
     // Remove event listeners.
     this.controller.removeEventListener('keyup', this.handleControllerKeyup);

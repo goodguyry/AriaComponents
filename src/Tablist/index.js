@@ -439,6 +439,7 @@ export default class Tablist extends AriaComponent {
       panel.removeAttribute('aria-hidden');
       panel.removeAttribute('hidden');
       panel.removeAttribute('tabindex');
+      panel.removeAttribute('aria-labelledby');
 
       // Make sure to allow tabbing to all children of all panels.
       const interactiveChildElements = interactiveChildren(panel);

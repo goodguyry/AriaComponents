@@ -93,6 +93,17 @@ export default class Popup extends AriaComponent {
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
 
+    /**
+     * Check if the controller is a button, but only if it doesn't already have
+     * a role attribute, since we'll be adding the role and allowing focus.
+     *
+     * @type {bool}
+     */
+    this.controllerIsNotAButton = (
+      'BUTTON' !== this.controller.nodeName
+      && null === this.controller.getAttribute('role')
+    );
+
     // Check for a valid controller and target before initializing.
     if (null !== this.controller && null !== this.target) {
       this.init();
@@ -143,12 +154,8 @@ export default class Popup extends AriaComponent {
 
     /*
      * Use the button role on non-button elements.
-     * But only if it doesn't already have a role attribute.
      */
-    if (
-      'BUTTON' !== this.controller.nodeName
-      && null === this.controller.getAttribute('role')
-    ) {
+    if (this.controllerIsNotAButton) {
       // https://www.w3.org/TR/wai-aria-1.1/#button
       this.controller.setAttribute('role', 'button');
       this.controller.setAttribute('tabindex', '0');
@@ -354,15 +361,31 @@ export default class Popup extends AriaComponent {
     // Remove the references to the class instance.
     this.deleteSelfReferences();
 
+    // Remove IDs set by this class.
+    [this.controller, this.target].forEach((element) => {
+      if (element.getAttribute('id').includes('id_')) {
+        element.removeAttribute('id');
+      }
+    });
+
     // Remove controller attributes.
     this.controller.removeAttribute('aria-haspopup');
     this.controller.removeAttribute('aria-expanded');
     this.controller.removeAttribute('aria-controls');
     this.controller.removeAttribute('aria-owns');
 
+    // Remove role and tabindex added to a link controller.
+    if (this.controllerIsNotAButton) {
+      this.controller.removeAttribute('role');
+      this.controller.removeAttribute('tabindex');
+    }
+
     // Remove target attributes.
     this.target.removeAttribute('aria-hidden');
     this.target.removeAttribute('hidden');
+
+    // Remove tabindex attribute.
+    tabIndexAllow(this.interactiveChildElements);
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerClickHandler);

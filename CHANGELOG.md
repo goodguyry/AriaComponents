@@ -15,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Fixed**
 
 - Updates NPM dependencies (#25)
-- Corrects issues with `Menu.destroy()` (#26)
+- Corrects issues with the reliability of `destroy` methods (#26 & #31)
 
 ## 0.2.0
 

@@ -8,8 +8,7 @@ const {
   keydownEsc,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const dialogMarkup = `
   <main>
     <article>
       <h1>The Article Title</h1>
@@ -33,6 +32,9 @@ document.body.innerHTML = `
     </ul>
   </div>
 `;
+
+// Set up our document body
+document.body.innerHTML = dialogMarkup;
 
 const controller = document.querySelector('.link');
 const target = document.getElementById('dialog');
@@ -156,6 +158,9 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('hidden')).toBeNull();
 
       expect(onDestroy).toHaveBeenCalled();
+
+      // Quick and dirty verification that the original markup is restored.
+      expect(document.body.innerHTML).toEqual(dialogMarkup);
     });
   });
 });

@@ -10,10 +10,8 @@ const {
   keydownReturn,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const popupMarkup = `
   <a href="#dropdown" class="link">Open</a>
-  <button>Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -24,11 +22,14 @@ document.body.innerHTML = `
   </div>
 `;
 
+// Set up our document body
+document.body.innerHTML = popupMarkup;
+
 const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
 
-const link = document.querySelector('.link');
-const controller = document.querySelector('button');
+// Test uses link as controller, which is handled a bit differently than a button.
+const controller = document.querySelector('.link');
 const target = document.querySelector('.wrapper');
 
 // Mock functions.
@@ -69,9 +70,9 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
 
-    // Button controller should not get button role
-    expect(controller.getAttribute('role')).toBeNull();
-    expect(controller.getAttribute('tabindex')).toBeNull();
+    // Link controller should get button role.
+    expect(controller.getAttribute('role')).toEqual('button');
+    expect(controller.getAttribute('tabindex')).toEqual('0');
 
     // The test markup isn't detatched, so this doesn't apply.
     expect(controller.getAttribute('aria-own')).toBeFalsy();
@@ -138,6 +139,16 @@ describe('Popup correctly responds to events', () => {
         .toEqual(domFirstChild);
     });
 
+  it('Should update Popup state with keyboard', () => {
+    // Toggle popup
+    controller.dispatchEvent(keydownSpace);
+    expect(popup.getState().expanded).toBeFalsy();
+
+    // Toggle popup
+    controller.dispatchEvent(keydownReturn);
+    expect(popup.getState().expanded).toBeTruthy();
+  });
+
   // eslint-disable-next-line max-len
   it('Should close the popup and focus the controller when the ESC key is pressed',
     () => {
@@ -174,45 +185,30 @@ describe('Popup correctly responds to events', () => {
     });
 });
 
-describe('Test button behaviors in non-button element controller', () => {
-  const linkPopup = new Popup({
-    controller: link,
-    target,
-    onStateChange,
-    onInit,
-    onDestroy,
+describe('Popup destroy', () => {
+  it('Should destroy the popup as expected', () => {
+    popup.destroy();
+
+    if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {
+      expect(controller.getAttribute('role')).toBeNull();
+      expect(controller.getAttribute('tabindex')).toBeNull();
+    }
+    expect(controller.getAttribute('aria-haspopup')).toBeNull();
+    expect(controller.getAttribute('aria-expanded')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toBeNull();
+    expect(controller.getAttribute('aria-owns')).toBeNull();
+    expect(target.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('hidden')).toBeNull();
+
+    expect(controller.popup).toBeUndefined();
+    expect(target.popup).toBeUndefined();
+
+    controller.dispatchEvent(click);
+    expect(popup.getState().expanded).toBeFalsy();
+
+    expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(popupMarkup);
   });
-
-  it('Should add the correct attributes', () => {
-    expect(link.getAttribute('role')).toEqual('button');
-    expect(link.getAttribute('tabindex')).toEqual('0');
-  });
-
-  it('Should update Popup state with keyboard', () => {
-    // Toggle popup
-    link.dispatchEvent(keydownSpace);
-    expect(linkPopup.getState().expanded).toBeTruthy();
-
-    // Toggle popup
-    link.dispatchEvent(keydownReturn);
-    expect(linkPopup.getState().expanded).toBeFalsy();
-  });
-});
-
-it('Should destroy the popup as expected', () => {
-  popup.destroy();
-
-  expect(controller.getAttribute('aria-haspopup')).toBeNull();
-  expect(controller.getAttribute('aria-expanded')).toBeNull();
-  expect(controller.getAttribute('aria-controls')).toBeNull();
-  expect(target.getAttribute('aria-hidden')).toBeNull();
-  expect(target.getAttribute('hidden')).toBeNull();
-
-  expect(controller.popup).toBeUndefined();
-  expect(target.popup).toBeUndefined();
-
-  controller.dispatchEvent(click);
-  expect(popup.getState().expanded).toBeFalsy();
-
-  expect(onDestroy).toHaveBeenCalled();
 });

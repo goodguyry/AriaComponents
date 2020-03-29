@@ -2,14 +2,6 @@
 import { MenuBar, Popup, Menu } from 'root';
 import { events } from '../lib/events';
 
-// Create the help text elements for both MenuBar and Menu.
-const ariaDescribedbyTestMarkup = Array.from(new Set([
-  ...MenuBar.getHelpIds(),
-  ...Menu.getHelpIds(),
-])).reduce((acc, id) => (
-  `${acc}<div id="${id.replace('#', '')}"></div>`
-), '');
-
 const {
   keydownDown,
   keydownRight,
@@ -20,8 +12,7 @@ const {
   keydownReturn,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const menubarMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menubar">
       <li>
@@ -47,8 +38,15 @@ document.body.innerHTML = `
     </ul>
   </nav>
 
-  ${ariaDescribedbyTestMarkup}
+  <div id="ac-describe-submenu-help"></div>
+  <div id="ac-describe-esc-help"></div>
+  <div id="ac-describe-submenu-explore"></div>
+  <div id="ac-describe-submenu-back"></div>
+  <div id="ac-describe-top-level-help"></div>
 `;
+
+// Set up our document body
+document.body.innerHTML = menubarMarkup;
 
 // Collect references to DOM elements.
 const domElements = {
@@ -223,6 +221,7 @@ describe('Menu should destroy properly', () => {
     expect(domElements.list.getAttribute('role')).toBeNull();
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('role')).toBeNull();
@@ -231,8 +230,12 @@ describe('Menu should destroy properly', () => {
 
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistTwoLastItem.getAttribute('tabindex')).toBeNull();
 
     expect(domElements.list.menubar).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(menubarMarkup);
   });
 });

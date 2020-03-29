@@ -13,8 +13,7 @@ const {
   keydownEnd,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const listboxMarkup = `
   <button>Choose</button>
   <ul>
     <li>Anchorage</li>
@@ -29,6 +28,9 @@ document.body.innerHTML = `
   </ul>
 `;
 
+// Set up our document body
+document.body.innerHTML = listboxMarkup;
+
 const controller = document.querySelector('button');
 const target = document.querySelector('ul');
 const listItems = Array.from(target.children);
@@ -41,7 +43,7 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 describe('Listbox with default configuration', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     listbox = new Listbox({
       controller,
       target,
@@ -211,21 +213,34 @@ describe('Listbox with default configuration', () => {
     });
   });
 
-  it('Should destroy the Listbox as expected', () => {
-    listbox.destroy();
+  describe('Listbox destroy', () => {
+    it('Should destroy the Listbox as expected', () => {
+      listbox.destroy();
 
-    expect(controller.getAttribute('aria-haspopup')).toBeNull();
-    expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
-    expect(target.getAttribute('aria-hidden')).toBeNull();
-    expect(target.getAttribute('hidden')).toBeNull();
+      expect(controller.getAttribute('aria-haspopup')).toBeNull();
+      expect(controller.getAttribute('aria-expanded')).toBeNull();
+      expect(controller.getAttribute('aria-controls')).toBeNull();
+      expect(target.getAttribute('aria-activedescendant')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('hidden')).toBeNull();
 
-    expect(controller.listbox).toBeUndefined();
-    expect(target.listbox).toBeUndefined();
+      listItems.forEach((item) => {
+        expect(item.getAttribute('role')).toBeNull();
+        expect(item.getAttribute('aria-selected')).toBeNull();
+      })
 
-    controller.dispatchEvent(click);
-    expect(listbox.getState().expanded).toBeFalsy();
+      expect(controller.listbox).toBeUndefined();
+      expect(target.listbox).toBeUndefined();
 
-    expect(onDestroy).toHaveBeenCalled();
+      controller.dispatchEvent(click);
+      expect(listbox.getState().expanded).toBeFalsy();
+
+      expect(onDestroy).toHaveBeenCalled();
+
+      // Quick and dirty verification that the original markup is restored.
+      // But first, restore the button's original text label.
+      controller.textContent = 'Choose';
+      expect(document.body.innerHTML).toEqual(listboxMarkup);
+    });
   });
 });

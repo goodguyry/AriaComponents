@@ -482,16 +482,18 @@ export default class MenuBar extends AriaComponent {
       link.removeEventListener('click', this.handleMenuBarClick);
     });
 
+    // Remove tabindex attribute.
+    tabIndexAllow(this.menuBarItems);
+
     // Destroy nested components.
     this.popups.forEach((popup) => {
       if (isInstanceOf(popup.target.menu, Menu)) {
         popup.target.menu.destroy();
       }
+      popup.target.removeEventListener('keydown', this.handleMenuItemKeydown);
+
       popup.destroy();
     });
-
-    // Revert tabindex attributes.
-    tabIndexAllow(this.menuBarItems);
 
     // Run {destroyCallback}
     this.onDestroy.call(this);

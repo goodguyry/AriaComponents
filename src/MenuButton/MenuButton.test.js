@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import { MenuButton, Popup, Menu } from 'root';
 import { events } from '../lib/events';
-import ariaDescribedbyTestMarkup from '../Menu/Menu.test';
 
 const {
   click,
@@ -14,8 +13,7 @@ const {
   keydownDown,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const menuButtonMarkup = `
   <button>Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
@@ -26,8 +24,14 @@ document.body.innerHTML = `
     </ul>
   </div>
 
-  ${ariaDescribedbyTestMarkup}
+  <div id="ac-describe-submenu-help"></div>
+  <div id="ac-describe-esc-help"></div>
+  <div id="ac-describe-submenu-explore"></div>
+  <div id="ac-describe-submenu-back"></div>
 `;
+
+// Set up our document body
+document.body.innerHTML = menuButtonMarkup;
 
 const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
@@ -187,4 +191,7 @@ it('Should destroy the menuButton as expected', () => {
   expect(menuButton.getState().expanded).toBeFalsy();
 
   expect(onDestroy).toHaveBeenCalled();
+
+  // Quick and dirty verification that the original markup is restored.
+  expect(document.body.innerHTML).toEqual(menuButtonMarkup);
 });
