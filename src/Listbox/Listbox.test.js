@@ -219,12 +219,14 @@ describe('Listbox with default configuration', () => {
 
       expect(controller.getAttribute('aria-haspopup')).toBeNull();
       expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
-    expect(target.getAttribute('aria-hidden')).toBeNull();
-    expect(target.getAttribute('hidden')).toBeNull();
+      expect(controller.getAttribute('aria-controls')).toBeNull();
+      expect(target.getAttribute('aria-activedescendant')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('hidden')).toBeNull();
 
-    listItems.forEach((item) => {
-      expect(item.getAttribute('role')).toBeNull();
+      listItems.forEach((item) => {
+        expect(item.getAttribute('role')).toBeNull();
+        expect(item.getAttribute('aria-selected')).toBeNull();
       })
 
       expect(controller.listbox).toBeUndefined();
