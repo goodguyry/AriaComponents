@@ -138,6 +138,7 @@ export default class Dialog extends AriaComponent {
 
     /**
      * The Popup instance controlling the Dialog.
+     *
      * @type {Popup}
      */
     this.popup = new Popup({
@@ -288,6 +289,7 @@ export default class Dialog extends AriaComponent {
     // Remove event listeners.
     this.close.removeEventListener('click', this.hide);
     this.target.removeEventListener('keydown', this.handleTargetKeydown);
+    document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
     /* Run {destroyCallback} */
     this.onDestroy.call(this);

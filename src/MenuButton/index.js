@@ -205,6 +205,9 @@ export default class MenuButton extends AriaComponent {
     // Destroy the Menu.
     this.menu.destroy();
 
+    // Remove event listener.
+    this.controller.removeEventListener('keydown', this.handleControllerKeydown);
+
     // Run {destroyCallback}
     this.onDestroy.call(this);
   }

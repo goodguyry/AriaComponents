@@ -184,6 +184,8 @@ describe('Tablist with default configuration', () => {
 
       const tabLinks = tabs.querySelectorAll('a[href]');
       Array.from(tabLinks).forEach((tab, index) => {
+        expect(tab.tablist).toBeUndefined();
+        expect(tab.tablist).toBeUndefined();
         expect(tab.getAttribute('role')).toBeNull();
         expect(tab.getAttribute('aria-selected')).toBeNull();
         expect(tab.getAttribute('tabindex')).toBeNull();
@@ -191,8 +193,12 @@ describe('Tablist with default configuration', () => {
       });
 
       Array.from(panels).forEach((panel) => {
+        expect(panel.tablist).toBeUndefined();
+        expect(panel.tablist).toBeUndefined();
         expect(panel.getAttribute('role')).toBeNull();
         expect(panel.getAttribute('aria-hidden')).toBeNull();
+        expect(panel.getAttribute('hidden')).toBeNull();
+        expect(panel.getAttribute('aria-labelledby')).toBeNull();
         expect(panel.getAttribute('tabindex')).toBeNull();
 
         const firstChild = panel.querySelector('a[href]');

@@ -223,6 +223,7 @@ describe('Menu should destroy properly', () => {
     expect(domElements.list.getAttribute('role')).toBeNull();
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
     expect(domElements.listSecondItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('role')).toBeNull();
@@ -231,6 +232,7 @@ describe('Menu should destroy properly', () => {
 
     expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
+    expect(domElements.sublistTwoLastItem.getAttribute('tabindex')).toBeNull();
 
     expect(domElements.list.menubar).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();

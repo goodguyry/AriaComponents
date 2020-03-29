@@ -364,6 +364,9 @@ export default class Popup extends AriaComponent {
     this.target.removeAttribute('aria-hidden');
     this.target.removeAttribute('hidden');
 
+    // Remove tabindex attribute.
+    tabIndexAllow(this.interactiveChildElements);
+
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerClickHandler);
     this.controller.removeEventListener(

@@ -220,6 +220,10 @@ describe('Listbox with default configuration', () => {
     expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('hidden')).toBeNull();
 
+    listItems.forEach((item) => {
+      expect(item.getAttribute('role')).toBeNull();
+    })
+
     expect(controller.listbox).toBeUndefined();
     expect(target.listbox).toBeUndefined();
 

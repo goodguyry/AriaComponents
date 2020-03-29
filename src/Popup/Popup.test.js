@@ -202,9 +202,14 @@ describe('Test button behaviors in non-button element controller', () => {
 it('Should destroy the popup as expected', () => {
   popup.destroy();
 
+  if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {
+    expect(controller.getAttribute('role')).toBeNull();
+    expect(controller.getAttribute('tabindex')).toBeNull();
+  }
   expect(controller.getAttribute('aria-haspopup')).toBeNull();
   expect(controller.getAttribute('aria-expanded')).toBeNull();
   expect(controller.getAttribute('aria-controls')).toBeNull();
+  expect(controller.getAttribute('aria-owns')).toBeNull();
   expect(target.getAttribute('aria-hidden')).toBeNull();
   expect(target.getAttribute('hidden')).toBeNull();
 

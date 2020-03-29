@@ -258,11 +258,18 @@ describe('Menu instatiates submenus as Disclosures', () => {
   it('Should remove all Menu Disclosure DOM attributes when destroyed', () => {
     menu.destroy();
 
+    expect(list.getAttribute('role')).toBeNull();
+
     expect(domElements.listFirstItem.getAttribute('aria-expanded')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-controls')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
     // The test markup isn't detatched, so this doesn't apply.
     expect(domElements.listFirstItem.getAttribute('aria-owns')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('role')).toBeNull();
+    expect(domElements.listFirstItem.parentElement.getAttribute('role')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-posinset')).toBeNull();
 
     expect(domElements.sublistOne.getAttribute('aria-hidden')).toBeNull();
     expect(domElements.sublistOne.getAttribute('hidden')).toBeNull();

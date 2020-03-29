@@ -104,6 +104,7 @@ describe('Disclosure with default configuration', () => {
   it('Should remove all DOM attributes when destroyed', () => {
     disclosure.destroy();
 
+    expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toBeNull();
     expect(controller.getAttribute('tabindex')).toBeNull();
