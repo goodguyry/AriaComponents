@@ -80,6 +80,7 @@ describe('Dialog with default configuration', () => {
         expect(controller.getAttribute('aria-haspopup')).toEqual('dialog');
         expect(controller.getAttribute('aria-expanded')).toEqual('false');
         expect(target.getAttribute('aria-hidden')).toEqual('true');
+        expect(target.getAttribute('hidden')).toEqual('');
       });
   });
 
@@ -108,14 +109,18 @@ describe('Dialog with default configuration', () => {
       expect(modal.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(content.getAttribute('aria-hidden')).toEqual('false');
+      expect(content.getAttribute('hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
 
       // Click to re-open.
       controller.dispatchEvent(click);
       expect(modal.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
+      expect(content.getAttribute('hidden')).toEqual('');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
+      expect(target.getAttribute('hidden')).toBeNull();
     });
 
     it('Should trap keyboard tabs within the modal', () => {
@@ -148,6 +153,7 @@ describe('Dialog with default configuration', () => {
       expect(controller.getAttribute('aria-haspopup')).toBeNull();
       expect(controller.getAttribute('aria-expanded')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('hidden')).toBeNull();
 
       expect(onDestroy).toHaveBeenCalled();
     });

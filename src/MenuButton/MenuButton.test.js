@@ -78,6 +78,7 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
   it('Should add the correct attributes to the menuButton target', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
+    expect(target.getAttribute('hidden')).toEqual('');
   });
 
   it('Should run class methods and subscriber functions', () => {
@@ -177,6 +178,7 @@ it('Should destroy the menuButton as expected', () => {
   expect(controller.getAttribute('aria-expanded')).toBeNull();
   expect(controller.getAttribute('aria-controls')).toBeNull();
   expect(target.getAttribute('aria-hidden')).toBeNull();
+  expect(target.getAttribute('hidden')).toBeNull();
 
   expect(controller.menuButton).toBeUndefined();
   expect(target.menuButton).toBeUndefined();

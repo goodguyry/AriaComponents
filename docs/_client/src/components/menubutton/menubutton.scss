@@ -21,10 +21,6 @@
   @media (min(lg)) {
     tidy-span: 6;
   }
-
-  &[aria-hidden="true"] {
-    display: none;
-  }
 }
 
 .nav {

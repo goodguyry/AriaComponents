@@ -16,7 +16,6 @@
 .info {
   background-color: white;
   border: 1px solid;
-  display: none;
   left: 0;
   padding: rem(10);
   position: absolute;
@@ -30,9 +29,5 @@
     tidy-span: 6;
     top: 50%;
     transform: translateY(-50%);
-  }
-
-  &[aria-hidden="false"] {
-    display: block;
   }
 }

@@ -168,6 +168,7 @@ export default class Popup extends AriaComponent {
      * element via CSS.
      */
     this.target.setAttribute('aria-hidden', 'true');
+    this.target.setAttribute('hidden', '');
 
     // Add event listeners
     this.controller.addEventListener('click', this.controllerClickHandler);
@@ -194,10 +195,12 @@ export default class Popup extends AriaComponent {
      */
     if (expanded) {
       this.target.setAttribute('aria-hidden', 'false');
+      this.target.removeAttribute('hidden');
 
       tabIndexAllow(this.interactiveChildElements);
     } else {
       this.target.setAttribute('aria-hidden', 'true');
+      this.target.setAttribute('hidden', '');
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       tabIndexDeny(this.interactiveChildElements);
@@ -359,6 +362,7 @@ export default class Popup extends AriaComponent {
 
     // Remove target attributes.
     this.target.removeAttribute('aria-hidden');
+    this.target.removeAttribute('hidden');
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerClickHandler);
