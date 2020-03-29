@@ -1,6 +1,7 @@
 .dialog {
   background-color: white;
   border: 1px solid black;
+  display: none;
   left: 50%;
   max-height: calc(100vh - tidy-var(edge) * 2);
   max-width: rem(500);
@@ -12,8 +13,8 @@
   width: calc(100vw - tidy-var(edge) * 2);
   z-index: 1;
 
-  &[aria-hidden="true"] {
-    display: none;
+  &[aria-hidden="false"] {
+    display: block;
   }
 
   @media (min(lg)) {

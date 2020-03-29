@@ -199,6 +199,7 @@ export default class Tablist extends AriaComponent {
       // All but the first tab should be hidden by default.
       if (activeIndex === index) {
         panel.setAttribute('tabindex', '0');
+        panel.setAttribute('aria-hidden', 'false');
       } else {
         panel.setAttribute('aria-hidden', 'true');
       }
@@ -243,7 +244,7 @@ export default class Tablist extends AriaComponent {
     // Actvate the newly active tab.
     this.tabLinks[activeIndex].removeAttribute('tabindex');
     this.tabLinks[activeIndex].setAttribute('aria-selected', 'true');
-    this.panels[activeIndex].removeAttribute('aria-hidden');
+    this.panels[activeIndex].setAttribute('aria-hidden', 'false');
     this.panels[activeIndex].setAttribute('tabindex', '0');
 
     // Allow tabbing to the newly-active panel.

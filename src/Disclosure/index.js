@@ -205,7 +205,7 @@ export default class Disclosure extends AriaComponent {
      *   results in the content being unhidden.
      */
     if (expanded) {
-      this.target.removeAttribute('aria-hidden');
+      this.target.setAttribute('aria-hidden', 'false');
     } else {
       this.target.setAttribute('aria-hidden', 'true');
     }

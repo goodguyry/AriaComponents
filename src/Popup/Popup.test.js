@@ -86,7 +86,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeTruthy();
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
-    expect(target.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('aria-hidden')).toEqual('false');
 
     // All interactive children should initially have a negative tabindex.
     popup.interactiveChildElements.forEach((link) => {

@@ -116,7 +116,7 @@ describe('Tablist with default configuration', () => {
           if (0 !== index) {
             expect(panel.getAttribute('aria-hidden')).toEqual('true');
           } else {
-            expect(panel.getAttribute('aria-hidden')).toBeNull();
+            expect(panel.getAttribute('aria-hidden')).toEqual('false');
           }
           expect(panel.getAttribute('aria-labelledby')).not.toBeNull();
           expect(panel.id).not.toBeNull();
@@ -135,7 +135,7 @@ describe('Tablist with default configuration', () => {
       expect(secondTab.getAttribute('tabindex')).toEqual('-1');
       expect(thirdTab.getAttribute('tabindex')).toEqual('-1');
 
-      expect(firstPanel.getAttribute('aria-hidden')).toBeNull();
+      expect(firstPanel.getAttribute('aria-hidden')).toEqual('false');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
@@ -156,7 +156,7 @@ describe('Tablist with default configuration', () => {
 
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
-      expect(thirdPanel.getAttribute('aria-hidden')).toBeNull();
+      expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
 
       expect(firstPanel.getAttribute('tabindex')).toBeNull();
       expect(secondPanel.getAttribute('tabindex')).toBeNull();
@@ -209,7 +209,7 @@ describe('Tablist with default configuration', () => {
       expect(secondTab.getAttribute('tabindex')).toEqual('-1');
       expect(thirdTab.getAttribute('tabindex')).toEqual('-1');
 
-      expect(firstPanel.getAttribute('aria-hidden')).toBeNull();
+      expect(firstPanel.getAttribute('aria-hidden')).toEqual('false');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
@@ -228,7 +228,7 @@ describe('Tablist with default configuration', () => {
 
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
-      expect(thirdPanel.getAttribute('aria-hidden')).toBeNull();
+      expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
 
       expect(firstPanel.getAttribute('tabindex')).toBeNull();
       expect(secondPanel.getAttribute('tabindex')).toBeNull();

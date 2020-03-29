@@ -60,7 +60,7 @@ describe('Disclosure with default configuration', () => {
       controller.dispatchEvent(click);
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toEqual('false');
 
       // Click again to close.
       controller.dispatchEvent(click);
@@ -74,7 +74,7 @@ describe('Disclosure with default configuration', () => {
       document.body.dispatchEvent(click);
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toEqual('false');
     });
 
     it('Should update attributes when Return or Spacebar are pressed', () => {
@@ -85,7 +85,7 @@ describe('Disclosure with default configuration', () => {
       controller.dispatchEvent(keydownReturn);
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toEqual('false');
 
       // Spacebar to close.
       controller.dispatchEvent(keydownSpace);

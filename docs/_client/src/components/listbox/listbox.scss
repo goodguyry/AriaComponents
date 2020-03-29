@@ -11,6 +11,7 @@
   background-color: #fff;
   border-radius: 2px;
   border: 1px solid rgba(12, 18, 28, 0.12);
+  display: none;
   left: 0;
   list-style-type: none;
   max-height: 13.5rem;
@@ -20,8 +21,8 @@
   position: absolute;
   top: 0;
 
-  &[aria-hidden="true"] {
-    display: none;
+  &[aria-hidden="false"] {
+    display: block;
   }
 }
 
