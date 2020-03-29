@@ -13,10 +13,6 @@
   display: flex;
   justify-content: space-between;
   list-style-type: none;
-
-  [aria-hidden="true"] {
-    display: none;
-  }
 }
 
 .list-item {
@@ -36,6 +32,10 @@
   position: absolute;
   top: calc(100% + #{rem(20)});
   width: max-content;
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 
   .list-item {
 

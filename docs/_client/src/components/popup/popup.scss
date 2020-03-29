@@ -16,6 +16,7 @@
 .info {
   background-color: white;
   border: 1px solid;
+  display: none;
   left: 0;
   padding: rem(10);
   position: absolute;
@@ -31,7 +32,7 @@
     transform: translateY(-50%);
   }
 
-  &[aria-hidden="true"] {
-    display: none;
+  &[aria-hidden="false"] {
+    display: block;
   }
 }
