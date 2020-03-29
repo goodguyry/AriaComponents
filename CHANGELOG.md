@@ -3,6 +3,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Next
 
+**Changed**
+
+- Uses `aria-hidden="false"` rather than removing the attribute (#28)
+
 **Added**
 
 - Menu submenus can be instantiated as Disclosures by passing `collapse: true` (#27)
