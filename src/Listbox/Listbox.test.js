@@ -43,7 +43,7 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 describe('Listbox with default configuration', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     listbox = new Listbox({
       controller,
       target,
@@ -213,28 +213,32 @@ describe('Listbox with default configuration', () => {
     });
   });
 
-  it('Should destroy the Listbox as expected', () => {
-    listbox.destroy();
+  describe('Listbox destroy', () => {
+    it('Should destroy the Listbox as expected', () => {
+      listbox.destroy();
 
-    expect(controller.getAttribute('aria-haspopup')).toBeNull();
-    expect(controller.getAttribute('aria-expanded')).toBeNull();
+      expect(controller.getAttribute('aria-haspopup')).toBeNull();
+      expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('hidden')).toBeNull();
 
     listItems.forEach((item) => {
       expect(item.getAttribute('role')).toBeNull();
-    })
+      })
 
-    expect(controller.listbox).toBeUndefined();
-    expect(target.listbox).toBeUndefined();
+      expect(controller.listbox).toBeUndefined();
+      expect(target.listbox).toBeUndefined();
 
-    controller.dispatchEvent(click);
-    expect(listbox.getState().expanded).toBeFalsy();
+      controller.dispatchEvent(click);
+      expect(listbox.getState().expanded).toBeFalsy();
 
-    expect(onDestroy).toHaveBeenCalled();
+      expect(onDestroy).toHaveBeenCalled();
 
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(listboxMarkup);
+      // Quick and dirty verification that the original markup is restored.
+      // But first, restore the button's original text label.
+      controller.textContent = 'Choose';
+      expect(document.body.innerHTML).toEqual(listboxMarkup);
+    });
   });
 });
