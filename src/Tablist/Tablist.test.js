@@ -13,8 +13,7 @@ const {
   keydownEnd,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const tablistMarkup = `
   <ul class="tablist">
     <li><a href="#first-panel"></a></li>
     <li><a href="#second-panel"></a></li>
@@ -51,6 +50,9 @@ document.body.innerHTML = `
     officia deserunt mollit anim id est laborum.</p>
   </div>
 `;
+
+// Set up our document body
+document.body.innerHTML = tablistMarkup;
 
 const tabs = document.querySelector('.tablist');
 const panels = document.querySelectorAll('.panel');
@@ -210,6 +212,9 @@ describe('Tablist with default configuration', () => {
 
       expect(onDestroy).toHaveBeenCalled();
     });
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(tablistMarkup);
   });
 
   describe('Tablist correctly responds to events', () => {

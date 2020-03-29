@@ -10,10 +10,8 @@ const {
   keydownReturn,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const popupMarkup = `
   <a href="#dropdown" class="link">Open</a>
-  <button>Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -23,6 +21,9 @@ document.body.innerHTML = `
     </ul>
   </div>
 `;
+
+// Set up our document body
+document.body.innerHTML = popupMarkup;
 
 const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
@@ -217,7 +218,11 @@ it('Should destroy the popup as expected', () => {
   expect(target.popup).toBeUndefined();
 
   controller.dispatchEvent(click);
-  expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.getState().expanded).toBeFalsy();
 
-  expect(onDestroy).toHaveBeenCalled();
+    expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(popupMarkup);
+  });
 });

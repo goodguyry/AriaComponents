@@ -8,8 +8,7 @@ const {
   keydownSpace,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const disclosureMarkup = `
   <dl>
     <dt class="question">
       <button class="button">What is Lorem Ipsum?</button>
@@ -19,6 +18,9 @@ document.body.innerHTML = `
     </dd>
   </dl>
 `;
+
+// Set up our document body
+document.body.innerHTML = disclosureMarkup;
 
 const controller = document.querySelector('.button');
 const target = document.querySelector('.answer');
@@ -116,6 +118,9 @@ describe('Disclosure with default configuration', () => {
 
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 });
 
@@ -164,5 +169,8 @@ describe('Disclosure with non-default configuration', () => {
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 });

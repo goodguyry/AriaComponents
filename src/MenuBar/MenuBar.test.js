@@ -12,8 +12,7 @@ const {
   keydownReturn,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const menubarMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menubar">
       <li>
@@ -45,6 +44,9 @@ document.body.innerHTML = `
   <div id="ac-describe-submenu-back"></div>
   <div id="ac-describe-top-level-help"></div>
 `;
+
+// Set up our document body
+document.body.innerHTML = menubarMarkup;
 
 // Collect references to DOM elements.
 const domElements = {
@@ -232,5 +234,8 @@ describe('Menu should destroy properly', () => {
 
     expect(domElements.list.menubar).toBeUndefined();
     expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(menubarMarkup);
   });
 });

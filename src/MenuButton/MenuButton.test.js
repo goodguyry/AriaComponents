@@ -13,8 +13,7 @@ const {
   keydownDown,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const menuButtonMarkup = `
   <button>Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
@@ -30,6 +29,9 @@ document.body.innerHTML = `
   <div id="ac-describe-submenu-explore"></div>
   <div id="ac-describe-submenu-back"></div>
 `;
+
+// Set up our document body
+document.body.innerHTML = menuButtonMarkup;
 
 const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
@@ -189,4 +191,7 @@ it('Should destroy the menuButton as expected', () => {
   expect(menuButton.getState().expanded).toBeFalsy();
 
   expect(onDestroy).toHaveBeenCalled();
+
+  // Quick and dirty verification that the original markup is restored.
+  expect(document.body.innerHTML).toEqual(menuButtonMarkup);
 });

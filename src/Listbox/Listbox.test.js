@@ -13,8 +13,7 @@ const {
   keydownEnd,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const listboxMarkup = `
   <button>Choose</button>
   <ul>
     <li>Anchorage</li>
@@ -28,6 +27,9 @@ document.body.innerHTML = `
     <li>Idaho Falls</li>
   </ul>
 `;
+
+// Set up our document body
+document.body.innerHTML = listboxMarkup;
 
 const controller = document.querySelector('button');
 const target = document.querySelector('ul');
@@ -231,5 +233,8 @@ describe('Listbox with default configuration', () => {
     expect(listbox.getState().expanded).toBeFalsy();
 
     expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(listboxMarkup);
   });
 });

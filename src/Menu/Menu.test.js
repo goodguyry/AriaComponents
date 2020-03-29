@@ -11,8 +11,7 @@ const {
   keydownHome,
 } = events;
 
-// Set up our document body
-document.body.innerHTML = `
+const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
@@ -43,6 +42,9 @@ document.body.innerHTML = `
   <div id="ac-describe-submenu-explore"></div>
   <div id="ac-describe-submenu-back"></div>
 `;
+
+// Set up our document body
+document.body.innerHTML = menuMarkup;
 
 // Collect references to DOM elements.
 const domElements = {
@@ -274,5 +276,8 @@ describe('Menu instatiates submenus as Disclosures', () => {
 
     expect(domElements.listFirstItem.disclosure).toBeUndefined();
     expect(domElements.sublistOne.disclosure).toBeUndefined();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(menuMarkup);
   });
 });
