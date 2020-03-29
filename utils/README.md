@@ -66,7 +66,7 @@ import { setUniqueId, getUniqueId } from 'aria-components/utils';
 const button = document.querySelector('button');
 setUniqueId(button); // button.id = 'id_5c16045tmd'
 
-const newId = getUniqueId(button); // 'id_9y0541qs1tk'
+button.id = getUniqueId(); // 'id_9y0541qs1tk'
 ```
 
 ## `Search`
