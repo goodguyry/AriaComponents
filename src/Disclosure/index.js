@@ -165,6 +165,7 @@ export default class Disclosure extends AriaComponent {
      */
     if (! expanded) {
       this.target.setAttribute('aria-hidden', 'true');
+      this.target.setAttribute('hidden', '');
     }
 
     // Add event listeners
@@ -206,8 +207,10 @@ export default class Disclosure extends AriaComponent {
      */
     if (expanded) {
       this.target.setAttribute('aria-hidden', 'false');
+      this.target.removeAttribute('hidden');
     } else {
       this.target.setAttribute('aria-hidden', 'true');
+      this.target.setAttribute('hidden', '');
     }
 
     // Allow or deny keyboard focus depending on component state.
@@ -284,6 +287,7 @@ export default class Disclosure extends AriaComponent {
 
     // Remove target attributes.
     this.target.removeAttribute('aria-hidden');
+    this.target.removeAttribute('hidden');
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggleExpandedState);

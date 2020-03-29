@@ -200,8 +200,10 @@ export default class Tablist extends AriaComponent {
       if (activeIndex === index) {
         panel.setAttribute('tabindex', '0');
         panel.setAttribute('aria-hidden', 'false');
+        panel.removeAttribute('hidden');
       } else {
         panel.setAttribute('aria-hidden', 'true');
+        panel.setAttribute('hidden', '');
       }
 
       // Listen for panel keydown events.
@@ -235,6 +237,7 @@ export default class Tablist extends AriaComponent {
     deactivate.setAttribute('tabindex', '-1');
     deactivate.removeAttribute('aria-selected');
     this.panels[deactiveIndex].setAttribute('aria-hidden', 'true');
+    this.panels[deactiveIndex].setAttribute('hidden', '');
     this.panels[deactiveIndex].removeAttribute('tabindex');
 
     // Prevent tabbing to interactive children of the deactivated panel.
@@ -245,6 +248,7 @@ export default class Tablist extends AriaComponent {
     this.tabLinks[activeIndex].removeAttribute('tabindex');
     this.tabLinks[activeIndex].setAttribute('aria-selected', 'true');
     this.panels[activeIndex].setAttribute('aria-hidden', 'false');
+    this.panels[activeIndex].removeAttribute('hidden');
     this.panels[activeIndex].setAttribute('tabindex', '0');
 
     // Allow tabbing to the newly-active panel.
@@ -433,6 +437,7 @@ export default class Tablist extends AriaComponent {
     this.panels.forEach((panel) => {
       panel.removeAttribute('role');
       panel.removeAttribute('aria-hidden');
+      panel.removeAttribute('hidden');
       panel.removeAttribute('tabindex');
 
       // Make sure to allow tabbing to all children of all panels.
