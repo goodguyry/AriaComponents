@@ -88,6 +88,8 @@ class Popup extends AriaComonents {
 ```javascript
 /**
  * The config.controller property.
+ *
+ * @type {HTMLElement}
  */
 Popup.controller
 ```
@@ -95,8 +97,24 @@ Popup.controller
 ```javascript
 /**
  * The config.target property.
+ *
+ * @type {HTMLElement}
  */
 Popup.target
+
+/**
+ * The target's first interactive child element.
+ *
+ * @type {HTMLElement}
+ */
+Popup.firstInteractiveChild
+
+/**
+ * The target's last interactive child element.
+ *
+ * @type {HTMLElement}
+ */
+Popup.lastInteractiveChild
 ```
 
 ## Example

@@ -238,6 +238,7 @@ export default class Dialog extends AriaComponent {
 
     if (this.popup.getState().expanded && keyCode === TAB) {
       const { activeElement } = document;
+      // @Todo Make a helper method to get these.
       const lastIndex = this.interactiveChildren.length - 1;
       const [firstChild] = this.interactiveChildren;
       const lastChild = this.interactiveChildren[lastIndex];

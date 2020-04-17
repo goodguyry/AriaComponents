@@ -49,8 +49,8 @@ describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
     expect(popup).toBeInstanceOf(Popup);
 
-    expect(popup.firstChild).toEqual(domFirstChild);
-    expect(popup.lastChild).toEqual(domLastChild);
+    expect(popup.firstInteractiveChild).toEqual(domFirstChild);
+    expect(popup.lastInteractiveChild).toEqual(domLastChild);
 
     expect(popup.getState().expanded).toBeFalsy();
 

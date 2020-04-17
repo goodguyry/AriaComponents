@@ -349,7 +349,7 @@ export default class MenuBar extends AriaComponent {
             popup.setState({ expanded: true });
           }
 
-          popup.firstChild.focus();
+          popup.firstInteractiveChild.focus();
         }
 
         break;

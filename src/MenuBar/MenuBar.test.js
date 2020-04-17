@@ -167,7 +167,7 @@ describe('Menu correctly responds to events', () => {
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownSpace);
-      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstChild);
+      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
       expect(menuBar.getState().expanded).toBeTruthy();
     });
 
@@ -175,7 +175,7 @@ describe('Menu correctly responds to events', () => {
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownReturn);
-      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstChild);
+      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
       expect(menuBar.getState().expanded).toBeTruthy();
     });
 
