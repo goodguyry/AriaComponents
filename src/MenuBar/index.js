@@ -109,7 +109,6 @@ export default class MenuBar extends AriaComponent {
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
-    this.trackPopupState = this.trackPopupState.bind(this);
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
@@ -211,7 +210,6 @@ export default class MenuBar extends AriaComponent {
           controller,
           target,
           onInit: this.onPopupInit,
-          onStateChange: this.trackPopupState,
           type: 'menu',
         });
 
@@ -248,36 +246,12 @@ export default class MenuBar extends AriaComponent {
   }
 
   /**
-   * Refresh component state when Popup state is updated.
-   *
-   * @param {object} state The Popup state.
-   */
-  trackPopupState(state = {}) {
-    const { menubarItem } = this.state;
-    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
-    /*
-     * Use the current MenuBar state if there's no popup or if an expanded state
-     * was passed in, otherwise make sure to use the current popup's state.
-     */
-    const expanded = (
-      false === popup
-      || Object.prototype.hasOwnProperty.call(state, 'expanded')
-    ) ? state.expanded : popup.getState();
-
-    // Add the Popup state to this component's state.
-    this.state = Object.assign({ menubarItem, popup, expanded });
-  }
-
-  /**
    * Manage menubar state.
    *
    * @param {Object} state The component state.
    */
   stateWasUpdated() {
     const { menubarItem } = this.state;
-
-    // Make sure we're tracking the Popup state along with this.
-    this.trackPopupState();
 
     // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
@@ -304,7 +278,8 @@ export default class MenuBar extends AriaComponent {
       RETURN,
     } = keyCodes;
     const { keyCode } = event;
-    const { menubarItem, popup } = this.state;
+    const { menubarItem } = this.state;
+    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
 
     switch (keyCode) {
       /*
