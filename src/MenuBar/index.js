@@ -324,7 +324,7 @@ export default class MenuBar extends AriaComponent {
 
           // Close the popup.
           if (popup) {
-            popup.setState({ expanded: false });
+            popup.hide();
           }
 
           this.setState({
@@ -346,7 +346,7 @@ export default class MenuBar extends AriaComponent {
           event.preventDefault();
 
           if (! popup.state.expanded) {
-            popup.setState({ expanded: true });
+            popup.show();
           }
 
           popup.firstInteractiveChild.focus();

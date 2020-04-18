@@ -74,7 +74,7 @@ describe('Disclosure with default configuration', () => {
       expect(target.getAttribute('hidden')).toEqual('');
 
       // Re-open the disclosure.
-      disclosure.setState({ expanded: true });
+      disclosure.open();
       // Should close on outside click.
       document.body.dispatchEvent(click);
       expect(disclosure.getState().expanded).toBeTruthy();
@@ -85,7 +85,7 @@ describe('Disclosure with default configuration', () => {
 
     it('Should update attributes when Return or Spacebar are pressed', () => {
       // Ensure the disclosure is closed.
-      disclosure.setState({ expanded: false });
+      disclosure.close();
 
       // Return to open.
       controller.dispatchEvent(keydownReturn);

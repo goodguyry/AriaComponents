@@ -121,7 +121,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 describe('Popup correctly responds to events', () => {
   // Ensure the popup is open before all tests.
   beforeEach(() => {
-    popup.setState({ expanded: true });
+    popup.show();
   });
 
   it('Should close the popup when the ESC key is pressed',
