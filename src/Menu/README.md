@@ -91,18 +91,6 @@ Menu.disclosures
   <li><a href="example.com"></a></li>
   <li><a href="example.com"></a></li>
 </ul>
-
-<!--
-  These elements are required by this component, but must be added manually.
-  Feel free to update the text how you see fit, but make sure it's helpful and
-  the elements have the correct `id` attribute.
--->
-<div class="screen-reader-only">
-  <span id="ac-describe-submenu-help">Use right arrow key to move into submenus.</span>
-  <span id="ac-describe-esc-help">Use escape to exit the menu.</span>
-  <span id="ac-describe-submenu-explore">Use up and down arrow keys to explore.</span>
-  <span id="ac-describe-submenu-back">Use left arrow key to move back to the parent list.</span>
-</div>
 ```
 
 ```javascript

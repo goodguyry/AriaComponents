@@ -13,12 +13,6 @@ document.body.innerHTML = `
       <li><a href="example.com"></a></li>
     </ul>
   </div>
-
-  <div id="ac-describe-submenu-help"></div>
-  <div id="ac-describe-esc-help"></div>
-  <div id="ac-describe-submenu-explore"></div>
-  <div id="ac-describe-submenu-back"></div>
-  <div id="ac-describe-top-level-help"></div>
 `;
 
 const controller = document.querySelector('button');

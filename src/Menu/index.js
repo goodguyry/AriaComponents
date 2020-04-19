@@ -3,7 +3,6 @@ import Disclosure from '../Disclosure';
 import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
-import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
 import Search from '../lib/Search';
 
 /**
@@ -12,20 +11,6 @@ import Search from '../lib/Search';
  * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
  */
 export default class Menu extends AriaComponent {
-  /**
-   * HTML IDs for elements containing help text.
-   *
-   * @return {array}
-   */
-  static getHelpIds() {
-    return [
-      '#ac-describe-submenu-help',
-      '#ac-describe-esc-help',
-      '#ac-describe-submenu-explore',
-      '#ac-describe-submenu-back',
-    ];
-  }
-
   /**
    * Test for a list as the next sibling element.
    *
@@ -165,13 +150,6 @@ export default class Menu extends AriaComponent {
      */
     this.list.addEventListener('keydown', this.handleListKeydown);
 
-    /*
-     * Warn if aria-decribedby elements are not found.
-     * Without these elements, the references will be broken and potentially
-     * confusing to users.
-     */
-    missingDescribedByWarning(Menu.getHelpIds());
-
     /**
      * The submenu Disclosures.
      *
@@ -188,12 +166,6 @@ export default class Menu extends AriaComponent {
 
       // Set the menuitem role.
       link.setAttribute('role', 'menuitem');
-
-      link.setAttribute(
-        'aria-describedby',
-        // eslint-disable-next-line max-len
-        'ac-describe-submenu-explore ac-describe-submenu-help ac-describe-submenu-back ac-describe-esc-help'
-      );
 
       // Add size and position attributes.
       link.setAttribute('aria-setsize', this.menuItemsLength);
@@ -381,7 +353,6 @@ export default class Menu extends AriaComponent {
 
       // Remove menuitem attributes.
       link.removeAttribute('role');
-      link.removeAttribute('aria-describedby');
       link.removeAttribute('aria-setsize');
       link.removeAttribute('aria-posinset');
 
