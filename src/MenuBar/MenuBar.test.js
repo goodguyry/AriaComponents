@@ -37,12 +37,6 @@ const menubarMarkup = `
       <li><a class="last-item" href="example.com">Ice Cream</a></li>
     </ul>
   </nav>
-
-  <div id="ac-describe-submenu-help"></div>
-  <div id="ac-describe-esc-help"></div>
-  <div id="ac-describe-submenu-explore"></div>
-  <div id="ac-describe-submenu-back"></div>
-  <div id="ac-describe-top-level-help"></div>
 `;
 
 // Set up our document body
@@ -98,7 +92,6 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.list.getAttribute('role')).toEqual('menubar');
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toEqual('5');
-    expect(domElements.listSecondItem.getAttribute('aria-describedby')).not.toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
 
     expect(menuBar.getState().menubarItem).toEqual(domElements.listFirstItem);
@@ -222,7 +215,6 @@ describe('Menu should destroy properly', () => {
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
-    expect(domElements.listSecondItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('role')).toBeNull();
 

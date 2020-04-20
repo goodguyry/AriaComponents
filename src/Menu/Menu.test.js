@@ -36,11 +36,6 @@ const menuMarkup = `
       <li><a class="last-item" href="example.com">Ice Cream</a></li>
     </ul>
   </nav>
-
-  <div id="ac-describe-submenu-help"></div>
-  <div id="ac-describe-esc-help"></div>
-  <div id="ac-describe-submenu-explore"></div>
-  <div id="ac-describe-submenu-back"></div>
 `;
 
 // Set up our document body
@@ -186,7 +181,6 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.list.list).toBeUndefined();
     expect(domElements.sublistOne.menu).toBeUndefined();
 
-    expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.sublistOneFirstItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.sublistTwoFirstItem.getAttribute('aria-setsize')).toBeNull();
@@ -267,7 +261,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(domElements.listFirstItem.getAttribute('aria-owns')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('role')).toBeNull();
     expect(domElements.listFirstItem.parentElement.getAttribute('role')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('aria-describedby')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-posinset')).toBeNull();
 

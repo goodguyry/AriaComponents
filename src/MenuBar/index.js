@@ -5,7 +5,6 @@ import keyCodes from '../lib/keyCodes';
 import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import isInstanceOf from '../lib/isInstanceOf';
-import { missingDescribedByWarning } from '../lib/ariaDescribedbyElementsFound';
 import Search from '../lib/Search';
 
 /**
@@ -26,19 +25,6 @@ export default class MenuBar extends AriaComponent {
     return isInstanceOf(menubarItem.popup, Popup)
       ? menubarItem.popup
       : false;
-  }
-
-  /**
-   * HTML IDs for elements containing help text
-   *
-   * @return {array}
-   */
-  static getHelpIds() {
-    return [
-      '#ac-describe-top-level-help',
-      '#ac-describe-submenu-help',
-      '#ac-describe-esc-help',
-    ];
   }
 
   /**
@@ -181,25 +167,11 @@ export default class MenuBar extends AriaComponent {
     this.menuLength = this.menuBarItems.length;
 
     /*
-     * Warn if aria-decribedby elements are not found.
-     * Without these elements, the references will be broken and potentially
-     * confusing to users.
-     */
-    missingDescribedByWarning(MenuBar.getHelpIds());
-
-    /*
      * Set menubar link attributes.
      */
     this.menuBarItems.forEach((link, index) => {
       // Set the item's role.
       link.setAttribute('role', 'menuitem');
-
-      // Add a reference to the help text.
-      link.setAttribute(
-        'aria-describedby',
-        // eslint-disable-next-line max-len
-        'ac-describe-top-level-help ac-describe-submenu-help ac-describe-esc-help'
-      );
 
       // Add size and position attributes.
       link.setAttribute('aria-setsize', this.menuLength);
@@ -465,9 +437,6 @@ export default class MenuBar extends AriaComponent {
     this.menuBarItems.forEach((link) => {
       // Remove list item role.
       link.parentElement.removeAttribute('role');
-
-      // Remove reference to the help text.
-      link.removeAttribute('aria-describedby');
 
       // Remove size and position attributes.
       link.removeAttribute('aria-setsize');

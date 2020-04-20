@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Menu submenus can be instantiated as Disclosures by passing `collapse: true` (#27)
 - Uses the `hidden` attribute where `aria-hidden="true"` (#29)
 
+**Removed**
+
+- Menu and MenuBar components no longer require the `aria-describedby` help text (#33)
+
 **Fixed**
 
 - Updates NPM dependencies (#25)
