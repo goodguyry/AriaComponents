@@ -106,6 +106,8 @@ class Dialog extends AriaComponent {
 ```javascript
 /**
  * The config.controller property.
+ *
+ * @type {HTMLButtonElement}
  */
 Dialog.controller
 ```
@@ -113,6 +115,8 @@ Dialog.controller
 ```javascript
 /**
  * The config.target property.
+ *
+ * @type {HTMLElement}
  */
 Dialog.target
 ```
@@ -120,8 +124,19 @@ Dialog.target
 ```javascript
 /**
  * The config.content property.
+ *
+ * @type {HTMLElement}
  */
 Dialog.content
+```
+
+```javascript
+/**
+ * The config.close property, or the button created in its absence.
+ *
+ * @type {HTMLButtonElement}
+ */
+Dialog.close
 ```
 
 ```javascript

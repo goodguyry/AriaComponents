@@ -11,7 +11,7 @@ const config = {
   /**
    * The element used to trigger the Popup element.
    *
-   * @type {HTMLElement}
+   * @type {HTMLButtonElement}
    */
   controller: null,
 
@@ -89,7 +89,7 @@ class Popup extends AriaComonents {
 /**
  * The config.controller property.
  *
- * @type {HTMLElement}
+ * @type {HTMLButtonElement}
  */
 Popup.controller
 ```

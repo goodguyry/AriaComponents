@@ -87,6 +87,8 @@ class MenuButtton extends AriaComponent {
 ```javascript
 /**
  * The config.controller property.
+ *
+ * @type {HTMLButtonElement}
  */
 MenuButton.controller
 ```
@@ -94,6 +96,8 @@ MenuButton.controller
 ```javascript
 /**
  * The config.target property.
+ *
+ * @type {HTMLElement}
  */
 MenuButton.target
 ```
@@ -101,6 +105,8 @@ MenuButton.target
 ```javascript
 /**
  * The config.list property.
+ *
+ * @type {HTMLUListElement}
  */
 MenuButton.list
 ```

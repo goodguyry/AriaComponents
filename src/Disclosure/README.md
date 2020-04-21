@@ -94,6 +94,8 @@ class Disclosure extends AriaComponent {
 ```javascript
 /**
  * The config.controller property.
+ *
+ * @type {HTMLButtonElement}
  */
 Disclosure.controller
 ```
@@ -101,6 +103,8 @@ Disclosure.controller
 ```javascript
 /**
  * The config.target property.
+ *
+ * @type {HTMLElement}
  */
 Disclosure.target
 ```
