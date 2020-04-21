@@ -220,7 +220,7 @@ export default class Dialog extends AriaComponent {
    * @param {Event} event The Event object.
    */
   outsideClick(event) {
-    const { expanded } = this.popup.getState();
+    const { expanded } = this.state;
 
     if (expanded && ! this.target.contains(event.target)) {
       this.hide();
@@ -235,8 +235,9 @@ export default class Dialog extends AriaComponent {
   handleTargetKeydown(event) {
     const { TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
+    const { expanded } = this.state;
 
-    if (this.popup.getState().expanded && keyCode === TAB) {
+    if (expanded && keyCode === TAB) {
       const { activeElement } = document;
       // @Todo Make a helper method to get these.
       const lastIndex = this.interactiveChildren.length - 1;
