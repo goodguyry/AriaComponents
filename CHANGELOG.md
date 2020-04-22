@@ -6,11 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Changed**
 
 - Uses `aria-hidden="false"` rather than removing the attribute (#28)
+- Uses documented methods for nested classes (4e58d45)
+- MenuBar no longer tracks internal Popup state (51ab17c)
 
 **Added**
 
 - Menu submenus can be instantiated as Disclosures by passing `collapse: true` (#27)
 - Uses the `hidden` attribute where `aria-hidden="true"` (#29)
+- Documents additional class properties
 
 **Removed**
 
@@ -20,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Updates NPM dependencies (#25)
 - Corrects issues with the reliability of `destroy` methods (#26 & #31)
+- Corrects ambiguity with native DOM `firstChild` and `lastChild` properties (4795b2a, 1312a99)
 
 ## 0.2.0
 
