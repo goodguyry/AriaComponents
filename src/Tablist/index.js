@@ -269,13 +269,13 @@ export default class Tablist extends AriaComponent {
     const { activeIndex } = this.state;
     const { keyCode, shiftKey } = event;
     const { activeElement } = document;
-    const [firstChild] = this.interactiveChildren;
+    const [firstInteractiveChild] = this.interactiveChildren;
 
     if (keyCode === TAB && shiftKey) {
       if (activeElement === this.panels[activeIndex]) {
         event.preventDefault();
         this.tabLinks[activeIndex].focus();
-      } else if (activeElement === firstChild) {
+      } else if (activeElement === firstInteractiveChild) {
         /*
          * Ensure navigating with Shift-TAB from the first interactive child of
          * the active panel returns focus to the active panel.
