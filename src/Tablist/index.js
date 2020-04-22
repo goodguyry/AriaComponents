@@ -211,7 +211,7 @@ export default class Tablist extends AriaComponent {
     });
 
     // Save the active panel's interactive children.
-    this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
+    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]);
 
     // Run {initCallback}
     this.onInit.call(this);
@@ -252,8 +252,8 @@ export default class Tablist extends AriaComponent {
     this.panels[activeIndex].setAttribute('tabindex', '0');
 
     // Allow tabbing to the newly-active panel.
-    this.interactiveChildren = interactiveChildren(this.panels[activeIndex]);
-    tabIndexAllow(this.interactiveChildren);
+    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]);
+    tabIndexAllow(this.interactiveChildElements);
 
     // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
@@ -269,7 +269,7 @@ export default class Tablist extends AriaComponent {
     const { activeIndex } = this.state;
     const { keyCode, shiftKey } = event;
     const { activeElement } = document;
-    const [firstInteractiveChild] = this.interactiveChildren;
+    const [firstInteractiveChild] = this.interactiveChildElements;
 
     if (keyCode === TAB && shiftKey) {
       if (activeElement === this.panels[activeIndex]) {

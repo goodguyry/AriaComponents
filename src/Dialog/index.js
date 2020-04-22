@@ -153,7 +153,7 @@ export default class Dialog extends AriaComponent {
      * to ensure values exists, but the interactive children will be collected
      * each time the dialog opens, in case the dialog's contents change.
      */
-    this.interactiveChildren = interactiveChildren(this.target);
+    this.interactiveChildElements = interactiveChildren(this.target);
 
     // Add event listeners.
     this.close.addEventListener('click', this.hide);
@@ -196,7 +196,7 @@ export default class Dialog extends AriaComponent {
   stateWasUpdated() {
     const { expanded } = this.state;
 
-    this.interactiveChildren = interactiveChildren(this.target);
+    this.interactiveChildElements = interactiveChildren(this.target);
 
     if (expanded) {
       this.content.setAttribute('aria-hidden', 'true');
@@ -239,9 +239,9 @@ export default class Dialog extends AriaComponent {
 
     if (expanded && keyCode === TAB) {
       const { activeElement } = document;
-      const [firstInteractiveChild] = this.interactiveChildren;
+      const [firstInteractiveChild] = this.interactiveChildElements;
       const lastInteractiveChild = (
-        this.interactiveChildren[this.interactiveChildren.length - 1]
+        this.interactiveChildElements[this.interactiveChildElements.length - 1]
       );
 
       if (shiftKey && firstInteractiveChild === activeElement) {
