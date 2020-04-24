@@ -49,8 +49,8 @@ describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
     expect(popup).toBeInstanceOf(Popup);
 
-    expect(popup.firstChild).toEqual(domFirstChild);
-    expect(popup.lastChild).toEqual(domLastChild);
+    expect(popup.firstInteractiveChild).toEqual(domFirstChild);
+    expect(popup.lastInteractiveChild).toEqual(domLastChild);
 
     expect(popup.getState().expanded).toBeFalsy();
 
@@ -121,7 +121,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 describe('Popup correctly responds to events', () => {
   // Ensure the popup is open before all tests.
   beforeEach(() => {
-    popup.setState({ expanded: true });
+    popup.show();
   });
 
   it('Should close the popup when the ESC key is pressed',

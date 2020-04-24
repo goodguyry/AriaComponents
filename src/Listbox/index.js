@@ -402,6 +402,7 @@ export default class ListBox extends AriaComponent {
    * Close the Listbox when focus is moved away from the target.
    */
   handleTargetBlur() {
+    // Use Popup state here, since the Popup drives the Listbox state.
     if (this.popup.getState().expanded) {
       this.hide();
     }

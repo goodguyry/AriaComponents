@@ -76,6 +76,15 @@ class MenuBar extends AriaComponent {
 MenuBar.menu
 ```
 
+```javascript
+/**
+ * Collected menubar links.
+ *
+ * @type {array}
+ */
+MenuBar.menuBarItems
+```
+
 ## Example
 
 ```html

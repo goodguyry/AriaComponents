@@ -79,6 +79,8 @@ class ListBox extends AriaComponent {
 ```javascript
 /**
  * The config.controller property.
+ *
+ * @type {HTMLButtonElement}
  */
 ListBox.controller
 ```
@@ -86,8 +88,37 @@ ListBox.controller
 ```javascript
 /**
  * The config.target property.
+ *
+ * @type {HTMLUListElement}
  */
 ListBox.target
+```
+
+```javascript
+/**
+ * The target list items.
+ *
+ * @type {array}
+ */
+Listbox.options
+```
+
+```javascript
+/**
+ * The first Listbox option.
+ *
+ * @type {HTMLLIElement}
+ */
+ListBox.firstOption
+```
+
+```javascript
+/**
+ * The last Listbox option.
+ *
+ * @type {HTMLLIElement}
+ */
+ListBox.lastOption
 ```
 
 ```javascript

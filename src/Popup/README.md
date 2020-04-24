@@ -11,7 +11,7 @@ const config = {
   /**
    * The element used to trigger the Popup element.
    *
-   * @type {HTMLElement}
+   * @type {HTMLButtonElement}
    */
   controller: null,
 
@@ -88,6 +88,8 @@ class Popup extends AriaComonents {
 ```javascript
 /**
  * The config.controller property.
+ *
+ * @type {HTMLButtonElement}
  */
 Popup.controller
 ```
@@ -95,8 +97,24 @@ Popup.controller
 ```javascript
 /**
  * The config.target property.
+ *
+ * @type {HTMLElement}
  */
 Popup.target
+
+/**
+ * The target's first interactive child element.
+ *
+ * @type {HTMLElement}
+ */
+Popup.firstInteractiveChild
+
+/**
+ * The target's last interactive child element.
+ *
+ * @type {HTMLElement}
+ */
+Popup.lastInteractiveChild
 ```
 
 ## Example

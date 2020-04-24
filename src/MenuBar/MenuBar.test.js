@@ -167,16 +167,16 @@ describe('Menu correctly responds to events', () => {
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownSpace);
-      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstChild);
-      expect(menuBar.getState().expanded).toBeTruthy();
+      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
+      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
     });
 
   it('Should move focus to the first popup child with return key from Menu bar',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownReturn);
-      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstChild);
-      expect(menuBar.getState().expanded).toBeTruthy();
+      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
+      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
     });
 
   it('Should close the submenu on right arrow key on a menu item with no submenu', () => {
@@ -186,7 +186,7 @@ describe('Menu correctly responds to events', () => {
     domElements.sublistTwoThirdItem.focus();
     domElements.sublistTwoThirdItem.dispatchEvent(keydownRight);
     expect(document.activeElement).toEqual(domElements.listFourthItem);
-    expect(menuBar.getState().expanded).toBeFalsy();
+    expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
   });
 
   it('Should close the submenu on left arrow key on a menu item with no parent menu', () => {
@@ -196,7 +196,7 @@ describe('Menu correctly responds to events', () => {
     domElements.sublistTwoThirdItem.focus();
     domElements.sublistTwoThirdItem.dispatchEvent(keydownLeft);
     expect(document.activeElement).toEqual(domElements.listSecondItem);
-    expect(menuBar.getState().expanded).toBeFalsy();
+    expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
   });
 
   it('Should click the submenu item on spacebar or return key', () => {

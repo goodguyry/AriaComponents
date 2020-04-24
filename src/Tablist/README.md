@@ -11,7 +11,7 @@ const config = {
   /**
    * The UL parent of the Tablist tabs.
    *
-   * @type {HTMLElement}
+   * @type {HTMLUListElement}
    */
   tabs: null,
 
@@ -76,18 +76,30 @@ class Tablist extends AriaComponent {
 
 ```javascript
 /**
- * The config.tablist property.
+ * The config.tabs property.
+ *
+ * @type {HTMLUListElement}
  */
-Tablist.tablist
+Tablist.tabs
 ```
 
 ```javascript
 /**
  * The config.panels property.
+ *
+ * @type {array}
  */
 Tablist.panels
 ```
 
+```javascript
+/**
+ * Collected anchors from inside of each list items.
+ *
+ * @type {array}
+ */
+Tablist.tabLinks
+```
 
 ## Example
 

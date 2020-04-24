@@ -135,12 +135,12 @@ export default class Popup extends AriaComponent {
      * them in as instance properties.
      */
     if (0 < this.interactiveChildElements.length) {
-      const [firstChild] = this.interactiveChildElements;
-      const lastChild = (
+      const [firstInteractiveChild] = this.interactiveChildElements;
+      const lastInteractiveChild = (
         this.interactiveChildElements[this.interactiveChildElements.length - 1]
       );
 
-      Object.assign(this, { firstChild, lastChild });
+      Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }
 
     // Add target attribute.
@@ -257,7 +257,7 @@ export default class Popup extends AriaComponent {
          * the default behavior in most cases, but this patches the behavior in
          * cases where the markup is disconnected or out-of-order.
          */
-        this.firstChild.focus();
+        this.firstInteractiveChild.focus();
       }
     }
   }
@@ -289,7 +289,7 @@ export default class Popup extends AriaComponent {
       this.controller.focus();
     } else if (TAB === keyCode) {
       if (shiftKey) {
-        if ([this.firstChild, this.target].includes(activeElement)) {
+        if ([this.firstInteractiveChild, this.target].includes(activeElement)) {
           event.preventDefault();
           /*
            * Move focus back to the controller if the Shift key is pressed with
@@ -298,7 +298,7 @@ export default class Popup extends AriaComponent {
            */
           this.controller.focus();
         }
-      } else if (this.lastChild === activeElement) {
+      } else if (this.lastInteractiveChild === activeElement) {
         /*
          * Close the Popup when tabbing from the last child.
          */

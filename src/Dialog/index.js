@@ -153,7 +153,7 @@ export default class Dialog extends AriaComponent {
      * to ensure values exists, but the interactive children will be collected
      * each time the dialog opens, in case the dialog's contents change.
      */
-    this.interactiveChildren = interactiveChildren(this.target);
+    this.interactiveChildElements = interactiveChildren(this.target);
 
     // Add event listeners.
     this.close.addEventListener('click', this.hide);
@@ -196,7 +196,7 @@ export default class Dialog extends AriaComponent {
   stateWasUpdated() {
     const { expanded } = this.state;
 
-    this.interactiveChildren = interactiveChildren(this.target);
+    this.interactiveChildElements = interactiveChildren(this.target);
 
     if (expanded) {
       this.content.setAttribute('aria-hidden', 'true');
@@ -220,7 +220,7 @@ export default class Dialog extends AriaComponent {
    * @param {Event} event The Event object.
    */
   outsideClick(event) {
-    const { expanded } = this.popup.getState();
+    const { expanded } = this.state;
 
     if (expanded && ! this.target.contains(event.target)) {
       this.hide();
@@ -235,27 +235,29 @@ export default class Dialog extends AriaComponent {
   handleTargetKeydown(event) {
     const { TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
+    const { expanded } = this.state;
 
-    if (this.popup.getState().expanded && keyCode === TAB) {
+    if (expanded && keyCode === TAB) {
       const { activeElement } = document;
-      const lastIndex = this.interactiveChildren.length - 1;
-      const [firstChild] = this.interactiveChildren;
-      const lastChild = this.interactiveChildren[lastIndex];
+      const [firstInteractiveChild] = this.interactiveChildElements;
+      const lastInteractiveChild = (
+        this.interactiveChildElements[this.interactiveChildElements.length - 1]
+      );
 
-      if (shiftKey && firstChild === activeElement) {
+      if (shiftKey && firstInteractiveChild === activeElement) {
         event.preventDefault();
         /*
          * Move back from the first interactive child element to the last
          * interactive child element
          */
-        lastChild.focus();
-      } else if (! shiftKey && lastChild === activeElement) {
+        lastInteractiveChild.focus();
+      } else if (! shiftKey && lastInteractiveChild === activeElement) {
         event.preventDefault();
         /*
          * Move forward from the last interactive child element to the first
          * interactive child element.
          */
-        firstChild.focus();
+        firstInteractiveChild.focus();
       }
     }
   }
