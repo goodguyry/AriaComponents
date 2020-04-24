@@ -3,6 +3,7 @@ import Popup from '../Popup';
 import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
 import Search from '../lib/Search';
+import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up an interactive Listbox element.
@@ -119,21 +120,8 @@ export default class ListBox extends AriaComponent {
       listItem.setAttribute('role', 'option');
     });
 
-    /**
-     * First [role="option"]
-     *
-     * @type {HTMLElement}
-     */
-    const [firstOption] = this.options;
-
-    /**
-     * Last [role="option"]
-     *
-     * @type {HTMLElement}
-     */
-    const lastOption = this.options[this.options.length - 1];
-
     // Save first and last option as properties.
+    const [ firstOption, lastOption ] = getFirstAndLastItems(this.options);
     Object.assign(this, { firstOption, lastOption });
 
     /**

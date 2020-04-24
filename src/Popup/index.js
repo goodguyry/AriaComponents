@@ -3,6 +3,7 @@ import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { setUniqueId } from '../lib/uniqueId';
+import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class for setting up an interactive popup element that can be triggered by a
@@ -135,10 +136,10 @@ export default class Popup extends AriaComponent {
      * them in as instance properties.
      */
     if (0 < this.interactiveChildElements.length) {
-      const [firstInteractiveChild] = this.interactiveChildElements;
-      const lastInteractiveChild = (
-        this.interactiveChildElements[this.interactiveChildElements.length - 1]
-      );
+      const [
+        firstInteractiveChild,
+        lastInteractiveChild,
+      ] = getFirstAndLastItems(this.interactiveChildElements);
 
       Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }
