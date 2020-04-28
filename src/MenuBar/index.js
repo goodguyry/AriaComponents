@@ -6,6 +6,7 @@ import { rovingTabIndex, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import isInstanceOf from '../lib/isInstanceOf';
 import Search from '../lib/Search';
+import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class for managing a visually persistent (horizontally-oriented) menubar,
@@ -183,12 +184,9 @@ export default class MenuBar extends AriaComponent {
       link.addEventListener('click', this.handleMenuBarClick);
     });
 
-    /**
-     * The index of the last menubar item
-     *
-     * @type {number}
-     */
-    this.lastIndex = (this.menuLength - 1);
+    // Collect first and last MenuBar items and merge them in as instance properties.
+    const [ firstItem, lastItem ] = getFirstAndLastItems(this.menuBarItems);
+    Object.assign(this, { firstItem, lastItem });
 
     /**
      * A mouse 'click' event.
@@ -231,15 +229,14 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {object}
      */
-    const [menubarItem] = this.menuBarItems;
     this.state = {
-      menubarItem,
-      popup: this.constructor.getPopupFromMenubarItem(menubarItem),
+      menubarItem: this.firstItem,
+      popup: this.constructor.getPopupFromMenubarItem(this.firstItem),
       expanded: false,
     };
 
     // Set up initial tabindex.
-    rovingTabIndex(this.menuBarItems, menubarItem);
+    rovingTabIndex(this.menuBarItems, this.firstItem);
 
     // Run {initCallback}
     this.onInit.call(this);
@@ -349,7 +346,7 @@ export default class MenuBar extends AriaComponent {
       case END: {
         event.preventDefault();
         this.setState({
-          menubarItem: this.menuBarItems[this.lastIndex],
+          menubarItem: this.lastItem,
         });
 
         break;

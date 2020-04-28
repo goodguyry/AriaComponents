@@ -4,6 +4,7 @@ import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
 import Search from '../lib/Search';
+import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -191,8 +192,7 @@ export default class Menu extends AriaComponent {
     });
 
     // Save the menu's first and last items.
-    const [firstItem] = this.menuItems;
-    const lastItem = this.menuItems[this.menuItems.length - 1];
+    const [ firstItem, lastItem ] = getFirstAndLastItems(this.menuItems);
     Object.assign(this, { firstItem, lastItem });
 
     // Run {initCallback}

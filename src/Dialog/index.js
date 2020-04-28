@@ -2,6 +2,7 @@ import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
+import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up an interactive Dialog element.
@@ -239,10 +240,10 @@ export default class Dialog extends AriaComponent {
 
     if (expanded && keyCode === TAB) {
       const { activeElement } = document;
-      const [firstInteractiveChild] = this.interactiveChildElements;
-      const lastInteractiveChild = (
-        this.interactiveChildElements[this.interactiveChildElements.length - 1]
-      );
+      const [
+        firstInteractiveChild,
+        lastInteractiveChild,
+      ] = getFirstAndLastItems(this.interactiveChildElements);
 
       if (shiftKey && firstInteractiveChild === activeElement) {
         event.preventDefault();

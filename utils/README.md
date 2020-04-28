@@ -88,3 +88,18 @@ list.addEventListener('keydown', (event) => {
   const foundItem = search.getItem(event.keyCode);
 });
 ```
+
+## `getFirstAndLastItems`
+
+```javascript
+import { getFirstAndLastItems } from 'aria-components/utils';
+
+const listItems = document.querySelectorAll('li');
+
+// Pass a NodeList.
+const [firstItem, lastItem] = getFirstAndLastItems(listItems);
+
+// Pass an Array.
+const listItemsArray = Array.from(listItems);
+const [firstItem, lastItem] = getFirstAndLastItems(listItemsArray);
+```

@@ -23,7 +23,7 @@ const list = document.querySelector('.menu');
 const popup = new Popup({ controller, target }); // eslint-disable-line no-unused-vars
 const menu = new Menu({ list }); // eslint-disable-line no-unused-vars
 
-describe('', () => {
+describe('Should return whether a given object is an instance of a class', () => {
   it('Should be a Popup instance',
     () => {
       expect(isInstanceOf(controller.popup, Popup)).toBeTruthy();
