@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Menu submenus can be instantiated as Disclosures by passing `collapse: true` (#27)
 - Uses the `hidden` attribute where `aria-hidden="true"` (#29)
 - Documents additional class properties
+- Adds a helper function for getting the first and last item from an Array or NodeList (#35)
 
 **Removed**
 
