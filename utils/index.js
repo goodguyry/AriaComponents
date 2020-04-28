@@ -6,6 +6,7 @@ import keyCodes from '../src/lib/keyCodes';
 import { tabIndexAllow, tabIndexDeny, rovingTabIndex } from '../src/lib/rovingTabIndex';
 import { getUniqueId, setUniqueId } from '../src/lib/uniqueId';
 import Search from '../src/lib/Search';
+import getFirstAndLastItems from '../src/lib/getFirstAndLastItems';
 
 export {
   interactiveChildren,
@@ -16,4 +17,5 @@ export {
   getUniqueId,
   setUniqueId,
   Search,
+  getFirstAndLastItems,
 };
