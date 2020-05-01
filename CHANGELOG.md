@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Updates NPM dependencies (#25)
 - Corrects issues with the reliability of `destroy` methods (#26 & #31)
+- Updates NPM dependencies (...again) (#36)
 
 **BREAKING CHANGES**
 
