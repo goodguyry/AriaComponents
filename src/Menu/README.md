@@ -94,7 +94,7 @@ Menu.disclosures
 ```
 
 ```javascript
-import { Menu } from 'AriaComponents';
+import { Menu } from 'aria-components';
 
 const list = document.querySelector('.menu');
 

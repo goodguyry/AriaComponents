@@ -113,7 +113,7 @@ MenuBar.menuBarItems
 ```
 
 ```javascript
-import { MenuBar } from 'AriaComponents';
+import { MenuBar } from 'aria-components';
 
 const list = document.querySelector('.menu');
 

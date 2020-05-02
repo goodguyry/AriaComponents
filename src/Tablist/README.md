@@ -142,7 +142,7 @@ Tablist.tabLinks
 ```
 
 ```javascript
-import { Tablist } from 'AriaComponents';
+import { Tablist } from 'aria-components';
 
 const tabs = document.querySelector('.tabs');
 const panels = document.querySelectorAll('.panel');

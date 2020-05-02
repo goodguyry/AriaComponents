@@ -136,7 +136,7 @@ MenuButton.popup
 ```
 
 ```javascript
-import { MenuButton } from 'AriaComponents';
+import { MenuButton } from 'aria-components';
 
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');

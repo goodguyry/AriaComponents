@@ -184,7 +184,7 @@ Dialog.popup
 ```
 
 ```javascript
-import { Dialog } from 'AriaComponents';
+import { Dialog } from 'aria-components';
 
 const controller = document.querySelector('.link');
 const target = document.getElementById('dialog');
