@@ -149,7 +149,7 @@ ListBox.popup
 ```
 
 ```javascript
-import { Listbox } from 'AriaComponents';
+import { Listbox } from 'aria-components';
 
 const controller = document.querySelector('button');
 const target = document.querySelector('ul');

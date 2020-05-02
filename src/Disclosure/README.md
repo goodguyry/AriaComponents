@@ -124,7 +124,7 @@ Disclosure.target
 ```
 
 ```javascript
-import { Disclosure } from 'AriaComponents';
+import { Disclosure } from 'aria-components';
 
 const controller = document.querySelector('button');
 const target = document.querySelector('.wrapper');
