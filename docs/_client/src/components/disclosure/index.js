@@ -16,3 +16,20 @@ if (controllers.length === targets.length) {
     new Disclosure({ controller, target: targets[index] })
   ));
 }
+
+window.addEventListener('load', disclosureHashCheck);
+window.addEventListener('hashchange', disclosureHashCheck);
+
+/**
+ * Check for a hash in the URL and open the corresponding disclosure.
+ */
+function disclosureHashCheck() {
+  const hash = window.location.hash.replace('#', '');
+  const el = document.getElementById(hash);
+
+  if (null !== el && el.disclosure instanceof Disclosure) {
+    const { disclosure } = el;
+    disclosure.open();
+    disclosure.controller.scrollIntoView({ behavior: 'smooth' });
+  }
+}
