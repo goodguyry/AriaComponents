@@ -65,6 +65,7 @@
   },
   "scripts": {
     "test": "jest",
+    "lint": "eslint src/**/*.js",
     "watch": "jest --watchAll",
     "watch:verbose": "jest --watchAll  --verbose",
     "jekyll:build": "JEKYLL_ENV=production jekyll build --source docs --destination docs/_site --config docs/_config.yaml",
