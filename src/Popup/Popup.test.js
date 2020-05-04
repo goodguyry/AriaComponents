@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Popup } from 'root';
 import { events } from '../lib/events';
 

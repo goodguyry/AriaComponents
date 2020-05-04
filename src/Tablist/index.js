@@ -211,7 +211,7 @@ export default class Tablist extends AriaComponent {
     });
 
     // Save the active panel's interactive children.
-    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]);
+    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
 
     // Run {initCallback}
     this.onInit.call(this);
@@ -252,7 +252,7 @@ export default class Tablist extends AriaComponent {
     this.panels[activeIndex].setAttribute('tabindex', '0');
 
     // Allow tabbing to the newly-active panel.
-    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]);
+    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
     tabIndexAllow(this.interactiveChildElements);
 
     // Run {stateChangeCallback}

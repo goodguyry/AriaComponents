@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Popup from 'root/src/Popup';
 import Menu from 'root/src/Menu';
 import isInstanceOf from './isInstanceOf';
