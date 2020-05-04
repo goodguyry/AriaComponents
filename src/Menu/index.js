@@ -192,7 +192,7 @@ export default class Menu extends AriaComponent {
     });
 
     // Save the menu's first and last items.
-    const [ firstItem, lastItem ] = getFirstAndLastItems(this.menuItems);
+    const [firstItem, lastItem] = getFirstAndLastItems(this.menuItems);
     Object.assign(this, { firstItem, lastItem });
 
     // Run {initCallback}

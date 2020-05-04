@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { MenuBar, Popup, Menu } from 'root';
+import { MenuBar, Popup } from 'root';
 import { events } from '../lib/events';
 
 const {

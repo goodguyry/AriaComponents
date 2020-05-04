@@ -227,7 +227,7 @@ describe('Listbox with default configuration', () => {
       listItems.forEach((item) => {
         expect(item.getAttribute('role')).toBeNull();
         expect(item.getAttribute('aria-selected')).toBeNull();
-      })
+      });
 
       expect(controller.listbox).toBeUndefined();
       expect(target.listbox).toBeUndefined();

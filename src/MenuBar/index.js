@@ -185,7 +185,7 @@ export default class MenuBar extends AriaComponent {
     });
 
     // Collect first and last MenuBar items and merge them in as instance properties.
-    const [ firstItem, lastItem ] = getFirstAndLastItems(this.menuBarItems);
+    const [firstItem, lastItem] = getFirstAndLastItems(this.menuBarItems);
     Object.assign(this, { firstItem, lastItem });
 
     /**

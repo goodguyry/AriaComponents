@@ -305,7 +305,10 @@ export default class Disclosure extends AriaComponent {
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggleExpandedState);
-    this.controller.removeEventListener('keydown', this.handleControllerKeydown);
+    this.controller.removeEventListener(
+      'keydown',
+      this.handleControllerKeydown
+    );
     document.body.removeEventListener('click', this.closeOnOutsideClick);
 
     // Reset initial state.

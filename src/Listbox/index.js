@@ -121,7 +121,7 @@ export default class ListBox extends AriaComponent {
     });
 
     // Save first and last option as properties.
-    const [ firstOption, lastOption ] = getFirstAndLastItems(this.options);
+    const [firstOption, lastOption] = getFirstAndLastItems(this.options);
     Object.assign(this, { firstOption, lastOption });
 
     /**
