@@ -36,6 +36,7 @@ vendor
 # Application files #
 ######################
 *.sass-cache
+*.jekyll-cache
 *.sublime-*
 .project
 .settings

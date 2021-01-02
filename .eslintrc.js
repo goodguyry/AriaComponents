@@ -17,6 +17,9 @@ module.exports = {
     node: true,
     jest: true,
   },
+  globals: {
+    siteClassNames: true,
+  },
   settings: {
     'import/resolver': {
       'babel-module': {},
