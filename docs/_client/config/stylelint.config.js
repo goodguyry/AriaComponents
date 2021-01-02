@@ -2,13 +2,17 @@ const path = require('path');
 
 module.exports = {
   rules: {
-    'at-rule-empty-line-before': ['always', {
-      except: [
-        'blockless-after-same-name-blockless',
-        'first-nested',
-      ],
-      ignore: ['after-comment'],
-    }],
+    'at-rule-empty-line-before': [
+      'always',
+      {
+        except: [
+          'blockless-after-blockless',
+          'first-nested',
+        ],
+        ignore: ['after-comment'],
+        ignoreAtRules: ['if', 'else', 'import', 'return'],
+      },
+    ],
     'at-rule-name-case': 'lower',
     'at-rule-name-space-after': 'always',
     'at-rule-semicolon-newline-after': 'always',
