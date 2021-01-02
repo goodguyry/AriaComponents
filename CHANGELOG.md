@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Loosens MenuBar Popups' markup requirements (#45)
 
+**Fixed**
+
+- Updates docs site dependencies (#47)
+
 ## 0.3.0
 
 **Changed**
