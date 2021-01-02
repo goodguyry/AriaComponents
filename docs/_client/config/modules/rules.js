@@ -71,9 +71,11 @@ module.exports = [
       {
         loader: 'sass-loader',
         options: {
-          includePaths: [
-            paths.jekyllSass,
-          ],
+          sassOptions: {
+            includePaths: [
+              paths.jekyllSass,
+            ],
+          },
         },
       },
       {
