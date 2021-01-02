@@ -200,9 +200,11 @@ export default class MenuBar extends AriaComponent {
     });
 
     // Initialize popups for nested lists.
+    // @todo Why not use .map here?
     this.popups = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
 
+      // @todo target doesn't need to be a UL here.
       if (null !== target && 'UL' === target.nodeName) {
         const popup = new Popup({
           controller,
@@ -212,6 +214,7 @@ export default class MenuBar extends AriaComponent {
         });
 
         // Initialize submenu Menus.
+        // @todo If target isn't a UL, find the UL in target and use it as the sublist,
         const subList = new Menu({ list: target });
         target.addEventListener('keydown', this.handleMenuItemKeydown);
 
