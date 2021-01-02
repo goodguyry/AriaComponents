@@ -201,11 +201,11 @@ export default class MenuBar extends AriaComponent {
 
     // Initialize popups for nested lists.
     // @todo Why not use .map here?
+    this.submenus = [];
     this.popups = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
 
-      // @todo target doesn't need to be a UL here.
-      if (null !== target && 'UL' === target.nodeName) {
+      if (null !== target) {
         const popup = new Popup({
           controller,
           target,
@@ -213,13 +213,20 @@ export default class MenuBar extends AriaComponent {
           type: 'menu',
         });
 
-        // Initialize submenu Menus.
-        // @todo If target isn't a UL, find the UL in target and use it as the sublist,
-        const subList = new Menu({ list: target });
-        target.addEventListener('keydown', this.handleMenuItemKeydown);
+        // If target isn't a UL, find the UL in target and use it.
+        const list = ('UL' === target.nodeName)
+          ? target
+          : target.querySelector('ul');
 
-        // Save the list's previous sibling.
-        subList.previousSibling = controller;
+        if (null !== list) {
+          // Initialize submenu Menus.
+          const subList = new Menu({ list });
+          target.addEventListener('keydown', this.handleMenuItemKeydown);
+
+          // Save the list's previous sibling.
+          subList.previousSibling = controller;
+          this.submenus.push(subList);
+        }
 
         return [...acc, popup];
       }
@@ -429,14 +436,16 @@ export default class MenuBar extends AriaComponent {
     // Remove tabindex attribute.
     tabIndexAllow(this.menuBarItems);
 
-    // Destroy nested components.
+    // Destroy popups.
     this.popups.forEach((popup) => {
-      if (isInstanceOf(popup.target.menu, Menu)) {
-        popup.target.menu.destroy();
-      }
       popup.target.removeEventListener('keydown', this.handleMenuItemKeydown);
 
       popup.destroy();
+    });
+
+    // Destroy submenus.
+    this.submenus.forEach((submenu) => {
+      submenu.destroy();
     });
 
     // Run {destroyCallback}
