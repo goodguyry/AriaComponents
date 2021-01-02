@@ -200,38 +200,46 @@ export default class MenuBar extends AriaComponent {
     });
 
     // Initialize popups for nested lists.
-    this.submenus = [];
-    this.popups = this.menuBarItems.reduce((acc, controller) => {
+    const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
 
-      if (null !== target) {
-        const popup = new Popup({
-          controller,
-          target,
-          onInit: this.onPopupInit,
-          type: 'menu',
-        });
-
-        // If target isn't a UL, find the UL in target and use it.
-        const list = ('UL' === target.nodeName)
-          ? target
-          : target.querySelector('ul');
-
-        if (null !== list) {
-          // Initialize submenu Menus.
-          const subList = new Menu({ list });
-          target.addEventListener('keydown', this.handleMenuItemKeydown);
-
-          // Save the list's previous sibling.
-          subList.previousSibling = controller;
-          this.submenus.push(subList);
-        }
-
-        return [...acc, popup];
+      // Bail if there's no target.
+      if (null === target) {
+        return acc;
       }
 
+      const popup = new Popup({
+        controller,
+        target,
+        onInit: this.onPopupInit,
+        type: 'menu',
+      });
+
+      acc.popups.push(popup);
+
+      // If target isn't a UL, find the UL in target and use it.
+      const list = ('UL' === target.nodeName)
+        ? target
+        : target.querySelector('ul');
+
+      // Bail if there's no list.
+      if (null === list) {
+        return acc;
+      }
+
+      // Initialize submenu Menus.
+      const subMenu = new Menu({ list });
+      target.addEventListener('keydown', this.handleMenuItemKeydown);
+
+      // Save the list's previous sibling.
+      subMenu.previousSibling = controller;
+      acc.subMenus.push(subMenu);
+
       return acc;
-    }, []);
+    }, { popups: [], subMenus: [] });
+
+    // Save components as instance properties.
+    Object.assign(this, { popups, subMenus });
 
     /**
      * Set initial state.
@@ -442,8 +450,8 @@ export default class MenuBar extends AriaComponent {
       popup.destroy();
     });
 
-    // Destroy submenus.
-    this.submenus.forEach((submenu) => {
+    // Destroy subMenus.
+    this.subMenus.forEach((submenu) => {
       submenu.destroy();
     });
 
