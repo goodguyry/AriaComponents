@@ -1,6 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.1
+
+**Changed**
+
+- Loosens MenuBar Popups' markup requirements (#45)
+
 ## 0.3.0
 
 **Changed**
