@@ -200,7 +200,6 @@ export default class MenuBar extends AriaComponent {
     });
 
     // Initialize popups for nested lists.
-    // @todo Why not use .map here?
     this.submenus = [];
     this.popups = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
