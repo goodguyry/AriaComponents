@@ -87,10 +87,13 @@ MenuBar.menuBarItems
 
 ## Additional Notes
 
-If a menu item has a sibling, that sibling will be turned into a "submenu popup".
-If that element is not a UL element, the script will search the popup target with
-`Element.querySelector('ul')` and use that as the `list` passed to the `Menu` 
-component.
+The first anchor or button element found in each item will be used as the 
+`role="menuitem"`.
+
+If a `menuitem` has a `nextElementSibling`, that element will be turned into a 
+"submenu popup". If a submenu popup's element is not a UL element, the script 
+will search the popup target with `Element.querySelector('ul')` and use that as 
+the `list` passed to the `Menu` component.
 
 ## Example
 
