@@ -15,7 +15,7 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
-        <a class="first-item" href="example.com">Fruit</a>
+        <button class="first-item">Fruit</button>
         <ul class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
@@ -24,6 +24,7 @@ const menuMarkup = `
       </li>
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
+        <svg><use href="my-icon"></use></svg>
         <a class="third-item" href="example.com">Vegetables</a>
         <ul class="sublist2">
           <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
