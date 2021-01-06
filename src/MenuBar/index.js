@@ -144,9 +144,18 @@ export default class MenuBar extends AriaComponent {
      * @type {array}
      */
     this.menuBarItems = this.menuBarChildren.reduce((acc, item) => {
-      const itemLink = item.firstElementChild;
+      const [firstChild, ...theRest] = Array.from(item.children);
 
-      if (null !== itemLink && 'A' === itemLink.nodeName) {
+      // Try to use the first child of the menu item.
+      let itemLink = firstChild;
+
+      // If the first child isn't a link or button, find the first instance of either.
+      if (null === itemLink || ! itemLink.matches('a,button')) {
+        [itemLink] = Array.from(theRest)
+          .filter((child) => child.matches('a,button'));
+      }
+
+      if (undefined !== itemLink) {
         return [...acc, itemLink];
       }
 
@@ -155,6 +164,7 @@ export default class MenuBar extends AriaComponent {
 
     /**
      * Initialize search.
+     *
      * @type {Search}
      */
     this.search = new Search(this.menuBarItems);
