@@ -35,6 +35,7 @@ const menuMarkup = `
       </li>
       <li><a class="fourth-item" href="example.com">Pie</a></li>
       <li><a class="last-item" href="example.com">Ice Cream</a></li>
+      <li><a class="exclude" href="example.com">Something Gross</a></li>
     </ul>
   </nav>
 `;
@@ -50,6 +51,7 @@ const domElements = {
   listThirdItem: document.querySelector('.third-item'),
   listFourthItem: document.querySelector('.fourth-item'),
   listLastItem: document.querySelector('.last-item'),
+  excludedItem: document.querySelector('.exclude'),
 
   sublistOne: document.querySelector('.sublist1'),
   sublistOneFirstItem: document.querySelector('.sublist1-first-item'),
@@ -70,6 +72,7 @@ const { list } = domElements;
 
 let menu = new Menu({
   list,
+  itemMatches: ':not(.exclude)',
   onInit,
   onDestroy,
 });
@@ -79,7 +82,10 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(menu).toBeInstanceOf(Menu);
     expect(domElements.list.menu).toBeInstanceOf(Menu);
 
+    expect(domElements.list.menu.itemMatches).toEqual(':not(.exclude)');
+
     expect(menu.firstItem.className).toEqual('first-item');
+    expect(menu.lastItem.className).not.toEqual('exclude');
 
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
@@ -202,6 +208,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
   beforeAll(() => {
     menu = new Menu({
       list,
+      itemMatches: ':not(.exclude)',
       collapse: true,
     });
   });

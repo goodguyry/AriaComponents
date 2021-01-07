@@ -68,6 +68,16 @@ export default class Menu extends AriaComponent {
       collapse: false,
 
       /**
+       * Selector used to validate menu items.
+       *
+       * This can also be used to exclude items that would otherwise be given a
+       * "menuitem" role; e.g., `:not(.hidden)`.
+       *
+       * @type {string}
+       */
+      itemMatches: '*',
+
+      /**
        * Callback to run after the component initializes.
        *
        * @callback initCallback
@@ -135,7 +145,7 @@ export default class Menu extends AriaComponent {
           .filter((child) => child.matches('a,button'));
       }
 
-      if (undefined !== itemLink) {
+      if (undefined !== itemLink && itemLink.matches(this.itemMatches)) {
         return [...acc, itemLink];
       }
 

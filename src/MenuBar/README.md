@@ -16,6 +16,16 @@ const config = {
   list: null,
 
   /**
+   * Selector used to validate menu items.
+   * 
+   * This can also be used to exclude items that would otherwise be given a
+   * "menuitem" role; e.g., `:not(.hidden)`.
+   *
+   * @type {string}
+   */
+  itemMatches: '*',
+
+  /**
    * Callback to run after the component initializes.
    * 
    * @callback initCallback

@@ -74,6 +74,16 @@ export default class MenuBar extends AriaComponent {
       list: null,
 
       /**
+       * Selector used to validate menu items.
+       *
+       * This can also be used to exclude items that would otherwise be given a
+       * "menuitem" role; e.g., `:not(.hidden)`.
+       *
+       * @type {string}
+       */
+      itemMatches: '*',
+
+      /**
        * Callback to run after the component initializes.
        *
        * @callback initCallback
@@ -155,7 +165,7 @@ export default class MenuBar extends AriaComponent {
           .filter((child) => child.matches('a,button'));
       }
 
-      if (undefined !== itemLink) {
+      if (undefined !== itemLink && itemLink.matches(this.itemMatches)) {
         return [...acc, itemLink];
       }
 
@@ -238,7 +248,7 @@ export default class MenuBar extends AriaComponent {
       }
 
       // Initialize submenu Menus.
-      const subMenu = new Menu({ list });
+      const subMenu = new Menu({ list, itemMatches: this.itemMatches });
       target.addEventListener('keydown', this.handleMenuItemKeydown);
 
       // Save the list's previous sibling.
