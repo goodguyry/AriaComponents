@@ -3,9 +3,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.3.2
 
-**Fixed**
+**Changed**
 
-- Loosens MenuBar menuitems' markup requirements (#48)
+- Loosens MenuBar and Menu components' menuitems' markup requirements (#48, 3385f2e)
+
+**Added**
+
+- Adds support for validating Menu & MenuBar menu items (#49)
 
 ## 0.3.1
 

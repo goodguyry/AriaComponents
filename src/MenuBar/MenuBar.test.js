@@ -38,6 +38,7 @@ const menubarMarkup = `
       </li>
       <li><a class="fourth-item" href="example.com">Pie</a></li>
       <li><a class="last-item" href="example.com">Ice Cream</a></li>
+      <li><a class="exclude" href="example.com">Something Gross</a></li>
     </ul>
   </nav>
 `;
@@ -75,6 +76,7 @@ const { list } = domElements;
 
 const menuBar = new MenuBar({
   list,
+  itemMatches: ':not(.exclude)',
   onInit,
   onStateChange,
   onDestroy,
@@ -85,6 +87,8 @@ describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menuBar).toBeInstanceOf(MenuBar);
     expect(domElements.list.menubar).toBeInstanceOf(MenuBar);
+    expect(domElements.list.menubar.itemMatches).toEqual(':not(.exclude)');
+
     expect(onInit).toHaveBeenCalled();
 
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);

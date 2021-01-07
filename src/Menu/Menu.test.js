@@ -15,7 +15,7 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
-        <a class="first-item" href="example.com">Fruit</a>
+        <button class="first-item">Fruit</button>
         <ul class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
@@ -24,6 +24,7 @@ const menuMarkup = `
       </li>
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
+        <svg><use href="my-icon"></use></svg>
         <a class="third-item" href="example.com">Vegetables</a>
         <ul class="sublist2">
           <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
@@ -34,6 +35,7 @@ const menuMarkup = `
       </li>
       <li><a class="fourth-item" href="example.com">Pie</a></li>
       <li><a class="last-item" href="example.com">Ice Cream</a></li>
+      <li><a class="exclude" href="example.com">Something Gross</a></li>
     </ul>
   </nav>
 `;
@@ -49,6 +51,7 @@ const domElements = {
   listThirdItem: document.querySelector('.third-item'),
   listFourthItem: document.querySelector('.fourth-item'),
   listLastItem: document.querySelector('.last-item'),
+  excludedItem: document.querySelector('.exclude'),
 
   sublistOne: document.querySelector('.sublist1'),
   sublistOneFirstItem: document.querySelector('.sublist1-first-item'),
@@ -69,6 +72,7 @@ const { list } = domElements;
 
 let menu = new Menu({
   list,
+  itemMatches: ':not(.exclude)',
   onInit,
   onDestroy,
 });
@@ -78,7 +82,10 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(menu).toBeInstanceOf(Menu);
     expect(domElements.list.menu).toBeInstanceOf(Menu);
 
+    expect(domElements.list.menu.itemMatches).toEqual(':not(.exclude)');
+
     expect(menu.firstItem.className).toEqual('first-item');
+    expect(menu.lastItem.className).not.toEqual('exclude');
 
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
@@ -201,6 +208,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
   beforeAll(() => {
     menu = new Menu({
       list,
+      itemMatches: ':not(.exclude)',
       collapse: true,
     });
   });
