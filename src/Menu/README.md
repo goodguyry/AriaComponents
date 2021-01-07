@@ -54,6 +54,13 @@ const config = {
 ```javascript
 class Menu extends AriaComponent {
   /**
+   * Set menu items.
+   *
+   * Use this if your menu is dynamically updated.
+   */
+  setMenuItems();
+
+  /**
    * Destroy the Menu and any submenus.
    */
   destroy();

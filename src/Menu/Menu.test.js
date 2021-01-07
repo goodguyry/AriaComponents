@@ -70,9 +70,10 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
-let menu = new Menu({
+const menu = new Menu({
   list,
   itemMatches: ':not(.exclude)',
+  collapse: true,
   onInit,
   onDestroy,
 });
@@ -89,6 +90,11 @@ describe('Menu collects DOM elements and adds attributes', () => {
 
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
+
+    // Submenus should be Disclosures.
+    expect(domElements.listFirstItem.disclosure.getState().expanded).toBe(false);
+    expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
+    expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
 
     expect(onInit).toHaveBeenCalled();
   });
@@ -133,6 +139,33 @@ describe('MenuItem correctly responds to events', () => {
       expect(document.activeElement).toEqual(domElements.listLastItem);
     });
 
+  it('Should update interactive child elements',
+    () => {
+      // Move the second item to the last positon (before the excluded item).
+      domElements.list.insertBefore(
+        domElements.listSecondItem.parentElement,
+        domElements.list.lastElementChild
+      );
+
+      menu.setMenuItems();
+
+      domElements.listFirstItem.focus();
+      domElements.listFirstItem.dispatchEvent(keydownUp);
+      expect(document.activeElement).toEqual(domElements.listSecondItem);
+
+      // Move it back before someone notices!
+      domElements.list.insertBefore(
+        domElements.listSecondItem.parentElement,
+        domElements.list.firstElementChild.nextElementSibling
+      );
+
+      menu.setMenuItems();
+
+      domElements.listSecondItem.focus();
+      domElements.listSecondItem.dispatchEvent(keydownUp);
+      expect(document.activeElement).toEqual(domElements.listFirstItem);
+    });
+
   it('Should move to the first list item with home key',
     () => {
       domElements.listThirdItem.focus();
@@ -158,6 +191,7 @@ describe('MenuItem correctly responds to events', () => {
     () => {
       domElements.listThirdItem.focus();
       domElements.listThirdItem.dispatchEvent(keydownRight);
+      expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(true);
       expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
     });
 
@@ -165,6 +199,7 @@ describe('MenuItem correctly responds to events', () => {
     () => {
       domElements.sublistTwoSecondItem.focus();
       domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
+      expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(false);
       expect(document.activeElement).toEqual(domElements.listThirdItem);
     });
 
@@ -200,68 +235,7 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistOne.getAttribute('role')).toBeNull();
     expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
 
-    expect(onDestroy).toHaveBeenCalled();
-  });
-});
-
-describe('Menu instatiates submenus as Disclosures', () => {
-  beforeAll(() => {
-    menu = new Menu({
-      list,
-      itemMatches: ':not(.exclude)',
-      collapse: true,
-    });
-  });
-
-  it('Should instantiate the Menu class with correct instance values', () => {
-    expect(menu).toBeInstanceOf(Menu);
-    expect(domElements.list.menu).toBeInstanceOf(Menu);
-
-    expect(menu.firstItem.className).toEqual('first-item');
-
-    expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
-    expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
-
-    expect(domElements.listFirstItem.disclosure.getState().expanded).toBe(false);
-
-    expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
-    expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
-  });
-
-  describe('MenuItem Disclosure correctly responds to events', () => {
-    it('Should expand the Disclosure and move to the first sublist item with right arrow key',
-      () => {
-        domElements.listThirdItem.focus();
-        domElements.listThirdItem.dispatchEvent(keydownRight);
-        expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(true);
-        expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
-      });
-
-    it('Should move to the next sibling list item with down arrow key',
-      () => {
-        domElements.sublistTwoFirstItem.dispatchEvent(keydownDown);
-        expect(document.activeElement).toEqual(domElements.sublistTwoSecondItem);
-      });
-
-    it('Should collapse the Disclosure and move to the parent list with left arrow key',
-      () => {
-        domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
-        expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(false);
-        expect(document.activeElement).toEqual(domElements.listThirdItem);
-      });
-
-    it('Should move to the next sibling list item with down arrow key',
-      () => {
-        domElements.listThirdItem.dispatchEvent(keydownDown);
-        expect(document.activeElement).toEqual(domElements.listFourthItem);
-      });
-  });
-
-  it('Should remove all Menu Disclosure DOM attributes when destroyed', () => {
-    menu.destroy();
-
-    expect(list.getAttribute('role')).toBeNull();
-
+    // Should remove all Menu Disclosure DOM attributes when destroyed
     expect(domElements.listFirstItem.getAttribute('aria-expanded')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('aria-controls')).toBeNull();
     expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
@@ -278,7 +252,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(domElements.listFirstItem.disclosure).toBeUndefined();
     expect(domElements.sublistOne.disclosure).toBeUndefined();
 
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(menuMarkup);
+    expect(onDestroy).toHaveBeenCalled();
   });
 });

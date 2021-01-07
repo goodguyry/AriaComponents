@@ -96,6 +96,7 @@ export default class Menu extends AriaComponent {
     Object.assign(this, options, config);
 
     // Bind class methods
+    this.setMenuItems = this.setMenuItems.bind(this);
     this.handleListKeydown = this.handleListKeydown.bind(this);
     this.destroy = this.destroy.bind(this);
 
@@ -108,32 +109,20 @@ export default class Menu extends AriaComponent {
   /**
    * Collect menu links and recursively instantiate sublist menu items.
    */
-  init() {
-    /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
-     */
-    super.setSelfReference([this.list]);
-
-    /*
-     * Add the 'menu' role to signify a widget that offers a list of choices to
-     * the user, such as a set of actions or functions.
-     */
-    this.list.setAttribute('role', 'menu');
-
+  setMenuItems() {
     /**
-     * The list's child elements.
+     * The submenu Disclosures.
      *
      * @type {array}
      */
-    this.listItems = Array.prototype.slice.call(this.list.children);
+    this.disclosures = [];
 
     /**
      * Collected menu links.
      *
      * @type {array}
      */
-    this.menuItems = this.listItems.reduce((acc, item) => {
+    this.menuItems = Array.from(this.list.children).reduce((acc, item) => {
       const [firstChild, ...theRest] = Array.from(item.children);
 
       // Try to use the first child of the menu item.
@@ -158,25 +147,6 @@ export default class Menu extends AriaComponent {
      */
     this.search = new Search(this.menuItems);
 
-    /**
-     * The number of menu items.
-     *
-     * @type {number}
-     */
-    this.menuItemsLength = this.menuItems.length;
-
-    /**
-     * Listen for keydown events on the menu.
-     */
-    this.list.addEventListener('keydown', this.handleListKeydown);
-
-    /**
-     * The submenu Disclosures.
-     *
-     * @type {array}
-     */
-    this.disclosures = [];
-
     /*
      * Set menu link attributes and instantiate submenus.
      */
@@ -188,7 +158,7 @@ export default class Menu extends AriaComponent {
       link.setAttribute('role', 'menuitem');
 
       // Add size and position attributes.
-      link.setAttribute('aria-setsize', this.menuItemsLength);
+      link.setAttribute('aria-setsize', this.menuItems.length);
       link.setAttribute('aria-posinset', index + 1);
 
       const siblingList = this.constructor.nextElementIsUl(link);
@@ -213,6 +183,31 @@ export default class Menu extends AriaComponent {
     // Save the menu's first and last items.
     const [firstItem, lastItem] = getFirstAndLastItems(this.menuItems);
     Object.assign(this, { firstItem, lastItem });
+  }
+
+  /**
+   * Initialize the Menu.
+   */
+  init() {
+    /*
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
+     */
+    super.setSelfReference([this.list]);
+
+    /*
+     * Add the 'menu' role to signify a widget that offers a list of choices to
+     * the user, such as a set of actions or functions.
+     */
+    this.list.setAttribute('role', 'menu');
+
+    // Set menuitem roles and attributes, including any submenu Disclosures.
+    this.setMenuItems();
+
+    /**
+     * Listen for keydown events on the menu.
+     */
+    this.list.addEventListener('keydown', this.handleListKeydown);
 
     // Run {initCallback}
     this.onInit.call(this);
