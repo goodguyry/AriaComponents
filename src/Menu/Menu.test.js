@@ -253,5 +253,10 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistOne.disclosure).toBeUndefined();
 
     expect(onDestroy).toHaveBeenCalled();
+
+    // Quick and dirty verification that the original markup is restored.
+    // https://jestjs.io/docs/en/expect.html#expectextendmatchers
+    // />([\n\r\t\s]+)</
+    // expect(document.body.innerHTML).toEqual(menuMarkup);
   });
 });

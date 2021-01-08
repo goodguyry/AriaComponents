@@ -116,6 +116,7 @@ export default class MenuBar extends AriaComponent {
     Object.assign(this, options, config);
 
     // Bind class methods.
+    this.setMenuBarItems = this.setMenuBarItems.bind(this);
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
@@ -131,29 +132,13 @@ export default class MenuBar extends AriaComponent {
   /**
    * Collect top-level menu items and set up event handlers.
    */
-  init() {
-    /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
-     */
-    super.setSelfReference([this.list]);
-
-    // Set the menu role.
-    this.list.setAttribute('role', 'menubar');
-
-    /**
-     * The menubar's child elements.
-     *
-     * @type {array}
-     */
-    this.menuBarChildren = Array.prototype.slice.call(this.list.children);
-
+  setMenuBarItems() {
     /**
      * Collected menubar links.
      *
      * @type {array}
      */
-    this.menuBarItems = this.menuBarChildren.reduce((acc, item) => {
+    this.menuBarItems = Array.from(this.list.children).reduce((acc, item) => {
       const [firstChild, ...theRest] = Array.from(item.children);
 
       // Try to use the first child of the menu item.
@@ -179,13 +164,6 @@ export default class MenuBar extends AriaComponent {
      */
     this.search = new Search(this.menuBarItems);
 
-    /**
-     * The number of menubar items.
-     *
-     * @type {number}
-     */
-    this.menuLength = this.menuBarItems.length;
-
     /*
      * Set menubar link attributes.
      */
@@ -194,7 +172,7 @@ export default class MenuBar extends AriaComponent {
       link.setAttribute('role', 'menuitem');
 
       // Add size and position attributes.
-      link.setAttribute('aria-setsize', this.menuLength);
+      link.setAttribute('aria-setsize', this.menuBarItems.length);
       link.setAttribute('aria-posinset', index + 1);
 
       // Set menubar item role.
@@ -207,6 +185,23 @@ export default class MenuBar extends AriaComponent {
     // Collect first and last MenuBar items and merge them in as instance properties.
     const [firstItem, lastItem] = getFirstAndLastItems(this.menuBarItems);
     Object.assign(this, { firstItem, lastItem });
+  }
+
+  /**
+   * Initialize the Menu.
+   */
+  init() {
+    /*
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
+     */
+    super.setSelfReference([this.list]);
+
+    // Set the menu role.
+    this.list.setAttribute('role', 'menubar');
+
+    // Set menuitem roles and attributes.
+    this.setMenuBarItems();
 
     /**
      * A mouse 'click' event.
