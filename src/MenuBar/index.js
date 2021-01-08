@@ -185,6 +185,16 @@ export default class MenuBar extends AriaComponent {
     // Collect first and last MenuBar items and merge them in as instance properties.
     const [firstItem, lastItem] = getFirstAndLastItems(this.menuBarItems);
     Object.assign(this, { firstItem, lastItem });
+
+    /*
+     * Set up tabindex.
+     * The first item, by default, is "allowed", but if any of the menu items is
+     * active, it should be allowed.
+     */
+    const allowedItem = this.menuBarItems.includes(document.activeElement)
+      ? document.activeElement
+      : this.firstItem;
+    rovingTabIndex(this.menuBarItems, allowedItem);
   }
 
   /**
@@ -266,9 +276,6 @@ export default class MenuBar extends AriaComponent {
       popup: this.constructor.getPopupFromMenubarItem(this.firstItem),
       expanded: false,
     };
-
-    // Set up initial tabindex.
-    rovingTabIndex(this.menuBarItems, this.firstItem);
 
     // Run {initCallback}
     this.onInit.call(this);

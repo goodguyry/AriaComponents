@@ -99,7 +99,9 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.list.getAttribute('role')).toEqual('menubar');
 
     expect(domElements.listFirstItem.getAttribute('aria-setsize')).toEqual('5');
+    expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
     expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
+    expect(domElements.listThirdItem.getAttribute('tabindex')).toEqual('-1');
 
     expect(menuBar.getState().menubarItem).toEqual(domElements.listFirstItem);
 
@@ -165,17 +167,33 @@ describe('Menu correctly responds to events', () => {
 
   it('Should update interactive child elements',
     () => {
+      // Set state before setting menu items to test rovingTabindex.
+      menuBar.setState({ menubarItem: domElements.listSecondItem });
+      menuBar.setMenuBarItems();
+
+      expect(document.activeElement).toEqual(domElements.listSecondItem);
+      expect(domElements.listSecondItem.getAttribute('tabindex')).toBeNull();
+      expect(domElements.listFirstItem.getAttribute('tabindex')).toEqual('-1');
+
       // Move the second item to the last positon (before the excluded item).
       domElements.list.insertBefore(
         domElements.listSecondItem.parentElement,
         domElements.list.lastElementChild
       );
 
+      // Set state before setting menu items to test rovingTabindex.
+      menuBar.setState({ menubarItem: domElements.listFirstItem });
       menuBar.setMenuBarItems();
 
-      domElements.listFirstItem.focus();
+      expect(document.activeElement).toEqual(domElements.listFirstItem);
+      expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
+      expect(domElements.listSecondItem.getAttribute('tabindex')).toEqual('-1');
+
       domElements.listFirstItem.dispatchEvent(keydownLeft);
+      // left from listFirstItem moves to listSecondItem because it's now the last item.
       expect(document.activeElement).toEqual(domElements.listSecondItem);
+      expect(domElements.listFirstItem.getAttribute('tabindex')).toEqual('-1');
+      expect(domElements.listSecondItem.getAttribute('tabindex')).toBeNull();
 
       // Move it back before someone notices!
       domElements.list.insertBefore(
@@ -183,11 +201,14 @@ describe('Menu correctly responds to events', () => {
         domElements.list.firstElementChild.nextElementSibling
       );
 
+      // Set state before setting menu items to test rovingTabindex.
+      menuBar.setState({ menubarItem: domElements.listSecondItem });
       menuBar.setMenuBarItems();
 
-      domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
+      expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
+      expect(domElements.listSecondItem.getAttribute('tabindex')).toEqual('-1');
     });
 
   it('Should move focus to the first popup child with down arrow from Menu bar',
