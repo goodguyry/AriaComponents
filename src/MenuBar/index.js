@@ -121,6 +121,7 @@ export default class MenuBar extends AriaComponent {
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
@@ -237,6 +238,7 @@ export default class MenuBar extends AriaComponent {
         controller,
         target,
         onInit: this.onPopupInit,
+        onStateChange: this.onPopupStateChange,
         type: 'menu',
       });
 
@@ -296,6 +298,15 @@ export default class MenuBar extends AriaComponent {
 
     // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
+  }
+
+  /**
+   * Track Popup state changes.
+   *
+   * @param  {boolean} options.expanded The Popup state,
+   */
+  onPopupStateChange({ expanded }) {
+    this.setState({ expanded });
   }
 
   /**
