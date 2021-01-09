@@ -345,7 +345,7 @@ export default class MenuBar extends AriaComponent {
           event.preventDefault();
 
           // Close the popup.
-          if (popup) {
+          if (false !== popup) {
             popup.hide();
           }
 
@@ -363,7 +363,7 @@ export default class MenuBar extends AriaComponent {
       case SPACE:
       case RETURN:
       case DOWN: {
-        if (popup && event.target === popup.controller) {
+        if (false !== popup && event.target === popup.controller) {
           event.stopPropagation();
           event.preventDefault();
 
