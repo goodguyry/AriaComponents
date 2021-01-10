@@ -84,6 +84,7 @@ export default class Popup extends AriaComponent {
 
     // Bind class methods.
     this.init = this.init.bind(this);
+    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
@@ -112,24 +113,26 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Set up the component's DOM attributes and event listeners.
+   * Collect and prepare the target element's interactive child elements.
    */
-  init() {
-    /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
-     */
-    super.setSelfReference([this.controller, this.target]);
-
+  setInteractiveChildren() {
+    const { expanded } = this.state;
     /**
-     * Collect the target element's interactive child elements.
+     * The target element's interactive child elements.
      *
      * @type {array}
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    // Focusable content should initially have tabindex='-1'.
-    tabIndexDeny(this.interactiveChildElements);
+    /*
+     * Allow/deny tabbing to interactive children.
+     * Focusable content should have tabindex='-1' unless the popup is expanded.
+     */
+    if (expanded) {
+      tabIndexAllow(this.interactiveChildElements);
+    } else {
+      tabIndexDeny(this.interactiveChildElements);
+    }
 
     /*
      * Collect first and last interactive child elements from target and merge
@@ -143,6 +146,20 @@ export default class Popup extends AriaComponent {
 
       Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }
+  }
+
+  /**
+   * Set up the component's DOM attributes and event listeners.
+   */
+  init() {
+    /*
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
+     */
+    super.setSelfReference([this.controller, this.target]);
+
+    // Set up interactive child elements.
+    this.setInteractiveChildren();
 
     // Add target attribute.
     setUniqueId(this.target);

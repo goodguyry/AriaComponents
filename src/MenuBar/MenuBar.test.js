@@ -177,10 +177,7 @@ describe('Menu correctly responds to events', () => {
       expect(domElements.listFirstItem.getAttribute('tabindex')).toEqual('-1');
 
       // Move the second item to the last positon (before the excluded item).
-      domElements.list.insertBefore(
-        domElements.listSecondItem.parentElement,
-        domElements.list.lastElementChild
-      );
+      domElements.list.append(domElements.listSecondItem.parentElement);
 
       // Set state before setting menu items to test rovingTabindex.
       menuBar.setState({ menubarItem: domElements.listFirstItem });

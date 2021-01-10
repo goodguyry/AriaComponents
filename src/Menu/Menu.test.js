@@ -142,10 +142,7 @@ describe('MenuItem correctly responds to events', () => {
   it('Should update interactive child elements',
     () => {
       // Move the second item to the last positon (before the excluded item).
-      domElements.list.insertBefore(
-        domElements.listSecondItem.parentElement,
-        domElements.list.lastElementChild
-      );
+      domElements.list.append(domElements.listSecondItem.parentElement);
 
       menu.setMenuItems();
 
