@@ -68,6 +68,11 @@ class ListBox extends AriaComponent {
   getState();
 
   /**
+   * Collect and configure ListBox options.
+   */
+  setListBoxOptions();
+
+  /**
    * Destroy the Listbox and Popup.
    */
   destroy();

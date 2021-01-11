@@ -95,6 +95,11 @@ class Dialog extends AriaComponent {
   getState();
 
   /**
+   * Collect the Dialog's interactive child elements.
+   */
+  setInteractiveChildren();
+
+  /**
    * Destroy the Dialog and Popup.
    */
   destroy();

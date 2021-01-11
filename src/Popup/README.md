@@ -77,6 +77,11 @@ class Popup extends AriaComonents {
   getState();
 
   /**
+   * Collect and prepare the target element's interactive child elements.
+   */
+  setInteractiveChildren();
+
+  /**
    * Remove all attributes and event listeners added by this class.
    */
   destroy();

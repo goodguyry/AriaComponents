@@ -69,6 +69,16 @@ class MenuBar extends AriaComponent {
   getState();
 
   /**
+   * Collect top-level menu items and set up event handlers.
+   */
+  setMenuBarItems();
+
+  /**
+   * Initialize Menus and Popups for nested lists.
+   */
+  setMenuBarSubMenuItems();
+
+  /**
    * Destroy the MenuBar and any submenu Popups.
    */
   destroy();
