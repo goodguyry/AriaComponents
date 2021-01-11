@@ -73,6 +73,7 @@ export default class ListBox extends AriaComponent {
     Object.assign(this, options, config);
 
     // Bind class methods.
+    this.setListBoxOptions = this.setListBoxOptions.bind(this);
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
     this.handleControllerKeyup = this.handleControllerKeyup.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
@@ -89,27 +90,15 @@ export default class ListBox extends AriaComponent {
   }
 
   /**
-   * Set up the component's DOM attributes and event listeners.
+   * Collect and configure ListBox options.
    */
-  init() {
-    /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
-     */
-    super.setSelfReference([this.controller, this.target]);
-
+  setListBoxOptions() {
     /**
      * The target list items.
      *
      * @type {array}
      */
-    this.options = Array.prototype.slice.call(this.target.children, 0);
-
-    /**
-     * Initialize search.
-     * @type {Search}
-     */
-    this.search = new Search(this.options);
+    this.options = Array.from(this.target.children);
 
     /*
      * Set the `option` role for each list itme and ensure each has a unique ID.
@@ -123,6 +112,27 @@ export default class ListBox extends AriaComponent {
     // Save first and last option as properties.
     const [firstOption, lastOption] = getFirstAndLastItems(this.options);
     Object.assign(this, { firstOption, lastOption });
+
+    /**
+     * Initialize search.
+     *
+     * @type {Search}
+     */
+    this.search = new Search(this.options);
+  }
+
+  /**
+   * Set up the component's DOM attributes and event listeners.
+   */
+  init() {
+    /*
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
+     */
+    super.setSelfReference([this.controller, this.target]);
+
+    // Set up initial ListBox options.
+    this.setListBoxOptions();
 
     /**
      * The initial default state.
