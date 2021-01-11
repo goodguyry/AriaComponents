@@ -105,6 +105,7 @@ export default class Dialog extends AriaComponent {
     }
 
     // Bind class methods
+    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
@@ -125,6 +126,13 @@ export default class Dialog extends AriaComponent {
     ) {
       this.init();
     }
+  }
+
+  /**
+   * Collect the Dialog's interactive child elements.
+   */
+  setInteractiveChildren() {
+    this.interactiveChildElements = interactiveChildren(this.target);
   }
 
   /**
@@ -150,11 +158,11 @@ export default class Dialog extends AriaComponent {
     });
 
     /*
-     * Collect the Dialog's interactive child elements. This is an initial pass
-     * to ensure values exists, but the interactive children will be collected
-     * each time the dialog opens, in case the dialog's contents change.
+     * This is an initial pass to ensure values exists, but the interactive
+     * children will be collected each time the dialog opens, in case the
+     * dialog's contents change.
      */
-    this.interactiveChildElements = interactiveChildren(this.target);
+    this.setInteractiveChildren();
 
     // Add event listeners.
     this.close.addEventListener('click', this.hide);
@@ -197,7 +205,7 @@ export default class Dialog extends AriaComponent {
   stateWasUpdated() {
     const { expanded } = this.state;
 
-    this.interactiveChildElements = interactiveChildren(this.target);
+    this.setInteractiveChildren();
 
     if (expanded) {
       this.content.setAttribute('aria-hidden', 'true');
