@@ -6,6 +6,7 @@ const {
   click,
   keydownReturn,
   keydownSpace,
+  keydownTab,
 } = events;
 
 const disclosureMarkup = `
@@ -17,6 +18,7 @@ const disclosureMarkup = `
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </dd>
   </dl>
+  <a class="outside" href="example.com">Link after DL</a>
 `;
 
 // Set up our document body
@@ -24,6 +26,9 @@ document.body.innerHTML = disclosureMarkup;
 
 const controller = document.querySelector('.button');
 const target = document.querySelector('.answer');
+
+// Cache DOM elements.
+const outside = document.querySelector('.outside');
 
 let disclosure;
 
@@ -83,6 +88,22 @@ describe('Disclosure with default configuration', () => {
       expect(target.getAttribute('hidden')).toBeNull();
     });
 
+    it('Should update interactive child elements',
+      () => {
+        const button = document.createElement('button');
+        button.textContent = 'Button';
+        target.append(button);
+
+        disclosure.setInteractiveChildren();
+        expect(disclosure.interactiveChildElements).toEqual([button]);
+
+        // Remove it before someone notices!
+        target.removeChild(button);
+
+        disclosure.setInteractiveChildren();
+        expect(disclosure.interactiveChildElements).toEqual([]);
+      });
+
     it('Should update attributes when Return or Spacebar are pressed', () => {
       // Ensure the disclosure is closed.
       disclosure.close();
@@ -120,7 +141,7 @@ describe('Disclosure with default configuration', () => {
     expect(disclosure.target.disclosure).toBeUndefined();
 
     // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(disclosureMarkup);
+    // expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 });
 
@@ -171,6 +192,6 @@ describe('Disclosure with non-default configuration', () => {
     expect(onDestroy).toHaveBeenCalled();
 
     // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(disclosureMarkup);
+    // expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 });

@@ -83,6 +83,11 @@ class Disclosure extends AriaComponent {
   getState();
 
   /**
+   * Collect the Disclosure's interactive child elements.
+   */
+  setInteractiveChildren();
+
+  /**
    * Remove all ARIA attributes added by this class.
    */
   destroy();

@@ -90,6 +90,7 @@ export default class Disclosure extends AriaComponent {
     this.state = { expanded: this.loadOpen };
 
     // Bind class methods.
+    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.init = this.init.bind(this);
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
@@ -106,6 +107,34 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
+   * Collect the Disclosure's interactive child elements.
+   */
+  setInteractiveChildren() {
+    const { expanded } = this.state;
+
+    /**
+     * Collect the target element's interactive child elements.
+     *
+     * @type {array}
+     */
+    this.interactiveChildElements = interactiveChildren(this.target);
+
+    /**
+     * Allow or deny keyboard focus depending on component state.
+     *
+     * Prevent focus on interactive elements in the target when the target is
+     * hidden. This isn't such an issue when the target is hidden with
+     * `display:none`, but is necessary if the target is hidden by other means,
+     * such as minimized height or width.
+     */
+    if (expanded) {
+      tabIndexAllow(this.interactiveChildElements);
+    } else {
+      tabIndexDeny(this.interactiveChildElements);
+    }
+  }
+
+  /**
    * Add initial attributes, establish relationships, and listen for events
    */
   init() {
@@ -117,12 +146,6 @@ export default class Disclosure extends AriaComponent {
 
     // Component state is initially set in the constructor.
     const { expanded } = this.state;
-
-    /**
-     * Collect the target element's interactive child elements.
-     * @type {array}
-     */
-    this.interactiveChildElements = interactiveChildren(this.target);
 
     // Ensure the target and controller each have an ID attribute.
     [this.controller, this.target].forEach((element) => {
@@ -175,13 +198,8 @@ export default class Disclosure extends AriaComponent {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
 
-    /*
-     * Prevent focus on interactive elements in the target when the target is
-     * hidden. This isn't such an issue when the target is hidden with
-     * `display:none`, but is necessary if the target is hidden by other means,
-     * such as minimized height or width.
-     */
-    tabIndexDeny(this.interactiveChildElements);
+    // Collect the target element's interactive child elements.
+    this.setInteractiveChildren();
 
     // Run {initCallback}
     this.onInit.call(this);
