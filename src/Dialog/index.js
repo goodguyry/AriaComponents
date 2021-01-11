@@ -133,6 +133,14 @@ export default class Dialog extends AriaComponent {
    */
   setInteractiveChildren() {
     this.interactiveChildElements = interactiveChildren(this.target);
+
+    const [
+      firstInteractiveChild,
+      lastInteractiveChild,
+    ] = getFirstAndLastItems(this.interactiveChildElements);
+
+    // Save as instance properties.
+    Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
   }
 
   /**
@@ -248,25 +256,21 @@ export default class Dialog extends AriaComponent {
 
     if (expanded && keyCode === TAB) {
       const { activeElement } = document;
-      const [
-        firstInteractiveChild,
-        lastInteractiveChild,
-      ] = getFirstAndLastItems(this.interactiveChildElements);
 
-      if (shiftKey && firstInteractiveChild === activeElement) {
+      if (shiftKey && this.firstInteractiveChild === activeElement) {
         event.preventDefault();
         /*
          * Move back from the first interactive child element to the last
          * interactive child element
          */
-        lastInteractiveChild.focus();
-      } else if (! shiftKey && lastInteractiveChild === activeElement) {
+        this.lastInteractiveChild.focus();
+      } else if (! shiftKey && this.lastInteractiveChild === activeElement) {
         event.preventDefault();
         /*
          * Move forward from the last interactive child element to the first
          * interactive child element.
          */
-        firstInteractiveChild.focus();
+        this.firstInteractiveChild.focus();
       }
     }
   }
