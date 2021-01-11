@@ -117,6 +117,7 @@ export default class MenuBar extends AriaComponent {
 
     // Bind class methods.
     this.setMenuBarItems = this.setMenuBarItems.bind(this);
+    this.setMenuBarSubMenuItems = this.setMenuBarSubMenuItems.bind(this);
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
@@ -199,33 +200,9 @@ export default class MenuBar extends AriaComponent {
   }
 
   /**
-   * Initialize the Menu.
+   * Initialize Menus and Popups for nested lists.
    */
-  init() {
-    /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
-     */
-    super.setSelfReference([this.list]);
-
-    // Set the menu role.
-    this.list.setAttribute('role', 'menubar');
-
-    // Set menuitem roles and attributes.
-    this.setMenuBarItems();
-
-    /**
-     * A mouse 'click' event.
-     *
-     * @type {MouseEvent}
-     */
-    this.clickEvent = new MouseEvent('click', {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-    });
-
-    // Initialize popups for nested lists.
+  setMenuBarSubMenuItems() {
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
 
@@ -267,6 +244,37 @@ export default class MenuBar extends AriaComponent {
 
     // Save components as instance properties.
     Object.assign(this, { popups, subMenus });
+  }
+
+  /**
+   * Initialize the Menu.
+   */
+  init() {
+    /*
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
+     */
+    super.setSelfReference([this.list]);
+
+    // Set the menu role.
+    this.list.setAttribute('role', 'menubar');
+
+    // Set menuitem roles and attributes.
+    this.setMenuBarItems();
+
+    /**
+     * A mouse 'click' event.
+     *
+     * @type {MouseEvent}
+     */
+    this.clickEvent = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    // Initialize Menus and Popups for nested lists.
+    this.setMenuBarSubMenuItems();
 
     /**
      * Set initial state.
