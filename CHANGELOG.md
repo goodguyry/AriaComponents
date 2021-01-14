@@ -1,15 +1,23 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.3.2
+## 0.3.2-beta-1
 
 **Changed**
 
 - Loosens MenuBar and Menu components' menuitems' markup requirements (#48, 3385f2e)
+- Dialog no longer re-queries for interactive child elements on every TAB keydown (167cc70)
 
 **Added**
 
 - Adds support for validating Menu & MenuBar menu items (#49)
+- Adds support for refreshing elements tracked by components: MenuBar and Menu items, interactive child elements 
+within Dialog, Disclosure, MenuButton and Popup targets, and Listbox options.
+- MenuBar Popup state changes now update state in the MenuBar itself (2e1dcb1)
+
+**Fixed**
+
+- Scopes MenuBar Popup events to the controller (0374543)
 
 ## 0.3.1
 
