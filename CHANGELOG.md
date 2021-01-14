@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Adds support for validating Menu & MenuBar menu items (#49)
 - Adds support for refreshing elements tracked by components: MenuBar and Menu items, interactive child elements 
-within Dialog, Disclosure, MenuButton and Popup targets, and Listbox options.
+within Dialog, Disclosure, MenuButton and Popup targets, and Listbox options (#50)
 - MenuBar Popup state changes now update state in the MenuBar itself (2e1dcb1)
 
 **Fixed**
