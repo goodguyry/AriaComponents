@@ -74,6 +74,7 @@ export default class ListBox extends AriaComponent {
 
     // Bind class methods.
     this.setListBoxOptions = this.setListBoxOptions.bind(this);
+    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
     this.handleControllerKeyup = this.handleControllerKeyup.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
@@ -119,6 +120,13 @@ export default class ListBox extends AriaComponent {
      * @type {Search}
      */
     this.search = new Search(this.options);
+  }
+
+  /**
+   * Collect and prepare the target element's interactive child elements.
+   */
+  setInteractiveChildren() {
+    this.popup.setInteractiveChildren();
   }
 
   /**

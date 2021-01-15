@@ -80,6 +80,15 @@ setListBoxOptions();
 
 ```javascript
 /**
+ * Collect and prepare the target element's interactive child elements.
+ * 
+ * @see Popup component
+ */
+setInteractiveChildren();
+```
+
+```javascript
+/**
  * Destroy the Listbox and Popup.
  */
 destroy();
