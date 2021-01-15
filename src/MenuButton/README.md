@@ -81,6 +81,24 @@ getState();
 
 ```javascript
 /**
+ * Collect and prepare the target element's interactive child elements.
+ * 
+ * @see Popup component
+ */
+setInteractiveChildren();
+```
+
+```javascript
+/**
+ * Collect menu links and recursively instantiate sublist menu items.
+ *
+ * @see Menu component
+ */
+setMenuItems();
+```
+
+```javascript
+/**
  * Destroy the Popup and Menu.
  */
 destroy();

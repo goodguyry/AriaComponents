@@ -80,6 +80,8 @@ export default class MenuButton extends AriaComponent {
 
     // Bind class methods.
     this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
+    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
+    this.setMenuItems = this.setMenuItems.bind(this);
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
@@ -89,6 +91,20 @@ export default class MenuButton extends AriaComponent {
     if (null !== this.controller && null !== this.target) {
       this.init();
     }
+  }
+
+  /**
+   * Collect and prepare the target element's interactive child elements.
+   */
+  setInteractiveChildren() {
+    this.popup.setInteractiveChildren();
+  }
+
+  /**
+   * Collect menu links and recursively instantiate sublist menu items.
+   */
+  setMenuItems() {
+    this.menu.setMenuItems();
   }
 
   /**
