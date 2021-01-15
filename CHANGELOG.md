@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Loosens MenuBar and Menu components' menuitems' markup requirements (#48, 3385f2e)
 - Dialog no longer re-queries for interactive child elements on every TAB keydown (167cc70)
+- Normalized documentation throughout (a54029d)
 
 **Added**
 
