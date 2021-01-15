@@ -29,7 +29,7 @@ const config = {
    *
    * @type {string}
    */
-  itemMatches: '*',
+  itemMatches: 'a,button',
 
   /**
    * Callback to run after the component initializes.

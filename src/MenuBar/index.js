@@ -81,7 +81,7 @@ export default class MenuBar extends AriaComponent {
        *
        * @type {string}
        */
-      itemMatches: '*',
+      itemMatches: 'a,button',
 
       /**
        * Callback to run after the component initializes.
