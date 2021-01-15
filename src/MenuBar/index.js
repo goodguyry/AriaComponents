@@ -211,15 +211,19 @@ export default class MenuBar extends AriaComponent {
         return acc;
       }
 
-      const popup = new Popup({
-        controller,
-        target,
-        onInit: this.onPopupInit,
-        onStateChange: this.onPopupStateChange,
-        type: 'menu',
-      });
+      if (controller.popup instanceof Popup) {
+        controller.popup.setInteractiveChildren();
+      } else {
+        const popup = new Popup({
+          controller,
+          target,
+          onInit: this.onPopupInit,
+          onStateChange: this.onPopupStateChange,
+          type: 'menu',
+        });
 
-      acc.popups.push(popup);
+        acc.popups.push(popup);
+      }
 
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)
@@ -228,6 +232,11 @@ export default class MenuBar extends AriaComponent {
 
       // Bail if there's no list.
       if (null === list) {
+        return acc;
+      }
+
+      if (list.menu instanceof Menu) {
+        list.menu.setMenuItems();
         return acc;
       }
 
