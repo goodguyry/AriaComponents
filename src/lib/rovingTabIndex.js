@@ -8,19 +8,19 @@ function toArray(maybeAnArray) {
     return maybeAnArray;
   }
 
-  let shouldBeAnArray = [];
-
   if (maybeAnArray instanceof HTMLElement) {
-    // Convert element(s) to an Array.
-    shouldBeAnArray = new Array(maybeAnArray);
-  } else if (
+    // Convert element to an Array.
+    return new Array(maybeAnArray);
+  }
+
+  if (
     maybeAnArray instanceof NodeList
     || maybeAnArray instanceof HTMLCollection
   ) {
-    shouldBeAnArray = Array.from(maybeAnArray);
+    return Array.from(maybeAnArray);
   }
 
-  return shouldBeAnArray;
+  return [];
 }
 
 /**
