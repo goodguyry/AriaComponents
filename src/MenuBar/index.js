@@ -117,7 +117,7 @@ export default class MenuBar extends AriaComponent {
 
     // Bind class methods.
     this.setMenuBarItems = this.setMenuBarItems.bind(this);
-    this.setMenuBarSubMenuItems = this.setMenuBarSubMenuItems.bind(this);
+    this.setSubMenus = this.setSubMenus.bind(this);
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
     this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
     this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
@@ -202,7 +202,7 @@ export default class MenuBar extends AriaComponent {
   /**
    * Initialize Menus and Popups for nested lists.
    */
-  setMenuBarSubMenuItems() {
+  setSubMenus() {
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
       const target = controller.nextElementSibling;
 
@@ -274,7 +274,7 @@ export default class MenuBar extends AriaComponent {
     });
 
     // Initialize Menus and Popups for nested lists.
-    this.setMenuBarSubMenuItems();
+    this.setSubMenus();
 
     /**
      * Set initial state.

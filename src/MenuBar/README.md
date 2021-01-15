@@ -79,7 +79,7 @@ setMenuBarItems();
 /**
  * Initialize Menus and Popups for nested lists.
  */
-setMenuBarSubMenuItems();
+setSubMenus();
 ```
 
 ```javascript
