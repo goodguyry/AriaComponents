@@ -57,32 +57,36 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class MenuButtton extends AriaComponent {
-  /**
-   * Show the menu Popup.
-   */
-  show();
-
-  /**
-   * Hide the menu Popup.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the Popup and Menu.
-   */
-  destroy();
-}
+/**
+ * Show the menu Popup.
+ */
+show();
 ```
 
-## Properties
+```javascript
+/**
+ * Hide the menu Popup.
+ */
+hide();
+```
+
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
+```
+
+```javascript
+/**
+ * Destroy the Popup and Menu.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -90,7 +94,7 @@ class MenuButtton extends AriaComponent {
  *
  * @type {HTMLButtonElement}
  */
-MenuButton.controller
+controller
 ```
 
 ```javascript
@@ -99,7 +103,7 @@ MenuButton.controller
  *
  * @type {HTMLElement}
  */
-MenuButton.target
+target
 ```
 
 ```javascript
@@ -108,7 +112,7 @@ MenuButton.target
  *
  * @type {HTMLUListElement}
  */
-MenuButton.list
+list
 ```
 
 ```javascript
@@ -118,7 +122,7 @@ MenuButton.list
  * @type {Popup}
  * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
  */
-MenuButton.popup
+popup
 ```
 
 ## Example

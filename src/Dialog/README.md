@@ -68,45 +68,53 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class Dialog extends AriaComponent {
-  /**
-   * Create the dialog close button.
-   *
-   * @return {HTMLElement} The HTML button element with 'Close' as its label.
-   * @static
-   */
-  createCloseButton();
-
-  /**
-   * Show the Dialog.
-   */
-  show();
-
-  /**
-   * Hide the Dialog.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Collect the Dialog's interactive child elements.
-   */
-  setInteractiveChildren();
-
-  /**
-   * Destroy the Dialog and Popup.
-   */
-  destroy();
-}
+/**
+ * Create the dialog close button.
+ *
+ * @return {HTMLElement} The HTML button element with 'Close' as its label.
+ * @static
+ */
+createCloseButton();
 ```
 
-## Properties
+```javascript
+/**
+ * Show the Dialog.
+ */
+show();
+```
+
+```javascript
+/**
+ * Hide the Dialog.
+ */
+hide();
+```
+
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
+```
+
+```javascript
+/**
+ * Collect the Dialog's interactive child elements.
+ */
+setInteractiveChildren();
+```
+
+```javascript
+/**
+ * Destroy the Dialog and Popup.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -114,7 +122,7 @@ class Dialog extends AriaComponent {
  *
  * @type {HTMLButtonElement}
  */
-Dialog.controller
+controller
 ```
 
 ```javascript
@@ -123,7 +131,7 @@ Dialog.controller
  *
  * @type {HTMLElement}
  */
-Dialog.target
+target
 ```
 
 ```javascript
@@ -132,7 +140,7 @@ Dialog.target
  *
  * @type {HTMLElement}
  */
-Dialog.content
+content
 ```
 
 ```javascript
@@ -141,7 +149,7 @@ Dialog.content
  *
  * @type {HTMLButtonElement}
  */
-Dialog.close
+close
 ```
 
 ```javascript
@@ -151,7 +159,7 @@ Dialog.close
  * @type {Popup}
  * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
  */
-Dialog.popup
+popup
 ```
 
 ## Example

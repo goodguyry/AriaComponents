@@ -58,37 +58,43 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class Popup extends AriaComonents {
-  /**
-   * Update component state to show the target element.
-   */
-  show();
-
-  /**
-   * Update component state to hide the target element.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Collect and prepare the target element's interactive child elements.
-   */
-  setInteractiveChildren();
-
-  /**
-   * Remove all attributes and event listeners added by this class.
-   */
-  destroy();
-}
+/**
+ * Update component state to show the target element.
+ */
+show();
 ```
 
-## Properties
+```javascript
+/**
+ * Update component state to hide the target element.
+ */
+hide();
+```
+
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
+```
+
+```javascript
+/**
+ * Collect and prepare the target element's interactive child elements.
+ */
+setInteractiveChildren();
+```
+
+```javascript
+/**
+ * Remove all attributes and event listeners added by this class.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -96,7 +102,7 @@ class Popup extends AriaComonents {
  *
  * @type {HTMLButtonElement}
  */
-Popup.controller
+controller
 ```
 
 ```javascript
@@ -105,21 +111,25 @@ Popup.controller
  *
  * @type {HTMLElement}
  */
-Popup.target
+target
+```
 
+```javascript
 /**
  * The target's first interactive child element.
  *
  * @type {HTMLElement}
  */
-Popup.firstInteractiveChild
+firstInteractiveChild
+```
 
+```javascript
 /**
  * The target's last interactive child element.
  *
  * @type {HTMLElement}
  */
-Popup.lastInteractiveChild
+lastInteractiveChild
 ```
 
 ## Example

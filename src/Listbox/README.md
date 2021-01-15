@@ -49,37 +49,43 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class ListBox extends AriaComponent {
-  /**
-   * Show the Listbox.
-   */
-  show();
-
-  /**
-   * Hide the Listbox.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Collect and configure ListBox options.
-   */
-  setListBoxOptions();
-
-  /**
-   * Destroy the Listbox and Popup.
-   */
-  destroy();
-}
+/**
+ * Show the Listbox.
+ */
+show();
 ```
 
-## Properties
+```javascript
+/**
+ * Hide the Listbox.
+ */
+hide();
+```
+
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
+```
+
+```javascript
+/**
+ * Collect and configure ListBox options.
+ */
+setListBoxOptions();
+```
+
+```javascript
+/**
+ * Destroy the Listbox and Popup.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -87,7 +93,7 @@ class ListBox extends AriaComponent {
  *
  * @type {HTMLButtonElement}
  */
-ListBox.controller
+controller
 ```
 
 ```javascript
@@ -96,7 +102,7 @@ ListBox.controller
  *
  * @type {HTMLUListElement}
  */
-ListBox.target
+target
 ```
 
 ```javascript
@@ -105,7 +111,7 @@ ListBox.target
  *
  * @type {array}
  */
-Listbox.options
+options
 ```
 
 ```javascript
@@ -114,7 +120,7 @@ Listbox.options
  *
  * @type {HTMLLIElement}
  */
-ListBox.firstOption
+firstOption
 ```
 
 ```javascript
@@ -123,7 +129,7 @@ ListBox.firstOption
  *
  * @type {HTMLLIElement}
  */
-ListBox.lastOption
+lastOption
 ```
 
 ```javascript
@@ -133,7 +139,7 @@ ListBox.lastOption
  * @type {Popup}
  * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
  */
-ListBox.popup
+popup
 ```
 
 ## Example

@@ -8,21 +8,21 @@ Extend the `AriaComponent` class to get access to the methods below.
 ### Methods
 
 ```javascript
-class AriaComponent {
-  /**
-   * Set component state.
-   *
-   * @param {object} newState The new state to merge with existing state.
-   */
-  setState(newState);
+/**
+ * Set component state.
+ *
+ * @param {object} newState The new state to merge with existing state.
+ */
+setState(newState);
+```
 
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-}
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
 ```
 
 ## lib/ Modules

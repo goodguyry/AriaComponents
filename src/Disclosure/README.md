@@ -64,37 +64,43 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class Disclosure extends AriaComponent {
-  /**
-   * Update component state to open the Disclosure.
-   */
-  open();
-
-  /**
-   * Update component state to close the Disclosure.
-   */
-  close();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Collect the Disclosure's interactive child elements.
-   */
-  setInteractiveChildren();
-
-  /**
-   * Remove all ARIA attributes added by this class.
-   */
-  destroy();
-}
+/**
+ * Update component state to open the Disclosure.
+ */
+open();
 ```
 
-## Properties
+```javascript
+/**
+ * Update component state to close the Disclosure.
+ */
+close();
+```
+
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
+```
+
+```javascript
+/**
+ * Collect the Disclosure's interactive child elements.
+ */
+setInteractiveChildren();
+```
+
+```javascript
+/**
+ * Remove all ARIA attributes added by this class.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -102,7 +108,7 @@ class Disclosure extends AriaComponent {
  *
  * @type {HTMLButtonElement}
  */
-Disclosure.controller
+controller
 ```
 
 ```javascript
@@ -111,7 +117,7 @@ Disclosure.controller
  *
  * @type {HTMLElement}
  */
-Disclosure.target
+target
 ```
 
 ## Example

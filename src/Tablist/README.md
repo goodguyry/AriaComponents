@@ -50,29 +50,31 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class Tablist extends AriaComponent {
-  /**
-   * Switch directly to a tab.
-   *
-   * @param {number} index The zero-based tab index to activate.
-   */
-  switchTo(index);
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the tablist, removing ARIA attributes and event listeners
-   */
-  destroy();
-}
+/**
+ * Switch directly to a tab.
+ *
+ * @param {number} index The zero-based tab index to activate.
+ */
+switchTo(index);
 ```
 
-## Properties
+```javascript
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
+```
+
+```javascript
+/**
+ * Destroy the tablist, removing ARIA attributes and event listeners
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -80,7 +82,7 @@ class Tablist extends AriaComponent {
  *
  * @type {HTMLUListElement}
  */
-Tablist.tabs
+tabs
 ```
 
 ```javascript
@@ -89,7 +91,7 @@ Tablist.tabs
  *
  * @type {array}
  */
-Tablist.panels
+panels
 ```
 
 ```javascript
@@ -98,7 +100,7 @@ Tablist.panels
  *
  * @type {array}
  */
-Tablist.tabLinks
+tabLinks
 ```
 
 ## Example

@@ -60,32 +60,36 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class MenuBar extends AriaComponent {
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Collect top-level menu items and set up event handlers.
-   */
-  setMenuBarItems();
-
-  /**
-   * Initialize Menus and Popups for nested lists.
-   */
-  setMenuBarSubMenuItems();
-
-  /**
-   * Destroy the MenuBar and any submenu Popups.
-   */
-  destroy();
-}
+/**
+ * Return the current component state.
+ *
+ * @return {object}
+ */
+getState();
 ```
 
-## Properties
+```javascript
+/**
+ * Collect top-level menu items and set up event handlers.
+ */
+setMenuBarItems();
+```
+
+```javascript
+/**
+ * Initialize Menus and Popups for nested lists.
+ */
+setMenuBarSubMenuItems();
+```
+
+```javascript
+/**
+ * Destroy the MenuBar and any submenu Popups.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -93,7 +97,7 @@ class MenuBar extends AriaComponent {
  *
  * @type {HTMLUListElement}
  */
-MenuBar.menu
+menu
 ```
 
 ```javascript
@@ -102,7 +106,7 @@ MenuBar.menu
  *
  * @type {array}
  */
-MenuBar.menuBarItems
+menuBarItems
 ```
 
 ## Additional Notes

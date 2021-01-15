@@ -52,22 +52,22 @@ const config = {
 > See also [`src/README`](../).
 
 ```javascript
-class Menu extends AriaComponent {
-  /**
-   * Set menu items.
-   *
-   * Use this if your menu is dynamically updated.
-   */
-  setMenuItems();
-
-  /**
-   * Destroy the Menu and any submenus.
-   */
-  destroy();
-}
+/**
+ * Set menu items.
+ *
+ * Use this if your menu is dynamically updated.
+ */
+setMenuItems();
 ```
 
-## Properties
+```javascript
+/**
+ * Destroy the Menu and any submenus.
+ */
+destroy();
+```
+
+## Instance Properties
 
 ```javascript
 /**
@@ -75,14 +75,16 @@ class Menu extends AriaComponent {
  *
  * @type {HTMLUListElement}
  */
-Menu.menu
+menu
+```
 
+```javascript
 /**
  * The submenu Disclosures.
  *
  * @type {array}
  */
-Menu.disclosures
+disclosures
 ```
 
 ## Example
