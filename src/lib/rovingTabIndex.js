@@ -17,8 +17,7 @@ function toArray(maybeAnArray) {
     maybeAnArray instanceof NodeList
     || maybeAnArray instanceof HTMLCollection
   ) {
-    // Array.from(maybeAnArray);
-    shouldBeAnArray = Array.prototype.slice.call(maybeAnArray, 0);
+    shouldBeAnArray = Array.from(maybeAnArray);
   }
 
   return shouldBeAnArray;
@@ -30,7 +29,7 @@ function toArray(maybeAnArray) {
  * @param {Mixed} items An HTMLElement, NodeList, or array of elements.
  */
 function tabIndexAllow(items) {
-  const allowedElements = Array.isArray(items) ? items : toArray(items);
+  const allowedElements = toArray(items);
 
   allowedElements.forEach((item) => {
     item.removeAttribute('tabindex');
@@ -43,7 +42,7 @@ function tabIndexAllow(items) {
  * @param {Mixed} items An HTMLElement, NodeList, or Array of elements.
  */
 function tabIndexDeny(items) {
-  const deniedElements = Array.isArray(items) ? items : toArray(items);
+  const deniedElements = toArray(items);
 
   deniedElements.forEach((item) => {
     item.setAttribute('tabindex', '-1');

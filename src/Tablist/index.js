@@ -106,8 +106,15 @@ export default class Tablist extends AriaComponent {
      * @type {array}
      */
     if (! Array.isArray(this.panels)) {
-      this.panels = Array.prototype.slice.call(this.panels);
+      this.panels = Array.from(this.panels);
     }
+
+    /**
+     * Tabs element children.
+     *
+     * @type {array}
+     */
+    this.tabsListItems = Array.from(this.tabs.children);
 
     /**
      * Collect the anchor inside of each list item. Using anchors makes
@@ -118,10 +125,8 @@ export default class Tablist extends AriaComponent {
      *
      * @type {array}
      */
-    this.tabLinks = Array.prototype.filter.call(
-      this.tabs.children,
-      (child) => null !== child.querySelector('a[href]')
-    )
+    this.tabLinks = this.tabsListItems
+      .filter((child) => null !== child.querySelector('a[href]'))
       .map((child) => child.querySelector('a[href]'));
 
     // Only initialize if tabs and panels are equal in number.
@@ -148,7 +153,7 @@ export default class Tablist extends AriaComponent {
      * Prevent the Tablist LI element from being announced as list-items as
      * that information is neither useful nor applicable.
      */
-    Array.prototype.forEach.call(this.tabs.children, (listChild) => {
+    this.tabsListItems.forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
         listChild.setAttribute('role', 'presentation');
       }
@@ -413,7 +418,7 @@ export default class Tablist extends AriaComponent {
     this.tabs.removeAttribute('role');
 
     // Remove the 'presentation' role from each list item.
-    Array.prototype.forEach.call(this.tabs.children, (listChild) => {
+    this.tabsListItems.forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
         listChild.removeAttribute('role');
       }
