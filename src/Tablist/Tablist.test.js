@@ -271,7 +271,7 @@ describe('Tablist with default configuration', () => {
        * Increment the counter to track time spent trying to get these tests to
        * pass, even though they work as expected when tested in a browser.
        *
-       * Hours Lost: 4
+       * Hours Lost: 4.5
        */
       // const firstPanelChild = firstPanel.querySelector('a[href]');
 
