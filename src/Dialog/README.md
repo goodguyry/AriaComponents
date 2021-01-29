@@ -1,153 +1,7 @@
 Dialog
 ======
 
-Class to set up an interactive Dialog element.
-
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The button element used to trigger the dialog popup.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-
-  /**
-   * The element used as the dialog window.
-   *
-   * @type {HTMLElement}
-   */
-  target: null,
-
-  /**
-   * The site content wrapper. 
-   * NOT necessarily <main>, but the element wrapping all site content (including 
-   * header and footer) with the sole exception of the dialog element.
-   *
-   * @type {HTMLElement}
-   */
-  content: null,
-
-  /**
-   * The button used to close the dialog.
-   * Required to be the very first element inside the dialog. If none is passed, 
-   * one will be created.
-   * 
-   * @type {HTMLButtonElement}
-   * @see createCloseButton
-   */
-  close: Dialog.createCloseButton(),
-
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class Dialog extends AriaComponent {
-  /**
-   * Create the dialog close button.
-   *
-   * @return {HTMLElement} The HTML button element with 'Close' as its label.
-   * @static
-   */
-  createCloseButton();
-
-  /**
-   * Show the Dialog.
-   */
-  show();
-
-  /**
-   * Hide the Dialog.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the Dialog and Popup.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-Dialog.controller
-```
-
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLElement}
- */
-Dialog.target
-```
-
-```javascript
-/**
- * The config.content property.
- *
- * @type {HTMLElement}
- */
-Dialog.content
-```
-
-```javascript
-/**
- * The config.close property, or the button created in its absence.
- *
- * @type {HTMLButtonElement}
- */
-Dialog.close
-```
-
-```javascript
-/**
- * The Popup instance controlling the Dialog.
- * 
- * @type {Popup}
- * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
- */
-Dialog.popup
-```
+Class for setting up an interactive Dialog element.
 
 ## Example
 
@@ -166,12 +20,12 @@ Dialog.popup
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.</p>
 
-        <a class="link" href="#dialog">Open dialog</a>
+        <button target="dialog">Open dialog</button>
       </article>
     </main>
   </div>
 
-  <div id="dialog">
+  <div id="dialog" hidden>
     <button>Close</button>
     <ul>
       <li><a href="example.com"></a></li>
@@ -186,27 +40,78 @@ Dialog.popup
 ```javascript
 import { Dialog } from 'aria-components';
 
-const controller = document.querySelector('.link');
-const target = document.getElementById('dialog');
-const close = target.querySelector('button');
-const content = document.querySelector('.site-wrapper');
-
-const dialog = new Dialog({
-  controller,
-  target,
-  close,
-  content,
-  onInit: () => {
-    console.log('Dialog initialized.');
-  },
-  onStateChange: () => {
-    console.log('Dialog state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Dialog destroyed.');
-  },
-});
+const button = document.querySelector('button[target]');
+const dialog = new Dialog(button);
 ```
+
+## Constructor
+
+```javascript
+Dialog(activatingElement = null, options = {});
+```
+
+_**`activatingElement`**_ `HTMLElement`  
+> The element used to activate the Dialog target; required to have a `target`  
+attribute with a value matching the `id` attribute value of the target element.
+
+_**`options`**_ `object`  
+> Configuration options.
+
+### Available Options
+
+_**`content`**_`= null`  
+> The element or NodeList of elements that should be inaccessible when the Dialog element is open.
+
+## API
+
+### Instance Methods
+
+See also [`src/README`](../).
+
+_**`Dialog.show()`**_
+> Updates component state to show the target element.
+
+_**`Dialog.hide()`**_
+> Updates component state to hide the target element.
+
+_**`Dialog.getState()`**_
+> Returns an object representing the current component state.
+>
+> _`state.expanded`_ `boolean`  
+> Whether or not the Dialog target is visible.
+
+_**`Dialog.destroy()`**_
+> Removes all attributes and event listeners added by this class.
+
+_**`Dialog.toString()`**_  
+> Returns `'[object AriaDialog]'`.
+
+### Properties
+
+_**`Dialog.activatingElement`**_  
+> Returns the Dialog's activating element.
+
+_**`Dialog.target`**_  
+> Returns the Dialog's target element.
+
+_**`Dialog.content`**_
+> An array of elements to be hidden while the Dialog is visible.
+
+### Events
+
+_**`init`**_  
+> Fired after the component is initialized.
+
+_**`stateChange`**_  
+> Fired after component state is updated.
+
+_**`destroy`**_  
+> Fired after the component is destroyed.
+
+#### Event Properties
+
+_**`CustomEvent.detail.instance`**_
+> Returns the `Dialog` instance from which the event originated.
 
 ## References
 

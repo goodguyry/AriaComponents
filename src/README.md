@@ -5,25 +5,21 @@ src/
 
 Extend the `AriaComponent` class to get access to the methods below.
 
-### Methods
+## API
 
-```javascript
-class AriaComponent {
-  /**
-   * Set component state.
-   *
-   * @param {object} newState The new state to merge with existing state.
-   */
-  setState(newState);
+### Instance Methods
 
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-}
-```
+_**`AriaComponent.setState(newState)`**_
+> Set component state.
+>
+> `newState`  
+> The new state object to merge with existing state.
+
+_**`AriaComponent.getState()`**_
+> Returns an object representing the current component state.
+
+_**`AriaComponent.toString()`**_  
+> Returns `'[object AriaComponent]'`.
 
 ## lib/ Modules
 

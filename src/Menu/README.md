@@ -3,122 +3,93 @@ Menu
 
 Class to set up an vertically oriented interactive Menu element.
 
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The menu list element.
-   *
-   * @type {HTMLUListElement}
-   */
-  list: null,
-
-  /**
-   * Instantiate submenus as Disclosures.
-   *
-   * @type {Boolean}
-   */
-  collapse: false,
-
-  /**
-   * Selector used to validate menu items.
-   * 
-   * This can also be used to exclude items that would otherwise be given a
-   * "menuitem" role; e.g., `:not(.hidden)`.
-   *
-   * @type {string}
-   */
-  itemMatches: '*',
-
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class Menu extends AriaComponent {
-  /**
-   * Destroy the Menu and any submenus.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.menu property.
- *
- * @type {HTMLUListElement}
- */
-Menu.menu
-
-/**
- * The submenu Disclosures.
- *
- * @type {array}
- */
-Menu.disclosures
-```
-
 ## Example
 
 ```html
 <ul class="menu">
   <li><a href="example.com"></a>
     <ul>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
+      <li><a href="example.com">Menu Item</a></li>
+      <li><a href="example.com">Menu Item</a></li>
+      <li><a href="example.com">Menu Item</a></li>
     </ul>
   </li>
-  <li><a href="example.com"></a></li>
-  <li><a href="example.com"></a>
+  <li><a href="example.com">Menu Item</a></li>
+  <li><a href="example.com">Menu Item</a>
     <ul>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
+      <li><a href="example.com">Menu Item</a></li>
+      <li><a href="example.com">Menu Item</a></li>
+      <li><a href="example.com">Menu Item</a></li>
+      <li><a href="example.com">Menu Item</a></li>
     </ul>
   </li>
-  <li><a href="example.com"></a></li>
-  <li><a href="example.com"></a></li>
+  <li><a href="example.com">Menu Item</a></li>
+  <li><a href="example.com">Menu Item</a></li>
 </ul>
 ```
 
 ```javascript
 import { Menu } from 'aria-components';
 
-const list = document.querySelector('.menu');
-
-const menu = new Menu({
-  list,
-  collapse: true,
-  onInit: () => {
-    console.log('Menu initialized.');
-  },
-  onDestroy: () => {
-    console.log('Menu destroyed.');
-  },
-});
+const menu = document.querySelector('.menu');
+const menu = new Menu(menu, { collapse: true });
 ```
+
+## Constructor
+
+```javascript
+Menu(menuListElement = null, options = {});
+```
+
+_**`menuListElement`**_ `HTMLUListElement`  
+> The list element containing menu items.
+
+_**`options`**_ `object`  
+> Configuration options.
+
+### Available Options
+
+_**`collapse`**_`= false`  
+> Whether to instantiate submenus as Disclosures.
+
+_**`itemMatches`**_`= '*'`  
+> A selector string used to validate menu items.
+> 
+> This can also be used to exclude items that would otherwise be given a  
+> "menuitem" role; e.g., `':not(.hidden)'`.
+
+## API
+
+### Instance Methods
+
+See also [`src/README`](../).
+
+_**`Menu.destroy()`**_
+> Removes all attributes and event listeners added by this class.
+
+_**`Menu.toString()`**_  
+> Returns `'[object AriaMenu]'`.
+
+### Properties
+
+_**`Menu.menu`**_  
+> Returns the list element containing menu items.
+
+_**`Menu.disclosures`**_  
+> Returns an array of submenu Disclosures.
+
+### Events
+
+_**`init`**_  
+> Fired after the component is initialized.
+
+_**`destroy`**_  
+> Fired after the component is destroyed.
+
+#### Event Properties
+
+_**`CustomEvent.detail.instance`**_
+> Returns the `Menu` instance from which the event originated.
 
 ## References
 

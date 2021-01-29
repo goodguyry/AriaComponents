@@ -1,141 +1,13 @@
 Listbox
 =======
 
-Class to set up an interactive Listbox element.
-
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The element used to trigger the Listbox Popup.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-
-  /**
-   * The Listbox element.
-   *
-   * @type {HTMLUListElement}
-   */
-  target: null,
-
-  /**
-   * Callback to run after the component initializes.
-   *
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   *
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   *
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class ListBox extends AriaComponent {
-  /**
-   * Show the Listbox.
-   */
-  show();
-
-  /**
-   * Hide the Listbox.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the Listbox and Popup.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-ListBox.controller
-```
-
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLUListElement}
- */
-ListBox.target
-```
-
-```javascript
-/**
- * The target list items.
- *
- * @type {array}
- */
-Listbox.options
-```
-
-```javascript
-/**
- * The first Listbox option.
- *
- * @type {HTMLLIElement}
- */
-ListBox.firstOption
-```
-
-```javascript
-/**
- * The last Listbox option.
- *
- * @type {HTMLLIElement}
- */
-ListBox.lastOption
-```
-
-```javascript
-/**
- * The Popup instance controlling the ListBox.
- * 
- * @type {Popup}
- * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
- */
-ListBox.popup
-```
+Class for setting up an interactive Listbox element.
 
 ## Example
 
 ```html
-<button>Choose</button>
-<ul>
+<button target="options">Choose</button>
+<ul id="options">
   <li>Anchorage</li>
   <li>Baltimore</li>
   <li>Chicago</li>
@@ -151,23 +23,79 @@ ListBox.popup
 ```javascript
 import { Listbox } from 'aria-components';
 
-const controller = document.querySelector('button');
-const target = document.querySelector('ul');
-
-const listbox = new Listbox({
-  controller,
-  target,
-  onInit: () => {
-    console.log('Listbox initialized.');
-  },
-  onStateChange: () => {
-    console.log('Listbox state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Listbox destroyed.');
-  },
-});
+const button = document.querySelector('button[target]');
+const listbox = new Listbox(button);
 ```
+
+## Constructor
+
+```javascript
+Listbox(activatingElement = null);
+```
+
+_**`activatingElement`**_ `HTMLElement`  
+> The element used to activate the Listbox target; required to have a `target`  
+attribute with a value matching the `id` attribute value of the target element.
+
+## API
+
+### Instance Methods
+
+See also [`src/README`](../).
+
+_**`Listbox.show()`**_  
+> Updates component state to show the target element.
+
+_**`Listbox.hide()`**_  
+> Updates component state to hide the target element.
+
+_**`Listbox.getState()`**_  
+> Returns an object representing the current component state.
+>
+> _`state.activeDescendant`_ `HTMLElement`  
+> The active Listbox option.
+
+_**`Listbox.destroy()`**_  
+> Removes all attributes and event listeners added by this class.
+
+_**`Listbox.toString()`**_  
+> Returns `'[object AriaListbox]'`.
+
+### Properties
+
+_**`Listbox.activatingElement`**_  
+> Returns the Listbox's activating element.
+
+_**`Listbox.target`**_  
+> Returns the Listbox's target element.
+
+_**`Listbox.options`**_  
+> Returns an array of the target element's list items.
+
+_**`Listbox.firstOption`**_  
+> Returns the first Listbox option element.
+
+_**`Listbox.lastOption`**_  
+> Returns the last Listbox option element.
+
+_**`Listbox.popup`**_  
+> Returns the [Popup](https://github.com/goodguyry/AriaComponents/blob/master/src/Popup) instance controlling the Listbox.
+
+### Events
+
+_**`init`**_  
+> Fired after the component is initialized.
+
+_**`stateChange`**_  
+> Fired after component state is updated.
+
+_**`destroy`**_  
+> Fired after the component is destroyed.
+
+#### Event Properties
+
+_**`CustomEvent.detail.instance`**_
+> Returns the `Listbox` instance from which the event originated.
 
 ## References
 

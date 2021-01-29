@@ -1,119 +1,13 @@
 Disclosure
 ==========
 
-Class to set up a controller-target relationship for independently revealing and 
-hiding inline content.
-
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The element used to trigger the Disclosure Popup.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-  
-  /**
-   * The Disclosure element.
-   *
-   * @type {HTMLElement}
-   */
-  target: null,
-  
-  /**
-   * Load the Disclosure open by default.
-   *
-   * @type {boolean}
-   */
-  loadOpen: false,
-  
-  /**
-   * Keep the Disclosure open when the user clicks outside of it.
-   *
-   * @type {boolean}
-   */
-  allowOutsideClick: true,
-  
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class Disclosure extends AriaComponent {
-  /**
-   * Update component state to open the Disclosure.
-   */
-  open();
-
-  /**
-   * Update component state to close the Disclosure.
-   */
-  close();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Remove all ARIA attributes added by this class.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-Disclosure.controller
-```
-
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLElement}
- */
-Disclosure.target
-```
+Class for independently revealing and hiding inline content.
 
 ## Example
 
 ```html
-<button>Open</button>
-<div class="wrapper">
+<button target="disclosure">Open</button>
+<div id="disclosure">
   <ul>
     <li><a href="example.com"></a></li>
     <li><a href="example.com"></a></li>
@@ -126,23 +20,78 @@ Disclosure.target
 ```javascript
 import { Disclosure } from 'aria-components';
 
-const controller = document.querySelector('button');
-const target = document.querySelector('.wrapper');
-
-const disclosure = new Disclosure({ 
-  controller, 
-  target,
-  onInit: () => {
-    console.log('Disclosure initialized.');
-  },
-  onStateChange: () => {
-    console.log('Disclosure state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Disclosure destroyed.');
-  }, 
-});
+const button = document.querySelector('button[target]');
+const disclosure = new Disclosure(button);
 ```
+
+## Constructor
+
+```javascript
+Disclosure(activatingElement = null, options = {});
+```
+
+_**`activatingElement`**_ `HTMLElement`  
+> The element used to activate the Disclosure target; required to have a `target`  
+attribute with a value matching the `id` attribute value of the target element.
+
+_**`options`**_ `object`  
+> Configuration options.
+
+### Available Options
+
+_**`loadOpen`**_`= false`  
+> Whether to load the Disclosure open.
+
+_**`allowOutsideClick`**_`= true`  
+> Whether to keep the Disclosure open when clicking outside of it.
+
+## API
+
+### Instance Methods
+
+See also [`src/README`](../).
+
+_**`Disclosure.show()`**_
+> Updates component state to show the target element.
+
+_**`Disclosure.hide()`**_
+> Updates component state to hide the target element.
+
+_**`Disclosure.getState()`**_
+> Returns an object representing the current component state.
+>
+> _`state.expanded`_ `boolean`  
+> Whether or not the Disclosure target is visible.
+
+_**`Disclosure.destroy()`**_
+> Removes all attributes and event listeners added by this class.
+
+_**`Disclosure.toString()`**_  
+> Returns `'[object AriaDisclosure]'`.
+
+### Properties
+
+_**`Disclosure.activatingElement`**_  
+> Returns the Disclosure's activating element.
+
+_**`Disclosure.target`**_  
+> Returns the Disclosure's target element.
+
+### Events
+
+_**`init`**_  
+> Fired after the component is initialized.
+
+_**`stateChange`**_  
+> Fired after component state is updated.
+
+_**`destroy`**_  
+> Fired after the component is destroyed.
+
+#### Event Properties
+
+_**`CustomEvent.detail.instance`**_
+> Returns the `Disclosure` instance from which the event originated.
 
 ## References
 

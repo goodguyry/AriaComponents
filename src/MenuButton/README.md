@@ -1,131 +1,13 @@
 MenuButton
 ==========
 
-Class for setting up an interactive popup menu that can be triggered by a 
-controlling element.
-
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The element used to trigger the Menu Popup.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-
-  /**
-   * The Menu wrapper element.
-   *
-   * @type {HTMLElement}
-   */
-  target: null,
-
-  /**
-   * The Menu element.
-   *
-   * @type {HTMLUListElement}
-   */
-  list: null,
-
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class MenuButtton extends AriaComponent {
-  /**
-   * Show the menu Popup.
-   */
-  show();
-
-  /**
-   * Hide the menu Popup.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the Popup and Menu.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-MenuButton.controller
-```
-
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLElement}
- */
-MenuButton.target
-```
-
-```javascript
-/**
- * The config.list property.
- *
- * @type {HTMLUListElement}
- */
-MenuButton.list
-```
-
-```javascript
-/**
- * The Popup instance controlling the MenuButton.
- * 
- * @type {Popup}
- * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
- */
-MenuButton.popup
-```
+Class for setting up an interactive popup button to activate a target menu element.
 
 ## Example
 
 ```html
-<button>Open</button>
-<div class="wrapper">
+<button target="menu">Open</button>
+<div id="menu">
   <ul>
     <li><a href="example.com"></a></li>
     <li><a href="example.com"></a></li>
@@ -138,25 +20,83 @@ MenuButton.popup
 ```javascript
 import { MenuButton } from 'aria-components';
 
-const controller = document.querySelector('button');
-const target = document.querySelector('.wrapper');
-const list = document.querySelector('.wrapper ul');
-
-const menuButton = new MenuButton({
-  controller,
-  target,
-  list,
-  onInit: () => {
-    console.log('MenuButton initialized.');
-  },
-  onStateChange: () => {
-    console.log("MenuButton's Popup state was updated.");
-  },
-  onDestroy: () => {
-    console.log('MenuButton destroyed.');
-  },
-});
+const button = document.querySelector('button[target]');
+const menuButton = new MenuButton(button);
 ```
+
+## Constructor
+
+```javascript
+MenuButton(activatingElement = null, options = {});
+```
+
+_**`activatingElement`**_ `HTMLElement`  
+> The element used to activate the MenuButton target; required to have a `target`  
+attribute with a value matching the `id` attribute value of the target element.
+
+_**`options`**_ `object`  
+> Configuration options.
+
+### Available Options
+
+_**`list`**_`= null`  
+> Use this option if neither of the following should be used as the Menu list:  
+> 1. The target element, if it is an instance of `HTMLUListElement`
+> 2. The value returned by `target.querySelector('ul')`
+
+## API
+
+### Instance Methods
+
+See also [`src/README`](../).
+
+_**`MenuButton.show()`**_  
+> Updates component state to show the target element.
+
+_**`MenuButton.hide()`**_  
+> Updates component state to hide the target element.
+
+_**`MenuButton.getState()`**_  
+> Returns an object representing the current component state.
+>
+> _`state.expanded`_ `boolean`  
+> Whether or not the MenuButton's target is visible.
+
+_**`MenuButton.destroy()`**_  
+> Removes all attributes and event listeners added by this class.
+
+_**`MenuButton.toString()`**_  
+> Returns `'[object AriaMenuButton]'`.
+
+### Properties
+
+_**`MenuButton.activatingElement`**_  
+> Returns the MenuButton's activating element.
+
+_**`MenuButton.target`**_  
+> Returns the MenuButton's target element.
+
+_**`MenuButton.list`**_  
+> Returns the MenuButton's Menu list element.
+
+_**`MenuButton.popup`**_  
+> Returns the [Popup](https://github.com/goodguyry/AriaComponents/blob/master/src/Popup) instance controlling the MenuButton.
+
+### Events
+
+_**`init`**_  
+> Fired after the component is initialized.
+
+_**`stateChange`**_  
+> Fired after component state is updated.
+
+_**`destroy`**_  
+> Fired after the component is destroyed.
+
+#### Event Properties
+
+_**`CustomEvent.detail.instance`**_
+> Returns the `MenuButton` instance from which the event originated.
 
 ## References
 
