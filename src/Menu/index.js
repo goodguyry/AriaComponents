@@ -5,7 +5,6 @@ import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
 import Search from '../lib/Search';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
-import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -177,22 +176,15 @@ export default class Menu extends AriaComponent {
       link.setAttribute('aria-setsize', this.menuItemsLength);
       link.setAttribute('aria-posinset', index + 1);
 
+      // Instantiate submenu Disclosures
+      if (this.collapse && link.hasAttribute('target')) {
+        const disclosure = new Disclosure(link);
+
+        this.disclosures.push(disclosure);
+      }
+
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
-        // Instantiate submenu Disclosures
-        if (this.collapse) {
-          setUniqueId(siblingList);
-
-          const targetAttr = link.getAttribute('target');
-          if (null === targetAttr || targetAttr !== siblingList.id) {
-            link.setAttribute('target', siblingList.id);
-          }
-
-          const disclosure = new Disclosure(link);
-
-          this.disclosures.push(disclosure);
-        }
-
         // Instantiate sub-Menus.
         const subList = new Menu(siblingList);
         // Save the list's previous sibling.

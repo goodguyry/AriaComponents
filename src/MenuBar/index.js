@@ -7,7 +7,6 @@ import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import isInstanceOf from '../lib/isInstanceOf';
 import Search from '../lib/Search';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
-import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class for managing a visually persistent (horizontally-oriented) menubar,
@@ -199,17 +198,9 @@ export default class MenuBar extends AriaComponent {
 
     // Initialize popups for nested lists.
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
-      const target = controller.nextElementSibling;
-
-      // Bail if there's no target.
-      if (null === target) {
+      // Bail if there's no target attribute.
+      if (! controller.hasAttribute('target')) {
         return acc;
-      }
-
-      setUniqueId(target);
-      const targetAttr = controller.getAttribute('target');
-      if (null === targetAttr || targetAttr !== target.id) {
-        controller.setAttribute('target', target.id);
       }
 
       const popup = new Popup(
@@ -221,6 +212,8 @@ export default class MenuBar extends AriaComponent {
       );
 
       acc.popups.push(popup);
+
+      const { target } = popup;
 
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)

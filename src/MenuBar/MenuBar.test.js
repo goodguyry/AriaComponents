@@ -16,8 +16,8 @@ const menubarMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menubar">
       <li>
-        <button class="first-item">Fruit</button>
-        <ul class="sublist1">
+        <button target="first-popup" class="first-item">Fruit</button>
+        <ul id="first-popup" class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
           <li><a class="sublist1-last-item" href="example.com">Cantaloupe</a></li>
@@ -26,8 +26,8 @@ const menubarMarkup = `
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
         <svg><use href="my-icon"></use></svg>
-        <a class="third-item" href="example.com">Vegetables</a>
-        <div class="not-a-list">
+        <a target="second-popup" class="third-item" href="example.com">Vegetables</a>
+        <div id="second-popup" class="not-a-list">
           <ul class="sublist2">
             <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
             <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>
@@ -237,6 +237,6 @@ describe('Menu should destroy properly', () => {
     expect(onDestroy).toHaveBeenCalled();
 
     // Quick and dirty verification that the original markup is restored.
-    // expect(document.body.innerHTML).toEqual(menubarMarkup);
+    expect(document.body.innerHTML).toEqual(menubarMarkup);
   });
 });
