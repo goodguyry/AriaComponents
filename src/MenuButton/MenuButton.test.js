@@ -14,7 +14,7 @@ const {
 } = events;
 
 const menuButtonMarkup = `
-  <button>Open</button>
+  <button target="dropdown">Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -40,14 +40,15 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-const menuButton = new MenuButton({
+const menuButton = new MenuButton(
   controller,
-  target,
-  list,
-  onStateChange,
-  onInit,
-  onDestroy,
-});
+  {
+    list,
+    onStateChange,
+    onInit,
+    onDestroy,
+  }
+);
 
 describe('MenuButton adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {

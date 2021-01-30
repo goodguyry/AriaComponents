@@ -14,8 +14,8 @@ const {
 } = events;
 
 const listboxMarkup = `
-  <button>Choose</button>
-  <ul>
+  <button target="options">Choose</button>
+  <ul id="options">
     <li>Anchorage</li>
     <li>Baltimore</li>
     <li>Chicago</li>
@@ -44,13 +44,14 @@ const onDestroy = jest.fn();
 
 describe('Listbox with default configuration', () => {
   beforeAll(() => {
-    listbox = new Listbox({
+    listbox = new Listbox(
       controller,
-      target,
-      onStateChange,
-      onInit,
-      onDestroy,
-    });
+      {
+        onStateChange,
+        onInit,
+        onDestroy,
+      }
+    );
   });
 
   describe('Listbox adds and manipulates DOM element attributes', () => {

@@ -10,10 +10,10 @@ const {
 
 const disclosureMarkup = `
   <dl>
-    <dt class="question">
-      <button class="button">What is Lorem Ipsum?</button>
+    <dt>
+      <button target="answer">What is Lorem Ipsum?</button>
     </dt>
-    <dd class="answer">
+    <dd id="answer">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </dd>
   </dl>
@@ -22,14 +22,14 @@ const disclosureMarkup = `
 // Set up our document body
 document.body.innerHTML = disclosureMarkup;
 
-const controller = document.querySelector('.button');
-const target = document.querySelector('.answer');
+const controller = document.querySelector('button');
+const target = document.querySelector('#answer');
 
 let disclosure;
 
 describe('Disclosure with default configuration', () => {
   beforeEach(() => {
-    disclosure = new Disclosure({ controller, target });
+    disclosure = new Disclosure(controller);
   });
 
   describe('Disclosure adds and manipulates DOM element attributes', () => {
@@ -131,15 +131,16 @@ describe('Disclosure with non-default configuration', () => {
   const onDestroy = jest.fn();
 
   beforeEach(() => {
-    disclosure = new Disclosure({
+    disclosure = new Disclosure(
       controller,
-      target,
-      loadOpen: true,
-      allowOutsideClick: false,
-      onStateChange,
-      onInit,
-      onDestroy,
-    });
+      {
+        loadOpen: true,
+        allowOutsideClick: false,
+        onStateChange,
+        onInit,
+        onDestroy,
+      }
+    );
   });
 
   it('Should load open', () => {

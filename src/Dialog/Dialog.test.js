@@ -19,7 +19,7 @@ const dialogMarkup = `
       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
       sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
       mollit anim id est laborum.</p>
-      <a class="link" href="#dialog">Open dialog</a>
+      <a target="dialog" class="link" href="#dialog">Open dialog</a>
     </article>
   </main>
   <div class="wrapper" id="dialog">
@@ -49,15 +49,16 @@ const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
-const modal = new Dialog({
+const modal = new Dialog(
   controller,
-  target,
-  close,
-  content,
-  onStateChange,
-  onInit,
-  onDestroy,
-});
+  {
+    close,
+    content,
+    onStateChange,
+    onInit,
+    onDestroy,
+  }
+);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
