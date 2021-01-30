@@ -14,10 +14,10 @@ export default class Popup extends AriaComponent {
    * Create a MenuBar.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(options) {
+    super();
 
     /**
      * The component name.
@@ -31,7 +31,7 @@ export default class Popup extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The element used to trigger the Popup element.
        *
@@ -77,7 +77,7 @@ export default class Popup extends AriaComponent {
     };
 
     // Save references to the controller and target.
-    Object.assign(this, options, config);
+    Object.assign(this, defaultOptions, options);
 
     // Intial component state.
     this.state = { expanded: false };

@@ -15,10 +15,10 @@ export default class ListBox extends AriaComponent {
    * Create a ListBox.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(options) {
+    super();
 
     /**
      * The component name.
@@ -32,7 +32,7 @@ export default class ListBox extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The element used to trigger the Listbox Popup.
        *
@@ -69,8 +69,8 @@ export default class ListBox extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge options with defaults.
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.preventWindowScroll = this.preventWindowScroll.bind(this);

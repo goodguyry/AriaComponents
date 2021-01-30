@@ -25,10 +25,10 @@ export default class Dialog extends AriaComponent {
    * Create a Dialog.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(options) {
+    super();
 
     /**
      * The component name.
@@ -42,7 +42,7 @@ export default class Dialog extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The element used to trigger the dialog popup.
        *
@@ -96,11 +96,11 @@ export default class Dialog extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults and save all as instance properties.
-    Object.assign(this, options, config);
+    // Merge options with defaults and save all as instance properties.
+    Object.assign(this, defaultOptions, options);
 
     // Insert the close button if no button was passed in.
-    if (undefined === config.close && null !== this.target) {
+    if (undefined === options.close && null !== this.target) {
       this.target.insertBefore(this.close, this.target.firstChild);
     }
 

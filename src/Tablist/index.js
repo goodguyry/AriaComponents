@@ -17,9 +17,9 @@ export default class Tablist extends AriaComponent {
    * Create a Tablist.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
+  constructor(options) {
     super();
 
     /**
@@ -29,27 +29,27 @@ export default class Tablist extends AriaComponent {
      */
     this.componentName = 'Tablist';
 
-    // Warn about deprecated config value.
-    if (config.tablist) {
-      const { tablist } = config;
-      Object.assign(config, { tabs: tablist, tablist: undefined });
+    // Warn about deprecated options value.
+    if (options.tablist) {
+      const { tablist } = options;
+      Object.assign(options, { tabs: tablist, tablist: undefined });
 
-      this.warnDeprecated('config.tablist', 'config.tabs');
+      this.warnDeprecated('options.tablist', 'options.tabs');
     }
 
     // The tabs element is required to be a UL.
-    if ('UL' !== config.tabs.nodeName) {
+    if ('UL' !== options.tabs.nodeName) {
       // eslint-disable-next-line no-console
       console.warn('Tablist requires a <ul> for the tabs.');
       return;
     }
 
     /**
-     * Component configuration options.
+     * Component optionsuration options.
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The UL parent of the Tablist tabs.
        *
@@ -87,7 +87,7 @@ export default class Tablist extends AriaComponent {
     };
 
     // Save references to the tablist and panels.
-    Object.assign(this, options, config);
+    Object.assign(this, defaultOptions, options);
 
     // Intial component state.
     this.state = { activeIndex: 0 };

@@ -32,10 +32,10 @@ export default class MenuBar extends AriaComponent {
    * Create a MenuBar.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(options) {
+    super();
 
     /**
      * The component name.
@@ -44,19 +44,19 @@ export default class MenuBar extends AriaComponent {
      */
     this.componentName = 'MenuBar';
 
-    // Warn about deprecated config values.
-    Object.keys(config).forEach((prop) => {
+    // Warn about deprecated options values.
+    Object.keys(options).forEach((prop) => {
       if ('menu' === prop) {
-        const { menu } = config;
-        // Correct the config property.
-        Object.assign(config, { list: menu, menu: undefined });
+        const { menu } = options;
+        // Correct the options property.
+        Object.assign(options, { list: menu, menu: undefined });
 
-        this.warnDeprecated('config.menu', 'config.list');
+        this.warnDeprecated('options.menu', 'options.list');
       }
 
       // Deprecated callbacks.
       if (['onPopupDestroy', 'onPopupStateChange'].includes(prop)) {
-        this.warnDeprecated(`config.${prop}`);
+        this.warnDeprecated(`options.${prop}`);
       }
     });
 
@@ -65,7 +65,7 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The menubar list element.
        *
@@ -112,8 +112,8 @@ export default class MenuBar extends AriaComponent {
       onPopupInit: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge options with defaults.
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);

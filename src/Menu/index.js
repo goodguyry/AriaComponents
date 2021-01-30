@@ -27,10 +27,10 @@ export default class Menu extends AriaComponent {
    * Create a Menu.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(options) {
+    super();
 
     /**
      * The component name.
@@ -39,12 +39,12 @@ export default class Menu extends AriaComponent {
      */
     this.componentName = 'Menu';
 
-    // Warn about deprecated config value.
-    if (config.menu) {
-      const { menu } = config;
-      Object.assign(config, { list: menu, menu: undefined });
+    // Warn about deprecated options value.
+    if (options.menu) {
+      const { menu } = options;
+      Object.assign(options, { list: menu, menu: undefined });
 
-      this.warnDeprecated('config.menu', 'config.list');
+      this.warnDeprecated('options.menu', 'options.list');
     }
 
     /**
@@ -52,7 +52,7 @@ export default class Menu extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The menu's list element.
        *
@@ -92,8 +92,8 @@ export default class Menu extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge options with defaults.
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods
     this.handleListKeydown = this.handleListKeydown.bind(this);

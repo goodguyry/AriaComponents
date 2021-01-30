@@ -14,10 +14,10 @@ export default class MenuButton extends AriaComponent {
    * Create a ListBox.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(options) {
+    super();
 
     /**
      * The component name.
@@ -31,7 +31,7 @@ export default class MenuButton extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
+    const defaultOptions = {
       /**
        * The element used to trigger the Menu Popup.
        *
@@ -75,8 +75,8 @@ export default class MenuButton extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge options with defaults.
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
