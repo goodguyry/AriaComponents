@@ -27,7 +27,7 @@ export default class Dialog extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(controller, options) {
     super();
 
     /**
@@ -43,20 +43,6 @@ export default class Dialog extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The element used to trigger the dialog popup.
-       *
-       * @type {HTMLButtonElement}
-       */
-      controller: null,
-
-      /**
-       * The dialog element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
       /**
        * The site content wrapper. NOT necessarily <main>, but the element
        * wrapping all site content (including header and footer) with the sole
@@ -96,8 +82,19 @@ export default class Dialog extends AriaComponent {
       onDestroy: () => {},
     };
 
+    if (! controller.hasAttribute('target')) {
+      return false;
+    }
+
+    const targetId = controller.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      return false;
+    }
+
     // Merge options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { controller, target });
 
     // Insert the close button if no button was passed in.
     if (undefined === options.close && null !== this.target) {
@@ -142,12 +139,13 @@ export default class Dialog extends AriaComponent {
      *
      * @type {Popup}
      */
-    this.popup = new Popup({
-      controller: this.controller,
-      target: this.target,
-      type: 'dialog',
-      onStateChange: this.onPopupStateChange,
-    });
+    this.popup = new Popup(
+      this.controller,
+      {
+        type: 'dialog',
+        onStateChange: this.onPopupStateChange,
+      }
+    );
 
     /*
      * Collect the Dialog's interactive child elements. This is an initial pass

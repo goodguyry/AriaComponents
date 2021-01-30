@@ -16,7 +16,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(controller, options) {
     super();
 
     /**
@@ -32,20 +32,6 @@ export default class Popup extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The element used to trigger the Popup element.
-       *
-       * @type {HTMLButtonElement}
-       */
-      controller: null,
-
-      /**
-       * The Popup's target element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
       /**
        * The value of `aria-haspopup` must match the role of the Popup container.
        * Options: menu, listbox, tree, grid, or dialog,
@@ -76,8 +62,19 @@ export default class Popup extends AriaComponent {
       onDestroy: () => {},
     };
 
+    if (! controller.hasAttribute('target')) {
+      return false;
+    }
+
+    const targetId = controller.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      return false;
+    }
+
     // Save references to the controller and target.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { controller, target });
 
     // Intial component state.
     this.state = { expanded: false };

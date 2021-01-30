@@ -16,7 +16,7 @@ export default class MenuButton extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(controller, options) {
     super();
 
     /**
@@ -32,20 +32,6 @@ export default class MenuButton extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The element used to trigger the Menu Popup.
-       *
-       * @type {HTMLButtonElement}
-       */
-      controller: null,
-
-      /**
-       * The Menu wrapper element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
       /**
        * The Menu element.
        *
@@ -75,8 +61,19 @@ export default class MenuButton extends AriaComponent {
       onDestroy: () => {},
     };
 
+    if (! controller.hasAttribute('target')) {
+      return false;
+    }
+
+    const targetId = controller.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      return false;
+    }
+
     // Merge options with defaults.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { controller, target });
 
     // Bind class methods.
     this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
@@ -102,19 +99,20 @@ export default class MenuButton extends AriaComponent {
      *
      * @type {Popup}
      */
-    this.popup = new Popup({
-      controller: this.controller,
-      target: this.target,
-      type: 'menu',
-      onStateChange: this.onPopupStateChange,
-    });
+    this.popup = new Popup(
+      this.controller,
+      {
+        type: 'menu',
+        onStateChange: this.onPopupStateChange,
+      }
+    );
 
     // Initialize the Menu if we passed one in.
     if (null !== this.list && 'UL' === this.list.nodeName) {
-      this.menu = new Menu({ list: this.list });
+      this.menu = new Menu(this.list);
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
-      this.menu = new Menu({ list: this.target });
+      this.menu = new Menu(this.target);
     }
 
     // Additional event listener(s).

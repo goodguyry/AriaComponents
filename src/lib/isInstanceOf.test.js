@@ -5,7 +5,7 @@ import isInstanceOf from './isInstanceOf';
 
 // Set up our document body
 document.body.innerHTML = `
-  <button>Open</button>
+  <button target="dropdown">Open</button>
   <div class="wrapper" id="dropdown">
     <ul class="menu">
       <li><a href="example.com"></a></li>
@@ -21,8 +21,8 @@ const target = document.querySelector('.wrapper');
 
 const list = document.querySelector('.menu');
 
-const popup = new Popup({ controller, target }); // eslint-disable-line no-unused-vars
-const menu = new Menu({ list }); // eslint-disable-line no-unused-vars
+const popup = new Popup(controller); // eslint-disable-line no-unused-vars
+const menu = new Menu(list); // eslint-disable-line no-unused-vars
 
 describe('Should return whether a given object is an instance of a class', () => {
   it('Should be a Popup instance',

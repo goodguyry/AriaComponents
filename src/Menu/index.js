@@ -5,6 +5,7 @@ import isInstanceOf from '../lib/isInstanceOf';
 import { nextPreviousFromUpDown } from '../lib/nextPrevious';
 import Search from '../lib/Search';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
+import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -29,7 +30,7 @@ export default class Menu extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(list, options) {
     super();
 
     /**
@@ -39,27 +40,12 @@ export default class Menu extends AriaComponent {
      */
     this.componentName = 'Menu';
 
-    // Warn about deprecated options value.
-    if (options.menu) {
-      const { menu } = options;
-      Object.assign(options, { list: menu, menu: undefined });
-
-      this.warnDeprecated('options.menu', 'options.list');
-    }
-
     /**
      * Options shape.
      *
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The menu's list element.
-       *
-       * @type {HTMLUListElement}
-       */
-      list: null,
-
       /**
        * Instantiate submenus as Disclosures.
        *
@@ -93,7 +79,7 @@ export default class Menu extends AriaComponent {
     };
 
     // Merge options with defaults.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { list });
 
     // Bind class methods
     this.handleListKeydown = this.handleListKeydown.bind(this);
@@ -195,16 +181,20 @@ export default class Menu extends AriaComponent {
       if (siblingList) {
         // Instantiate submenu Disclosures
         if (this.collapse) {
-          const disclosure = new Disclosure({
-            controller: link,
-            target: siblingList,
-          });
+          setUniqueId(siblingList);
+
+          const targetAttr = link.getAttribute('target');
+          if (null === targetAttr || targetAttr !== siblingList.id) {
+            link.setAttribute('target', siblingList.id);
+          }
+
+          const disclosure = new Disclosure(link);
 
           this.disclosures.push(disclosure);
         }
 
         // Instantiate sub-Menus.
-        const subList = new Menu({ list: siblingList });
+        const subList = new Menu(siblingList);
         // Save the list's previous sibling.
         subList.previousSibling = link;
       }

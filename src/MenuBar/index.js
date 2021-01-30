@@ -7,6 +7,7 @@ import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import isInstanceOf from '../lib/isInstanceOf';
 import Search from '../lib/Search';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
+import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class for managing a visually persistent (horizontally-oriented) menubar,
@@ -34,7 +35,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(list, options) {
     super();
 
     /**
@@ -44,35 +45,12 @@ export default class MenuBar extends AriaComponent {
      */
     this.componentName = 'MenuBar';
 
-    // Warn about deprecated options values.
-    Object.keys(options).forEach((prop) => {
-      if ('menu' === prop) {
-        const { menu } = options;
-        // Correct the options property.
-        Object.assign(options, { list: menu, menu: undefined });
-
-        this.warnDeprecated('options.menu', 'options.list');
-      }
-
-      // Deprecated callbacks.
-      if (['onPopupDestroy', 'onPopupStateChange'].includes(prop)) {
-        this.warnDeprecated(`options.${prop}`);
-      }
-    });
-
     /**
      * Options shape.
      *
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The menubar list element.
-       *
-       * @type {HTMLUListElement}
-       */
-      list: null,
-
       /**
        * Selector used to validate menu items.
        *
@@ -113,7 +91,7 @@ export default class MenuBar extends AriaComponent {
     };
 
     // Merge options with defaults.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { list });
 
     // Bind class methods.
     this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
@@ -228,12 +206,19 @@ export default class MenuBar extends AriaComponent {
         return acc;
       }
 
-      const popup = new Popup({
+      setUniqueId(target);
+      const targetAttr = controller.getAttribute('target');
+      if (null === targetAttr || targetAttr !== target.id) {
+        controller.setAttribute('target', target.id);
+      }
+
+      const popup = new Popup(
         controller,
-        target,
-        onInit: this.onPopupInit,
-        type: 'menu',
-      });
+        {
+          onInit: this.onPopupInit,
+          type: 'menu',
+        }
+      );
 
       acc.popups.push(popup);
 
@@ -248,7 +233,7 @@ export default class MenuBar extends AriaComponent {
       }
 
       // Initialize submenu Menus.
-      const subMenu = new Menu({ list, itemMatches: this.itemMatches });
+      const subMenu = new Menu(list, { itemMatches: this.itemMatches });
       target.addEventListener('keydown', this.handleMenuItemKeydown);
 
       // Save the list's previous sibling.

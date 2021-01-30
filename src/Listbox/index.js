@@ -17,7 +17,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(controller, options) {
     super();
 
     /**
@@ -33,20 +33,6 @@ export default class ListBox extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The element used to trigger the Listbox Popup.
-       *
-       * @type {HTMLButtonElement}
-       */
-      controller: null,
-
-      /**
-       * The Listbox element.
-       *
-       * @type {HTMLUListElement}
-       */
-      target: null,
-
       /**
        * Callback to run after the component initializes.
        *
@@ -69,8 +55,19 @@ export default class ListBox extends AriaComponent {
       onDestroy: () => {},
     };
 
+    if (! controller.hasAttribute('target')) {
+      return false;
+    }
+
+    const targetId = controller.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      return false;
+    }
+
     // Merge options with defaults.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { controller, target });
 
     // Bind class methods.
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
@@ -141,12 +138,13 @@ export default class ListBox extends AriaComponent {
      *
      * @type {Popup}
      */
-    this.popup = new Popup({
-      controller: this.controller,
-      target: this.target,
-      type: 'listbox',
-      onStateChange: this.onPopupStateChange,
-    });
+    this.popup = new Popup(
+      this.controller,
+      {
+        type: 'listbox',
+        onStateChange: this.onPopupStateChange,
+      }
+    );
 
     /*
      * Add the 'listbox' role to signify a component that presents a listbox of

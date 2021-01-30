@@ -17,7 +17,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(controller, options) {
     super();
 
     /**
@@ -33,20 +33,6 @@ export default class Disclosure extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The element used to trigger the Disclosure Popup.
-       *
-       * @type {HTMLElement}
-       */
-      controller: null,
-
-      /**
-       * The Disclosure element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
       /**
        * Load the Disclosure open by default.
        *
@@ -83,8 +69,19 @@ export default class Disclosure extends AriaComponent {
       onDestroy: () => {},
     };
 
+    if (! controller.hasAttribute('target')) {
+      return false;
+    }
+
+    const targetId = controller.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      return false;
+    }
+
     // Merge options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { controller, target });
 
     // Initial component state.
     this.state = { expanded: this.loadOpen };

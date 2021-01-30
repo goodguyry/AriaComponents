@@ -19,7 +19,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(options) {
+  constructor(tabs, options) {
     super();
 
     /**
@@ -29,16 +29,8 @@ export default class Tablist extends AriaComponent {
      */
     this.componentName = 'Tablist';
 
-    // Warn about deprecated options value.
-    if (options.tablist) {
-      const { tablist } = options;
-      Object.assign(options, { tabs: tablist, tablist: undefined });
-
-      this.warnDeprecated('options.tablist', 'options.tabs');
-    }
-
     // The tabs element is required to be a UL.
-    if ('UL' !== options.tabs.nodeName) {
+    if ('UL' !== tabs.nodeName) {
       // eslint-disable-next-line no-console
       console.warn('Tablist requires a <ul> for the tabs.');
       return;
@@ -50,20 +42,6 @@ export default class Tablist extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
-      /**
-       * The UL parent of the Tablist tabs.
-       *
-       * @type {HTMLUListElement}
-       */
-      list: null,
-
-      /**
-       * The Tablist panel elements.
-       *
-       * @type {NodeList}
-       */
-      panels: null,
-
       /**
        * Callback to run after the component initializes.
        *
@@ -87,7 +65,7 @@ export default class Tablist extends AriaComponent {
     };
 
     // Save references to the tablist and panels.
-    Object.assign(this, defaultOptions, options);
+    Object.assign(this, defaultOptions, options, { tabs });
 
     // Intial component state.
     this.state = { activeIndex: 0 };
@@ -101,15 +79,6 @@ export default class Tablist extends AriaComponent {
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     /**
-     * Tablist panels.
-     *
-     * @type {array}
-     */
-    if (! Array.isArray(this.panels)) {
-      this.panels = Array.prototype.slice.call(this.panels);
-    }
-
-    /**
      * Collect the anchor inside of each list item. Using anchors makes
      * providing a non-JS fallback as simple as using the associated tabpanel's
      * ID attribute as the link's HREF.
@@ -118,11 +87,23 @@ export default class Tablist extends AriaComponent {
      *
      * @type {array}
      */
-    this.tabLinks = Array.prototype.filter.call(
-      this.tabs.children,
-      (child) => null !== child.querySelector('a[href]')
-    )
+    this.tabLinks = Array.from(this.tabs.children)
+      .filter((child) => null !== child.querySelector('a[href]'))
       .map((child) => child.querySelector('a[href]'));
+
+    /**
+     * Tablist panels.
+     *
+     * @type {array}
+     */
+    this.panels = this.tabLinks.reduce((acc, tabLink) => {
+      const panel = document.getElementById(tabLink.hash.replace('#', ''));
+      if (null !== panel) {
+        return [...acc, panel];
+      }
+
+      return acc;
+    }, []);
 
     // Only initialize if tabs and panels are equal in number.
     if (this.tabLinks.length === this.panels.length) {
