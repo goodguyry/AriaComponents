@@ -20,6 +20,12 @@ export default class Disclosure extends AriaComponent {
   constructor(controller, options) {
     super();
 
+    const target = AriaComponent.getTargetElement(controller);
+
+    if (null === target) {
+      return false;
+    }
+
     /**
      * The component name.
      *
@@ -68,17 +74,6 @@ export default class Disclosure extends AriaComponent {
        */
       onDestroy: () => {},
     };
-
-    if (! controller.hasAttribute('target')) {
-      return false;
-    }
-
-    const targetId = controller.getAttribute('target');
-    const target = document.getElementById(targetId);
-
-    if (null === target) {
-      return false;
-    }
 
     // Merge options with defaults and save all as instance properties.
     Object.assign(this, defaultOptions, options, { controller, target });

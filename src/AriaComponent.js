@@ -3,6 +3,18 @@
  */
 export default class AriaComponent {
   /**
+   * Get the target element based on the activatingElement's target attribute.
+   *
+   * @param  {HTMLElement} activatingElement The components controlling element.
+   * @return {HTMLElement|null}
+   */
+  static getTargetElement(activatingElement) {
+    const targetId = activatingElement.getAttribute('target');
+
+    return document.getElementById(targetId);
+  }
+
+  /**
    * Create an AriaComponent.
    * @constructor
    */

@@ -19,6 +19,12 @@ export default class Popup extends AriaComponent {
   constructor(controller, options) {
     super();
 
+    const target = AriaComponent.getTargetElement(controller);
+
+    if (null === target) {
+      return false;
+    }
+
     /**
      * The component name.
      *
@@ -61,17 +67,6 @@ export default class Popup extends AriaComponent {
        */
       onDestroy: () => {},
     };
-
-    if (! controller.hasAttribute('target')) {
-      return false;
-    }
-
-    const targetId = controller.getAttribute('target');
-    const target = document.getElementById(targetId);
-
-    if (null === target) {
-      return false;
-    }
 
     // Save references to the controller and target.
     Object.assign(this, defaultOptions, options, { controller, target });

@@ -198,8 +198,10 @@ export default class MenuBar extends AriaComponent {
 
     // Initialize popups for nested lists.
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
-      // Bail if there's no target attribute.
-      if (! controller.hasAttribute('target')) {
+      const target = AriaComponent.getTargetElement(controller);
+
+      // Bail if there's valid target element.
+      if (null === target) {
         return acc;
       }
 
@@ -212,8 +214,6 @@ export default class MenuBar extends AriaComponent {
       );
 
       acc.popups.push(popup);
-
-      const { target } = popup;
 
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)
