@@ -20,11 +20,7 @@ export default class ListBox extends AriaComponent {
   constructor(controller, options) {
     super(controller);
 
-    const target = AriaComponent.getTargetElement(controller);
-
-    if (null === target) {
-      return false;
-    }
+    const target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.

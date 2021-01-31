@@ -9,9 +9,30 @@ export default class AriaComponent {
    * @return {HTMLElement|null}
    */
   static getTargetElement(activatingElement) {
-    const targetId = activatingElement.getAttribute('target');
+    if (! activatingElement.hasAttribute('target')) {
+      AriaComponent.configurationError(
+        'The controlling element is missing the required \'target\' attribute'
+      );
+    }
 
-    return document.getElementById(targetId);
+    const targetId = activatingElement.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      AriaComponent.configurationError('A target element is required');
+    }
+
+    return target;
+  }
+
+  /**
+   * Throw a confguration error.
+   *
+   * @param {string} message The error message.
+   */
+  static configurationError(message) {
+    // eslint-disable-next-line no-console, max-len
+    throw new Error(`Configuration error: ${message}`);
   }
 
   /**
@@ -20,7 +41,7 @@ export default class AriaComponent {
    */
   constructor(element) {
     if (false === Boolean(element)) {
-      return false;
+      AriaComponent.configurationError('A controlling element is required');
     }
 
     /**
