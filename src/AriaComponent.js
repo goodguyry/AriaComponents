@@ -11,7 +11,7 @@ export default class AriaComponent {
   static getTargetElement(activatingElement) {
     if (! activatingElement.hasAttribute('target')) {
       AriaComponent.configurationError(
-        'The controlling element is missing the required \'target\' attribute'
+        'The component element is missing the required \'target\' attribute'
       );
     }
 
@@ -19,7 +19,9 @@ export default class AriaComponent {
     const target = document.getElementById(targetId);
 
     if (null === target) {
-      AriaComponent.configurationError('A target element is required');
+      AriaComponent.configurationError(
+        `A target element with ID of '${targetId}' is not found`
+      );
     }
 
     return target;
@@ -41,7 +43,9 @@ export default class AriaComponent {
    */
   constructor(element) {
     if (false === Boolean(element)) {
-      AriaComponent.configurationError('A controlling element is required');
+      AriaComponent.configurationError(
+        'The first parameter must be a valid HTMLElement'
+      );
     }
 
     /**
