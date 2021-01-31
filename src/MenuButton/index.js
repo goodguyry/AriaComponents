@@ -73,7 +73,7 @@ export default class MenuButton extends AriaComponent {
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    // Only initialize if we passed in controller and target elements.
+    // Only initialize if we have controller and target elements.
     if (null !== this.controller && null !== this.target) {
       this.init();
     }

@@ -20,17 +20,17 @@ Class for setting up an interactive popup button to activate a target element.
 ```javascript
 import { Popup } from 'aria-components';
 
-const button = document.querySelector('button[target]');
-const popup = new Popup(button);
+const controller = document.querySelector('button[target]');
+const popup = new Popup(controller);
 ```
 
 ## Constructor
 
 ```javascript
-Popup(activatingElement = null, options = {});
+Popup(controller = null, options = {});
 ```
 
-_**`activatingElement`**_ `HTMLElement`  
+_**`controller`**_ `HTMLElement`  
 > The element used to activate the Popup target; required to have a `target`  
 attribute with a value matching the `id` attribute value of the target element.
 
@@ -69,7 +69,7 @@ _**`Popup.toString()`**_
 
 ### Properties
 
-_**`Popup.activatingElement`**_  
+_**`Popup.controller`**_  
 > Returns the Popup's activating element.
 
 _**`Popup.target`**_  

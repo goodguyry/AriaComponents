@@ -3,19 +3,19 @@
  */
 export default class AriaComponent {
   /**
-   * Get the target element based on the activatingElement's target attribute.
+   * Get the target element based on the controller's target attribute.
    *
-   * @param  {HTMLElement} activatingElement The components controlling element.
+   * @param  {HTMLElement} controller The components controlling element.
    * @return {HTMLElement|null}
    */
-  static getTargetElement(activatingElement) {
-    if (! activatingElement.hasAttribute('target')) {
+  static getTargetElement(controller) {
+    if (! controller.hasAttribute('target')) {
       AriaComponent.configurationError(
         'The component element is missing the required \'target\' attribute'
       );
     }
 
-    const targetId = activatingElement.getAttribute('target');
+    const targetId = controller.getAttribute('target');
     const target = document.getElementById(targetId);
 
     if (null === target) {

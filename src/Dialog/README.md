@@ -40,17 +40,17 @@ Class for setting up an interactive Dialog element.
 ```javascript
 import { Dialog } from 'aria-components';
 
-const button = document.querySelector('button[target]');
-const dialog = new Dialog(button);
+const controller = document.querySelector('button[target]');
+const dialog = new Dialog(controller);
 ```
 
 ## Constructor
 
 ```javascript
-Dialog(activatingElement = null, options = {});
+Dialog(controller = null, options = {});
 ```
 
-_**`activatingElement`**_ `HTMLElement`  
+_**`controller`**_ `HTMLElement`  
 > The element used to activate the Dialog target; required to have a `target`  
 attribute with a value matching the `id` attribute value of the target element.
 
@@ -88,7 +88,7 @@ _**`Dialog.toString()`**_
 
 ### Properties
 
-_**`Dialog.activatingElement`**_  
+_**`Dialog.controller`**_  
 > Returns the Dialog's activating element.
 
 _**`Dialog.target`**_  
