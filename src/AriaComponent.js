@@ -33,7 +33,6 @@ export default class AriaComponent {
    * @param {string} message The error message.
    */
   static configurationError(message) {
-    // eslint-disable-next-line no-console, max-len
     throw new Error(`Configuration error: ${message}`);
   }
 
