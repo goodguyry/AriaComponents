@@ -30,7 +30,7 @@ export default class Menu extends AriaComponent {
    * @param {object} options The options object.
    */
   constructor(list, options) {
-    super();
+    super(list);
 
     /**
      * The component name.

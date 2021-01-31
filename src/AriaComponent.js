@@ -18,7 +18,11 @@ export default class AriaComponent {
    * Create an AriaComponent.
    * @constructor
    */
-  constructor() {
+  constructor(element) {
+    if (false === Boolean(element)) {
+      return false;
+    }
+
     /**
      * Component state.
      *

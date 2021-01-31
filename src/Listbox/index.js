@@ -18,7 +18,7 @@ export default class ListBox extends AriaComponent {
    * @param {object} options The options object.
    */
   constructor(controller, options) {
-    super();
+    super(controller);
 
     const target = AriaComponent.getTargetElement(controller);
 

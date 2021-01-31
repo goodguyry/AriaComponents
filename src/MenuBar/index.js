@@ -35,7 +35,7 @@ export default class MenuBar extends AriaComponent {
    * @param {object} options The options object.
    */
   constructor(list, options) {
-    super();
+    super(list);
 
     /**
      * The component name.

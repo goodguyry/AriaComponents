@@ -20,7 +20,7 @@ export default class Tablist extends AriaComponent {
    * @param {object} options The options object.
    */
   constructor(tabs, options) {
-    super();
+    super(tabs);
 
     /**
      * The component name.
