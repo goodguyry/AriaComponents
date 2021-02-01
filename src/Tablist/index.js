@@ -36,7 +36,7 @@ export default class Tablist extends AriaComponent {
     this.componentName = 'Tablist';
 
     /**
-     * Component optionsuration options.
+     * Component configuration options.
      *
      * @type {object}
      */
