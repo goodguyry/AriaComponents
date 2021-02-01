@@ -87,10 +87,7 @@ export default class Disclosure extends AriaComponent {
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    // Check for a valid controller and target before initializing.
-    if (null !== this.controller && null !== this.target) {
-      this.init();
-    }
+    this.init();
   }
 
   /**

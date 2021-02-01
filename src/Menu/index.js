@@ -32,6 +32,12 @@ export default class Menu extends AriaComponent {
   constructor(list, options) {
     super(list);
 
+    if ('UL' !== list.nodeName) {
+      AriaComponent.configurationError(
+        'The component element nodeName must be `UL`'
+      );
+    }
+
     /**
      * The component name.
      *
@@ -84,10 +90,7 @@ export default class Menu extends AriaComponent {
     this.listHandleKeydown = this.listHandleKeydown.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    // Only initialize if we passed in a <ul>.
-    if (null !== this.list && 'UL' === this.list.nodeName) {
-      this.init();
-    }
+    this.init();
   }
 
   /**

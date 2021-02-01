@@ -22,19 +22,18 @@ export default class Tablist extends AriaComponent {
   constructor(tabs, options) {
     super(tabs);
 
+    if ('UL' !== tabs.nodeName) {
+      AriaComponent.configurationError(
+        'The component element nodeName must be `UL`'
+      );
+    }
+
     /**
      * The component name.
      *
      * @type {string}
      */
     this.componentName = 'Tablist';
-
-    // The tabs element is required to be a UL.
-    if ('UL' !== tabs.nodeName) {
-      // eslint-disable-next-line no-console
-      console.warn('Tablist requires a <ul> for the tabs.');
-      return;
-    }
 
     /**
      * Component optionsuration options.

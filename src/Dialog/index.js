@@ -87,6 +87,16 @@ export default class Dialog extends AriaComponent {
     // Merge options with defaults and save all as instance properties.
     Object.assign(this, defaultOptions, options, { controller, target });
 
+    // Ensure the target isn't within this.content
+    if (
+      false === Boolean(this.content)
+      || this.content.contains(this.target)
+    ) {
+      AriaComponent.configurationError(
+        'The content cannot contain the dialog element'
+      );
+    }
+
     // Insert the close button if no button was passed in.
     if (undefined === options.close && null !== this.target) {
       this.target.insertBefore(this.close, this.target.firstChild);
@@ -101,18 +111,7 @@ export default class Dialog extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    /*
-     * Initialize the component if all required elements are accounted for. The
-     * final check is to ensure the target isn't within this.content
-     */
-    if (
-      null !== this.controller
-      && null !== this.target
-      && null !== this.content
-      && ! this.content.contains(this.target)
-    ) {
-      this.init();
-    }
+    this.init();
   }
 
   /**

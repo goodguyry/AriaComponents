@@ -82,21 +82,7 @@ export default class Popup extends AriaComponent {
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    /**
-     * Check if the controller is a button, but only if it doesn't already have
-     * a role attribute, since we'll be adding the role and allowing focus.
-     *
-     * @type {bool}
-     */
-    this.controllerIsNotAButton = (
-      'BUTTON' !== this.controller.nodeName
-      && null === this.controller.getAttribute('role')
-    );
-
-    // Check for a valid controller and target before initializing.
-    if (null !== this.controller && null !== this.target) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
@@ -140,6 +126,17 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-expanded', 'false');
     this.controller.setAttribute('aria-controls', this.target.id);
     setUniqueId(this.controller);
+
+    /**
+     * Check if the controller is a button, but only if it doesn't already have
+     * a role attribute, since we'll be adding the role and allowing focus.
+     *
+     * @type {bool}
+     */
+    this.controllerIsNotAButton = (
+      'BUTTON' !== this.controller.nodeName
+      && null === this.controller.getAttribute('role')
+    );
 
     /*
      * Use the button role on non-button elements.
