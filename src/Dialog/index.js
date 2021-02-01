@@ -137,6 +137,9 @@ export default class Dialog extends AriaComponent {
       }
     );
 
+    // Allow focus on the target element.
+    this.target.setAttribute('tabindex', '0');
+
     /*
      * Collect the Dialog's interactive child elements. This is an initial pass
      * to ensure values exists, but the interactive children will be collected
@@ -191,7 +194,7 @@ export default class Dialog extends AriaComponent {
       this.content.setAttribute('aria-hidden', 'true');
       this.content.setAttribute('hidden', '');
       document.body.addEventListener('keydown', this.handleKeydownEsc);
-      this.close.focus();
+      this.target.focus();
     } else {
       this.content.setAttribute('aria-hidden', 'false');
       this.content.removeAttribute('hidden');
@@ -279,6 +282,8 @@ export default class Dialog extends AriaComponent {
 
     // Remove the `aria-hidden` attribute from the content wrapper.
     this.content.removeAttribute('aria-hidden');
+    // Remove tabIndex attribute from target.
+    this.target.removeAttribute('tabindex');
 
     // Remove event listeners.
     this.close.removeEventListener('click', this.hide);

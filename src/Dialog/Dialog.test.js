@@ -91,7 +91,7 @@ describe('Dialog with default configuration', () => {
     it('Should reflect the accurate state', () => {
       modal.show();
       expect(modal.getState().expanded).toBeTruthy();
-      expect(document.activeElement).toEqual(modal.close);
+      expect(document.activeElement).toEqual(target);
       expect(onStateChange).toHaveBeenCalled();
 
       modal.hide();
