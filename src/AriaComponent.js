@@ -41,9 +41,10 @@ export default class AriaComponent {
    * @constructor
    */
   constructor(element) {
-    if (false === Boolean(element)) {
+    // Validate the component element.
+    if (false === Boolean(element) || ! (element instanceof HTMLElement)) {
       AriaComponent.configurationError(
-        'The first parameter must be a valid HTMLElement'
+        'The component element must be a valid HTMLElement'
       );
     }
 
