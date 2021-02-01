@@ -75,9 +75,9 @@ export default class Popup extends AriaComponent {
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
-    this.controllerClickHandler = this.controllerClickHandler.bind(this);
-    this.controllerKeyDownHandler = this.controllerKeyDownHandler.bind(this);
-    this.targetKeyDownHandler = this.targetKeyDownHandler.bind(this);
+    this.controllerHandleClick = this.controllerHandleClick.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
+    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.hideOnTabOut = this.hideOnTabOut.bind(this);
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -167,9 +167,9 @@ export default class Popup extends AriaComponent {
     this.target.setAttribute('hidden', '');
 
     // Add event listeners
-    this.controller.addEventListener('click', this.controllerClickHandler);
-    this.controller.addEventListener('keydown', this.controllerKeyDownHandler);
-    this.target.addEventListener('keydown', this.targetKeyDownHandler);
+    this.controller.addEventListener('click', this.controllerHandleClick);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
+    this.target.addEventListener('keydown', this.targetHandleKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
     // Run {initCallback}
@@ -211,7 +211,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerKeyDownHandler(event) {
+  controllerHandleKeydown(event) {
     const { expanded } = this.state;
     const {
       ESC,
@@ -226,7 +226,7 @@ export default class Popup extends AriaComponent {
        * Treat the Spacebar and Return keys as clicks in case the controller is
        * not a <button>.
        */
-      this.controllerClickHandler(event);
+      this.controllerHandleClick(event);
     } else if (expanded) {
       if (ESC === keyCode) {
         event.preventDefault();
@@ -256,7 +256,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetKeyDownHandler(event) {
+  targetHandleKeydown(event) {
     const { ESC, TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
     const { expanded } = this.state;
@@ -301,7 +301,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerClickHandler(event) {
+  controllerHandleClick(event) {
     event.preventDefault();
     const { expanded } = this.state;
 
@@ -377,12 +377,12 @@ export default class Popup extends AriaComponent {
     tabIndexAllow(this.interactiveChildElements);
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.controllerClickHandler);
+    this.controller.removeEventListener('click', this.controllerHandleClick);
     this.controller.removeEventListener(
       'keydown',
-      this.controllerKeyDownHandler
+      this.controllerHandleKeydown
     );
-    this.target.removeEventListener('keydown', this.targetKeyDownHandler);
+    this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('click', this.hideOnOutsideClick);
 
     // Reset initial state.

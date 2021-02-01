@@ -62,10 +62,10 @@ export default class ListBox extends AriaComponent {
 
     // Bind class methods.
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
-    this.handleControllerKeyup = this.handleControllerKeyup.bind(this);
-    this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
-    this.handleTargetClicks = this.handleTargetClicks.bind(this);
-    this.handleTargetBlur = this.handleTargetBlur.bind(this);
+    this.controllerHandleKeyup = this.controllerHandleKeyup.bind(this);
+    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
+    this.targetHandleClick = this.targetHandleClick.bind(this);
+    this.targetHandleBlur = this.targetHandleBlur.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
@@ -152,10 +152,10 @@ export default class ListBox extends AriaComponent {
     this.target.setAttribute('tabindex', '-1');
 
     // Add event listeners.
-    this.controller.addEventListener('keydown', this.handleControllerKeyup);
-    this.target.addEventListener('keydown', this.handleTargetKeydown);
-    this.target.addEventListener('click', this.handleTargetClicks);
-    this.target.addEventListener('blur', this.handleTargetBlur);
+    this.controller.addEventListener('keydown', this.controllerHandleKeyup);
+    this.target.addEventListener('keydown', this.targetHandleKeydown);
+    this.target.addEventListener('click', this.targetHandleClick);
+    this.target.addEventListener('blur', this.targetHandleBlur);
 
     // Prevent scrolling when using UP/DOWN arrows on the button
     window.addEventListener('keydown', this.preventWindowScroll);
@@ -264,7 +264,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleControllerKeyup(event) {
+  controllerHandleKeyup(event) {
     const { UP, DOWN } = keyCodes;
 
     if ([UP, DOWN].includes(event.keyCode)) {
@@ -279,7 +279,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTargetKeydown(event) {
+  targetHandleKeydown(event) {
     const { activeDescendant } = this.state;
     const { keyCode } = event;
     const {
@@ -370,7 +370,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTargetClicks(event) {
+  targetHandleClick(event) {
     this.setState({ activeDescendant: event.target });
     this.hide();
   }
@@ -378,7 +378,7 @@ export default class ListBox extends AriaComponent {
   /**
    * Close the Listbox when focus is moved away from the target.
    */
-  handleTargetBlur() {
+  targetHandleBlur() {
     // Use Popup state here, since the Popup drives the Listbox state.
     if (this.popup.getState().expanded) {
       this.hide();
@@ -434,10 +434,10 @@ export default class ListBox extends AriaComponent {
     this.target.removeAttribute('aria-activedescendant');
 
     // Remove event listeners.
-    this.controller.removeEventListener('keyup', this.handleControllerKeyup);
-    this.target.removeEventListener('keydown', this.handleTargetKeydown);
-    this.target.removeEventListener('click', this.handleTargetClicks);
-    this.target.removeEventListener('blur', this.handleTargetBlur);
+    this.controller.removeEventListener('keyup', this.controllerHandleKeyup);
+    this.target.removeEventListener('keydown', this.targetHandleKeydown);
+    this.target.removeEventListener('click', this.targetHandleClick);
+    this.target.removeEventListener('blur', this.targetHandleBlur);
     window.removeEventListener('keydown', this.preventWindowScroll);
 
     // Run {destroyCallback}

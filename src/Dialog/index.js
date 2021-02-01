@@ -94,7 +94,7 @@ export default class Dialog extends AriaComponent {
 
     // Bind class methods
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
-    this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
+    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
@@ -147,7 +147,7 @@ export default class Dialog extends AriaComponent {
 
     // Add event listeners.
     this.close.addEventListener('click', this.hide);
-    this.target.addEventListener('keydown', this.handleTargetKeydown);
+    this.target.addEventListener('keydown', this.targetHandleKeydown);
 
     /*
      * Remove clashing Popup event listener. This Popup event listener is
@@ -155,7 +155,7 @@ export default class Dialog extends AriaComponent {
      */
     this.popup.target.removeEventListener(
       'keydown',
-      this.popup.targetKeyDownHandler
+      this.popup.targetHandleKeydown
     );
 
     /**
@@ -222,7 +222,7 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  handleTargetKeydown(event) {
+  targetHandleKeydown(event) {
     const { TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
     const { expanded } = this.state;
@@ -283,7 +283,7 @@ export default class Dialog extends AriaComponent {
 
     // Remove event listeners.
     this.close.removeEventListener('click', this.hide);
-    this.target.removeEventListener('keydown', this.handleTargetKeydown);
+    this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
     /* Run {destroyCallback} */

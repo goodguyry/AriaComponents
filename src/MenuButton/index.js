@@ -67,7 +67,7 @@ export default class MenuButton extends AriaComponent {
     Object.assign(this, defaultOptions, options, { controller, target });
 
     // Bind class methods.
-    this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
@@ -107,7 +107,7 @@ export default class MenuButton extends AriaComponent {
     }
 
     // Additional event listener(s).
-    this.controller.addEventListener('keydown', this.handleControllerKeydown);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
 
     /**
      * Set initial state.
@@ -137,7 +137,7 @@ export default class MenuButton extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleControllerKeydown(event) {
+  controllerHandleKeydown(event) {
     const { keyCode } = event;
     const {
       RETURN,
@@ -197,7 +197,7 @@ export default class MenuButton extends AriaComponent {
     // Remove event listener.
     this.controller.removeEventListener(
       'keydown',
-      this.handleControllerKeydown
+      this.controllerHandleKeydown
     );
 
     // Run {destroyCallback}

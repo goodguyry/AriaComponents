@@ -82,7 +82,7 @@ export default class Disclosure extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
-    this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.toggleExpandedState = this.toggleExpandedState.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
@@ -158,7 +158,7 @@ export default class Disclosure extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
-    this.controller.addEventListener('keydown', this.handleControllerKeydown);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
     if (! this.allowOutsideClick) {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
@@ -217,7 +217,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleControllerKeydown(event) {
+  controllerHandleKeydown(event) {
     const { SPACE, RETURN } = keyCodes;
     const { keyCode } = event;
 
@@ -295,7 +295,7 @@ export default class Disclosure extends AriaComponent {
     this.controller.removeEventListener('click', this.toggleExpandedState);
     this.controller.removeEventListener(
       'keydown',
-      this.handleControllerKeydown
+      this.controllerHandleKeydown
     );
     document.body.removeEventListener('click', this.closeOnOutsideClick);
 

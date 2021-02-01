@@ -93,9 +93,9 @@ export default class MenuBar extends AriaComponent {
     Object.assign(this, defaultOptions, options, { list });
 
     // Bind class methods.
-    this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
-    this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
-    this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
+    this.menubarHandleKeydown = this.menubarHandleKeydown.bind(this);
+    this.menubarHandleClick = this.menubarHandleClick.bind(this);
+    this.menuItemHandleKeydown = this.menuItemHandleKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.destroy = this.destroy.bind(this);
 
@@ -177,8 +177,8 @@ export default class MenuBar extends AriaComponent {
       // Set menubar item role.
       link.parentElement.setAttribute('role', 'presentation');
 
-      link.parentElement.addEventListener('keydown', this.handleMenuBarKeydown);
-      link.addEventListener('click', this.handleMenuBarClick);
+      link.parentElement.addEventListener('keydown', this.menubarHandleKeydown);
+      link.addEventListener('click', this.menubarHandleClick);
     });
 
     // Collect first and last MenuBar items and merge them in as instance properties.
@@ -227,7 +227,7 @@ export default class MenuBar extends AriaComponent {
 
       // Initialize submenu Menus.
       const subMenu = new Menu(list, { itemMatches: this.itemMatches });
-      target.addEventListener('keydown', this.handleMenuItemKeydown);
+      target.addEventListener('keydown', this.menuItemHandleKeydown);
 
       // Save the list's previous sibling.
       subMenu.previousSibling = controller;
@@ -279,7 +279,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  handleMenuBarKeydown(event) {
+  menubarHandleKeydown(event) {
     const {
       LEFT,
       RIGHT,
@@ -387,7 +387,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  handleMenuBarClick(event) {
+  menubarHandleClick(event) {
     this.setState({
       menubarItem: event.target,
     });
@@ -398,7 +398,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  handleMenuItemKeydown(event) {
+  menuItemHandleKeydown(event) {
     const { SPACE, RETURN } = keyCodes;
     const { keyCode, target } = event;
 
@@ -433,9 +433,9 @@ export default class MenuBar extends AriaComponent {
       // Remove event listeners.
       link.parentElement.removeEventListener(
         'keydown',
-        this.handleMenuBarKeydown
+        this.menubarHandleKeydown
       );
-      link.removeEventListener('click', this.handleMenuBarClick);
+      link.removeEventListener('click', this.menubarHandleClick);
     });
 
     // Remove tabindex attribute.
@@ -443,7 +443,7 @@ export default class MenuBar extends AriaComponent {
 
     // Destroy popups.
     this.popups.forEach((popup) => {
-      popup.target.removeEventListener('keydown', this.handleMenuItemKeydown);
+      popup.target.removeEventListener('keydown', this.menuItemHandleKeydown);
 
       popup.destroy();
     });

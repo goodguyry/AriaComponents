@@ -71,9 +71,9 @@ export default class Tablist extends AriaComponent {
     this.state = { activeIndex: 0 };
 
     // Bind class methods.
-    this.handlePanelKeydown = this.handlePanelKeydown.bind(this);
-    this.handleTabsKeydown = this.handleTabsKeydown.bind(this);
-    this.handleTabsClick = this.handleTabsClick.bind(this);
+    this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
+    this.tabsHandleKeydown = this.tabsHandleKeydown.bind(this);
+    this.tabsHandleClick = this.tabsHandleClick.bind(this);
     this.switchTo = this.switchTo.bind(this);
     this.destroy = this.destroy.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
@@ -160,8 +160,8 @@ export default class Tablist extends AriaComponent {
     });
 
     // Add event listeners.
-    this.tabs.addEventListener('click', this.handleTabsClick);
-    this.tabs.addEventListener('keydown', this.handleTabsKeydown);
+    this.tabs.addEventListener('click', this.tabsHandleClick);
+    this.tabs.addEventListener('keydown', this.tabsHandleKeydown);
 
     // Set attributes or each panel.
     this.panels.forEach((panel, index) => {
@@ -188,7 +188,7 @@ export default class Tablist extends AriaComponent {
       }
 
       // Listen for panel keydown events.
-      panel.addEventListener('keydown', this.handlePanelKeydown);
+      panel.addEventListener('keydown', this.panelHandleKeydown);
     });
 
     // Save the active panel's interactive children.
@@ -245,7 +245,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handlePanelKeydown(event) {
+  panelHandleKeydown(event) {
     const { TAB } = keyCodes;
     const { activeIndex } = this.state;
     const { keyCode, shiftKey } = event;
@@ -272,7 +272,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTabsKeydown(event) {
+  tabsHandleKeydown(event) {
     const {
       TAB,
       LEFT,
@@ -365,7 +365,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTabsClick(event) {
+  tabsHandleClick(event) {
     const { target } = event;
     event.preventDefault();
 
@@ -410,8 +410,8 @@ export default class Tablist extends AriaComponent {
       tab.removeAttribute('tabindex');
       tab.removeAttribute('aria-controls');
 
-      tab.removeEventListener('click', this.handleTabsClick);
-      tab.removeEventListener('keydown', this.handleTabsKeydown);
+      tab.removeEventListener('click', this.tabsHandleClick);
+      tab.removeEventListener('keydown', this.tabsHandleKeydown);
     });
 
     // Remove panel attributes and event listeners.
@@ -428,7 +428,7 @@ export default class Tablist extends AriaComponent {
 
       panel.removeEventListener(
         'keydown',
-        this.handlePanelKeydown
+        this.panelHandleKeydown
       );
     });
 

@@ -81,7 +81,7 @@ export default class Menu extends AriaComponent {
     Object.assign(this, defaultOptions, options, { list });
 
     // Bind class methods
-    this.handleListKeydown = this.handleListKeydown.bind(this);
+    this.listHandleKeydown = this.listHandleKeydown.bind(this);
     this.destroy = this.destroy.bind(this);
 
     // Only initialize if we passed in a <ul>.
@@ -153,7 +153,7 @@ export default class Menu extends AriaComponent {
     /**
      * Listen for keydown events on the menu.
      */
-    this.list.addEventListener('keydown', this.handleListKeydown);
+    this.list.addEventListener('keydown', this.listHandleKeydown);
 
     /**
      * The submenu Disclosures.
@@ -205,7 +205,7 @@ export default class Menu extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleListKeydown(event) {
+  listHandleKeydown(event) {
     const { keyCode } = event;
     const {
       UP,
@@ -346,7 +346,7 @@ export default class Menu extends AriaComponent {
     this.list.removeAttribute('role');
 
     // Remove event listener.
-    this.list.removeEventListener('keydown', this.handleListKeydown);
+    this.list.removeEventListener('keydown', this.listHandleKeydown);
 
     this.menuItems.forEach((link) => {
       // Remove list item role.
