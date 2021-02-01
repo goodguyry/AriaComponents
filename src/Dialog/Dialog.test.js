@@ -38,10 +38,10 @@ document.body.innerHTML = dialogMarkup;
 
 const controller = document.querySelector('.link');
 const target = document.getElementById('dialog');
-const close = target.querySelector('button');
 const content = document.querySelector('main');
 
 // Cached elements.
+const firstItem = target.querySelector('button');
 const lastItem = document.querySelector('.last-item');
 
 // Mock functions.
@@ -52,7 +52,6 @@ const onDestroy = jest.fn();
 const modal = new Dialog(
   controller,
   {
-    close,
     content,
     onStateChange,
     onInit,
@@ -107,8 +106,7 @@ describe('Dialog with default configuration', () => {
     });
 
     it('Should update attributes when the controller is clicked', () => {
-      // Click to close (it is opened by `beforeEach`)
-      modal.close.dispatchEvent(click);
+      modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(content.getAttribute('aria-hidden')).toEqual('false');
@@ -127,11 +125,13 @@ describe('Dialog with default configuration', () => {
     });
 
     it('Should trap keyboard tabs within the modal', () => {
-      close.dispatchEvent(keydownShiftTab);
+      firstItem.focus();
+      firstItem.dispatchEvent(keydownShiftTab);
       expect(document.activeElement).toEqual(lastItem);
 
+      lastItem.focus();
       lastItem.dispatchEvent(keydownTab);
-      expect(document.activeElement).toEqual(modal.close);
+      expect(document.activeElement).toEqual(firstItem);
     });
 
     it('Should close when the ESC key is pressed', () => {

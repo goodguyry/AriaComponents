@@ -9,19 +9,6 @@ import getFirstAndLastItems from '../lib/getFirstAndLastItems';
  */
 export default class Dialog extends AriaComponent {
   /**
-   * Create the dialog close button, in case one doesn't exist. Will be inserted
-   * as the dialog element's first child.
-   *
-   * @return {HTMLElement} The HTML button element with 'Close' as its label.
-   */
-  static createCloseButton() {
-    const button = document.createElement('button');
-    button.innerText = 'Close';
-
-    return button;
-  }
-
-  /**
    * Create a Dialog.
    * @constructor
    *
@@ -53,14 +40,6 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement}
        */
       content: null,
-
-      /**
-       * The button used to close the dialog. Required to be the very first
-       * element inside the dialog. If none is passed, one will be created.
-       *
-       * @type {HTMLButtonElement}
-       */
-      close: this.constructor.createCloseButton(),
 
       /**
        * Callback to run after the component initializes.
@@ -95,11 +74,6 @@ export default class Dialog extends AriaComponent {
       AriaComponent.configurationError(
         'The content cannot contain the dialog element'
       );
-    }
-
-    // Insert the close button if no button was passed in.
-    if (undefined === options.close && null !== this.target) {
-      this.target.insertBefore(this.close, this.target.firstChild);
     }
 
     // Bind class methods
@@ -148,7 +122,6 @@ export default class Dialog extends AriaComponent {
     this.interactiveChildElements = interactiveChildren(this.target);
 
     // Add event listeners.
-    this.close.addEventListener('click', this.hide);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
 
     /*
@@ -286,7 +259,6 @@ export default class Dialog extends AriaComponent {
     this.target.removeAttribute('tabindex');
 
     // Remove event listeners.
-    this.close.removeEventListener('click', this.hide);
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
