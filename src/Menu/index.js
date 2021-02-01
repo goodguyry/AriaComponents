@@ -34,7 +34,7 @@ export default class Menu extends AriaComponent {
 
     if ('UL' !== list.nodeName) {
       AriaComponent.configurationError(
-        'The component element nodeName must be `UL`'
+        'The Menu element nodeName must be `UL`'
       );
     }
 

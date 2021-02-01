@@ -39,7 +39,7 @@ export default class MenuBar extends AriaComponent {
 
     if ('UL' !== list.nodeName) {
       AriaComponent.configurationError(
-        'The component element nodeName must be `UL`'
+        'The MenuBar element nodeName must be `UL`'
       );
     }
 
