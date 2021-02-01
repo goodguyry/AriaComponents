@@ -126,7 +126,7 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {array}
      */
-    this.menuBarChildren = Array.prototype.slice.call(this.list.children);
+    this.menuBarChildren = Array.from(this.list.children);
 
     /**
      * Collected menubar links.

@@ -17,8 +17,7 @@ function toArray(maybeAnArray) {
     maybeAnArray instanceof NodeList
     || maybeAnArray instanceof HTMLCollection
   ) {
-    // Array.from(maybeAnArray);
-    shouldBeAnArray = Array.prototype.slice.call(maybeAnArray, 0);
+    shouldBeAnArray = Array.from(maybeAnArray);
   }
 
   return shouldBeAnArray;

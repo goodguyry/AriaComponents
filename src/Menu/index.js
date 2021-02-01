@@ -114,7 +114,7 @@ export default class Menu extends AriaComponent {
      *
      * @type {array}
      */
-    this.listItems = Array.prototype.slice.call(this.list.children);
+    this.listItems = Array.from(this.list.children);
 
     /**
      * Collected menu links.

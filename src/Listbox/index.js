@@ -91,7 +91,7 @@ export default class ListBox extends AriaComponent {
      *
      * @type {array}
      */
-    this.options = Array.prototype.slice.call(this.target.children, 0);
+    this.options = Array.from(this.target.children);
 
     /**
      * Initialize search.

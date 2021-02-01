@@ -128,7 +128,7 @@ export default class Tablist extends AriaComponent {
      * Prevent the Tablist LI element from being announced as list-items as
      * that information is neither useful nor applicable.
      */
-    Array.prototype.forEach.call(this.tabs.children, (listChild) => {
+    Array.from(this.tabs.children).forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
         listChild.setAttribute('role', 'presentation');
       }
@@ -393,7 +393,7 @@ export default class Tablist extends AriaComponent {
     this.tabs.removeAttribute('role');
 
     // Remove the 'presentation' role from each list item.
-    Array.prototype.forEach.call(this.tabs.children, (listChild) => {
+    Array.from(this.tabs.children).forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
         listChild.removeAttribute('role');
       }
