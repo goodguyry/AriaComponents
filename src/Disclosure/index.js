@@ -17,10 +17,11 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(controller, options) {
+  constructor(controller, options = {}) {
     super(controller);
 
-    const target = super.constructor.getTargetElement(controller);
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.
@@ -72,7 +73,7 @@ export default class Disclosure extends AriaComponent {
     };
 
     // Merge options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options, { controller, target });
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Initial component state.
     this.state = { expanded: this.loadOpen };

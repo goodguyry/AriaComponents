@@ -34,7 +34,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(list, options) {
+  constructor(list, options = {}) {
     super(list);
 
     if ('UL' !== list.nodeName) {
@@ -42,6 +42,8 @@ export default class MenuBar extends AriaComponent {
         'The MenuBar element nodeName must be `UL`'
       );
     }
+
+    this.list = list;
 
     /**
      * The component name.
@@ -96,7 +98,7 @@ export default class MenuBar extends AriaComponent {
     };
 
     // Merge options with defaults.
-    Object.assign(this, defaultOptions, options, { list });
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods.
     this.menubarHandleKeydown = this.menubarHandleKeydown.bind(this);

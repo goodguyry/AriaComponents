@@ -15,10 +15,11 @@ export default class Dialog extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(controller, options) {
+  constructor(controller, options = {}) {
     super(controller);
 
-    const target = super.constructor.getTargetElement(controller);
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.
@@ -33,6 +34,14 @@ export default class Dialog extends AriaComponent {
      * @type {object}
      */
     const defaultOptions = {
+      /**
+       * The element(s) to be hidden when the Dialog is visible. The elements
+       * wrapping all site content with the sole exception of the dialog element.
+       *
+       * @type {HTMLElement|NodeList|Array}
+       */
+      content: [],
+
       /**
        * Callback to run after the component initializes.
        *
@@ -55,34 +64,23 @@ export default class Dialog extends AriaComponent {
       onDestroy: () => {},
     };
 
-    /**
-     * The element(s) to be hidden when the Dialog is visible. The elements
-     * wrapping all site content with the sole exception of the dialog element.
-     *
-     * @type {Array}
-     */
-    let content = [];
-    if (undefined === options.content) {
-      content = Array.from(document.body.children)
-        .filter((child) => ! child.contains(target));
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
+
+    // Get the content items if none are provided.
+    if (0 === this.content.length || undefined === this.content) {
+      this.content = Array.from(document.body.children)
+        .filter((child) => ! child.contains(this.target));
     } else {
-      content = toArray(options.content);
+      this.content = toArray(this.content);
     }
 
     // If no content is found.
-    if (0 === content.length) {
+    if (0 === this.content.length) {
       AriaComponent.configurationError(
-        'The Dialog must be able to hide site content while open'
+        'The Dialog target should not be within the main site content'
       );
     }
-
-    // Merge options with defaults and save all as instance properties.
-    Object.assign(
-      this,
-      defaultOptions,
-      options,
-      { controller, target, content }
-    );
 
     // Bind class methods
     this.onPopupStateChange = this.onPopupStateChange.bind(this);

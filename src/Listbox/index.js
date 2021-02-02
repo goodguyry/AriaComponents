@@ -17,10 +17,11 @@ export default class ListBox extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(controller, options) {
+  constructor(controller, options = {}) {
     super(controller);
 
-    const target = super.constructor.getTargetElement(controller);
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.
@@ -58,7 +59,7 @@ export default class ListBox extends AriaComponent {
     };
 
     // Merge options with defaults.
-    Object.assign(this, defaultOptions, options, { controller, target });
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods.
     this.preventWindowScroll = this.preventWindowScroll.bind(this);

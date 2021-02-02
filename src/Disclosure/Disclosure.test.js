@@ -75,7 +75,7 @@ describe('Disclosure with default configuration', () => {
 
       // Re-open the disclosure.
       disclosure.open();
-      // Should close on outside click.
+      // Should allow outside click.
       document.body.dispatchEvent(click);
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');

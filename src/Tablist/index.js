@@ -28,6 +28,8 @@ export default class Tablist extends AriaComponent {
       );
     }
 
+    this.tabs = tabs;
+
     /**
      * The component name.
      *
@@ -64,7 +66,7 @@ export default class Tablist extends AriaComponent {
     };
 
     // Save references to the tablist and panels.
-    Object.assign(this, defaultOptions, options, { tabs });
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Intial component state.
     this.state = { activeIndex: 0 };
