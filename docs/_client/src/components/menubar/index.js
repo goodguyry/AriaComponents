@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import { MenuBar } from 'root';
 import './menubar.scss';
@@ -9,4 +10,4 @@ const { list } = getClassnames(siteClassNames.menubar);
 const menuBarList = document.querySelector(list);
 
 // Create the MenuBar.
-const menuBar = new MenuBar({ list: menuBarList }); // eslint-disable-line no-unused-vars
+const menuBar = new MenuBar(menuBarList);

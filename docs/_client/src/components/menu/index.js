@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import { Menu } from 'root';
 import './menu.scss';
@@ -10,4 +11,4 @@ const menuList = document.querySelector(list);
 
 // Create the Menu.
 // Alteratively pass `collapse: true` to collapse submenus as Disclosures.
-const menu = new Menu({ list: menuList }); // eslint-disable-line no-unused-vars
+const menu = new Menu(menuList);
