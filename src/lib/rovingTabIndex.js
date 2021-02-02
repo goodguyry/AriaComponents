@@ -1,27 +1,4 @@
-/**
- * Create an array from a value.
- *
- * @param {Mixed} maybeAnArray An HTMLElement, NodeList, or Array of elements.
- */
-function toArray(maybeAnArray) {
-  if (Array.isArray(maybeAnArray)) {
-    return maybeAnArray;
-  }
-
-  let shouldBeAnArray = [];
-
-  if (maybeAnArray instanceof HTMLElement) {
-    // Convert element(s) to an Array.
-    shouldBeAnArray = new Array(maybeAnArray);
-  } else if (
-    maybeAnArray instanceof NodeList
-    || maybeAnArray instanceof HTMLCollection
-  ) {
-    shouldBeAnArray = Array.from(maybeAnArray);
-  }
-
-  return shouldBeAnArray;
-}
+import toArray from './toArray';
 
 /**
  * Remove the tabIndex attribute from all elements.
@@ -73,5 +50,4 @@ export {
   rovingTabIndex,
   tabIndexAllow,
   tabIndexDeny,
-  toArray,
 };

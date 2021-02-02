@@ -3,7 +3,7 @@ import Popup from '../Popup';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
-import { toArray } from '../lib/rovingTabIndex';
+import toArray from '../lib/toArray';
 
 /**
  * Class to set up an interactive Dialog element.
