@@ -13,7 +13,8 @@ export default class Dialog extends AriaComponent {
    * Create a Dialog.
    * @constructor
    *
-   * @param {object} options The options object.
+   * @param {HTMLElement} controller The activating element.
+   * @param {object}      options    The options object.
    */
   constructor(controller, options = {}) {
     super(controller);

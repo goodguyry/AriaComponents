@@ -15,7 +15,8 @@ export default class ListBox extends AriaComponent {
    * Create a ListBox.
    * @constructor
    *
-   * @param {object} options The options object.
+   * @param {HTMLElement} controller The activating element.
+   * @param {object}      options    The options object.
    */
   constructor(controller, options = {}) {
     super(controller);

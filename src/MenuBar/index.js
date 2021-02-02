@@ -32,7 +32,8 @@ export default class MenuBar extends AriaComponent {
    * Create a MenuBar.
    * @constructor
    *
-   * @param {object} options The options object.
+   * @param {HTMLUListElement} element The menu list element.
+   * @param {object}           options The options object.
    */
   constructor(list, options = {}) {
     super(list);
