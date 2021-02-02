@@ -22,6 +22,7 @@ const dialogMarkup = `
       <a target="dialog" class="link" href="#dialog">Open dialog</a>
     </article>
   </main>
+  <footer class="site-footer">Site footer</footer>
   <div class="wrapper" id="dialog">
     <button>Close</button>
     <ul>
@@ -39,6 +40,7 @@ document.body.innerHTML = dialogMarkup;
 const controller = document.querySelector('.link');
 const target = document.getElementById('dialog');
 const content = document.querySelector('main');
+const footer = document.querySelector('footer');
 
 // Cached elements.
 const firstItem = target.querySelector('button');
@@ -52,7 +54,7 @@ const onDestroy = jest.fn();
 const modal = new Dialog(
   controller,
   {
-    content,
+    // content: [content, footer],
     onStateChange,
     onInit,
     onDestroy,
@@ -109,8 +111,8 @@ describe('Dialog with default configuration', () => {
       modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
+      expect(footer.getAttribute('aria-hidden')).toEqual('false');
       expect(content.getAttribute('aria-hidden')).toEqual('false');
-      expect(content.getAttribute('hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('hidden')).toEqual('');
 
@@ -118,8 +120,8 @@ describe('Dialog with default configuration', () => {
       controller.dispatchEvent(click);
       expect(modal.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
+      expect(footer.getAttribute('aria-hidden')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
-      expect(content.getAttribute('hidden')).toEqual('');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
       expect(target.getAttribute('hidden')).toBeNull();
     });

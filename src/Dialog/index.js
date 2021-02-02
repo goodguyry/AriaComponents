@@ -3,6 +3,7 @@ import Popup from '../Popup';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
+import { toArray } from '../lib/rovingTabIndex';
 
 /**
  * Class to set up an interactive Dialog element.
@@ -33,15 +34,6 @@ export default class Dialog extends AriaComponent {
      */
     const defaultOptions = {
       /**
-       * The site content wrapper. NOT necessarily <main>, but the element
-       * wrapping all site content (including header and footer) with the sole
-       * exception of the dialog element.
-       *
-       * @type {HTMLElement}
-       */
-      content: null,
-
-      /**
        * Callback to run after the component initializes.
        *
        * @callback initCallback
@@ -63,18 +55,34 @@ export default class Dialog extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options, { controller, target });
+    /**
+     * The element(s) to be hidden when the Dialog is visible. The elements
+     * wrapping all site content with the sole exception of the dialog element.
+     *
+     * @type {Array}
+     */
+    let content = [];
+    if (undefined === options.content) {
+      content = Array.from(document.body.children)
+        .filter((child) => ! child.contains(target));
+    } else {
+      content = toArray(options.content);
+    }
 
-    // Ensure the target isn't within this.content
-    if (
-      false === Boolean(this.content)
-      || this.content.contains(this.target)
-    ) {
+    // If no content is found.
+    if (0 === content.length) {
       AriaComponent.configurationError(
-        'The content cannot contain the dialog element'
+        'The Dialog must be able to hide site content while open'
       );
     }
+
+    // Merge options with defaults and save all as instance properties.
+    Object.assign(
+      this,
+      defaultOptions,
+      options,
+      { controller, target, content }
+    );
 
     // Bind class methods
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
@@ -160,17 +168,20 @@ export default class Dialog extends AriaComponent {
    */
   stateWasUpdated() {
     const { expanded } = this.state;
+    const contentLength = this.content.length;
 
     this.interactiveChildElements = interactiveChildren(this.target);
 
     if (expanded) {
-      this.content.setAttribute('aria-hidden', 'true');
-      this.content.setAttribute('hidden', '');
+      for (let i = 0; i < contentLength; i += 1) {
+        this.content[i].setAttribute('aria-hidden', 'true');
+      }
       document.body.addEventListener('keydown', this.handleKeydownEsc);
       this.target.focus();
     } else {
-      this.content.setAttribute('aria-hidden', 'false');
-      this.content.removeAttribute('hidden');
+      for (let i = 0; i < contentLength; i += 1) {
+        this.content[i].setAttribute('aria-hidden', 'false');
+      }
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
       this.controller.focus();
     }
@@ -254,7 +265,11 @@ export default class Dialog extends AriaComponent {
     this.popup.destroy();
 
     // Remove the `aria-hidden` attribute from the content wrapper.
-    this.content.removeAttribute('aria-hidden');
+    const contentLength = this.content.length;
+    for (let i = 0; i < contentLength; i += 1) {
+      this.content[i].removeAttribute('aria-hidden');
+    }
+
     // Remove tabIndex attribute from target.
     this.target.removeAttribute('tabindex');
 
