@@ -6,7 +6,7 @@ import toArray from './toArray';
  * @param {Mixed} items An HTMLElement, NodeList, or array of elements.
  */
 function tabIndexAllow(items) {
-  const allowedElements = Array.isArray(items) ? items : toArray(items);
+  const allowedElements = toArray(items);
 
   allowedElements.forEach((item) => {
     item.removeAttribute('tabindex');
@@ -19,7 +19,7 @@ function tabIndexAllow(items) {
  * @param {Mixed} items An HTMLElement, NodeList, or Array of elements.
  */
 function tabIndexDeny(items) {
-  const deniedElements = Array.isArray(items) ? items : toArray(items);
+  const deniedElements = toArray(items);
 
   deniedElements.forEach((item) => {
     item.setAttribute('tabindex', '-1');
@@ -33,8 +33,8 @@ function tabIndexDeny(items) {
  * @param {HTMLElement|NodeList|Array} allow The item to which we'll allow tabbing.
  */
 function rovingTabIndex(items, allow) {
-  const allowedElements = Array.isArray(allow) ? allow : toArray(allow);
-  const allItems = Array.isArray(items) ? items : toArray(items);
+  const allowedElements = toArray(allow);
+  const allItems = toArray(items);
 
   tabIndexAllow(allowedElements);
 
