@@ -6,7 +6,7 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const StatsPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
+// const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 // Helpers
 const path = require('path');
@@ -59,7 +59,7 @@ module.exports = (productionMode) => {
         [`${paths.build}/*`],
         { root: paths.docs }
       ),
-      new MinifyPlugin({}, {}),
+      // new MinifyPlugin(),
     ].concat(common);
   }
 
