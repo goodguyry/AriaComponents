@@ -179,7 +179,7 @@ export default class Dialog extends AriaComponent {
       this.target.focus();
     } else {
       for (let i = 0; i < contentLength; i += 1) {
-        this.content[i].setAttribute('aria-hidden', 'false');
+        this.content[i].removeAttribute('aria-hidden');
       }
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
       this.controller.focus();

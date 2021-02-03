@@ -10,7 +10,7 @@ const { button, info } = getClassnames(siteClassNames.disclosure);
 const controllers = document.querySelectorAll(button);
 
 // Create the Disclosures.
-const disclosures = Array.from(controllers).map((controller, index) => (
+const disclosures = Array.from(controllers).map((controller) => (
   new Disclosure(controller)
 ));
 

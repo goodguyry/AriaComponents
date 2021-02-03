@@ -111,8 +111,8 @@ describe('Dialog with default configuration', () => {
       modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      expect(footer.getAttribute('aria-hidden')).toEqual('false');
-      expect(content.getAttribute('aria-hidden')).toEqual('false');
+      expect(footer.getAttribute('aria-hidden')).toBeNull();
+      expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('hidden')).toEqual('');
 

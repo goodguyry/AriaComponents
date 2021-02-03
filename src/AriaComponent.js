@@ -5,7 +5,7 @@ export default class AriaComponent {
   /**
    * Get the target element based on the controller's target attribute.
    *
-   * @param  {HTMLElement} controller The components controlling element.
+   * @param  {HTMLElement} controller The component's controlling element.
    * @return {HTMLElement|null}
    */
   static getTargetElement(controller) {
@@ -42,7 +42,7 @@ export default class AriaComponent {
    */
   constructor(element) {
     // Validate the component element.
-    if (false === Boolean(element) || ! (element instanceof HTMLElement)) {
+    if (null != element || ! (element instanceof HTMLElement)) {
       AriaComponent.configurationError(
         'The component element must be a valid HTMLElement'
       );
