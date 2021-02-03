@@ -1,6 +1,25 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.4.0
+
+**Changed**
+
+- Changes constructor parameters to accept a component element and an object of options (#51)
+- Requires activating elements to have a target attribute matching the ID value of the target element (#51)
+- Dialog focuses the target element on open (#51)
+
+**Added**
+
+- Throws a configuration error for misconfigured components (#51)
+- Gets Dialog content element(s) if none provided (#51)
+
+**Fixed**
+
+**Removed**
+
+- Dialog no longer requires a close button, and will not create one (#51)
+
 ## 0.3.2
 
 **Changed**
