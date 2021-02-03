@@ -27,10 +27,19 @@ export default class Menu extends AriaComponent {
    * Create a Menu.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {HTMLUListElement} element The menu list element.
+   * @param {object}           options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(list, options = {}) {
+    super(list);
+
+    if ('UL' !== list.nodeName) {
+      AriaComponent.configurationError(
+        'The Menu element nodeName must be `UL`'
+      );
+    }
+
+    this.list = list;
 
     /**
      * The component name.
@@ -39,27 +48,12 @@ export default class Menu extends AriaComponent {
      */
     this.componentName = 'Menu';
 
-    // Warn about deprecated config value.
-    if (config.menu) {
-      const { menu } = config;
-      Object.assign(config, { list: menu, menu: undefined });
-
-      this.warnDeprecated('config.menu', 'config.list');
-    }
-
     /**
      * Options shape.
      *
      * @type {object}
      */
-    const options = {
-      /**
-       * The menu's list element.
-       *
-       * @type {HTMLUListElement}
-       */
-      list: null,
-
+    const defaultOptions = {
       /**
        * Instantiate submenus as Disclosures.
        *
@@ -92,17 +86,14 @@ export default class Menu extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods
-    this.handleListKeydown = this.handleListKeydown.bind(this);
+    this.listHandleKeydown = this.listHandleKeydown.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    // Only initialize if we passed in a <ul>.
-    if (null !== this.list && 'UL' === this.list.nodeName) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
@@ -126,7 +117,7 @@ export default class Menu extends AriaComponent {
      *
      * @type {array}
      */
-    this.listItems = Array.prototype.slice.call(this.list.children);
+    this.listItems = Array.from(this.list.children);
 
     /**
      * Collected menu links.
@@ -168,7 +159,7 @@ export default class Menu extends AriaComponent {
     /**
      * Listen for keydown events on the menu.
      */
-    this.list.addEventListener('keydown', this.handleListKeydown);
+    this.list.addEventListener('keydown', this.listHandleKeydown);
 
     /**
      * The submenu Disclosures.
@@ -191,20 +182,17 @@ export default class Menu extends AriaComponent {
       link.setAttribute('aria-setsize', this.menuItemsLength);
       link.setAttribute('aria-posinset', index + 1);
 
+      // Instantiate submenu Disclosures
+      if (this.collapse && link.hasAttribute('target')) {
+        const disclosure = new Disclosure(link);
+
+        this.disclosures.push(disclosure);
+      }
+
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
-        // Instantiate submenu Disclosures
-        if (this.collapse) {
-          const disclosure = new Disclosure({
-            controller: link,
-            target: siblingList,
-          });
-
-          this.disclosures.push(disclosure);
-        }
-
         // Instantiate sub-Menus.
-        const subList = new Menu({ list: siblingList });
+        const subList = new Menu(siblingList);
         // Save the list's previous sibling.
         subList.previousSibling = link;
       }
@@ -223,7 +211,7 @@ export default class Menu extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleListKeydown(event) {
+  listHandleKeydown(event) {
     const { keyCode } = event;
     const {
       UP,
@@ -364,7 +352,7 @@ export default class Menu extends AriaComponent {
     this.list.removeAttribute('role');
 
     // Remove event listener.
-    this.list.removeEventListener('keydown', this.handleListKeydown);
+    this.list.removeEventListener('keydown', this.listHandleKeydown);
 
     this.menuItems.forEach((link) => {
       // Remove list item role.

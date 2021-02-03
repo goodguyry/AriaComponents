@@ -17,10 +17,18 @@ export default class Tablist extends AriaComponent {
    * Create a Tablist.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {object} options The options object.
    */
-  constructor(config) {
-    super();
+  constructor(tabs, options) {
+    super(tabs);
+
+    if ('UL' !== tabs.nodeName) {
+      AriaComponent.configurationError(
+        'The component element nodeName must be `UL`'
+      );
+    }
+
+    this.tabs = tabs;
 
     /**
      * The component name.
@@ -29,41 +37,12 @@ export default class Tablist extends AriaComponent {
      */
     this.componentName = 'Tablist';
 
-    // Warn about deprecated config value.
-    if (config.tablist) {
-      const { tablist } = config;
-      Object.assign(config, { tabs: tablist, tablist: undefined });
-
-      this.warnDeprecated('config.tablist', 'config.tabs');
-    }
-
-    // The tabs element is required to be a UL.
-    if ('UL' !== config.tabs.nodeName) {
-      // eslint-disable-next-line no-console
-      console.warn('Tablist requires a <ul> for the tabs.');
-      return;
-    }
-
     /**
      * Component configuration options.
      *
      * @type {object}
      */
-    const options = {
-      /**
-       * The UL parent of the Tablist tabs.
-       *
-       * @type {HTMLUListElement}
-       */
-      list: null,
-
-      /**
-       * The Tablist panel elements.
-       *
-       * @type {NodeList}
-       */
-      panels: null,
-
+    const defaultOptions = {
       /**
        * Callback to run after the component initializes.
        *
@@ -86,28 +65,19 @@ export default class Tablist extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Save references to the tablist and panels.
-    Object.assign(this, options, config);
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Intial component state.
     this.state = { activeIndex: 0 };
 
     // Bind class methods.
-    this.handlePanelKeydown = this.handlePanelKeydown.bind(this);
-    this.handleTabsKeydown = this.handleTabsKeydown.bind(this);
-    this.handleTabsClick = this.handleTabsClick.bind(this);
+    this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
+    this.tabsHandleKeydown = this.tabsHandleKeydown.bind(this);
+    this.tabsHandleClick = this.tabsHandleClick.bind(this);
     this.switchTo = this.switchTo.bind(this);
     this.destroy = this.destroy.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
-
-    /**
-     * Tablist panels.
-     *
-     * @type {array}
-     */
-    if (! Array.isArray(this.panels)) {
-      this.panels = Array.prototype.slice.call(this.panels);
-    }
 
     /**
      * Collect the anchor inside of each list item. Using anchors makes
@@ -118,11 +88,23 @@ export default class Tablist extends AriaComponent {
      *
      * @type {array}
      */
-    this.tabLinks = Array.prototype.filter.call(
-      this.tabs.children,
-      (child) => null !== child.querySelector('a[href]')
-    )
+    this.tabLinks = Array.from(this.tabs.children)
+      .filter((child) => null !== child.querySelector('a[href]'))
       .map((child) => child.querySelector('a[href]'));
+
+    /**
+     * Tablist panels.
+     *
+     * @type {array}
+     */
+    this.panels = this.tabLinks.reduce((acc, tabLink) => {
+      const panel = document.getElementById(tabLink.hash.replace('#', ''));
+      if (null !== panel) {
+        return [...acc, panel];
+      }
+
+      return acc;
+    }, []);
 
     // Only initialize if tabs and panels are equal in number.
     if (this.tabLinks.length === this.panels.length) {
@@ -148,7 +130,7 @@ export default class Tablist extends AriaComponent {
      * Prevent the Tablist LI element from being announced as list-items as
      * that information is neither useful nor applicable.
      */
-    Array.prototype.forEach.call(this.tabs.children, (listChild) => {
+    Array.from(this.tabs.children).forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
         listChild.setAttribute('role', 'presentation');
       }
@@ -179,8 +161,8 @@ export default class Tablist extends AriaComponent {
     });
 
     // Add event listeners.
-    this.tabs.addEventListener('click', this.handleTabsClick);
-    this.tabs.addEventListener('keydown', this.handleTabsKeydown);
+    this.tabs.addEventListener('click', this.tabsHandleClick);
+    this.tabs.addEventListener('keydown', this.tabsHandleKeydown);
 
     // Set attributes or each panel.
     this.panels.forEach((panel, index) => {
@@ -207,7 +189,7 @@ export default class Tablist extends AriaComponent {
       }
 
       // Listen for panel keydown events.
-      panel.addEventListener('keydown', this.handlePanelKeydown);
+      panel.addEventListener('keydown', this.panelHandleKeydown);
     });
 
     // Save the active panel's interactive children.
@@ -264,7 +246,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handlePanelKeydown(event) {
+  panelHandleKeydown(event) {
     const { TAB } = keyCodes;
     const { activeIndex } = this.state;
     const { keyCode, shiftKey } = event;
@@ -291,7 +273,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTabsKeydown(event) {
+  tabsHandleKeydown(event) {
     const {
       TAB,
       LEFT,
@@ -384,7 +366,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleTabsClick(event) {
+  tabsHandleClick(event) {
     const { target } = event;
     event.preventDefault();
 
@@ -413,7 +395,7 @@ export default class Tablist extends AriaComponent {
     this.tabs.removeAttribute('role');
 
     // Remove the 'presentation' role from each list item.
-    Array.prototype.forEach.call(this.tabs.children, (listChild) => {
+    Array.from(this.tabs.children).forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
         listChild.removeAttribute('role');
       }
@@ -429,8 +411,8 @@ export default class Tablist extends AriaComponent {
       tab.removeAttribute('tabindex');
       tab.removeAttribute('aria-controls');
 
-      tab.removeEventListener('click', this.handleTabsClick);
-      tab.removeEventListener('keydown', this.handleTabsKeydown);
+      tab.removeEventListener('click', this.tabsHandleClick);
+      tab.removeEventListener('keydown', this.tabsHandleKeydown);
     });
 
     // Remove panel attributes and event listeners.
@@ -447,7 +429,7 @@ export default class Tablist extends AriaComponent {
 
       panel.removeEventListener(
         'keydown',
-        this.handlePanelKeydown
+        this.panelHandleKeydown
       );
     });
 

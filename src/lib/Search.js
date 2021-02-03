@@ -17,11 +17,11 @@ export default class Search {
         break;
       }
       case items instanceof NodeList: {
-        this.items = Array.prototype.slice.call(items, 0);
+        this.items = Array.from(items);
         break;
       }
       case null !== items && 'UL' === items.nodeName: {
-        this.items = Array.prototype.slice.call(items.children, 0);
+        this.items = Array.from(items.children);
         break;
       }
       default: {

@@ -15,8 +15,8 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
-        <button class="first-item">Fruit</button>
-        <ul class="sublist1">
+        <button target="first-disclosure" class="first-item">Fruit</button>
+        <ul id="first-disclosure" class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
           <li><a class="sublist1-last-item" href="example.com">Cantaloupe</a></li>
@@ -25,8 +25,8 @@ const menuMarkup = `
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
         <svg><use href="my-icon"></use></svg>
-        <a class="third-item" href="example.com">Vegetables</a>
-        <ul class="sublist2">
+        <a target="second-disclosure" class="third-item" href="example.com">Vegetables</a>
+        <ul id="second-disclosure" class="sublist2">
           <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
           <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>
           <li><a class="sublist2-third-item" href="example.com">Brussel Sprouts</a></li>
@@ -70,12 +70,14 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
-let menu = new Menu({
+let menu = new Menu(
   list,
-  itemMatches: ':not(.exclude)',
-  onInit,
-  onDestroy,
-});
+  {
+    itemMatches: ':not(.exclude)',
+    onInit,
+    onDestroy,
+  }
+);
 
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
@@ -206,11 +208,13 @@ describe('Destroying the Menu removes attributes', () => {
 
 describe('Menu instatiates submenus as Disclosures', () => {
   beforeAll(() => {
-    menu = new Menu({
+    menu = new Menu(
       list,
-      itemMatches: ':not(.exclude)',
-      collapse: true,
-    });
+      {
+        itemMatches: ':not(.exclude)',
+        collapse: true,
+      }
+    );
   });
 
   it('Should instantiate the Menu class with correct instance values', () => {

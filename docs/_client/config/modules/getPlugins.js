@@ -6,7 +6,7 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const StatsPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
+// const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 // Helpers
 const path = require('path');
@@ -28,6 +28,7 @@ module.exports = (productionMode) => {
     new MiniCssExtractPlugin(minExtractOptions),
     new StylelintPlugin({
       configFile: path.join(paths.config, 'stylelint.config.js'),
+      files: 'docs/_client/**/*.scss',
     }),
     new StatsPlugin({
       transform(stats) {
@@ -58,7 +59,7 @@ module.exports = (productionMode) => {
         [`${paths.build}/*`],
         { root: paths.docs }
       ),
-      new MinifyPlugin({}, {}),
+      // new MinifyPlugin(),
     ].concat(common);
   }
 

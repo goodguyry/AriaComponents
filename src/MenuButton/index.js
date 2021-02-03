@@ -14,10 +14,14 @@ export default class MenuButton extends AriaComponent {
    * Create a ListBox.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {HTMLElement} controller The activating element.
+   * @param {object}      options    The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(controller, options = {}) {
+    super(controller);
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.
@@ -31,21 +35,7 @@ export default class MenuButton extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
-      /**
-       * The element used to trigger the Menu Popup.
-       *
-       * @type {HTMLButtonElement}
-       */
-      controller: null,
-
-      /**
-       * The Menu wrapper element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
+    const defaultOptions = {
       /**
        * The Menu element.
        *
@@ -75,20 +65,17 @@ export default class MenuButton extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods.
-    this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    // Only initialize if we passed in controller and target elements.
-    if (null !== this.controller && null !== this.target) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
@@ -102,23 +89,27 @@ export default class MenuButton extends AriaComponent {
      *
      * @type {Popup}
      */
-    this.popup = new Popup({
-      controller: this.controller,
-      target: this.target,
-      type: 'menu',
-      onStateChange: this.onPopupStateChange,
-    });
+    this.popup = new Popup(
+      this.controller,
+      {
+        type: 'menu',
+        onStateChange: this.onPopupStateChange,
+      }
+    );
 
     // Initialize the Menu if we passed one in.
-    if (null !== this.list && 'UL' === this.list.nodeName) {
-      this.menu = new Menu({ list: this.list });
+    if (null != this.list && 'UL' === this.list.nodeName) {
+      this.menu = new Menu(this.list);
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
-      this.menu = new Menu({ list: this.target });
+      this.menu = new Menu(this.target);
+    } else {
+      const list = this.target.querySelector('ul');
+      this.menu = new Menu(list);
     }
 
     // Additional event listener(s).
-    this.controller.addEventListener('keydown', this.handleControllerKeydown);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
 
     /**
      * Set initial state.
@@ -148,7 +139,7 @@ export default class MenuButton extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleControllerKeydown(event) {
+  controllerHandleKeydown(event) {
     const { keyCode } = event;
     const {
       RETURN,
@@ -208,7 +199,7 @@ export default class MenuButton extends AriaComponent {
     // Remove event listener.
     this.controller.removeEventListener(
       'keydown',
-      this.handleControllerKeydown
+      this.controllerHandleKeydown
     );
 
     // Run {destroyCallback}

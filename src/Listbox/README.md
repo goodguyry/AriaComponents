@@ -23,17 +23,17 @@ Class for setting up an interactive Listbox element.
 ```javascript
 import { Listbox } from 'aria-components';
 
-const button = document.querySelector('button[target]');
-const listbox = new Listbox(button);
+const controller = document.querySelector('button[target]');
+const listbox = new Listbox(controller);
 ```
 
 ## Constructor
 
 ```javascript
-Listbox(activatingElement = null);
+Listbox(controller = null);
 ```
 
-_**`activatingElement`**_ `HTMLElement`  
+_**`controller`**_ `HTMLElement`  
 > The element used to activate the Listbox target; required to have a `target`  
 attribute with a value matching the `id` attribute value of the target element.
 
@@ -63,7 +63,7 @@ _**`Listbox.toString()`**_
 
 ### Properties
 
-_**`Listbox.activatingElement`**_  
+_**`Listbox.controller`**_  
 > Returns the Listbox's activating element.
 
 _**`Listbox.target`**_  

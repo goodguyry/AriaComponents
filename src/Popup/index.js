@@ -14,10 +14,14 @@ export default class Popup extends AriaComponent {
    * Create a MenuBar.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {HTMLElement} controller The activating element.
+   * @param {object}      options    The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(controller, options = {}) {
+    super(controller);
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.
@@ -31,21 +35,7 @@ export default class Popup extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
-      /**
-       * The element used to trigger the Popup element.
-       *
-       * @type {HTMLButtonElement}
-       */
-      controller: null,
-
-      /**
-       * The Popup's target element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
+    const defaultOptions = {
       /**
        * The value of `aria-haspopup` must match the role of the Popup container.
        * Options: menu, listbox, tree, grid, or dialog,
@@ -76,8 +66,8 @@ export default class Popup extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Save references to the controller and target.
-    Object.assign(this, options, config);
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Intial component state.
     this.state = { expanded: false };
@@ -87,28 +77,14 @@ export default class Popup extends AriaComponent {
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
-    this.controllerClickHandler = this.controllerClickHandler.bind(this);
-    this.controllerKeyDownHandler = this.controllerKeyDownHandler.bind(this);
-    this.targetKeyDownHandler = this.targetKeyDownHandler.bind(this);
+    this.controllerHandleClick = this.controllerHandleClick.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
+    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.hideOnTabOut = this.hideOnTabOut.bind(this);
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    /**
-     * Check if the controller is a button, but only if it doesn't already have
-     * a role attribute, since we'll be adding the role and allowing focus.
-     *
-     * @type {bool}
-     */
-    this.controllerIsNotAButton = (
-      'BUTTON' !== this.controller.nodeName
-      && null === this.controller.getAttribute('role')
-    );
-
-    // Check for a valid controller and target before initializing.
-    if (null !== this.controller && null !== this.target) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
@@ -153,6 +129,17 @@ export default class Popup extends AriaComponent {
     this.controller.setAttribute('aria-controls', this.target.id);
     setUniqueId(this.controller);
 
+    /**
+     * Check if the controller is a button, but only if it doesn't already have
+     * a role attribute, since we'll be adding the role and allowing focus.
+     *
+     * @type {bool}
+     */
+    this.controllerIsNotAButton = (
+      'BUTTON' !== this.controller.nodeName
+      && null === this.controller.getAttribute('role')
+    );
+
     /*
      * Use the button role on non-button elements.
      */
@@ -179,9 +166,9 @@ export default class Popup extends AriaComponent {
     this.target.setAttribute('hidden', '');
 
     // Add event listeners
-    this.controller.addEventListener('click', this.controllerClickHandler);
-    this.controller.addEventListener('keydown', this.controllerKeyDownHandler);
-    this.target.addEventListener('keydown', this.targetKeyDownHandler);
+    this.controller.addEventListener('click', this.controllerHandleClick);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
+    this.target.addEventListener('keydown', this.targetHandleKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
     // Run {initCallback}
@@ -223,7 +210,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerKeyDownHandler(event) {
+  controllerHandleKeydown(event) {
     const { expanded } = this.state;
     const {
       ESC,
@@ -238,7 +225,7 @@ export default class Popup extends AriaComponent {
        * Treat the Spacebar and Return keys as clicks in case the controller is
        * not a <button>.
        */
-      this.controllerClickHandler(event);
+      this.controllerHandleClick(event);
     } else if (expanded) {
       if (ESC === keyCode) {
         event.preventDefault();
@@ -268,7 +255,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetKeyDownHandler(event) {
+  targetHandleKeydown(event) {
     const { ESC, TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
     const { expanded } = this.state;
@@ -313,7 +300,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerClickHandler(event) {
+  controllerHandleClick(event) {
     event.preventDefault();
     const { expanded } = this.state;
 
@@ -389,12 +376,12 @@ export default class Popup extends AriaComponent {
     tabIndexAllow(this.interactiveChildElements);
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.controllerClickHandler);
+    this.controller.removeEventListener('click', this.controllerHandleClick);
     this.controller.removeEventListener(
       'keydown',
-      this.controllerKeyDownHandler
+      this.controllerHandleKeydown
     );
-    this.target.removeEventListener('keydown', this.targetKeyDownHandler);
+    this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('click', this.hideOnOutsideClick);
 
     // Reset initial state.

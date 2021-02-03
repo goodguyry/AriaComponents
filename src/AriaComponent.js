@@ -3,10 +3,51 @@
  */
 export default class AriaComponent {
   /**
+   * Get the target element based on the controller's target attribute.
+   *
+   * @param  {HTMLElement} controller The component's controlling element.
+   * @return {HTMLElement|null}
+   */
+  static getTargetElement(controller) {
+    if (! controller.hasAttribute('target')) {
+      AriaComponent.configurationError(
+        'The component element is missing the required \'target\' attribute'
+      );
+    }
+
+    const targetId = controller.getAttribute('target');
+    const target = document.getElementById(targetId);
+
+    if (null === target) {
+      AriaComponent.configurationError(
+        `A target element with ID of '${targetId}' is not found`
+      );
+    }
+
+    return target;
+  }
+
+  /**
+   * Throw a confguration error.
+   *
+   * @param {string} message The error message.
+   */
+  static configurationError(message) {
+    throw new Error(`Configuration error: ${message}`);
+  }
+
+  /**
    * Create an AriaComponent.
    * @constructor
    */
-  constructor() {
+  constructor(element) {
+    // Validate the component element.
+    if (null == element || ! (element instanceof HTMLElement)) {
+      AriaComponent.configurationError(
+        'The component element must be a valid HTMLElement'
+      );
+    }
+
     /**
      * Component state.
      *
@@ -32,7 +73,6 @@ export default class AriaComponent {
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
-    this.warnDeprecated = this.warnDeprecated.bind(this);
   }
 
   /**
@@ -84,22 +124,5 @@ export default class AriaComponent {
    */
   getState() {
     return this.state;
-  }
-
-  /**
-   * Warn about deprecated config properties.
-   *
-   * @param {string} name The name of the class instance.
-   * @param {string} unsupported The deprecated config value.
-   * @param {string} supported The newly supported config value, if any.
-   */
-  warnDeprecated(unsupported, supported = false) {
-    const use = supported ? `Use ${supported} instead.` : '';
-    // eslint-disable-next-line no-console, max-len
-    console.warn(
-      `${this.componentName}:`,
-      `${unsupported} is deprecated.`,
-      `${use}`
-    );
   }
 }

@@ -12,7 +12,7 @@ const {
 } = events;
 
 const popupMarkup = `
-  <a href="#dropdown" class="link">Open</a>
+  <a target="dropdown" href="#dropdown" class="link">Open</a>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -38,13 +38,14 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-const popup = new Popup({
+const popup = new Popup(
   controller,
-  target,
-  onStateChange,
-  onInit,
-  onDestroy,
-});
+  {
+    onStateChange,
+    onInit,
+    onDestroy,
+  }
+);
 
 describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {

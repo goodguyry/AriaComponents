@@ -1,4 +1,4 @@
-import { toArray } from './rovingTabIndex';
+import toArray from './toArray';
 
 /**
  * Get the first and last items from and Array or NodeList.

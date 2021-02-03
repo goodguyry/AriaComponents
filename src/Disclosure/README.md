@@ -20,17 +20,17 @@ Class for independently revealing and hiding inline content.
 ```javascript
 import { Disclosure } from 'aria-components';
 
-const button = document.querySelector('button[target]');
-const disclosure = new Disclosure(button);
+const controller = document.querySelector('button[target]');
+const disclosure = new Disclosure(controller);
 ```
 
 ## Constructor
 
 ```javascript
-Disclosure(activatingElement = null, options = {});
+Disclosure(controller = null, options = {});
 ```
 
-_**`activatingElement`**_ `HTMLElement`  
+_**`controller`**_ `HTMLElement`  
 > The element used to activate the Disclosure target; required to have a `target`  
 attribute with a value matching the `id` attribute value of the target element.
 
@@ -71,7 +71,7 @@ _**`Disclosure.toString()`**_
 
 ### Properties
 
-_**`Disclosure.activatingElement`**_  
+_**`Disclosure.controller`**_  
 > Returns the Disclosure's activating element.
 
 _**`Disclosure.target`**_  

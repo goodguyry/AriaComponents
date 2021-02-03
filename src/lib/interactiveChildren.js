@@ -23,7 +23,7 @@ function interactiveChildren(target) {
 
   const interactiveElements = target.querySelectorAll(selectors);
 
-  return Array.prototype.slice.call(interactiveElements);
+  return Array.from(interactiveElements);
 }
 
 export default interactiveChildren;

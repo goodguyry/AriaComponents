@@ -74,13 +74,14 @@ const onDestroy = jest.fn();
 
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
-    tablist = new Tablist({
+    tablist = new Tablist(
       tabs,
-      panels,
-      onStateChange,
-      onInit,
-      onDestroy,
-    });
+      {
+        onStateChange,
+        onInit,
+        onDestroy,
+      }
+    );
   });
 
   describe('Tablist adds and manipulates DOM element attributes', () => {

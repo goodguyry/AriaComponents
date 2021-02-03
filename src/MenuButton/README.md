@@ -20,17 +20,17 @@ Class for setting up an interactive popup button to activate a target menu eleme
 ```javascript
 import { MenuButton } from 'aria-components';
 
-const button = document.querySelector('button[target]');
-const menuButton = new MenuButton(button);
+const controller = document.querySelector('button[target]');
+const menuButton = new MenuButton(controller);
 ```
 
 ## Constructor
 
 ```javascript
-MenuButton(activatingElement = null, options = {});
+MenuButton(controller = null, options = {});
 ```
 
-_**`activatingElement`**_ `HTMLElement`  
+_**`controller`**_ `HTMLElement`  
 > The element used to activate the MenuButton target; required to have a `target`  
 attribute with a value matching the `id` attribute value of the target element.
 
@@ -70,7 +70,7 @@ _**`MenuButton.toString()`**_
 
 ### Properties
 
-_**`MenuButton.activatingElement`**_  
+_**`MenuButton.controller`**_  
 > Returns the MenuButton's activating element.
 
 _**`MenuButton.target`**_  

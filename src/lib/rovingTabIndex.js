@@ -1,28 +1,4 @@
-/**
- * Create an array from a value.
- *
- * @param {Mixed} maybeAnArray An HTMLElement, NodeList, or Array of elements.
- */
-function toArray(maybeAnArray) {
-  if (Array.isArray(maybeAnArray)) {
-    return maybeAnArray;
-  }
-
-  let shouldBeAnArray = [];
-
-  if (maybeAnArray instanceof HTMLElement) {
-    // Convert element(s) to an Array.
-    shouldBeAnArray = new Array(maybeAnArray);
-  } else if (
-    maybeAnArray instanceof NodeList
-    || maybeAnArray instanceof HTMLCollection
-  ) {
-    // Array.from(maybeAnArray);
-    shouldBeAnArray = Array.prototype.slice.call(maybeAnArray, 0);
-  }
-
-  return shouldBeAnArray;
-}
+import toArray from './toArray';
 
 /**
  * Remove the tabIndex attribute from all elements.
@@ -30,7 +6,7 @@ function toArray(maybeAnArray) {
  * @param {Mixed} items An HTMLElement, NodeList, or array of elements.
  */
 function tabIndexAllow(items) {
-  const allowedElements = Array.isArray(items) ? items : toArray(items);
+  const allowedElements = toArray(items);
 
   allowedElements.forEach((item) => {
     item.removeAttribute('tabindex');
@@ -43,7 +19,7 @@ function tabIndexAllow(items) {
  * @param {Mixed} items An HTMLElement, NodeList, or Array of elements.
  */
 function tabIndexDeny(items) {
-  const deniedElements = Array.isArray(items) ? items : toArray(items);
+  const deniedElements = toArray(items);
 
   deniedElements.forEach((item) => {
     item.setAttribute('tabindex', '-1');
@@ -57,8 +33,8 @@ function tabIndexDeny(items) {
  * @param {HTMLElement|NodeList|Array} allow The item to which we'll allow tabbing.
  */
 function rovingTabIndex(items, allow) {
-  const allowedElements = Array.isArray(allow) ? allow : toArray(allow);
-  const allItems = Array.isArray(items) ? items : toArray(items);
+  const allowedElements = toArray(allow);
+  const allItems = toArray(items);
 
   tabIndexAllow(allowedElements);
 
@@ -74,5 +50,4 @@ export {
   rovingTabIndex,
   tabIndexAllow,
   tabIndexDeny,
-  toArray,
 };

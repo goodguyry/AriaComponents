@@ -15,10 +15,14 @@ export default class Disclosure extends AriaComponent {
    * Create a Disclosure.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {HTMLElement} controller The activating element.
+   * @param {object}      options    The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(controller, options = {}) {
+    super(controller);
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * The component name.
@@ -32,21 +36,7 @@ export default class Disclosure extends AriaComponent {
      *
      * @type {object}
      */
-    const options = {
-      /**
-       * The element used to trigger the Disclosure Popup.
-       *
-       * @type {HTMLElement}
-       */
-      controller: null,
-
-      /**
-       * The Disclosure element.
-       *
-       * @type {HTMLElement}
-       */
-      target: null,
-
+    const defaultOptions = {
       /**
        * Load the Disclosure open by default.
        *
@@ -83,8 +73,8 @@ export default class Disclosure extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge config options with defaults and save all as instance properties.
-    Object.assign(this, options, config);
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Initial component state.
     this.state = { expanded: this.loadOpen };
@@ -94,15 +84,12 @@ export default class Disclosure extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
-    this.handleControllerKeydown = this.handleControllerKeydown.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.toggleExpandedState = this.toggleExpandedState.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    // Check for a valid controller and target before initializing.
-    if (null !== this.controller && null !== this.target) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
@@ -170,7 +157,7 @@ export default class Disclosure extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
-    this.controller.addEventListener('keydown', this.handleControllerKeydown);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
     if (! this.allowOutsideClick) {
       document.body.addEventListener('click', this.closeOnOutsideClick);
     }
@@ -229,7 +216,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleControllerKeydown(event) {
+  controllerHandleKeydown(event) {
     const { SPACE, RETURN } = keyCodes;
     const { keyCode } = event;
 
@@ -307,7 +294,7 @@ export default class Disclosure extends AriaComponent {
     this.controller.removeEventListener('click', this.toggleExpandedState);
     this.controller.removeEventListener(
       'keydown',
-      this.handleControllerKeydown
+      this.controllerHandleKeydown
     );
     document.body.removeEventListener('click', this.closeOnOutsideClick);
 

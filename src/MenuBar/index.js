@@ -32,10 +32,19 @@ export default class MenuBar extends AriaComponent {
    * Create a MenuBar.
    * @constructor
    *
-   * @param {object} config The config object.
+   * @param {HTMLUListElement} element The menu list element.
+   * @param {object}           options The options object.
    */
-  constructor(config) {
-    super(config);
+  constructor(list, options = {}) {
+    super(list);
+
+    if ('UL' !== list.nodeName) {
+      AriaComponent.configurationError(
+        'The MenuBar element nodeName must be `UL`'
+      );
+    }
+
+    this.list = list;
 
     /**
      * The component name.
@@ -44,35 +53,12 @@ export default class MenuBar extends AriaComponent {
      */
     this.componentName = 'MenuBar';
 
-    // Warn about deprecated config values.
-    Object.keys(config).forEach((prop) => {
-      if ('menu' === prop) {
-        const { menu } = config;
-        // Correct the config property.
-        Object.assign(config, { list: menu, menu: undefined });
-
-        this.warnDeprecated('config.menu', 'config.list');
-      }
-
-      // Deprecated callbacks.
-      if (['onPopupDestroy', 'onPopupStateChange'].includes(prop)) {
-        this.warnDeprecated(`config.${prop}`);
-      }
-    });
-
     /**
      * Options shape.
      *
      * @type {object}
      */
-    const options = {
-      /**
-       * The menubar list element.
-       *
-       * @type {HTMLUListElement}
-       */
-      list: null,
-
+    const defaultOptions = {
       /**
        * Selector used to validate menu items.
        *
@@ -112,20 +98,17 @@ export default class MenuBar extends AriaComponent {
       onPopupInit: () => {},
     };
 
-    // Merge config options with defaults.
-    Object.assign(this, options, config);
+    // Merge remaining options with defaults and save all as instance properties.
+    Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods.
-    this.handleMenuBarKeydown = this.handleMenuBarKeydown.bind(this);
-    this.handleMenuBarClick = this.handleMenuBarClick.bind(this);
-    this.handleMenuItemKeydown = this.handleMenuItemKeydown.bind(this);
+    this.menubarHandleKeydown = this.menubarHandleKeydown.bind(this);
+    this.menubarHandleClick = this.menubarHandleClick.bind(this);
+    this.menuItemHandleKeydown = this.menuItemHandleKeydown.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    // Only initialize if we passed in a <ul>.
-    if (null !== this.list && 'UL' === this.list.nodeName) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
@@ -146,7 +129,7 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {array}
      */
-    this.menuBarChildren = Array.prototype.slice.call(this.list.children);
+    this.menuBarChildren = Array.from(this.list.children);
 
     /**
      * Collected menubar links.
@@ -200,8 +183,8 @@ export default class MenuBar extends AriaComponent {
       // Set menubar item role.
       link.parentElement.setAttribute('role', 'presentation');
 
-      link.parentElement.addEventListener('keydown', this.handleMenuBarKeydown);
-      link.addEventListener('click', this.handleMenuBarClick);
+      link.parentElement.addEventListener('keydown', this.menubarHandleKeydown);
+      link.addEventListener('click', this.menubarHandleClick);
     });
 
     // Collect first and last MenuBar items and merge them in as instance properties.
@@ -221,21 +204,22 @@ export default class MenuBar extends AriaComponent {
 
     // Initialize popups for nested lists.
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
-      const target = controller.nextElementSibling;
-
-      // Bail if there's no target.
-      if (null === target) {
+      // Bail if there's no target attribute.
+      if (! controller.hasAttribute('target')) {
         return acc;
       }
 
-      const popup = new Popup({
+      const popup = new Popup(
         controller,
-        target,
-        onInit: this.onPopupInit,
-        type: 'menu',
-      });
+        {
+          onInit: this.onPopupInit,
+          type: 'menu',
+        }
+      );
 
       acc.popups.push(popup);
+
+      const { target } = popup;
 
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)
@@ -248,8 +232,8 @@ export default class MenuBar extends AriaComponent {
       }
 
       // Initialize submenu Menus.
-      const subMenu = new Menu({ list, itemMatches: this.itemMatches });
-      target.addEventListener('keydown', this.handleMenuItemKeydown);
+      const subMenu = new Menu(list, { itemMatches: this.itemMatches });
+      target.addEventListener('keydown', this.menuItemHandleKeydown);
 
       // Save the list's previous sibling.
       subMenu.previousSibling = controller;
@@ -301,7 +285,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  handleMenuBarKeydown(event) {
+  menubarHandleKeydown(event) {
     const {
       LEFT,
       RIGHT,
@@ -409,7 +393,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  handleMenuBarClick(event) {
+  menubarHandleClick(event) {
     this.setState({
       menubarItem: event.target,
     });
@@ -420,7 +404,7 @@ export default class MenuBar extends AriaComponent {
    *
    * @param {Object} event The event object.
    */
-  handleMenuItemKeydown(event) {
+  menuItemHandleKeydown(event) {
     const { SPACE, RETURN } = keyCodes;
     const { keyCode, target } = event;
 
@@ -455,9 +439,9 @@ export default class MenuBar extends AriaComponent {
       // Remove event listeners.
       link.parentElement.removeEventListener(
         'keydown',
-        this.handleMenuBarKeydown
+        this.menubarHandleKeydown
       );
-      link.removeEventListener('click', this.handleMenuBarClick);
+      link.removeEventListener('click', this.menubarHandleClick);
     });
 
     // Remove tabindex attribute.
@@ -465,7 +449,7 @@ export default class MenuBar extends AriaComponent {
 
     // Destroy popups.
     this.popups.forEach((popup) => {
-      popup.target.removeEventListener('keydown', this.handleMenuItemKeydown);
+      popup.target.removeEventListener('keydown', this.menuItemHandleKeydown);
 
       popup.destroy();
     });
