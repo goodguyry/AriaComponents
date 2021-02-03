@@ -59,7 +59,7 @@ export default class ListBox extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge options with defaults.
+    // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods.

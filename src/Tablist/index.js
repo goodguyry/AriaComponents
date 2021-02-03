@@ -65,7 +65,7 @@ export default class Tablist extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Save references to the tablist and panels.
+    // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
     // Intial component state.

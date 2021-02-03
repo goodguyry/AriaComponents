@@ -66,7 +66,7 @@ export default class Popup extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Save references to the controller and target.
+    // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
     // Intial component state.

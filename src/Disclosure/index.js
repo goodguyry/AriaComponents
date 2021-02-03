@@ -73,7 +73,7 @@ export default class Disclosure extends AriaComponent {
       onDestroy: () => {},
     };
 
-    // Merge options with defaults and save all as instance properties.
+    // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
     // Initial component state.
