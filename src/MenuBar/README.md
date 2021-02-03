@@ -78,7 +78,7 @@ _**`MenuBar.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`MenuBar.toString()`**_  
-> Returns `'[object AriaMenuBar]'`.
+> Returns `'[object aria-component/MenuBar]'`.
 
 ### Properties
 
