@@ -28,6 +28,7 @@ module.exports = (productionMode) => {
     new MiniCssExtractPlugin(minExtractOptions),
     new StylelintPlugin({
       configFile: path.join(paths.config, 'stylelint.config.js'),
+      files: 'docs/_client/**/*.scss',
     }),
     new StatsPlugin({
       transform(stats) {
