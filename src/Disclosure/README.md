@@ -67,7 +67,7 @@ _**`Disclosure.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`Disclosure.toString()`**_  
-> Returns `'[object aria-component/Disclosure]'`.
+> Returns `'[object Disclosure]'`.
 
 ### Properties
 

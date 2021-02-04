@@ -88,6 +88,7 @@ const menuBar = new MenuBar(
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menuBar).toBeInstanceOf(MenuBar);
+    expect(menuBar.toString()).toEqual('[object MenuBar]');
     expect(domElements.list.menubar).toBeInstanceOf(MenuBar);
     expect(domElements.list.menubar.itemMatches).toEqual(':not(.exclude)');
 

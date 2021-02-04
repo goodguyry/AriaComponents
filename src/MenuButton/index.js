@@ -20,15 +20,15 @@ export default class MenuButton extends AriaComponent {
   constructor(controller, options = {}) {
     super(controller);
 
-    this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'MenuButton';
+    this[Symbol.toStringTag] = 'MenuButton';
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Options shape.

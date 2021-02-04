@@ -49,6 +49,13 @@ export default class AriaComponent {
     }
 
     /**
+     * The default string description for this object.
+     *
+     * @type {string}
+     */
+    this.stringDescription = 'AriaComponent';
+
+    /**
      * Component state.
      *
      * @type {object}
@@ -76,6 +83,26 @@ export default class AriaComponent {
   }
 
   /**
+   * Set the string description for this object.
+   * E.x., MenuButton.toString() === '[object MenuButton]'
+   *
+   * @param {string} name The component name.
+   */
+  set [Symbol.toStringTag](name) {
+    this.stringDescription = name;
+  }
+
+  /**
+   * Get the string description for this object.
+   * E.x., MenuButton.toString() === '[object MenuButton]'
+   *
+   * @return {string}
+   */
+  get [Symbol.toStringTag]() {
+    return this.stringDescription;
+  }
+
+  /**
    * Set component state.
    *
    * @param {object} newState The new state to merge with existing state.
@@ -98,7 +125,7 @@ export default class AriaComponent {
     const referenceElements = [...elements].map((element) => {
       Object.defineProperty(
         element,
-        this.componentName.toLowerCase(),
+        this.stringDescription.toLowerCase(),
         { value: this, configurable: true }
       );
 
@@ -113,7 +140,7 @@ export default class AriaComponent {
    */
   deleteSelfReferences() {
     this.referenceElements.forEach((element) => {
-      delete element[this.componentName.toLowerCase()];
+      delete element[this.stringDescription.toLowerCase()];
     });
   }
 

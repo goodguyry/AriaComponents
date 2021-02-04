@@ -1,14 +1,18 @@
 /**
  * Check if a given element's property has been instantiated as an AriaComponent class.
  *
- * @param {HTMLElement} prop      The property to check.
- * @param {Object}      component The class instance to check against.
+ * @param {Object}   component The class instance to check against.
+ * @param {String}   name      The name of the expected component.
  * @return {Boolean}
  */
-export default function isInstanceOf(prop, component) {
-  if (undefined === prop || null === prop) {
+export default function isInstanceOf(component, name) {
+  if (null == component || null == name) {
     return false;
   }
 
-  return (prop instanceof component);
+  const toStringTag = component[Symbol.toStringTag];
+
+  return (
+    null != toStringTag && toStringTag.toLowerCase() === name.toLowerCase()
+  );
 }

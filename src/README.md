@@ -19,7 +19,7 @@ _**`AriaComponent.getState()`**_
 > Returns an object representing the current component state.
 
 _**`AriaComponent.toString()`**_  
-> Returns `'[object aria-component]'`.
+> Returns `'[object AriaComponent]'`.
 
 ## lib/ Modules
 

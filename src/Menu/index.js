@@ -33,20 +33,21 @@ export default class Menu extends AriaComponent {
   constructor(list, options = {}) {
     super(list);
 
+    // @todo Make this a global helper method.
     if ('UL' !== list.nodeName) {
       AriaComponent.configurationError(
         'The Menu element nodeName must be `UL`'
       );
     }
 
-    this.list = list;
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'Menu';
+    this[Symbol.toStringTag] = 'Menu';
+
+    this.list = list;
 
     /**
      * Options shape.
@@ -277,12 +278,12 @@ export default class Menu extends AriaComponent {
       case RIGHT: {
         const siblingElement = this.constructor.nextElementIsUl(activeDescendant); // eslint-disable-line max-len
 
-        if (siblingElement && isInstanceOf(siblingElement.menu, Menu)) {
+        if (siblingElement && isInstanceOf(siblingElement.menu, 'Menu')) {
           event.stopPropagation();
           event.preventDefault();
 
           // Open the submenu Disclosure.
-          if (isInstanceOf(activeDescendant.disclosure, Disclosure)) {
+          if (isInstanceOf(activeDescendant.disclosure, 'Disclosure')) {
             activeDescendant.disclosure.open();
           }
 
@@ -306,7 +307,7 @@ export default class Menu extends AriaComponent {
           event.stopPropagation();
 
           // Close the submenu Disclosure.
-          if (isInstanceOf(this.previousSibling.disclosure, Disclosure)) {
+          if (isInstanceOf(this.previousSibling.disclosure, 'Disclosure')) {
             this.previousSibling.disclosure.close();
           }
 
@@ -365,7 +366,7 @@ export default class Menu extends AriaComponent {
 
       // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
-      if (siblingList && isInstanceOf(siblingList.menu, Menu)) {
+      if (siblingList && isInstanceOf(siblingList.menu, 'Menu')) {
         siblingList.menu.destroy();
       }
     });

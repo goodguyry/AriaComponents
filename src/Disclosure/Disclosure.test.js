@@ -35,6 +35,7 @@ describe('Disclosure with default configuration', () => {
   describe('Disclosure adds and manipulates DOM element attributes', () => {
     it('Should be instantiated as expected', () => {
       expect(disclosure).toBeInstanceOf(Disclosure);
+      expect(disclosure.toString()).toEqual('[object Disclosure]');
 
       expect(disclosure.getState().expanded).toBeFalsy();
 

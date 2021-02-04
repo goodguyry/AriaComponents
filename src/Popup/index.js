@@ -20,15 +20,15 @@ export default class Popup extends AriaComponent {
   constructor(controller, options = {}) {
     super(controller);
 
-    this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'Popup';
+    super[Symbol.toStringTag] = 'Popup';
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Component configuration options.

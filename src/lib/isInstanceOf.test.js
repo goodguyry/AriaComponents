@@ -21,22 +21,34 @@ const target = document.querySelector('.wrapper');
 
 const list = document.querySelector('.menu');
 
-const popup = new Popup(controller); // eslint-disable-line no-unused-vars
-const menu = new Menu(list); // eslint-disable-line no-unused-vars
+const popup = new Popup(controller);
+const menu = new Menu(list);
+
+const helloWorld = { hello: 'world' };
 
 describe('Should return whether a given object is an instance of a class', () => {
   it('Should be a Popup instance',
     () => {
-      expect(isInstanceOf(controller.popup, Popup)).toBeTruthy();
+      expect(isInstanceOf(popup, 'Popup')).toBeTruthy();
+    });
+
+  it('Should be case-insensitive',
+    () => {
+      expect(isInstanceOf(popup, 'pOpUp')).toBeTruthy();
     });
 
   it('Should be a Menu instance',
     () => {
-      expect(isInstanceOf(list.menu, Menu)).toBeTruthy();
+      expect(isInstanceOf(menu, 'menu')).toBeTruthy();
     });
 
   it('Should return false for a non-existant element',
     () => {
-      expect(isInstanceOf(target.unknown, Menu)).toBeFalsy();
+      expect(isInstanceOf(target.unknown, 'Menu')).toBeFalsy();
+    });
+
+  it('Should return false for non-aria-component object',
+    () => {
+      expect(isInstanceOf(helloWorld, 'Dialog')).toBeFalsy();
     });
 });

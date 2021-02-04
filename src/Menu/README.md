@@ -68,7 +68,7 @@ _**`Menu.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`Menu.toString()`**_  
-> Returns `'[object aria-component/Menu]'`.
+> Returns `'[object Menu]'`.
 
 ### Properties
 

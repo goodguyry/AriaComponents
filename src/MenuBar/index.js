@@ -23,7 +23,7 @@ export default class MenuBar extends AriaComponent {
    * @return {Popup|Boolean} The menubarItem's popup, or false if none.
    */
   static getPopupFromMenubarItem(menubarItem) {
-    return isInstanceOf(menubarItem.popup, Popup)
+    return isInstanceOf(menubarItem.popup, 'Popup')
       ? menubarItem.popup
       : false;
   }
@@ -44,14 +44,14 @@ export default class MenuBar extends AriaComponent {
       );
     }
 
-    this.list = list;
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'MenuBar';
+    this[Symbol.toStringTag] = 'MenuBar';
+
+    this.list = list;
 
     /**
      * Options shape.

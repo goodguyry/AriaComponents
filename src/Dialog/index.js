@@ -19,15 +19,15 @@ export default class Dialog extends AriaComponent {
   constructor(controller, options = {}) {
     super(controller);
 
-    this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'Dialog';
+    this[Symbol.toStringTag] = 'Dialog';
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Options shape.
