@@ -29,31 +29,31 @@ const helloWorld = { hello: 'world' };
 describe('Should return whether a given object is an instance of a class', () => {
   it('Should be a Popup instance',
     () => {
-      expect(isInstanceOf(popup, 'Popup')).toBeTruthy();
+      expect(isInstanceOf('Popup', popup)).toBeTruthy();
     });
 
   it('Should be case-insensitive',
     () => {
-      expect(isInstanceOf(popup, 'pOpUp')).toBeTruthy();
+      expect(isInstanceOf('pOpUp', popup)).toBeTruthy();
     });
 
   it('Should be a Menu instance',
     () => {
-      expect(isInstanceOf(menu, 'menu')).toBeTruthy();
+      expect(isInstanceOf('menu', menu)).toBeTruthy();
     });
 
   it('Should return false for a non-existant element',
     () => {
-      expect(isInstanceOf(target.unknown, 'Menu')).toBeFalsy();
+      expect(isInstanceOf('Menu', target.unknown)).toBeFalsy();
     });
 
   it('Should return false for non-aria-component object',
     () => {
-      expect(isInstanceOf(helloWorld, 'Dialog')).toBeFalsy();
+      expect(isInstanceOf('Dialog', helloWorld)).toBeFalsy();
     });
 
   it('Should return false for nonsensical parameter values',
     () => {
-      expect(isInstanceOf('whatever', 4)).toBeFalsy();
+      expect(isInstanceOf(4, 'whatever')).toBeFalsy();
     });
 });

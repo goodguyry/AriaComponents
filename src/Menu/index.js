@@ -278,12 +278,12 @@ export default class Menu extends AriaComponent {
       case RIGHT: {
         const siblingElement = this.constructor.nextElementIsUl(activeDescendant); // eslint-disable-line max-len
 
-        if (siblingElement && isInstanceOf(siblingElement.menu, 'Menu')) {
+        if (siblingElement && isInstanceOf('Menu', siblingElement.menu)) {
           event.stopPropagation();
           event.preventDefault();
 
           // Open the submenu Disclosure.
-          if (isInstanceOf(activeDescendant.disclosure, 'Disclosure')) {
+          if (isInstanceOf('Disclosure', activeDescendant.disclosure)) {
             activeDescendant.disclosure.open();
           }
 
@@ -307,7 +307,7 @@ export default class Menu extends AriaComponent {
           event.stopPropagation();
 
           // Close the submenu Disclosure.
-          if (isInstanceOf(this.previousSibling.disclosure, 'Disclosure')) {
+          if (isInstanceOf('Disclosure', this.previousSibling.disclosure)) {
             this.previousSibling.disclosure.close();
           }
 
@@ -366,7 +366,7 @@ export default class Menu extends AriaComponent {
 
       // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
-      if (siblingList && isInstanceOf(siblingList.menu, 'Menu')) {
+      if (siblingList && isInstanceOf('Menu', siblingList.menu)) {
         siblingList.menu.destroy();
       }
     });
