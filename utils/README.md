@@ -103,3 +103,14 @@ const [firstItem, lastItem] = getFirstAndLastItems(listItems);
 const listItemsArray = Array.from(listItems);
 const [firstItem, lastItem] = getFirstAndLastItems(listItemsArray);
 ```
+
+## `isInstanceOf`
+
+```javascript
+import { isInstanceOf } from 'aria-components/utils';
+
+const navUlElement = document.querySelectory('nav ul');
+
+// Check if the nav list is an instance of the MenuBar component.
+const isMenuBar = isInstanceOf('MenuBar', navUlElement);
+```

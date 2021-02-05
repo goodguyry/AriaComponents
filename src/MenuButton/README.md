@@ -66,7 +66,7 @@ _**`MenuButton.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`MenuButton.toString()`**_  
-> Returns `'[object AriaMenuButton]'`.
+> Returns `'[object MenuButton]'`.
 
 ### Properties
 

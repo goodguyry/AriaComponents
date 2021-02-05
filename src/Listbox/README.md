@@ -59,7 +59,7 @@ _**`Listbox.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`Listbox.toString()`**_  
-> Returns `'[object AriaListbox]'`.
+> Returns `'[object Listbox]'`.
 
 ### Properties
 

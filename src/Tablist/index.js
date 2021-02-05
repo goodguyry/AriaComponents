@@ -28,14 +28,14 @@ export default class Tablist extends AriaComponent {
       );
     }
 
-    this.tabs = tabs;
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'Tablist';
+    this[Symbol.toStringTag] = 'Tablist';
+
+    this.tabs = tabs;
 
     /**
      * Component configuration options.

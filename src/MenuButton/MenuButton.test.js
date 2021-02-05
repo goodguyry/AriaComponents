@@ -53,6 +53,7 @@ const menuButton = new MenuButton(
 describe('MenuButton adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
     expect(menuButton).toBeInstanceOf(MenuButton);
+    expect(menuButton.toString()).toEqual('[object MenuButton]');
 
     expect(controller.popup).toBeInstanceOf(Popup);
     expect(target.popup).toBeInstanceOf(Popup);

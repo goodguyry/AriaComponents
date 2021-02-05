@@ -21,15 +21,15 @@ export default class Disclosure extends AriaComponent {
   constructor(controller, options = {}) {
     super(controller);
 
-    this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
-
     /**
-     * The component name.
+     * The string description for this object.
      *
      * @type {string}
      */
-    this.componentName = 'Disclosure';
+    this[Symbol.toStringTag] = 'Disclosure';
+
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Options shape.

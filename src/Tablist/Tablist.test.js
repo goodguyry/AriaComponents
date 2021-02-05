@@ -87,6 +87,7 @@ describe('Tablist with default configuration', () => {
   describe('Tablist adds and manipulates DOM element attributes', () => {
     it('Should be instantiated as expected', () => {
       expect(tablist).toBeInstanceOf(Tablist);
+      expect(tablist.toString()).toEqual('[object Tablist]');
 
       expect(tablist.getState().activeIndex).toEqual(0);
 

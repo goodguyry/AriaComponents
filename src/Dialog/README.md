@@ -84,7 +84,7 @@ _**`Dialog.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`Dialog.toString()`**_  
-> Returns `'[object AriaDialog]'`.
+> Returns `'[object Dialog]'`.
 
 ### Properties
 

@@ -65,7 +65,7 @@ _**`Popup.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`Popup.toString()`**_  
-> Returns `'[object AriaPopup]'`.
+> Returns `'[object Popup]'`.
 
 ### Properties
 

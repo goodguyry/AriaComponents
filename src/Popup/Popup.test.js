@@ -50,6 +50,7 @@ const popup = new Popup(
 describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
     expect(popup).toBeInstanceOf(Popup);
+    expect(popup.toString()).toEqual('[object Popup]');
 
     expect(popup.firstInteractiveChild).toEqual(domFirstChild);
     expect(popup.lastInteractiveChild).toEqual(domLastChild);

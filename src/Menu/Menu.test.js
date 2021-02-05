@@ -82,6 +82,7 @@ let menu = new Menu(
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menu).toBeInstanceOf(Menu);
+    expect(menu.toString()).toEqual('[object Menu]');
     expect(domElements.list.menu).toBeInstanceOf(Menu);
 
     expect(domElements.list.menu.itemMatches).toEqual(':not(.exclude)');

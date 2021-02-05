@@ -57,6 +57,7 @@ describe('Listbox with default configuration', () => {
   describe('Listbox adds and manipulates DOM element attributes', () => {
     it('Should be instantiated as expected', () => {
       expect(listbox).toBeInstanceOf(Listbox);
+      expect(listbox.toString()).toEqual('[object Listbox]');
 
       expect(listbox.getState().expanded).toBeFalsy();
       const [firstListItem] = listItems;

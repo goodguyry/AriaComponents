@@ -69,6 +69,7 @@ describe('Dialog with default configuration', () => {
   describe('Dialog adds and manipulates DOM element attributes', () => {
     it('Should be instantiated as expected', () => {
       expect(modal).toBeInstanceOf(Dialog);
+      expect(modal.toString()).toEqual('[object Dialog]');
 
       expect(controller.dialog).toBeInstanceOf(Dialog);
       expect(target.dialog).toBeInstanceOf(Dialog);

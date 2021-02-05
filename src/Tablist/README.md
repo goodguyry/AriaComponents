@@ -76,7 +76,7 @@ _**`Tablist.destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
 _**`Tablist.toString()`**_  
-> Returns `'[object AriaTablist]'`.
+> Returns `'[object Tablist]'`.
 
 ### Properties
 
