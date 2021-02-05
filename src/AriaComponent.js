@@ -84,7 +84,6 @@ export default class AriaComponent {
 
   /**
    * Set the string description for this object.
-   * E.x., MenuButton.toString() === '[object MenuButton]'
    *
    * @param {string} name The component name.
    */
