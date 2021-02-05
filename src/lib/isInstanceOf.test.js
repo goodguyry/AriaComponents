@@ -51,4 +51,9 @@ describe('Should return whether a given object is an instance of a class', () =>
     () => {
       expect(isInstanceOf(helloWorld, 'Dialog')).toBeFalsy();
     });
+
+  it('Should return false for nonsensical parameter values',
+    () => {
+      expect(isInstanceOf('whatever', 4)).toBeFalsy();
+    });
 });

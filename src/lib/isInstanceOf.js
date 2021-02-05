@@ -6,13 +6,11 @@
  * @return {Boolean}
  */
 export default function isInstanceOf(component, name) {
-  if (null == component || null == name) {
+  if (null == component || null == name || 'string' !== typeof name) {
     return false;
   }
 
-  const toStringTag = component[Symbol.toStringTag];
+  const toStringTag = component?.[Symbol.toStringTag];
 
-  return (
-    null != toStringTag && toStringTag.toLowerCase() === name.toLowerCase()
-  );
+  return toStringTag?.toLowerCase() === name.toLowerCase();
 }
