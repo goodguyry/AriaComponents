@@ -22,9 +22,10 @@ export default class Tablist extends AriaComponent {
   constructor(tabs, options) {
     super(tabs);
 
+    // Make sure the component element is an unordered list.
     if ('UL' !== tabs.nodeName) {
       AriaComponent.configurationError(
-        'The component element nodeName must be `UL`'
+        'Expected component element nodeName to be `UL`'
       );
     }
 
@@ -68,9 +69,6 @@ export default class Tablist extends AriaComponent {
     // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
-    // Intial component state.
-    this.state = { activeIndex: 0 };
-
     // Bind class methods.
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
     this.tabsHandleKeydown = this.tabsHandleKeydown.bind(this);
@@ -79,10 +77,21 @@ export default class Tablist extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
+    this.init();
+  }
+
+  /**
+   * Set up the component's DOM attributes and event listeners.
+   */
+  init() {
+    // Intial component state.
+    this.state = { activeIndex: 0 };
+
     /**
      * Collect the anchor inside of each list item. Using anchors makes
      * providing a non-JS fallback as simple as using the associated tabpanel's
      * ID attribute as the link's HREF.
+     * @todo Change this to reduce(?) to get everything in one go?
      *
      * Required tab markup: `<li><a href=""></a></li>`
      *
@@ -106,16 +115,16 @@ export default class Tablist extends AriaComponent {
       return acc;
     }, []);
 
-    // Only initialize if tabs and panels are equal in number.
-    if (this.tabLinks.length === this.panels.length) {
-      this.init();
-    }
-  }
+    const lengthTabs = this.tabLinks.length;
+    const lengthPanels = this.panels.length;
 
-  /**
-   * Set up the component's DOM attributes and event listeners.
-   */
-  init() {
+    // Only proceed if tabs and panels are equal in number.
+    if (lengthTabs !== lengthPanels) {
+      AriaComponent.configurationError(
+        `There are ${lengthTabs} tabs but ${lengthPanels} panels`
+      );
+    }
+
     // Component state is initially set in the constructor.
     const { activeIndex } = this.state;
 

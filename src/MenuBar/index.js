@@ -38,9 +38,10 @@ export default class MenuBar extends AriaComponent {
   constructor(list, options = {}) {
     super(list);
 
+    // Make sure the component element is an unordered list.
     if ('UL' !== list.nodeName) {
       AriaComponent.configurationError(
-        'The MenuBar element nodeName must be `UL`'
+        'Expected component element nodeName to be `UL`'
       );
     }
 
