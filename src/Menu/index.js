@@ -33,10 +33,10 @@ export default class Menu extends AriaComponent {
   constructor(list, options = {}) {
     super(list);
 
-    // @todo Make this a global helper method.
+    // Make sure the component element is an unordered list.
     if ('UL' !== list.nodeName) {
       AriaComponent.configurationError(
-        'The Menu element nodeName must be `UL`'
+        'Expected component element nodeName to be `UL`'
       );
     }
 

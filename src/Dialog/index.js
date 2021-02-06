@@ -68,21 +68,6 @@ export default class Dialog extends AriaComponent {
     // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
-    // Get the content items if none are provided.
-    if (0 === this.content.length || undefined === this.content) {
-      this.content = Array.from(document.body.children)
-        .filter((child) => ! child.contains(this.target));
-    } else {
-      this.content = toArray(this.content);
-    }
-
-    // If no content is found.
-    if (0 === this.content.length) {
-      AriaComponent.configurationError(
-        'The Dialog target should not be within the main site content'
-      );
-    }
-
     // Bind class methods
     this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
@@ -99,6 +84,21 @@ export default class Dialog extends AriaComponent {
    * Set the component's DOM attributes and event listeners.
    */
   init() {
+    // Get the content items if none are provided.
+    if (0 === this.content.length || undefined === this.content) {
+      this.content = Array.from(document.body.children)
+        .filter((child) => ! child.contains(this.target));
+    } else {
+      this.content = toArray(this.content);
+    }
+
+    // If no content is found.
+    if (0 === this.content.length) {
+      AriaComponent.configurationError(
+        'The Dialog target should not be within the main site content'
+      );
+    }
+
     /*
      * A reference to the class instance added to the controller and target
      * elements to enable external interactions with this instance.

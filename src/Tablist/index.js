@@ -22,9 +22,10 @@ export default class Tablist extends AriaComponent {
   constructor(tabs, options) {
     super(tabs);
 
+    // Make sure the component element is an unordered list.
     if ('UL' !== tabs.nodeName) {
       AriaComponent.configurationError(
-        'The component element nodeName must be `UL`'
+        'Expected component element nodeName to be `UL`'
       );
     }
 
@@ -68,9 +69,6 @@ export default class Tablist extends AriaComponent {
     // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, { ...defaultOptions, ...options });
 
-    // Intial component state.
-    this.state = { activeIndex: 0 };
-
     // Bind class methods.
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
     this.tabsHandleKeydown = this.tabsHandleKeydown.bind(this);
@@ -79,43 +77,59 @@ export default class Tablist extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    /**
-     * Collect the anchor inside of each list item. Using anchors makes
-     * providing a non-JS fallback as simple as using the associated tabpanel's
-     * ID attribute as the link's HREF.
-     *
-     * Required tab markup: `<li><a href=""></a></li>`
-     *
-     * @type {array}
-     */
-    this.tabLinks = Array.from(this.tabs.children)
-      .filter((child) => null !== child.querySelector('a[href]'))
-      .map((child) => child.querySelector('a[href]'));
-
-    /**
-     * Tablist panels.
-     *
-     * @type {array}
-     */
-    this.panels = this.tabLinks.reduce((acc, tabLink) => {
-      const panel = document.getElementById(tabLink.hash.replace('#', ''));
-      if (null !== panel) {
-        return [...acc, panel];
-      }
-
-      return acc;
-    }, []);
-
-    // Only initialize if tabs and panels are equal in number.
-    if (this.tabLinks.length === this.panels.length) {
-      this.init();
-    }
+    this.init();
   }
 
   /**
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
+    // Intial component state.
+    this.state = { activeIndex: 0 };
+
+    /**
+     * Collect the anchor inside of each list item, and the panel referenced by
+     * the anchor's HREF value.
+     *
+     * Required tab markup: `<li><a href="PANEL_ID_REF"></a></li>`
+     *
+     * @type {array}
+     */
+    const { tabLinks, panels } = Array.from(this.tabs.children)
+      .reduce((acc, child) => {
+        const tabLink = child.querySelector('a[href]');
+
+        if (null === tabLink) {
+          return acc;
+        }
+
+        const panel = document.getElementById(tabLink.hash.replace('#', ''));
+        if (null !== panel) {
+          return {
+            tabLinks: [...acc.tabLinks, tabLink],
+            panels: [...acc.panels, panel],
+          };
+        }
+
+        return acc;
+      }, { tabLinks: [], panels: [] });
+
+    // Save the tab links and panels.
+    Object.assign(this, {
+      /**
+       * Tablist anchor elements.
+       *
+       * @type {array}
+       */
+      tabLinks,
+      /**
+       * Tablist panels.
+       *
+       * @type {array}
+       */
+      panels,
+    });
+
     // Component state is initially set in the constructor.
     const { activeIndex } = this.state;
 
