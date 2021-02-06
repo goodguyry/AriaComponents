@@ -88,35 +88,34 @@ export default class Tablist extends AriaComponent {
     this.state = { activeIndex: 0 };
 
     /**
-     * Collect the anchor inside of each list item. Using anchors makes
-     * providing a non-JS fallback as simple as using the associated tabpanel's
-     * ID attribute as the link's HREF.
-     * @todo Change this to reduce(?) to get everything in one go?
+     * Collect the anchor inside of each list item, and the panel referenced by
+     * the anchor's HREF value.
      *
-     * Required tab markup: `<li><a href=""></a></li>`
+     * Required tab markup: `<li><a href="PANEL_ID_REF"></a></li>`
      *
      * @type {array}
      */
-    this.tabLinks = Array.from(this.tabs.children)
-      .filter((child) => null !== child.querySelector('a[href]'))
-      .map((child) => child.querySelector('a[href]'));
+    const { tabLinks, panels } = Array.from(this.tabs.children)
+      .reduce((acc, child) => {
+        const tabLink = child.querySelector('a[href]');
 
-    /**
-     * Tablist panels.
-     *
-     * @type {array}
-     */
-    this.panels = this.tabLinks.reduce((acc, tabLink) => {
-      const panel = document.getElementById(tabLink.hash.replace('#', ''));
-      if (null !== panel) {
-        return [...acc, panel];
-      }
+        if (null === tabLink) {
+          return acc;
+        }
 
-      return acc;
-    }, []);
+        const panel = document.getElementById(tabLink.hash.replace('#', ''));
+        if (null !== panel) {
+          return {
+            tabLinks: [...acc.tabLinks, tabLink],
+            panels: [...acc.panels, panel],
+          };
+        }
 
-    const lengthTabs = this.tabLinks.length;
-    const lengthPanels = this.panels.length;
+        return acc;
+      }, { tabLinks: [], panels: [] });
+
+    const lengthTabs = tabLinks.length;
+    const lengthPanels = panels.length;
 
     // Only proceed if tabs and panels are equal in number.
     if (lengthTabs !== lengthPanels) {
@@ -124,6 +123,22 @@ export default class Tablist extends AriaComponent {
         `There are ${lengthTabs} tabs but ${lengthPanels} panels`
       );
     }
+
+    // Save the tab links and panels.
+    Object.assign(this, {
+      /**
+       * Tablist anchor elements.
+       *
+       * @type {array}
+       */
+      tabLinks,
+      /**
+       * Tablist panels.
+       *
+       * @type {array}
+       */
+      panels,
+    });
 
     // Component state is initially set in the constructor.
     const { activeIndex } = this.state;
