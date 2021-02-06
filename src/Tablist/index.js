@@ -114,16 +114,6 @@ export default class Tablist extends AriaComponent {
         return acc;
       }, { tabLinks: [], panels: [] });
 
-    const lengthTabs = tabLinks.length;
-    const lengthPanels = panels.length;
-
-    // Only proceed if tabs and panels are equal in number.
-    if (lengthTabs !== lengthPanels) {
-      AriaComponent.configurationError(
-        `There are ${lengthTabs} tabs but ${lengthPanels} panels`
-      );
-    }
-
     // Save the tab links and panels.
     Object.assign(this, {
       /**
