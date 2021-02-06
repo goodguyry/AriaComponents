@@ -1,4 +1,3 @@
-import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import Menu from '../Menu';
 import keyCodes from '../lib/keyCodes';
@@ -9,9 +8,9 @@ import keyCodes from '../lib/keyCodes';
  * https://www.w3.org/TR/wai-aria-practices-1.1/#menubutton
  * https://www.w3.org/TR/wai-aria-practices-1.1/examples/menu-button/menu-button-links.html
  */
-export default class MenuButton extends AriaComponent {
+export default class MenuButton extends Popup {
   /**
-   * Create a ListBox.
+   * Create a MenuButton.
    * @constructor
    *
    * @param {HTMLElement} controller The activating element.
@@ -66,11 +65,10 @@ export default class MenuButton extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, { ...defaultOptions, ...options, type: 'menu' });
 
     // Bind class methods.
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
-    this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -82,22 +80,16 @@ export default class MenuButton extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
+    super.init();
+
     /**
-     * The MenuButton is basically a Popup to present a Menu, so we instantiate
-     * a Popup and subscribe to state changes to act on the MenuButton when the
-     * Popup is shown and hidden.
+     * The MenuButton is a Popup to present a Menu.
+     * 1. A HTMLUListElement was passed in as the `list` option
+     * 2. The Popup target is a HTMLUListElement
+     * 3. We find the first HTMLUListElement we inside the target
      *
      * @type {Popup}
      */
-    this.popup = new Popup(
-      this.controller,
-      {
-        type: 'menu',
-        onStateChange: this.onPopupStateChange,
-      }
-    );
-
-    // Initialize the Menu if we passed one in.
     if (null != this.list && 'UL' === this.list.nodeName) {
       this.menu = new Menu(this.list);
     } else if ('UL' === this.target.nodeName) {
@@ -123,23 +115,13 @@ export default class MenuButton extends AriaComponent {
   }
 
   /**
-   * Keep this component's state synced with the Popup's state.
-   *
-   * @param {Object} state The Popup state.
-   */
-  onPopupStateChange(state) {
-    this.setState(state);
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
-  }
-
-  /**
-   * Handle keydown events on the MenuButton controller.
+   * Handle additional keydown events on the MenuButton controller.
    *
    * @param {Event} event The event object.
    */
   controllerHandleKeydown(event) {
+    super.controllerHandleKeydown(event);
+
     const { keyCode } = event;
     const {
       RETURN,
@@ -190,9 +172,6 @@ export default class MenuButton extends AriaComponent {
    * Destroy the Popup and Menu.
    */
   destroy() {
-    // Destroy the MenuButton Popup.
-    this.popup.destroy();
-
     // Destroy the Menu.
     this.menu.destroy();
 
@@ -202,21 +181,7 @@ export default class MenuButton extends AriaComponent {
       this.controllerHandleKeydown
     );
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
-  }
-
-  /**
-   * Show the menu Popup.
-   */
-  show() {
-    this.popup.show();
-  }
-
-  /**
-   * Hide the menu Popup.
-   */
-  hide() {
-    this.popup.hide();
+    // Destroy the MenuButton Popup.
+    super.destroy();
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { MenuButton, Popup, Menu } from 'root';
+import { MenuButton, Menu } from 'root';
 import { events } from '../lib/events';
 
 const {
@@ -55,8 +55,6 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
     expect(menuButton).toBeInstanceOf(MenuButton);
     expect(menuButton.toString()).toEqual('[object MenuButton]');
 
-    expect(controller.popup).toBeInstanceOf(Popup);
-    expect(target.popup).toBeInstanceOf(Popup);
     expect(list.menu).toBeInstanceOf(Menu);
 
     expect(menuButton.getState().expanded).toBeFalsy();
