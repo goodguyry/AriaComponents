@@ -170,59 +170,49 @@ export default class ListBox extends AriaComponent {
    * Track the selected Listbox option.
    * https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant
    *
-   * @param {object} state The component state.
-   * @param {HTMLElement} state.activeDescendant The expected `activeDescendant` state.
+   * @param {string[]} updatedProps The newly-updated state properties.
    */
-  stateWasUpdated() {
+  stateWasUpdated(updatedProps) {
     const { activeDescendant, expanded } = this.state;
 
     if (expanded) {
-      /*
-       * Remove the `aria-selected` attribute from the previously-selected option
-       * and add it to the newly-selected option.
-       */
-      const selected = this.target.querySelector('[aria-selected="true"]');
-      if (null !== selected) {
-        selected.removeAttribute('aria-selected');
+      // The Popup is newly opened.
+      if (updatedProps.includes('expanded')) {
+        /*
+         * Focus the target (list) element when the Listbox is shown. Focus
+         * remains on the target element, with option selection coming through a
+         * combination of the `aria-selected` attribute on the option and the
+         * `aria-activedescendant` attribute on the target tracking the active
+         * option.
+         */
+        this.target.focus();
       }
-      activeDescendant.setAttribute('aria-selected', 'true');
+
+      // The active descendant was  updated.
+      if (updatedProps.includes('activeDescendant')) {
+        /*
+         * Remove the `aria-selected` attribute from the previously-selected option
+         * and add it to the newly-selected option.
+         */
+        const selected = this.target.querySelector('[aria-selected="true"]');
+        if (null !== selected) {
+          selected.removeAttribute('aria-selected');
+        }
+        activeDescendant.setAttribute('aria-selected', 'true');
+
+        /*
+         * If the selected option is beyond the bounds of the list, scroll it into
+         * view. Check this every time state is updated to ensure the selected
+         * option is always visible.
+         */
+        this.scrollOptionIntoView(activeDescendant);
+      }
 
       /*
-       * Track the newly selected option via the `aria-activedescendant` attribute
-       * on the target.
+       * Track the newly selected option via the `aria-activedescendant`
+       * attribute on the target.
        */
       this.target.setAttribute('aria-activedescendant', activeDescendant.id);
-
-      /*
-       * If the selected option is beyond the bounds of the list, scroll it into
-       * view. Check this every time state is updated to ensure the selected
-       * option is always visible.
-       */
-      this.scrollOptionIntoView(activeDescendant);
-    }
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
-  }
-
-  /**
-   * Subscribe to Popup state changes.
-   *
-   * @param {object} popup.state the Popup state.
-   * @param {boolean} popup.state.expanded The Popup `expanded` state.
-   */
-  onPopupStateChange({ expanded }) {
-    const { activeDescendant } = this.state;
-
-    if (expanded) {
-      /*
-       * Focus the target (list) element when the Listbox is shown. Focus
-       * remains on the target element, with option selection coming through a
-       * combination of the `aria-selected` attribute on the option and the
-       * `aria-activedescendant` attribute on the target tracking the active
-       * option.
-       */
-      this.target.focus();
     } else {
       /*
        * When the Popup is hidden, the `aria-activedescendant` attribute should
@@ -242,8 +232,19 @@ export default class ListBox extends AriaComponent {
       }
     }
 
+    // Run {stateChangeCallback}
+    this.onStateChange.call(this, this.state);
+  }
+
+  /**
+   * Subscribe to Popup state changes.
+   *
+   * @param {object} popup.state the Popup state.
+   * @param {boolean} popup.state.expanded The Popup `expanded` state.
+   */
+  onPopupStateChange({ expanded }) {
     // Update component state.
-    this.setState({ activeDescendant, expanded });
+    this.setState({ expanded });
   }
 
   /**
