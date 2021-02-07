@@ -110,7 +110,7 @@ export default class AriaComponent {
     Object.assign(this.state, newState);
 
     if ('function' === typeof this.stateWasUpdated) {
-      this.stateWasUpdated();
+      this.stateWasUpdated(Object.keys(newState));
     }
   }
 
