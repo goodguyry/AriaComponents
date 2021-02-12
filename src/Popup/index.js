@@ -78,7 +78,7 @@ export default class Popup extends AriaComponent {
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
-    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
+    this.popupControllerKeydown = this.popupControllerKeydown.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.hideOnTabOut = this.hideOnTabOut.bind(this);
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
@@ -167,7 +167,7 @@ export default class Popup extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.controllerHandleClick);
-    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
+    this.controller.addEventListener('keydown', this.popupControllerKeydown);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
@@ -210,7 +210,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleKeydown(event) {
+  popupControllerKeydown(event) {
     const { expanded } = this.state;
     const {
       ESC,
@@ -379,7 +379,7 @@ export default class Popup extends AriaComponent {
     this.controller.removeEventListener('click', this.controllerHandleClick);
     this.controller.removeEventListener(
       'keydown',
-      this.controllerHandleKeydown
+      this.popupControllerKeydown
     );
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('click', this.hideOnOutsideClick);
