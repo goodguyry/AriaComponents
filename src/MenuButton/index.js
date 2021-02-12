@@ -130,41 +130,32 @@ export default class MenuButton extends Popup {
       SPACE,
     } = keyCodes;
 
-    switch (keyCode) {
-      /*
-       * Open the menu and move focus to the first menu item.
-       */
-      case RETURN:
-      case SPACE:
-      case DOWN: {
-        event.preventDefault();
-        this.show();
+    if ([RETURN, SPACE, UP, DOWN].includes(keyCode)) {
+      event.preventDefault();
 
-        // Move focus to the first menu item.
-        if (this.menu.firstItem) {
+      // RETURN and SPACE are handled in the parent class.
+      if ([UP, DOWN].includes(keyCode)) {
+        this.toggle();
+      }
+
+      // Get fresh state.
+      const { expanded } = this.state;
+
+      /*
+       * UP moves to last menu item, the rest move to first menu item.
+       */
+      if (expanded) {
+        if (
+          [RETURN, SPACE, DOWN].includes(keyCode)
+          && null != this.menu.firstItem
+        ) {
           this.menu.firstItem.focus();
         }
 
-        break;
-      }
-
-      /*
-       * Opens the menu and move focus to the last menu item.
-       */
-      case UP: {
-        event.preventDefault();
-        this.show();
-
-        // Move focus to the last menu item.
-        if (this.menu.lastItem) {
+        if (keyCode === UP && null != this.menu.lastItem) {
           this.menu.lastItem.focus();
         }
-
-        break;
       }
-
-      default:
-        break;
     }
   }
 

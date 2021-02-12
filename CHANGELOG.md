@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 **Fixed**
 
+- MenuButton could attempt to focus the first Menu child even when the Popup is closed ()
+
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
