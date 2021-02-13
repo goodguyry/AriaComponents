@@ -225,6 +225,10 @@ export default class MenuBar extends AriaComponent {
 
       const { target } = popup;
 
+      // Set Popup self-references.
+      Object.getPrototypeOf(popup).setSelfReference
+        .call(popup, [controller, target], 'popup');
+
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)
         ? target
