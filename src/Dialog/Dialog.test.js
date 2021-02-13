@@ -1,4 +1,4 @@
-import { Dialog, Popup } from 'root';
+import { Dialog } from 'root';
 import { events } from '../lib/events';
 
 const {
@@ -63,7 +63,7 @@ const modal = new Dialog(
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
-    modal.popup.hide();
+    modal.hide();
   });
 
   describe('Dialog adds and manipulates DOM element attributes', () => {
@@ -74,7 +74,8 @@ describe('Dialog with default configuration', () => {
       expect(controller.dialog).toBeInstanceOf(Dialog);
       expect(target.dialog).toBeInstanceOf(Dialog);
 
-      expect(modal.popup).toBeInstanceOf(Popup);
+      expect(controller.dialog).toBeInstanceOf(Dialog);
+      expect(target.dialog).toBeInstanceOf(Dialog);
       expect(modal.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalled();
@@ -105,7 +106,7 @@ describe('Dialog with default configuration', () => {
 
   describe('Dialog correctly responds to events', () => {
     beforeEach(() => {
-      modal.popup.show();
+      modal.show();
     });
 
     it('Should update attributes when the controller is clicked', () => {

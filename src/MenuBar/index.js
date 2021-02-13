@@ -218,6 +218,9 @@ export default class MenuBar extends AriaComponent {
         }
       );
 
+      // Popup has to be instantiated.
+      popup.init();
+
       acc.popups.push(popup);
 
       const { target } = popup;

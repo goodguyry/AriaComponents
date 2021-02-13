@@ -1,4 +1,3 @@
-import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
@@ -10,7 +9,7 @@ import getFirstAndLastItems from '../lib/getFirstAndLastItems';
  *
  * https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
  */
-export default class ListBox extends AriaComponent {
+export default class ListBox extends Popup {
   /**
    * Create a ListBox.
    * @constructor
@@ -19,7 +18,8 @@ export default class ListBox extends AriaComponent {
    * @param {object}      options    The options object.
    */
   constructor(controller, options = {}) {
-    super(controller);
+    // Pass in the `listbox` type.
+    super(controller, { ...options, type: 'listbox' });
 
     /**
      * The string description for this object.
@@ -63,17 +63,14 @@ export default class ListBox extends AriaComponent {
     Object.assign(this, { ...defaultOptions, ...options });
 
     // Bind class methods.
+    // this.start = this.start.bind(this);
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
     this.controllerHandleKeyup = this.controllerHandleKeyup.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.targetHandleClick = this.targetHandleClick.bind(this);
     this.targetHandleBlur = this.targetHandleBlur.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
-    this.onPopupStateChange = this.onPopupStateChange.bind(this);
-    this.show = this.show.bind(this);
-    this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     this.init();
   }
@@ -82,6 +79,8 @@ export default class ListBox extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
+    super.init();
+
     /*
      * A reference to the class instance added to the controller and target
      * elements to enable external interactions with this instance.
@@ -122,22 +121,7 @@ export default class ListBox extends AriaComponent {
      *
      * @type {HTMLElement}
      */
-    this.state = { activeDescendant: this.firstOption };
-
-    /**
-     * The Listbox is basically a Popup to present a list of options, so we
-     * instantiate a Popup and subscribe to state changes to act on the Listbox
-     * when the Popup is shown and hidden.
-     *
-     * @type {Popup}
-     */
-    this.popup = new Popup(
-      this.controller,
-      {
-        type: 'listbox',
-        onStateChange: this.onPopupStateChange,
-      }
-    );
+    this.state.activeDescendant = this.firstOption;
 
     /*
      * Add the 'listbox' role to signify a component that presents a listbox of
@@ -154,7 +138,7 @@ export default class ListBox extends AriaComponent {
     this.target.setAttribute('tabindex', '-1');
 
     // Add event listeners.
-    this.controller.addEventListener('keydown', this.controllerHandleKeyup);
+    this.controller.addEventListener('keyup', this.controllerHandleKeyup);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
     this.target.addEventListener('click', this.targetHandleClick);
     this.target.addEventListener('blur', this.targetHandleBlur);
@@ -175,9 +159,11 @@ export default class ListBox extends AriaComponent {
   stateWasUpdated(updatedProps) {
     const { activeDescendant, expanded } = this.state;
 
-    if (expanded) {
+    if (updatedProps.includes('expanded')) {
+      super.stateWasUpdated();
+
       // The Popup is newly opened.
-      if (updatedProps.includes('expanded')) {
+      if (expanded) {
         /*
          * Focus the target (list) element when the Listbox is shown. Focus
          * remains on the target element, with option selection coming through a
@@ -187,26 +173,25 @@ export default class ListBox extends AriaComponent {
          */
         this.target.focus();
       }
+    }
 
-      // The active descendant was  updated.
-      if (updatedProps.includes('activeDescendant')) {
-        /*
-         * Remove the `aria-selected` attribute from the previously-selected option
-         * and add it to the newly-selected option.
-         */
-        const selected = this.target.querySelector('[aria-selected="true"]');
-        if (null !== selected) {
-          selected.removeAttribute('aria-selected');
-        }
-        activeDescendant.setAttribute('aria-selected', 'true');
-
-        /*
-         * If the selected option is beyond the bounds of the list, scroll it into
-         * view. Check this every time state is updated to ensure the selected
-         * option is always visible.
-         */
-        this.scrollOptionIntoView(activeDescendant);
+    if (expanded) {
+      /*
+       * Remove the `aria-selected` attribute from the previously-selected option
+       * and add it to the newly-selected option.
+       */
+      const selected = this.target.querySelector('[aria-selected="true"]');
+      if (null !== selected) {
+        selected.removeAttribute('aria-selected');
       }
+      activeDescendant.setAttribute('aria-selected', 'true');
+
+      /*
+       * If the selected option is beyond the bounds of the list, scroll it into
+       * view. Check this every time state is updated to ensure the selected
+       * option is always visible.
+       */
+      this.scrollOptionIntoView(activeDescendant);
 
       /*
        * Track the newly selected option via the `aria-activedescendant`
@@ -234,17 +219,6 @@ export default class ListBox extends AriaComponent {
 
     // Run {stateChangeCallback}
     this.onStateChange.call(this, this.state);
-  }
-
-  /**
-   * Subscribe to Popup state changes.
-   *
-   * @param {object} popup.state the Popup state.
-   * @param {boolean} popup.state.expanded The Popup `expanded` state.
-   */
-  onPopupStateChange({ expanded }) {
-    // Update component state.
-    this.setState({ expanded });
   }
 
   /**
@@ -287,7 +261,6 @@ export default class ListBox extends AriaComponent {
     const { keyCode } = event;
     const {
       RETURN,
-      ESC,
       UP,
       DOWN,
       SPACE,
@@ -301,7 +274,7 @@ export default class ListBox extends AriaComponent {
        * need to update state here; if the Listbox is open rest assured an
        * option is selected.
        */
-      case ESC:
+      // case ESC:
       case RETURN:
       case SPACE: {
         event.preventDefault();
@@ -383,7 +356,7 @@ export default class ListBox extends AriaComponent {
    */
   targetHandleBlur() {
     // Use Popup state here, since the Popup drives the Listbox state.
-    if (this.popup.getState().expanded) {
+    if (this.state.expanded) {
       this.hide();
     }
   }
@@ -414,9 +387,6 @@ export default class ListBox extends AriaComponent {
    * Destroy the Listbox and Popup.
    */
   destroy() {
-    // Remove the references to the class instance.
-    this.deleteSelfReferences();
-
     // Remove the role attribute from each of the options.
     this.options.forEach((listItem) => {
       listItem.removeAttribute('role');
@@ -427,9 +397,6 @@ export default class ListBox extends AriaComponent {
         listItem.removeAttribute('id');
       }
     });
-
-    // Destroy the Popup.
-    this.popup.destroy();
 
     // Remove the listbox role.
     this.target.removeAttribute('role');
@@ -443,21 +410,10 @@ export default class ListBox extends AriaComponent {
     this.target.removeEventListener('blur', this.targetHandleBlur);
     window.removeEventListener('keydown', this.preventWindowScroll);
 
+    // Destroy the Popup.
+    super.destroy();
+
     // Run {destroyCallback}
     this.onDestroy.call(this);
-  }
-
-  /**
-   * Show the Listbox.
-   */
-  show() {
-    this.popup.show();
-  }
-
-  /**
-   * Hide the Listbox.
-   */
-  hide() {
-    this.popup.hide();
   }
 }

@@ -47,6 +47,9 @@ const popup = new Popup(
   }
 );
 
+// Popup has to be instanitated.
+popup.init();
+
 describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
     expect(popup).toBeInstanceOf(Popup);
@@ -56,9 +59,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(popup.lastInteractiveChild).toEqual(domLastChild);
 
     expect(popup.getState().expanded).toBeFalsy();
-
-    expect(controller.popup).toBeInstanceOf(Popup);
-    expect(target.popup).toBeInstanceOf(Popup);
 
     // All interactive children should initially have a negative tabindex.
     popup.interactiveChildElements.forEach((link) => {

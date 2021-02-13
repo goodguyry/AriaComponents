@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changes constructor parameters to accept a component element and an object of options (#51)
 - Requires activating elements to have a target attribute matching the ID value of the target element (#51)
 - Dialog focuses the target element on open (#51)
+- Dialog, MenuButton, and ListBox now _extend_ Popup, rather than using it internally ()
 
 **Added**
 

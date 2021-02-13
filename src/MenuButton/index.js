@@ -17,7 +17,8 @@ export default class MenuButton extends Popup {
    * @param {object}      options    The options object.
    */
   constructor(controller, options = {}) {
-    super(controller);
+    // Pass in the `menu` type.
+    super(controller, { type: 'menu' });
 
     /**
      * The string description for this object.
@@ -25,9 +26,6 @@ export default class MenuButton extends Popup {
      * @type {string}
      */
     this[Symbol.toStringTag] = 'MenuButton';
-
-    this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Options shape.
@@ -41,36 +39,13 @@ export default class MenuButton extends Popup {
        * @type {HTMLUListElement}
        */
       list: null,
-
-      /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options, type: 'menu' });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
-    this.show = this.show.bind(this);
-    this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
@@ -80,15 +55,23 @@ export default class MenuButton extends Popup {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
+    // Initialize Popup.
     super.init();
 
+    /*
+     * A reference to the class instance added to the controller and target
+     * elements to enable external interactions with this instance.
+     */
+    super.setSelfReference([this.controller, this.target]);
+
     /**
-     * The MenuButton is a Popup to present a Menu.
-     * 1. A HTMLUListElement was passed in as the `list` option
-     * 2. The Popup target is a HTMLUListElement
-     * 3. We find the first HTMLUListElement we inside the target
+     * The MenuButton is a Popup to present a Menu. The element used as the Menu
+     * is determined by the following "logic":
+     * 1. An HTMLUListElement was passed in as the `list` option
+     * 2. The Popup target is an HTMLUListElement
+     * 3. The first HTMLUListElement we inside the target
      *
-     * @type {Popup}
+     * @type {Menu}
      */
     if (null != this.list && 'UL' === this.list.nodeName) {
       this.menu = new Menu(this.list);
@@ -103,13 +86,6 @@ export default class MenuButton extends Popup {
     // Additional event listener(s).
     this.controller.addEventListener('keydown', this.controllerHandleKeydown);
 
-    /**
-     * Set initial state.
-     *
-     * @type {object}
-     */
-    this.state = { expanded: false };
-
     // Run {initCallback}
     this.onInit.call(this);
   }
@@ -120,8 +96,6 @@ export default class MenuButton extends Popup {
    * @param {Event} event The event object.
    */
   controllerHandleKeydown(event) {
-    super.controllerHandleKeydown(event);
-
     const { keyCode } = event;
     const {
       RETURN,

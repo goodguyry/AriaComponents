@@ -67,7 +67,7 @@ export default class Popup extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Intial component state.
     this.state = { expanded: false };
@@ -79,24 +79,16 @@ export default class Popup extends AriaComponent {
     this.show = this.show.bind(this);
     this.toggle = this.toggle.bind(this);
     this.popupControllerKeydown = this.popupControllerKeydown.bind(this);
-    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
+    this.popupTargetKeydown = this.popupTargetKeydown.bind(this);
     this.hideOnTabOut = this.hideOnTabOut.bind(this);
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
-
-    this.init();
   }
 
   /**
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
-    /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
-     */
-    super.setSelfReference([this.controller, this.target]);
-
     /**
      * Collect the target element's interactive child elements.
      *
@@ -168,7 +160,7 @@ export default class Popup extends AriaComponent {
     // Add event listeners
     this.controller.addEventListener('click', this.toggle);
     this.controller.addEventListener('keydown', this.popupControllerKeydown);
-    this.target.addEventListener('keydown', this.targetHandleKeydown);
+    this.target.addEventListener('keydown', this.popupTargetKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
     // Run {initCallback}
@@ -257,7 +249,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetHandleKeydown(event) {
+  popupTargetKeydown(event) {
     const { ESC, TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
     const { expanded } = this.state;
@@ -371,7 +363,7 @@ export default class Popup extends AriaComponent {
       'keydown',
       this.popupControllerKeydown
     );
-    this.target.removeEventListener('keydown', this.targetHandleKeydown);
+    this.target.removeEventListener('keydown', this.popupTargetKeydown);
     document.body.removeEventListener('click', this.hideOnOutsideClick);
 
     // Reset initial state.
