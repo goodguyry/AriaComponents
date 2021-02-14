@@ -35,15 +35,15 @@ const target = document.querySelector('.wrapper');
 
 // Mock functions.
 const onStateChange = jest.fn();
-const onInit = jest.fn();
-const onDestroy = jest.fn();
+// const onInit = jest.fn();
+// const onDestroy = jest.fn();
 
 const popup = new Popup(
   controller,
   {
     onStateChange,
-    onInit,
-    onDestroy,
+    // onInit,
+    // onDestroy,
   }
 );
 
@@ -64,8 +64,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     popup.interactiveChildElements.forEach((link) => {
       expect(link.getAttribute('tabindex')).toEqual('-1');
     });
-
-    expect(onInit).toHaveBeenCalled();
   });
 
   it('Should add the correct attributes to the popup controller', () => {
@@ -208,8 +206,6 @@ describe('Popup destroy', () => {
 
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeFalsy();
-
-    expect(onDestroy).toHaveBeenCalled();
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(popupMarkup);

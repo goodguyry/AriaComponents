@@ -162,9 +162,6 @@ export default class Popup extends AriaComponent {
     this.controller.addEventListener('keydown', this.popupControllerKeydown);
     this.target.addEventListener('keydown', this.popupTargetKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
-
-    // Run {initCallback}
-    this.onInit.call(this);
   }
 
   /**
@@ -192,9 +189,6 @@ export default class Popup extends AriaComponent {
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       tabIndexDeny(this.interactiveChildElements);
     }
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
   }
 
   /**
@@ -368,9 +362,6 @@ export default class Popup extends AriaComponent {
 
     // Reset initial state.
     this.state = { expanded: false };
-
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
   }
 
   /**

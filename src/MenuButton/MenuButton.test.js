@@ -59,7 +59,7 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
     expect(menuButton.getState().expanded).toBeFalsy();
 
-    expect(onInit).toHaveBeenCalled();
+    expect(onInit).toHaveBeenCalledTimes(1);
   });
 
   it('Should add the correct attributes to the menuButton controller', () => {
@@ -82,10 +82,10 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
   it('Should run class methods and subscriber functions', () => {
     menuButton.show();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(1);
 
     menuButton.hide();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -188,7 +188,7 @@ it('Should destroy the menuButton as expected', () => {
   controller.dispatchEvent(click);
   expect(menuButton.getState().expanded).toBeFalsy();
 
-  expect(onDestroy).toHaveBeenCalled();
+  expect(onDestroy).toHaveBeenCalledTimes(1);
 
   // Quick and dirty verification that the original markup is restored.
   expect(document.body.innerHTML).toEqual(menuButtonMarkup);

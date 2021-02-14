@@ -216,9 +216,6 @@ export default class ListBox extends Popup {
         this.controller.focus();
       }
     }
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
   }
 
   /**
@@ -387,6 +384,9 @@ export default class ListBox extends Popup {
    * Destroy the Listbox and Popup.
    */
   destroy() {
+    // Destroy the Popup.
+    super.destroy();
+
     // Remove the role attribute from each of the options.
     this.options.forEach((listItem) => {
       listItem.removeAttribute('role');
@@ -409,9 +409,6 @@ export default class ListBox extends Popup {
     this.target.removeEventListener('click', this.targetHandleClick);
     this.target.removeEventListener('blur', this.targetHandleBlur);
     window.removeEventListener('keydown', this.preventWindowScroll);
-
-    // Destroy the Popup.
-    super.destroy();
 
     // Run {destroyCallback}
     this.onDestroy.call(this);

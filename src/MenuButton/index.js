@@ -137,6 +137,9 @@ export default class MenuButton extends Popup {
    * Destroy the Popup and Menu.
    */
   destroy() {
+    // Destroy the Popup.
+    super.destroy();
+
     // Destroy the Menu.
     this.menu.destroy();
 
@@ -146,7 +149,7 @@ export default class MenuButton extends Popup {
       this.controllerHandleKeydown
     );
 
-    // Destroy the MenuButton Popup.
-    super.destroy();
+    // Run {destroyCallback}
+    this.onDestroy.call(this);
   }
 }

@@ -112,6 +112,9 @@ export default class AriaComponent {
     if ('function' === typeof this.stateWasUpdated) {
       this.stateWasUpdated(Object.keys(newState));
     }
+
+    // Run {stateChangeCallback}
+    this.onStateChange.call(this, this.state);
   }
 
   /**

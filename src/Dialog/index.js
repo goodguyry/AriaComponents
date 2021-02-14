@@ -146,9 +146,6 @@ export default class Dialog extends Popup {
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
       this.controller.focus();
     }
-
-    /* Run {stateChangeCallback} */
-    this.onStateChange.call(this, this.state);
   }
 
   /**
@@ -219,6 +216,9 @@ export default class Dialog extends Popup {
    * Destroy the Dialog and Popup.
    */
   destroy() {
+    // Destroy the Popup.
+    super.destroy();
+
     // Remove the `aria-hidden` attribute from the content wrapper.
     const contentLength = this.content.length;
     for (let i = 0; i < contentLength; i += 1) {
@@ -231,9 +231,6 @@ export default class Dialog extends Popup {
     // Remove event listeners.
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
-
-    // Destroy the Popup.
-    super.destroy();
 
     /* Run {destroyCallback} */
     this.onDestroy.call(this);

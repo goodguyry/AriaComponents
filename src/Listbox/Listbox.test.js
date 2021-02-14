@@ -65,12 +65,10 @@ describe('Listbox with default configuration', () => {
       const [firstListItem] = listItems;
       expect(listbox.getState().activeDescendant).toEqual(firstListItem);
 
-      // expect(controller.popup).toBeInstanceOf(Popup);
-
       expect(controller.listbox).toBeInstanceOf(Listbox);
       expect(target.listbox).toBeInstanceOf(Listbox);
 
-      expect(onInit).toHaveBeenCalled();
+      expect(onInit).toHaveBeenCalledTimes(1);
     });
 
     it('Should add the correct attributes', () => {
@@ -102,7 +100,7 @@ describe('Listbox with default configuration', () => {
       expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
       expect(document.activeElement).toEqual(target);
 
-      expect(onStateChange).toHaveBeenCalled();
+      expect(onStateChange).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -237,7 +235,7 @@ describe('Listbox with default configuration', () => {
       controller.dispatchEvent(click);
       expect(listbox.getState().expanded).toBeFalsy();
 
-      expect(onDestroy).toHaveBeenCalled();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
 
       // Quick and dirty verification that the original markup is restored.
       // But first, restore the button's original text label.
