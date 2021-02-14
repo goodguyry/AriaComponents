@@ -71,7 +71,6 @@ const domElements = {
 const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
-const onPopupInit = jest.fn();
 const { list } = domElements;
 
 const menuBar = new MenuBar(
@@ -81,7 +80,6 @@ const menuBar = new MenuBar(
     onInit,
     onStateChange,
     onDestroy,
-    onPopupInit,
   }
 );
 
@@ -95,8 +93,6 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(onInit).toHaveBeenCalledTimes(1);
 
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
-    // @todo Failing.
-    // expect(onPopupInit).toHaveBeenCalledTimes(1);
   });
 
   it('Should add the correct DOM attributes and collect elements', () => {

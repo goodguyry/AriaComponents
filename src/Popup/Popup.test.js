@@ -35,16 +35,10 @@ const target = document.querySelector('.wrapper');
 
 // Mock functions.
 const onStateChange = jest.fn();
-// const onInit = jest.fn();
-// const onDestroy = jest.fn();
 
 const popup = new Popup(
   controller,
-  {
-    onStateChange,
-    // onInit,
-    // onDestroy,
-  }
+  { onStateChange }
 );
 
 // Popup has to be instanitated.

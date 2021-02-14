@@ -90,13 +90,6 @@ export default class MenuBar extends AriaComponent {
        * @callback destroyCallback
        */
       onDestroy: () => {},
-
-      /**
-       * Callback to run after Popup initializes.
-       *
-       * @callback popupInitCallback
-       */
-      onPopupInit: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -212,10 +205,7 @@ export default class MenuBar extends AriaComponent {
 
       const popup = new Popup(
         controller,
-        {
-          onInit: this.onPopupInit,
-          type: 'menu',
-        }
+        { type: 'menu' }
       );
 
       // Popup has to be instantiated.
