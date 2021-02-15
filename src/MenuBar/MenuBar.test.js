@@ -132,6 +132,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
+      expect(onStateChange).toHaveBeenCalledTimes(2);
     });
 
   it('Should move to the last list item with end key',
@@ -139,8 +140,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(domElements.listLastItem);
-      // @todo Failing.
-      // expect(onStateChange).toHaveBeenCalledTimes(1);
+      expect(onStateChange).toHaveBeenCalledTimes(3);
     });
 
   it('Should move to the first list item with home key',

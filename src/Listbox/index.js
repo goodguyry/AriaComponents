@@ -63,7 +63,6 @@ export default class ListBox extends Popup {
     Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
-    // this.start = this.start.bind(this);
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
     this.controllerHandleKeyup = this.controllerHandleKeyup.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
@@ -271,7 +270,7 @@ export default class ListBox extends Popup {
        * need to update state here; if the Listbox is open rest assured an
        * option is selected.
        */
-      // case ESC:
+      // ESC is handled via Popup.
       case RETURN:
       case SPACE: {
         event.preventDefault();
