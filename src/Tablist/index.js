@@ -250,9 +250,6 @@ export default class Tablist extends AriaComponent {
     // Allow tabbing to the newly-active panel.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
     tabIndexAllow(this.interactiveChildElements);
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
   }
 
   /**

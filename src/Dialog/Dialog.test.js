@@ -95,14 +95,13 @@ describe('Dialog with default configuration', () => {
       modal.show();
       expect(modal.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(target);
-      // @todo Failing.
-      // expect(onStateChange).toHaveBeenCalledTimes(1);
+      // beforeEach * 3 + 1 from modal.show().
+      expect(onStateChange).toHaveBeenCalledTimes(4);
 
       modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-      // @todo Failing.
-      // expect(onStateChange).toHaveBeenCalledTimes(1);
+      expect(onStateChange).toHaveBeenCalledTimes(5);
     });
   });
 

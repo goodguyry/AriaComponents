@@ -94,7 +94,7 @@ describe('Tablist with default configuration', () => {
       expect(firstTab.tablist).toBeInstanceOf(Tablist);
       expect(secondPanel.tablist).toBeInstanceOf(Tablist);
 
-      expect(onInit).toHaveBeenCalled();
+      expect(onInit).toHaveBeenCalledTimes(1);
     });
 
     it('Should add the correct attributes and overlay element',
@@ -152,7 +152,7 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.getAttribute('tabindex')).toBeNull();
       expect(thirdPanel.getAttribute('tabindex')).toBeNull();
 
-      expect(onStateChange).toHaveBeenCalled();
+      expect(onStateChange).toHaveBeenCalledTimes(1);
 
       tablist.switchTo(2);
       expect(firstTab.getAttribute('aria-selected')).toBeNull();
@@ -174,7 +174,7 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.getAttribute('tabindex')).toBeNull();
       expect(thirdPanel.getAttribute('tabindex')).toEqual('0');
 
-      expect(onStateChange).toHaveBeenCalled();
+      expect(onStateChange).toHaveBeenCalledTimes(2);
     });
 
     it('Should remove all DOM attributes when destroyed', () => {
@@ -212,7 +212,7 @@ describe('Tablist with default configuration', () => {
       expect(firstTab.tablist).toBeUndefined();
       expect(secondPanel.tablist).toBeUndefined();
 
-      expect(onDestroy).toHaveBeenCalled();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
     });
 
     // Quick and dirty verification that the original markup is restored.
@@ -273,7 +273,7 @@ describe('Tablist with default configuration', () => {
        * Increment the counter to track time spent trying to get these tests to
        * pass, even though they work as expected when tested in a browser.
        *
-       * Hours Lost: 4
+       * Hours Lost: 4.5
        */
       // const firstPanelChild = firstPanel.querySelector('a[href]');
 

@@ -206,9 +206,6 @@ export default class Disclosure extends AriaComponent {
     } else {
       tabIndexDeny(this.interactiveChildElements);
     }
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
   }
 
   /**

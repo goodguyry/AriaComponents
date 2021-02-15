@@ -82,6 +82,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     // Click to open.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeTruthy();
+    expect(onStateChange).toHaveBeenCalledTimes(1);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
     expect(target.getAttribute('hidden')).toBeNull();
@@ -94,6 +95,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     // Click again to close.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeFalsy();
+    expect(onStateChange).toHaveBeenCalledTimes(2);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('hidden')).toEqual('');
@@ -106,10 +108,10 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
   it('Should run class methods and subscriber functions', () => {
     popup.show();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(3);
 
     popup.hide();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(4);
   });
 });
 
