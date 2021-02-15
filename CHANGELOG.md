@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
+- Popup no longer accepts `onInit` and `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` ()
 
 ## 0.3.2
 
