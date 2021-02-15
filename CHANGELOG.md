@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changes constructor parameters to accept a component element and an object of options (#51)
 - Requires activating elements to have a target attribute matching the ID value of the target element (#51)
 - Dialog focuses the target element on open (#51)
+- Dialog, MenuButton, and ListBox now _extend_ Popup, rather than using it internally (#54)
 
 **Added**
 
@@ -18,9 +19,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 **Fixed**
 
+- MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
+- Component callbacks could be run more than once (#54)
+
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
+- Popup no longer accepts `onInit` and `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` (#54)
 
 ## 0.3.2
 

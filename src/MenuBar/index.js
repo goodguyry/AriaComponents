@@ -90,17 +90,10 @@ export default class MenuBar extends AriaComponent {
        * @callback destroyCallback
        */
       onDestroy: () => {},
-
-      /**
-       * Callback to run after Popup initializes.
-       *
-       * @callback popupInitCallback
-       */
-      onPopupInit: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.menubarHandleKeydown = this.menubarHandleKeydown.bind(this);
@@ -212,15 +205,19 @@ export default class MenuBar extends AriaComponent {
 
       const popup = new Popup(
         controller,
-        {
-          onInit: this.onPopupInit,
-          type: 'menu',
-        }
+        { type: 'menu' }
       );
+
+      // Popup has to be instantiated.
+      popup.init();
 
       acc.popups.push(popup);
 
       const { target } = popup;
+
+      // Set Popup self-references.
+      Object.getPrototypeOf(popup).setSelfReference
+        .call(popup, [controller, target], 'popup');
 
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)
@@ -276,9 +273,6 @@ export default class MenuBar extends AriaComponent {
     rovingTabIndex(this.menuBarItems, menubarItem);
 
     menubarItem.focus();
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
   }
 
   /**

@@ -93,7 +93,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
 
-    expect(onInit).toHaveBeenCalled();
+    expect(onInit).toHaveBeenCalledTimes(1);
   });
 
   it('Should set element attributes correctly', () => {
@@ -203,7 +203,7 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistOne.getAttribute('role')).toBeNull();
     expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
 
-    expect(onDestroy).toHaveBeenCalled();
+    expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 });
 

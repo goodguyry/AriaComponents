@@ -1,4 +1,4 @@
-import { Dialog, Popup } from 'root';
+import { Dialog } from 'root';
 import { events } from '../lib/events';
 
 const {
@@ -63,7 +63,7 @@ const modal = new Dialog(
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
-    modal.popup.hide();
+    modal.hide();
   });
 
   describe('Dialog adds and manipulates DOM element attributes', () => {
@@ -74,10 +74,11 @@ describe('Dialog with default configuration', () => {
       expect(controller.dialog).toBeInstanceOf(Dialog);
       expect(target.dialog).toBeInstanceOf(Dialog);
 
-      expect(modal.popup).toBeInstanceOf(Popup);
+      expect(controller.dialog).toBeInstanceOf(Dialog);
+      expect(target.dialog).toBeInstanceOf(Dialog);
       expect(modal.getState().expanded).toBeFalsy();
 
-      expect(onInit).toHaveBeenCalled();
+      expect(onInit).toHaveBeenCalledTimes(1);
     });
 
     it('Should add the correct attributes',
@@ -94,18 +95,19 @@ describe('Dialog with default configuration', () => {
       modal.show();
       expect(modal.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(target);
-      expect(onStateChange).toHaveBeenCalled();
+      // beforeEach * 3 + 1 from modal.show().
+      expect(onStateChange).toHaveBeenCalledTimes(4);
 
       modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-      expect(onStateChange).toHaveBeenCalled();
+      expect(onStateChange).toHaveBeenCalledTimes(5);
     });
   });
 
   describe('Dialog correctly responds to events', () => {
     beforeEach(() => {
-      modal.popup.show();
+      modal.show();
     });
 
     it('Should update attributes when the controller is clicked', () => {
@@ -161,7 +163,7 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('hidden')).toBeNull();
 
-      expect(onDestroy).toHaveBeenCalled();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
 
       // Quick and dirty verification that the original markup is restored.
       expect(document.body.innerHTML).toEqual(dialogMarkup);

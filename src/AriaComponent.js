@@ -110,21 +110,27 @@ export default class AriaComponent {
     Object.assign(this.state, newState);
 
     if ('function' === typeof this.stateWasUpdated) {
-      this.stateWasUpdated();
+      this.stateWasUpdated(Object.keys(newState));
     }
+
+    // Run {stateChangeCallback}
+    this.onStateChange.call(this, this.state);
   }
 
   /**
    * Set a reference to the class instance on the element upon which the class
    * is instantiated.
    *
-   * @param {array} elements An array of elements upon which to add a reference to `this`.
+   * @param {array}  elements An array of elements upon which to add a reference to `this`.
+   * @param {string} propName Override the string description.
    */
-  setSelfReference(elements) {
+  setSelfReference(elements, propName) {
+    const name = propName || this.stringDescription.toLowerCase();
+
     const referenceElements = [...elements].map((element) => {
       Object.defineProperty(
         element,
-        this.stringDescription.toLowerCase(),
+        name,
         { value: this, configurable: true }
       );
 

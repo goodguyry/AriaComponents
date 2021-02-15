@@ -1,4 +1,3 @@
-import AriaComponent from '../AriaComponent';
 import Popup from '../Popup';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
@@ -8,7 +7,7 @@ import toArray from '../lib/toArray';
 /**
  * Class to set up an interactive Dialog element.
  */
-export default class Dialog extends AriaComponent {
+export default class Dialog extends Popup {
   /**
    * Create a Dialog.
    * @constructor
@@ -17,7 +16,8 @@ export default class Dialog extends AriaComponent {
    * @param {object}      options    The options object.
    */
   constructor(controller, options = {}) {
-    super(controller);
+    // Pass in the `dialog` type.
+    super(controller, { type: 'dialog' });
 
     /**
      * The string description for this object.
@@ -25,9 +25,6 @@ export default class Dialog extends AriaComponent {
      * @type {string}
      */
     this[Symbol.toStringTag] = 'Dialog';
-
-    this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Options shape.
@@ -66,16 +63,12 @@ export default class Dialog extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods
-    this.onPopupStateChange = this.onPopupStateChange.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
-    this.show = this.show.bind(this);
-    this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     this.init();
   }
@@ -84,6 +77,8 @@ export default class Dialog extends AriaComponent {
    * Set the component's DOM attributes and event listeners.
    */
   init() {
+    super.init();
+
     // Get the content items if none are provided.
     if (0 === this.content.length || undefined === this.content) {
       this.content = Array.from(document.body.children)
@@ -94,7 +89,8 @@ export default class Dialog extends AriaComponent {
 
     // If no content is found.
     if (0 === this.content.length) {
-      AriaComponent.configurationError(
+      Object.getPrototypeOf(Popup).configurationError.call(
+        this,
         'The Dialog target should not be within the main site content'
       );
     }
@@ -105,28 +101,8 @@ export default class Dialog extends AriaComponent {
      */
     super.setSelfReference([this.controller, this.target]);
 
-    /**
-     * The Popup instance controlling the Dialog.
-     *
-     * @type {Popup}
-     */
-    this.popup = new Popup(
-      this.controller,
-      {
-        type: 'dialog',
-        onStateChange: this.onPopupStateChange,
-      }
-    );
-
     // Allow focus on the target element.
     this.target.setAttribute('tabindex', '0');
-
-    /*
-     * Collect the Dialog's interactive child elements. This is an initial pass
-     * to ensure values exists, but the interactive children will be collected
-     * each time the dialog opens, in case the dialog's contents change.
-     */
-    this.interactiveChildElements = interactiveChildren(this.target);
 
     // Add event listeners.
     this.target.addEventListener('keydown', this.targetHandleKeydown);
@@ -135,29 +111,13 @@ export default class Dialog extends AriaComponent {
      * Remove clashing Popup event listener. This Popup event listener is
      * clashing with the Dialog's ability to trap keyboard tabs.
      */
-    this.popup.target.removeEventListener(
+    this.target.removeEventListener(
       'keydown',
-      this.popup.targetHandleKeydown
+      this.popupTargetKeydown
     );
-
-    /**
-     * Set initial state.
-     *
-     * @type {object}
-     */
-    this.state = { expanded: false };
 
     /* Run {initCallback} */
     this.onInit.call(this);
-  }
-
-  /**
-   * Keep this component's state synced with the Popup's state.
-   *
-   * @param {Object} state The Popup state.
-   */
-  onPopupStateChange({ expanded }) {
-    this.setState({ expanded });
   }
 
   /**
@@ -166,6 +126,8 @@ export default class Dialog extends AriaComponent {
    * @param {Object} state The component state.
    */
   stateWasUpdated() {
+    super.stateWasUpdated();
+
     const { expanded } = this.state;
     const contentLength = this.content.length;
 
@@ -184,9 +146,6 @@ export default class Dialog extends AriaComponent {
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
       this.controller.focus();
     }
-
-    /* Run {stateChangeCallback} */
-    this.onStateChange.call(this, this.state);
   }
 
   /**
@@ -257,11 +216,8 @@ export default class Dialog extends AriaComponent {
    * Destroy the Dialog and Popup.
    */
   destroy() {
-    // Remove the references to the class instance.
-    this.deleteSelfReferences();
-
-    // Destroy the Dialog Popup.
-    this.popup.destroy();
+    // Destroy the Popup.
+    super.destroy();
 
     // Remove the `aria-hidden` attribute from the content wrapper.
     const contentLength = this.content.length;
@@ -278,19 +234,5 @@ export default class Dialog extends AriaComponent {
 
     /* Run {destroyCallback} */
     this.onDestroy.call(this);
-  }
-
-  /**
-   * Show the Dialog.
-   */
-  show() {
-    this.popup.show();
-  }
-
-  /**
-   * Hide the Dialog.
-   */
-  hide() {
-    this.popup.hide();
   }
 }

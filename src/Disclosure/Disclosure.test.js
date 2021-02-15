@@ -144,6 +144,26 @@ describe('Disclosure with non-default configuration', () => {
     );
   });
 
+  it('Should run class methods and subscriber functions', () => {
+    expect(onInit).toHaveBeenCalledTimes(1);
+
+    disclosure.open();
+    expect(disclosure.getState().expanded).toBeTruthy();
+    expect(onStateChange).toHaveBeenCalledTimes(1);
+
+    disclosure.close();
+    expect(disclosure.getState().expanded).toBeFalsy();
+    expect(onStateChange).toHaveBeenCalledTimes(2);
+
+    disclosure.destroy();
+    expect(disclosure.controller.disclosure).toBeUndefined();
+    expect(disclosure.target.disclosure).toBeUndefined();
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(disclosureMarkup);
+  });
+
   it('Should load open', () => {
     expect(disclosure.getState().expanded).toBeTruthy();
   });
@@ -154,25 +174,5 @@ describe('Disclosure with non-default configuration', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('hidden')).toEqual('');
-  });
-
-  it('Should run class methods and subscriber functions', () => {
-    expect(onInit).toHaveBeenCalled();
-
-    disclosure.open();
-    expect(disclosure.getState().expanded).toBeTruthy();
-    expect(onStateChange).toHaveBeenCalled();
-
-    disclosure.close();
-    expect(disclosure.getState().expanded).toBeFalsy();
-    expect(onStateChange).toHaveBeenCalled();
-
-    disclosure.destroy();
-    expect(disclosure.controller.disclosure).toBeUndefined();
-    expect(disclosure.target.disclosure).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalled();
-
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 });

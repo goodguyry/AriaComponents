@@ -35,17 +35,14 @@ const target = document.querySelector('.wrapper');
 
 // Mock functions.
 const onStateChange = jest.fn();
-const onInit = jest.fn();
-const onDestroy = jest.fn();
 
 const popup = new Popup(
   controller,
-  {
-    onStateChange,
-    onInit,
-    onDestroy,
-  }
+  { onStateChange }
 );
+
+// Popup has to be instanitated.
+popup.init();
 
 describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
@@ -57,15 +54,10 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
     expect(popup.getState().expanded).toBeFalsy();
 
-    expect(controller.popup).toBeInstanceOf(Popup);
-    expect(target.popup).toBeInstanceOf(Popup);
-
     // All interactive children should initially have a negative tabindex.
     popup.interactiveChildElements.forEach((link) => {
       expect(link.getAttribute('tabindex')).toEqual('-1');
     });
-
-    expect(onInit).toHaveBeenCalled();
   });
 
   it('Should add the correct attributes to the popup controller', () => {
@@ -90,6 +82,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     // Click to open.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeTruthy();
+    expect(onStateChange).toHaveBeenCalledTimes(1);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
     expect(target.getAttribute('hidden')).toBeNull();
@@ -102,6 +95,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     // Click again to close.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeFalsy();
+    expect(onStateChange).toHaveBeenCalledTimes(2);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('hidden')).toEqual('');
@@ -114,10 +108,10 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
   it('Should run class methods and subscriber functions', () => {
     popup.show();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(3);
 
     popup.hide();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(4);
   });
 });
 
@@ -208,8 +202,6 @@ describe('Popup destroy', () => {
 
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeFalsy();
-
-    expect(onDestroy).toHaveBeenCalled();
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(popupMarkup);

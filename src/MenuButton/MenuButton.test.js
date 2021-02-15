@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { MenuButton, Popup, Menu } from 'root';
+import { MenuButton, Menu } from 'root';
 import { events } from '../lib/events';
 
 const {
@@ -55,13 +55,11 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
     expect(menuButton).toBeInstanceOf(MenuButton);
     expect(menuButton.toString()).toEqual('[object MenuButton]');
 
-    expect(controller.popup).toBeInstanceOf(Popup);
-    expect(target.popup).toBeInstanceOf(Popup);
     expect(list.menu).toBeInstanceOf(Menu);
 
     expect(menuButton.getState().expanded).toBeFalsy();
 
-    expect(onInit).toHaveBeenCalled();
+    expect(onInit).toHaveBeenCalledTimes(1);
   });
 
   it('Should add the correct attributes to the menuButton controller', () => {
@@ -84,21 +82,17 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
   it('Should run class methods and subscriber functions', () => {
     menuButton.show();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(1);
 
     menuButton.hide();
-    expect(onStateChange).toHaveBeenCalled();
+    expect(onStateChange).toHaveBeenCalledTimes(2);
   });
 });
 
 describe('MenuButton correctly responds to events', () => {
-  // Ensure the menuButton is open before all tests.
-  beforeEach(() => {
-    menuButton.show();
-  });
-
   it('Should close the menuButton when the ESC key is pressed',
     () => {
+      menuButton.show();
       controller.focus();
       controller.dispatchEvent(keydownEsc);
       expect(menuButton.getState().expanded).toBeFalsy();
@@ -107,45 +101,50 @@ describe('MenuButton correctly responds to events', () => {
 
   it('Should move focus to the first menu item with Return key from controller',
     () => {
+      menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownReturn);
-      expect(document.activeElement)
-        .toEqual(domFirstChild);
+      expect(menuButton.getState().expanded).toBeTruthy();
+      expect(document.activeElement).toEqual(domFirstChild);
     });
 
   it('Should move focus to the first menu item with Spacebar from controller',
     () => {
+      menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownSpace);
-      expect(document.activeElement)
-        .toEqual(domFirstChild);
+      expect(menuButton.getState().expanded).toBeTruthy();
+      expect(document.activeElement).toEqual(domFirstChild);
     });
 
   it('Should move focus to the first menu item with down arrow from controller',
     () => {
+      menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownDown);
-      expect(document.activeElement)
-        .toEqual(domFirstChild);
+      expect(menuButton.getState().expanded).toBeTruthy();
+      expect(document.activeElement).toEqual(domFirstChild);
     });
 
   it('Should move focus to the last menu item with up arrow from controller',
     () => {
+      menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownUp);
-      expect(document.activeElement)
-        .toEqual(domLastChild);
+      expect(menuButton.getState().expanded).toBeTruthy();
+      expect(document.activeElement).toEqual(domLastChild);
     });
 
   it('Should move focus to the first menu child on TAB from controller',
     () => {
+      menuButton.show();
       controller.dispatchEvent(keydownTab);
-      expect(document.activeElement)
-        .toEqual(domFirstChild);
+      expect(document.activeElement).toEqual(domFirstChild);
     });
 
   it('Should close the menuButton and focus the controller when the ESC key is pressed',
     () => {
+      menuButton.show();
       target.dispatchEvent(keydownEsc);
       expect(menuButton.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
@@ -153,6 +152,7 @@ describe('MenuButton correctly responds to events', () => {
 
   it('Should close the menuButton when tabbing from the last child',
     () => {
+      menuButton.show();
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
       expect(menuButton.getState().expanded).toBeFalsy();
@@ -160,6 +160,7 @@ describe('MenuButton correctly responds to events', () => {
 
   it('Should focus the controller when tabbing back from the first child',
     () => {
+      menuButton.show();
       domFirstChild.focus();
       target.dispatchEvent(keydownShiftTab);
       expect(document.activeElement).toEqual(controller);
@@ -187,7 +188,7 @@ it('Should destroy the menuButton as expected', () => {
   controller.dispatchEvent(click);
   expect(menuButton.getState().expanded).toBeFalsy();
 
-  expect(onDestroy).toHaveBeenCalled();
+  expect(onDestroy).toHaveBeenCalledTimes(1);
 
   // Quick and dirty verification that the original markup is restored.
   expect(document.body.innerHTML).toEqual(menuButtonMarkup);

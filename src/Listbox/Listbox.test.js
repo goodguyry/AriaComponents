@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Listbox, Popup } from 'root';
+import { Listbox } from 'root';
 import { events } from '../lib/events';
 
 const {
@@ -11,6 +11,8 @@ const {
   keydownDown,
   keydownHome,
   keydownEnd,
+  keyUpUp,
+  keyUpDown,
 } = events;
 
 const listboxMarkup = `
@@ -63,12 +65,10 @@ describe('Listbox with default configuration', () => {
       const [firstListItem] = listItems;
       expect(listbox.getState().activeDescendant).toEqual(firstListItem);
 
-      expect(controller.popup).toBeInstanceOf(Popup);
-
       expect(controller.listbox).toBeInstanceOf(Listbox);
       expect(target.listbox).toBeInstanceOf(Listbox);
 
-      expect(onInit).toHaveBeenCalled();
+      expect(onInit).toHaveBeenCalledTimes(1);
     });
 
     it('Should add the correct attributes', () => {
@@ -100,7 +100,7 @@ describe('Listbox with default configuration', () => {
       expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
       expect(document.activeElement).toEqual(target);
 
-      expect(onStateChange).toHaveBeenCalled();
+      expect(onStateChange).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -111,17 +111,15 @@ describe('Listbox with default configuration', () => {
     });
 
     it('Should open the popup on controller DOWN arrow key', () => {
-      controller.dispatchEvent(keydownDown);
+      controller.dispatchEvent(keyUpDown);
       expect(document.activeElement).toEqual(target);
-      // @todo Why does this fail?!?!
-      // expect(listbox.getState().expanded).toBeTruthy();
+      expect(listbox.getState().expanded).toBeTruthy();
     });
 
     it('Should open the popup on controller UP arrow key', () => {
-      controller.dispatchEvent(keydownUp);
+      controller.dispatchEvent(keyUpUp);
       expect(document.activeElement).toEqual(target);
-      // @todo Why does this fail?!?!
-      // expect(listbox.getState().expanded).toBeTruthy();
+      expect(listbox.getState().expanded).toBeTruthy();
     });
   });
 
@@ -148,7 +146,7 @@ describe('Listbox with default configuration', () => {
       expect(document.activeElement).toEqual(controller);
     });
 
-    it('Should set next element as activedescendant on target UP arrow key', () => {
+    it('Should set previous element as activedescendant on target UP arrow key', () => {
       listbox.setState({ activeDescendant: target.children[3] });
       expect(target.children[3].getAttribute('aria-selected')).toEqual('true');
 
@@ -160,7 +158,7 @@ describe('Listbox with default configuration', () => {
       expect(target.children[2].getAttribute('aria-selected')).toEqual('true');
     });
 
-    it('Should set previous element as activedescendant on target DOWN arrow key', () => {
+    it('Should set next element as activedescendant on target DOWN arrow key', () => {
       listbox.setState({ activeDescendant: target.children[4] });
       expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
 
@@ -237,7 +235,7 @@ describe('Listbox with default configuration', () => {
       controller.dispatchEvent(click);
       expect(listbox.getState().expanded).toBeFalsy();
 
-      expect(onDestroy).toHaveBeenCalled();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
 
       // Quick and dirty verification that the original markup is restored.
       // But first, restore the button's original text label.

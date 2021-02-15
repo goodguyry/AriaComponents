@@ -67,7 +67,7 @@ export default class Tablist extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
@@ -250,9 +250,6 @@ export default class Tablist extends AriaComponent {
     // Allow tabbing to the newly-active panel.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
     tabIndexAllow(this.interactiveChildElements);
-
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
   }
 
   /**
