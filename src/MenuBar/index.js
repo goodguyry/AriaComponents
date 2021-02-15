@@ -93,7 +93,7 @@ export default class MenuBar extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.menubarHandleKeydown = this.menubarHandleKeydown.bind(this);

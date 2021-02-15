@@ -60,7 +60,7 @@ export default class ListBox extends Popup {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     // this.start = this.start.bind(this);

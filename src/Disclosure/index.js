@@ -74,7 +74,7 @@ export default class Disclosure extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Initial component state.
     this.state = { expanded: this.loadOpen };

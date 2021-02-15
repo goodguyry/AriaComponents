@@ -67,7 +67,7 @@ export default class Tablist extends AriaComponent {
     };
 
     // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, { ...defaultOptions, ...options });
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
