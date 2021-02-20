@@ -269,6 +269,10 @@ export default class MenuBar extends AriaComponent {
   stateWasUpdated() {
     const { menubarItem } = this.state;
 
+    // Get the Popup, if any.
+    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+    Object.assign(this.state, { popup });
+
     // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
 
@@ -291,8 +295,7 @@ export default class MenuBar extends AriaComponent {
       RETURN,
     } = keyCodes;
     const { keyCode } = event;
-    const { menubarItem } = this.state;
-    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+    const { menubarItem, popup } = this.state;
 
     switch (keyCode) {
       /*

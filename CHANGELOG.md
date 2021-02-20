@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
 - Component callbacks could be run more than once (#54)
+- MenuBar wasn't tracking the current Popup ()
 
 **Removed**
 
