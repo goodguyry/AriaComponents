@@ -31,6 +31,7 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
 
 let disclosure;
 
@@ -48,6 +49,13 @@ describe('Disclosure with default configuration', () => {
 
       expect(controller.disclosure).toBeInstanceOf(Disclosure);
       expect(target.disclosure).toBeInstanceOf(Disclosure);
+
+      expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(disclosure);
+      });
     });
 
     it('Should add the correct attributes to the disclosure controller',
@@ -153,15 +161,12 @@ describe('Disclosure with non-default configuration', () => {
       {
         loadOpen: true,
         allowOutsideClick: false,
-        onInit,
         onDestroy,
       }
     );
   });
 
   it('Should run class methods and subscriber functions', () => {
-    expect(onInit).toHaveBeenCalledTimes(1);
-
     disclosure.open();
     expect(disclosure.getState().expanded).toBeTruthy();
     expect(onStateChange).toHaveBeenCalled();
@@ -190,4 +195,10 @@ describe('Disclosure with non-default configuration', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('hidden')).toEqual('');
   });
+});
+
+describe('Disclosure supresses firing the `init` event', () => {
+  const shouldntBeCalled = jest.fn();
+  disclosure = new Disclosure(controller, { _suppressDispatch: ['init'] });
+  expect(shouldntBeCalled).toHaveBeenCalledTimes(0);
 });

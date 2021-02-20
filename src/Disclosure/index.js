@@ -52,11 +52,12 @@ export default class Disclosure extends AriaComponent {
       allowOutsideClick: true,
 
       /**
-       * Callback to run after the component initializes.
+       * Which events to suppress.
+       * @private
        *
-       * @callback initCallback
+       * @type {Array}
        */
-      onInit: () => {},
+      _suppressDispatch: [],
 
       /**
        * Callback to run after the component is destroyed.
@@ -163,8 +164,10 @@ export default class Disclosure extends AriaComponent {
      */
     tabIndexDeny(this.interactiveChildElements);
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    if (! this._suppressDispatch.includes('init')) {
+      this.dispatch('init', { instance: this });
+    }
   }
 
   /**

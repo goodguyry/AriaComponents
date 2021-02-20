@@ -71,13 +71,6 @@ export default class MenuBar extends AriaComponent {
       itemMatches: '*',
 
       /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback
@@ -223,7 +216,13 @@ export default class MenuBar extends AriaComponent {
       }
 
       // Initialize submenu Menus.
-      const subMenu = new Menu(list, { itemMatches: this.itemMatches });
+      const subMenu = new Menu(
+        list,
+        {
+          itemMatches: this.itemMatches,
+          _suppressDispatch: ['init'],
+        }
+      );
       target.addEventListener('keydown', this.menuItemHandleKeydown);
 
       // Save the list's previous sibling.
@@ -250,8 +249,8 @@ export default class MenuBar extends AriaComponent {
     // Set up initial tabindex.
     rovingTabIndex(this.menuBarItems, this.firstItem);
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatch('init', { instance: this });
   }
 
   /**

@@ -72,13 +72,14 @@ const onDestroy = jest.fn();
 const { list } = domElements;
 
 list.addEventListener('stateChange', onStateChange);
+list.addEventListener('init', onInit);
 
 let menu = new Menu(
   list,
   {
     itemMatches: ':not(.exclude)',
-    onInit,
     onDestroy,
+    _suppressDispatch: ['init'],
   }
 );
 
@@ -96,7 +97,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
 
-    expect(onInit).toHaveBeenCalledTimes(1);
+    expect(onInit).toHaveBeenCalledTimes(0);
   });
 
   it('Should set element attributes correctly', () => {
@@ -211,7 +212,12 @@ describe('Destroying the Menu removes attributes', () => {
 });
 
 describe('Menu instatiates submenus as Disclosures', () => {
+  const initwithDisclosures = jest.fn();
+
   beforeAll(() => {
+    list.removeEventListener('init', onInit);
+    list.addEventListener('init', initwithDisclosures);
+
     menu = new Menu(
       list,
       {
@@ -234,6 +240,15 @@ describe('Menu instatiates submenus as Disclosures', () => {
 
     expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
     expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
+
+    expect(initwithDisclosures).toHaveBeenCalledTimes(1);
+    expect(menu.disclosures[0]._suppressDispatch).toMatchObject(['init']);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(initwithDisclosures);
+
+      expect(detail.instance).toStrictEqual(menu);
+    });
   });
 
   describe('MenuItem Disclosure correctly responds to events', () => {

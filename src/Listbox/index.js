@@ -38,13 +38,6 @@ export default class ListBox extends Popup {
      */
     const defaultOptions = {
       /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback
@@ -138,8 +131,8 @@ export default class ListBox extends Popup {
     // Prevent scrolling when using UP/DOWN arrows on the button
     window.addEventListener('keydown', this.preventWindowScroll);
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatch('init', { instance: this });
   }
 
   /**

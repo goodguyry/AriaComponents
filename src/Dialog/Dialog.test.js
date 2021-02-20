@@ -52,12 +52,12 @@ const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
 
 const modal = new Dialog(
   controller,
   {
     // content: [content, footer],
-    onInit,
     onDestroy,
   }
 );
@@ -80,6 +80,11 @@ describe('Dialog with default configuration', () => {
       expect(modal.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(modal);
+      });
     });
 
     it('Should add the correct attributes',

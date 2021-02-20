@@ -45,13 +45,6 @@ export default class Tablist extends AriaComponent {
      */
     const defaultOptions = {
       /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback

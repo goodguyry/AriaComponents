@@ -73,14 +73,13 @@ const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
+list.addEventListener('init', onInit);
 list.addEventListener('stateChange', onStateChange);
 
 const menuBar = new MenuBar(
   list,
   {
     itemMatches: ':not(.exclude)',
-    onInit,
-    onStateChange,
     onDestroy,
   }
 );
@@ -92,9 +91,16 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.list.menubar).toBeInstanceOf(MenuBar);
     expect(domElements.list.menubar.itemMatches).toEqual(':not(.exclude)');
 
-    expect(onInit).toHaveBeenCalledTimes(1);
-
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
+
+    expect(onInit).toHaveBeenCalledTimes(1);
+    expect(menuBar.subMenus[0]._suppressDispatch).toMatchObject(['init']);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
+
+      expect(detail.instance).toStrictEqual(menuBar);
+    });
   });
 
   it('Should add the correct DOM attributes and collect elements', () => {

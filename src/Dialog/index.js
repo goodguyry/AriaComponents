@@ -41,13 +41,6 @@ export default class Dialog extends Popup {
       content: [],
 
       /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback
@@ -109,8 +102,8 @@ export default class Dialog extends Popup {
       this.popupTargetKeydown
     );
 
-    /* Run {initCallback} */
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatch('init', { instance: this });
   }
 
   /**

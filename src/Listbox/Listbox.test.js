@@ -45,13 +45,13 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
 
 describe('Listbox with default configuration', () => {
   beforeAll(() => {
     listbox = new Listbox(
       controller,
       {
-        onInit,
         onDestroy,
       }
     );
@@ -70,6 +70,11 @@ describe('Listbox with default configuration', () => {
       expect(target.listbox).toBeInstanceOf(Listbox);
 
       expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(listbox);
+      });
     });
 
     it('Should add the correct attributes', () => {

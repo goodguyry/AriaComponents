@@ -41,12 +41,12 @@ const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
 
 const menuButton = new MenuButton(
   controller,
   {
     list,
-    onInit,
     onDestroy,
   }
 );
@@ -61,6 +61,11 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
     expect(menuButton.getState().expanded).toBeFalsy();
 
     expect(onInit).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
+
+      expect(detail.instance).toStrictEqual(menuButton);
+    });
   });
 
   it('Should add the correct attributes to the menuButton controller', () => {
