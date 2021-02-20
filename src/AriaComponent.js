@@ -87,6 +87,7 @@ export default class AriaComponent {
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
+    this.dispatch = this.dispatch.bind(this);
   }
 
   /**
@@ -109,6 +110,25 @@ export default class AriaComponent {
   }
 
   /**
+   * Dispatch event.
+   *
+   * @param  {string} name   The event name.
+   * @param  {object} detail The event detail object.
+   */
+  dispatch(name, detail) {
+    const event = new CustomEvent(
+      name,
+      {
+        bubbles: true,
+        composed: true,
+        detail,
+      }
+    );
+
+    this.element.dispatchEvent(event);
+  }
+
+  /**
    * Set component state.
    *
    * @param {object} newState The new state to merge with existing state.
@@ -121,20 +141,15 @@ export default class AriaComponent {
       this.stateWasUpdated(updatedProps);
     }
 
-    const event = new CustomEvent(
+    // Fire the stateChange event.
+    this.dispatch(
       'stateChange',
       {
-        bubbles: true,
-        composed: true,
-        detail: {
-          instance: this,
-          props: updatedProps,
-          state: this.state,
-        },
+        instance: this,
+        props: updatedProps,
+        state: this.state,
       }
     );
-
-    this.element.dispatchEvent(event);
   }
 
   /**
