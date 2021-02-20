@@ -19,6 +19,7 @@ module.exports = {
   },
   globals: {
     siteClassNames: true,
+    getEventDetails: true,
   },
   settings: {
     'import/resolver': {

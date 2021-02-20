@@ -75,7 +75,10 @@
     "build": "jest && webpack --config docs/_client/config/webpack.config.js --mode production"
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "setupFiles": [
+      "<rootDir>/setupFile.js"
+    ]
   },
   "dependencies": {}
 }
