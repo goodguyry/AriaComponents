@@ -73,6 +73,8 @@ const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
+list.addEventListener('stateChange', onStateChange);
+
 const menuBar = new MenuBar(
   list,
   {
@@ -124,7 +126,19 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.listSecondItem);
-      expect(onStateChange).toHaveBeenCalledTimes(1);
+      expect(onStateChange).toHaveBeenCalledTimes(2);
+
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onStateChange);
+
+        expect(detail.props).toStrictEqual(['menubarItem']);
+        expect(detail.instance).toStrictEqual(menuBar);
+        expect(detail.state).toStrictEqual({
+          menubarItem: domElements.listSecondItem,
+          popup: false,
+          expanded: false,
+        });
+      });
     });
 
   it('Should move to the previous sibling list item with left arrow key',
@@ -132,7 +146,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-      expect(onStateChange).toHaveBeenCalledTimes(2);
+      expect(onStateChange).toHaveBeenCalledTimes(3);
     });
 
   it('Should move to the last list item with end key',
@@ -140,7 +154,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(domElements.listLastItem);
-      expect(onStateChange).toHaveBeenCalledTimes(3);
+      expect(onStateChange).toHaveBeenCalledTimes(4);
     });
 
   it('Should move to the first list item with home key',
@@ -185,6 +199,14 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.dispatchEvent(keydownReturn);
       expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
       expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
+
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onStateChange);
+
+        expect(detail.props).toStrictEqual(['expanded']);
+        expect(detail.instance).toStrictEqual(domElements.listFirstItem.popup);
+        expect(detail.state).toStrictEqual({ expanded: true });
+      });
     });
 
   it('Should close the submenu on right arrow key on a menu item with no submenu', () => {

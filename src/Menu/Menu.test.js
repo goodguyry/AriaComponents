@@ -67,8 +67,11 @@ const domElements = {
 
 // Mock functions.
 const onInit = jest.fn();
+const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
+
+list.addEventListener('stateChange', onStateChange);
 
 let menu = new Menu(
   list,
@@ -240,6 +243,14 @@ describe('Menu instatiates submenus as Disclosures', () => {
         domElements.listThirdItem.dispatchEvent(keydownRight);
         expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(true);
         expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
+
+        return Promise.resolve().then(() => {
+          const { detail } = getEventDetails(onStateChange);
+
+          expect(detail.props).toMatchObject(['expanded']);
+          expect(detail.state).toStrictEqual({ expanded: true });
+          expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+        });
       });
 
     it('Should move to the next sibling list item with down arrow key',
@@ -253,6 +264,14 @@ describe('Menu instatiates submenus as Disclosures', () => {
         domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
         expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(false);
         expect(document.activeElement).toEqual(domElements.listThirdItem);
+
+        return Promise.resolve().then(() => {
+          const { detail } = getEventDetails(onStateChange);
+
+          expect(detail.props).toMatchObject(['expanded']);
+          expect(detail.state).toStrictEqual({ expanded: false });
+          expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+        });
       });
 
     it('Should move to the next sibling list item with down arrow key',

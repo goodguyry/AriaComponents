@@ -45,13 +45,6 @@ export default class ListBox extends Popup {
       onInit: () => {},
 
       /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback

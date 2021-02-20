@@ -49,6 +49,13 @@ export default class AriaComponent {
     }
 
     /**
+     * The controlling element.
+     *
+     * @type {HTMLElement}
+     */
+    this.element = element;
+
+    /**
      * The default string description for this object.
      *
      * @type {string}
@@ -107,14 +114,27 @@ export default class AriaComponent {
    * @param {object} newState The new state to merge with existing state.
    */
   setState(newState) {
+    const updatedProps = Object.keys(newState);
     Object.assign(this.state, newState);
 
     if ('function' === typeof this.stateWasUpdated) {
-      this.stateWasUpdated(Object.keys(newState));
+      this.stateWasUpdated(updatedProps);
     }
 
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
+    const event = new CustomEvent(
+      'stateChange',
+      {
+        bubbles: true,
+        composed: true,
+        detail: {
+          instance: this,
+          props: updatedProps,
+          state: this.state,
+        },
+      }
+    );
+
+    this.element.dispatchEvent(event);
   }
 
   /**

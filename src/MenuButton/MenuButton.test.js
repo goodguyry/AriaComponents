@@ -40,11 +40,12 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('stateChange', onStateChange);
+
 const menuButton = new MenuButton(
   controller,
   {
     list,
-    onStateChange,
     onInit,
     onDestroy,
   }
@@ -86,6 +87,34 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
     menuButton.hide();
     expect(onStateChange).toHaveBeenCalledTimes(2);
+  });
+});
+
+it('Should fire `stateChange` event on state change: open', () => {
+  menuButton.show();
+  expect(menuButton.getState().expanded).toBe(true);
+  expect(onStateChange).toHaveBeenCalledTimes(3);
+
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onStateChange);
+
+    expect(detail.props).toMatchObject(['expanded']);
+    expect(detail.state).toStrictEqual({ expanded: true });
+    expect(detail.instance).toStrictEqual(menuButton);
+  });
+});
+
+it('Should fire `stateChange` event on state change: hidden', () => {
+  menuButton.hide();
+  expect(menuButton.getState().expanded).toBe(false);
+  expect(onStateChange).toHaveBeenCalledTimes(4);
+
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onStateChange);
+
+    expect(detail.props).toMatchObject(['expanded']);
+    expect(detail.state).toStrictEqual({ expanded: false });
+    expect(detail.instance).toStrictEqual(menuButton);
   });
 });
 

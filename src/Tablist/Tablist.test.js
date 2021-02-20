@@ -72,12 +72,13 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+tabs.addEventListener('stateChange', onStateChange);
+
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
     tablist = new Tablist(
       tabs,
       {
-        onStateChange,
         onInit,
         onDestroy,
       }
@@ -175,6 +176,21 @@ describe('Tablist with default configuration', () => {
       expect(thirdPanel.getAttribute('tabindex')).toEqual('0');
 
       expect(onStateChange).toHaveBeenCalledTimes(2);
+    });
+
+    it('Should fire `stateChange` event on state change: open', () => {
+      tablist.switchTo(1);
+
+      expect(tablist.getState().activeIndex).toBe(1);
+      expect(onStateChange).toHaveBeenCalled();
+
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onStateChange);
+
+        expect(detail.props).toMatchObject(['activeIndex']);
+        expect(detail.state).toStrictEqual({ activeIndex: 1 });
+        expect(detail.instance).toStrictEqual(tablist);
+      });
     });
 
     it('Should remove all DOM attributes when destroyed', () => {

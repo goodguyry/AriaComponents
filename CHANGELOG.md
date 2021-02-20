@@ -16,17 +16,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Gets Dialog content element(s) if none provided (#51)
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
 - Exports `isInstanceOf` helper function (#52)
+- Component element fires a `stateChange` event after state changes ()
 
 **Fixed**
 
 - MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
 - Component callbacks could be run more than once (#54)
-- MenuBar wasn't tracking the current Popup ()
+- MenuBar wasn't tracking the current Popup (6c2fe90)
 
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
 - Popup no longer accepts `onInit` and `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` (#54)
+- Components no longer accept a `onStateChange` callback ()
 
 ## 0.3.2
 

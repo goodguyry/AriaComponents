@@ -51,11 +51,12 @@ const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('stateChange', onStateChange);
+
 const modal = new Dialog(
   controller,
   {
     // content: [content, footer],
-    onStateChange,
     onInit,
     onDestroy,
   }
@@ -148,6 +149,20 @@ describe('Dialog with default configuration', () => {
     it('Should close on outside click', () => {
       document.body.dispatchEvent(click);
       expect(modal.getState().expanded).toBeFalsy();
+    });
+  });
+
+  it('Should fire `stateChange` event on state change: open', () => {
+    modal.show();
+    expect(modal.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalled();
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.instance).toStrictEqual(modal);
     });
   });
 

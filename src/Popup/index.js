@@ -43,13 +43,6 @@ export default class Popup extends AriaComponent {
        * @type {string}
        */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.

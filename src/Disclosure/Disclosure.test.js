@@ -25,6 +25,13 @@ document.body.innerHTML = disclosureMarkup;
 const controller = document.querySelector('button');
 const target = document.querySelector('#answer');
 
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
+controller.addEventListener('stateChange', onStateChange);
+
 let disclosure;
 
 describe('Disclosure with default configuration', () => {
@@ -104,6 +111,20 @@ describe('Disclosure with default configuration', () => {
     });
   });
 
+  it('Should fire `stateChange` event on state change: open', () => {
+    disclosure.open();
+    expect(disclosure.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalled();
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.instance).toStrictEqual(disclosure);
+    });
+  });
+
   it('Should remove all DOM attributes when destroyed', () => {
     disclosure.destroy();
 
@@ -126,18 +147,12 @@ describe('Disclosure with default configuration', () => {
 });
 
 describe('Disclosure with non-default configuration', () => {
-  // Mock functions.
-  const onStateChange = jest.fn();
-  const onInit = jest.fn();
-  const onDestroy = jest.fn();
-
   beforeEach(() => {
     disclosure = new Disclosure(
       controller,
       {
         loadOpen: true,
         allowOutsideClick: false,
-        onStateChange,
         onInit,
         onDestroy,
       }
@@ -149,11 +164,11 @@ describe('Disclosure with non-default configuration', () => {
 
     disclosure.open();
     expect(disclosure.getState().expanded).toBeTruthy();
-    expect(onStateChange).toHaveBeenCalledTimes(1);
+    expect(onStateChange).toHaveBeenCalled();
 
     disclosure.close();
     expect(disclosure.getState().expanded).toBeFalsy();
-    expect(onStateChange).toHaveBeenCalledTimes(2);
+    expect(onStateChange).toHaveBeenCalled();
 
     disclosure.destroy();
     expect(disclosure.controller.disclosure).toBeUndefined();

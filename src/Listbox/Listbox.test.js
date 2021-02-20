@@ -44,12 +44,13 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('stateChange', onStateChange);
+
 describe('Listbox with default configuration', () => {
   beforeAll(() => {
     listbox = new Listbox(
       controller,
       {
-        onStateChange,
         onInit,
         onDestroy,
       }
@@ -101,6 +102,37 @@ describe('Listbox with default configuration', () => {
       expect(document.activeElement).toEqual(target);
 
       expect(onStateChange).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('Should fire `stateChange` event on state change: open', () => {
+    listbox.show();
+    expect(listbox.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({
+        expanded: true,
+        activeDescendant: target.children[0],
+      });
+      expect(detail.instance).toStrictEqual(listbox);
+    });
+  });
+
+  it('Should fire `stateChange` event on state change: active descendant', () => {
+    listbox.setState({ activeDescendant: target.children[3] });
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.state).toStrictEqual({
+        expanded: true,
+        activeDescendant: target.children[3],
+      });
+      expect(detail.instance).toStrictEqual(listbox);
     });
   });
 

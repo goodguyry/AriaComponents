@@ -52,13 +52,6 @@ export default class Tablist extends AriaComponent {
       onInit: () => {},
 
       /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback
