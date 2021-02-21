@@ -118,7 +118,7 @@ export default class ListBox extends Popup {
     window.addEventListener('keydown', this.preventWindowScroll);
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    this.dispatchEventInit();
   }
 
   /**
@@ -382,6 +382,6 @@ export default class ListBox extends Popup {
     window.removeEventListener('keydown', this.preventWindowScroll);
 
     // Fire the destroy event.
-    this.dispatch('destroy', { element: this.element });
+    this.dispatchEventDestroy();
   }
 }

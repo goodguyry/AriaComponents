@@ -96,7 +96,7 @@ export default class Dialog extends Popup {
     );
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    this.dispatchEventInit();
   }
 
   /**
@@ -212,6 +212,6 @@ export default class Dialog extends Popup {
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
     // Fire the destroy event.
-    this.dispatch('destroy', { element: this.element });
+    this.dispatchEventDestroy();
   }
 }

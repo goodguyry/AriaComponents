@@ -88,7 +88,7 @@ export default class MenuButton extends Popup {
     this.controller.addEventListener('keydown', this.controllerHandleKeydown);
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    this.dispatchEventInit();
   }
 
   /**
@@ -151,6 +151,6 @@ export default class MenuButton extends Popup {
     );
 
     // Fire the destroy event.
-    this.dispatch('destroy', { element: this.element });
+    this.dispatchEventDestroy();
   }
 }

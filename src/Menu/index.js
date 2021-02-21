@@ -197,7 +197,7 @@ export default class Menu extends AriaComponent {
     Object.assign(this, { firstItem, lastItem });
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    this.dispatchEventInit();
   }
 
   /**
@@ -370,6 +370,6 @@ export default class Menu extends AriaComponent {
     });
 
     // Fire the destroy event.
-    this.dispatch('destroy', { element: this.element });
+    this.dispatchEventDestroy();
   }
 }

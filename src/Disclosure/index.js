@@ -150,7 +150,7 @@ export default class Disclosure extends AriaComponent {
     tabIndexDeny(this.interactiveChildElements);
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    this.dispatchEventInit();
   }
 
   /**
@@ -278,7 +278,7 @@ export default class Disclosure extends AriaComponent {
     this.state = { expanded: this.loadOpen };
 
     // Fire the destroy event.
-    this.dispatch('destroy', { element: this.element });
+    this.dispatchEventDestroy();
   }
 
   /**

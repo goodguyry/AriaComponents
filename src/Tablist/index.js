@@ -182,7 +182,7 @@ export default class Tablist extends AriaComponent {
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    this.dispatchEventInit();
   }
 
   /**
@@ -417,6 +417,6 @@ export default class Tablist extends AriaComponent {
     });
 
     // Fire the destroy event.
-    this.dispatch('destroy', { element: this.element });
+    this.dispatchEventDestroy();
   }
 }
