@@ -83,6 +83,14 @@ export default class AriaComponent {
      */
     this.referenceElements = [];
 
+    /**
+     * Which events to suppress.
+     * @private
+     *
+     * @type {Array}
+     */
+    this._suppressDispatch = [];
+
     // Bind class methods.
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
@@ -141,15 +149,17 @@ export default class AriaComponent {
       this.stateWasUpdated(updatedProps);
     }
 
-    // Fire the stateChange event.
-    this.dispatch(
-      'stateChange',
-      {
-        instance: this,
-        props: updatedProps,
-        state: this.state,
-      }
-    );
+    if (! this._suppressDispatch.includes('stateChange')) {
+      // Fire the stateChange event.
+      this.dispatch(
+        'stateChange',
+        {
+          instance: this,
+          props: updatedProps,
+          state: this.state,
+        }
+      );
+    }
   }
 
   /**

@@ -73,14 +73,6 @@ export default class Menu extends AriaComponent {
       itemMatches: '*',
 
       /**
-       * Which events to suppress.
-       * @private
-       *
-       * @type {Array}
-       */
-      _suppressDispatch: [],
-
-      /**
        * Callback to run after the component is destroyed.
        *
        * @callback destroyCallback
