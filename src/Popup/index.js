@@ -192,7 +192,7 @@ export default class Popup extends AriaComponent {
        * Treat the Spacebar and Return keys as clicks in case the controller is
        * not a <button>.
        */
-      this.toggle(event);
+      this.toggle();
     } else if (expanded) {
       if (ESC === keyCode) {
         event.preventDefault();
@@ -360,7 +360,10 @@ export default class Popup extends AriaComponent {
   /**
    * Toggle the popup state.
    */
-  toggle() {
+  toggle(event) {
+    if (null != event) {
+      event.preventDefault();
+    }
     const { expanded } = this.state;
 
     this.setState({ expanded: ! expanded });
