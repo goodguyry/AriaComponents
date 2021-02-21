@@ -74,13 +74,11 @@ const onDestroy = jest.fn();
 
 tabs.addEventListener('init', onInit);
 tabs.addEventListener('stateChange', onStateChange);
+tabs.addEventListener('destroy', onDestroy);
 
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
-    tablist = new Tablist(
-      tabs,
-      { onDestroy }
-    );
+    tablist = new Tablist(tabs);
   });
 
   describe('Tablist adds and manipulates DOM element attributes', () => {
@@ -232,6 +230,11 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.tablist).toBeUndefined();
 
       expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(tabs);
+      });
     });
 
     // Quick and dirty verification that the original markup is restored.

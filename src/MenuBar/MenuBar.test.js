@@ -75,14 +75,9 @@ const { list } = domElements;
 
 list.addEventListener('init', onInit);
 list.addEventListener('stateChange', onStateChange);
+list.addEventListener('destroy', onDestroy);
 
-const menuBar = new MenuBar(
-  list,
-  {
-    itemMatches: ':not(.exclude)',
-    onDestroy,
-  }
-);
+const menuBar = new MenuBar(list, { itemMatches: ':not(.exclude)' });
 
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
@@ -94,7 +89,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
 
     expect(onInit).toHaveBeenCalledTimes(1);
-    expect(menuBar.subMenus[0]._suppressDispatch).toMatchObject(['init']);
+    expect(menuBar.subMenus[0]._suppressDispatch).toMatchObject(['init', 'destroy']);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onInit);
@@ -261,9 +256,14 @@ describe('Menu should destroy properly', () => {
     expect(domElements.sublistTwoLastItem.getAttribute('tabindex')).toBeNull();
 
     expect(domElements.list.menubar).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalledTimes(1);
-
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(menubarMarkup);
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(list);
+    });
   });
 });

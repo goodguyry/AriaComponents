@@ -73,12 +73,12 @@ const { list } = domElements;
 
 list.addEventListener('stateChange', onStateChange);
 list.addEventListener('init', onInit);
+list.addEventListener('destroy', onDestroy);
 
 let menu = new Menu(
   list,
   {
     itemMatches: ':not(.exclude)',
-    onDestroy,
     _suppressDispatch: ['init'],
   }
 );
@@ -208,6 +208,11 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(list);
+    });
   });
 });
 
@@ -242,7 +247,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
 
     expect(initwithDisclosures).toHaveBeenCalledTimes(1);
-    expect(menu.disclosures[0]._suppressDispatch).toMatchObject(['init']);
+    expect(menu.disclosures[0]._suppressDispatch).toMatchObject(['init', 'destroy']);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(initwithDisclosures);

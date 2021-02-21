@@ -42,14 +42,9 @@ const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
 
-const menuButton = new MenuButton(
-  controller,
-  {
-    list,
-    onDestroy,
-  }
-);
+const menuButton = new MenuButton(controller, { list });
 
 describe('MenuButton adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
@@ -222,8 +217,13 @@ it('Should destroy the menuButton as expected', () => {
   controller.dispatchEvent(click);
   expect(menuButton.getState().expanded).toBeFalsy();
 
-  expect(onDestroy).toHaveBeenCalledTimes(1);
-
   // Quick and dirty verification that the original markup is restored.
   expect(document.body.innerHTML).toEqual(menuButtonMarkup);
+
+  expect(onDestroy).toHaveBeenCalledTimes(1);
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onDestroy);
+
+    expect(detail.element).toStrictEqual(controller);
+  });
 });

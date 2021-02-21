@@ -50,13 +50,6 @@ export default class Disclosure extends AriaComponent {
        * @type {boolean}
        */
       allowOutsideClick: true,
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -286,8 +279,10 @@ export default class Disclosure extends AriaComponent {
     // Reset initial state.
     this.state = { expanded: this.loadOpen };
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    if (! this._suppressDispatch.includes('destroy')) {
+      this.dispatch('destroy', { element: this.element });
+    }
   }
 
   /**

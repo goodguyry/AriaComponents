@@ -32,6 +32,7 @@ const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
 
 let disclosure;
 
@@ -149,8 +150,16 @@ describe('Disclosure with default configuration', () => {
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
 
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(controller);
+    });
   });
 });
 
@@ -161,7 +170,6 @@ describe('Disclosure with non-default configuration', () => {
       {
         loadOpen: true,
         allowOutsideClick: false,
-        onDestroy,
       }
     );
   });
@@ -178,7 +186,7 @@ describe('Disclosure with non-default configuration', () => {
     disclosure.destroy();
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalledTimes(1);
+    expect(onDestroy).toHaveBeenCalledTimes(2);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
@@ -199,6 +207,12 @@ describe('Disclosure with non-default configuration', () => {
 
 describe('Disclosure supresses firing the `init` event', () => {
   const shouldntBeCalled = jest.fn();
-  disclosure = new Disclosure(controller, { _suppressDispatch: ['init'] });
+  controller.addEventListener('init', shouldntBeCalled);
+  controller.addEventListener('stateChange', shouldntBeCalled);
+  controller.addEventListener('destroy', shouldntBeCalled);
+
+  disclosure = new Disclosure(controller, { _suppressDispatch: ['init', 'destroy', 'stateChange'] });
+  disclosure.open();
+  disclosure.destroy();
   expect(shouldntBeCalled).toHaveBeenCalledTimes(0);
 });

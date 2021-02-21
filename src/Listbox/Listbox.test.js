@@ -46,15 +46,11 @@ const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
 
 describe('Listbox with default configuration', () => {
   beforeAll(() => {
-    listbox = new Listbox(
-      controller,
-      {
-        onDestroy,
-      }
-    );
+    listbox = new Listbox(controller);
   });
 
   describe('Listbox adds and manipulates DOM element attributes', () => {
@@ -272,12 +268,17 @@ describe('Listbox with default configuration', () => {
       controller.dispatchEvent(click);
       expect(listbox.getState().expanded).toBeFalsy();
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-
       // Quick and dirty verification that the original markup is restored.
       // But first, restore the button's original text label.
       controller.textContent = 'Choose';
       expect(document.body.innerHTML).toEqual(listboxMarkup);
+
+      expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(controller);
+      });
     });
   });
 });

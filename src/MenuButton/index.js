@@ -39,13 +39,6 @@ export default class MenuButton extends Popup {
        * @type {HTMLUListElement}
        */
       list: null,
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -80,7 +73,7 @@ export default class MenuButton extends Popup {
      *
      * @type {Menu}
      */
-    const _suppressDispatch = ['init'];
+    const _suppressDispatch = ['init', 'destroy'];
     if (null != this.list && 'UL' === this.list.nodeName) {
       this.menu = new Menu(this.list, { _suppressDispatch });
     } else if ('UL' === this.target.nodeName) {
@@ -95,7 +88,9 @@ export default class MenuButton extends Popup {
     this.controller.addEventListener('keydown', this.controllerHandleKeydown);
 
     // Fire the init event.
-    this.dispatch('init', { instance: this });
+    if (! this._suppressDispatch.includes('init')) {
+      this.dispatch('init', { instance: this });
+    }
   }
 
   /**
@@ -157,7 +152,9 @@ export default class MenuButton extends Popup {
       this.controllerHandleKeydown
     );
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    if (! this._suppressDispatch.includes('destroy')) {
+      this.dispatch('destroy', { element: this.element });
+    }
   }
 }

@@ -53,14 +53,9 @@ const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
 
-const modal = new Dialog(
-  controller,
-  {
-    // content: [content, footer],
-    onDestroy,
-  }
-);
+const modal = new Dialog(controller, /* { content: [content, footer], } */);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
@@ -183,10 +178,15 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('hidden')).toBeNull();
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-
       // Quick and dirty verification that the original markup is restored.
       expect(document.body.innerHTML).toEqual(dialogMarkup);
+
+      expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(controller);
+      });
     });
   });
 });

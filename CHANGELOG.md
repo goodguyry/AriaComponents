@@ -16,7 +16,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Gets Dialog content element(s) if none provided (#51)
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
 - Exports `isInstanceOf` helper function (#52)
-- Component element fires a `stateChange` event after state changes ()
+- Component element fires the `init` event after initializing ()
+- Component element fires the `stateChange` event after state changes ()
+- Component element fires the `destroy` events after the component is destroyed ()
 
 **Fixed**
 
