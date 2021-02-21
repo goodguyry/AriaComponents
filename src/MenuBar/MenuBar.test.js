@@ -264,6 +264,7 @@ describe('Menu should destroy properly', () => {
       const { detail } = getEventDetails(onDestroy);
 
       expect(detail.element).toStrictEqual(list);
+      expect(detail.instance).toStrictEqual(menuBar);
     });
   });
 });

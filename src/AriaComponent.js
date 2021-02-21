@@ -160,6 +160,7 @@ export default class AriaComponent {
       'destroy',
       {
         element: this.element,
+        instance: this,
       }
     );
   }

@@ -234,6 +234,7 @@ describe('Tablist with default configuration', () => {
         const { detail } = getEventDetails(onDestroy);
 
         expect(detail.element).toStrictEqual(tabs);
+        expect(detail.instance).toStrictEqual(tablist);
       });
     });
 

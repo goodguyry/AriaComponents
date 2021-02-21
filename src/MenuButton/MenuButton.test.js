@@ -225,5 +225,6 @@ it('Should destroy the menuButton as expected', () => {
     const { detail } = getEventDetails(onDestroy);
 
     expect(detail.element).toStrictEqual(controller);
+    expect(detail.instance).toStrictEqual(menuButton);
   });
 });

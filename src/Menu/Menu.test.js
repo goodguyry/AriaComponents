@@ -212,6 +212,7 @@ describe('Destroying the Menu removes attributes', () => {
       const { detail } = getEventDetails(onDestroy);
 
       expect(detail.element).toStrictEqual(list);
+      expect(detail.instance).toStrictEqual(menu);
     });
   });
 });

@@ -186,6 +186,7 @@ describe('Dialog with default configuration', () => {
         const { detail } = getEventDetails(onDestroy);
 
         expect(detail.element).toStrictEqual(controller);
+        expect(detail.instance).toStrictEqual(modal);
       });
     });
   });
