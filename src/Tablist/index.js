@@ -195,8 +195,10 @@ export default class Tablist extends AriaComponent {
     // Save the active panel's interactive children.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    if (! this._suppressDispatch.includes('init')) {
+      this.dispatch('init', { instance: this });
+    }
   }
 
   /**

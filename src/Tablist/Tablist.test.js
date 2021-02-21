@@ -72,16 +72,14 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+tabs.addEventListener('init', onInit);
 tabs.addEventListener('stateChange', onStateChange);
 
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
     tablist = new Tablist(
       tabs,
-      {
-        onInit,
-        onDestroy,
-      }
+      { onDestroy }
     );
   });
 
@@ -96,6 +94,11 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.tablist).toBeInstanceOf(Tablist);
 
       expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(tablist);
+      });
     });
 
     it('Should add the correct attributes and overlay element',
