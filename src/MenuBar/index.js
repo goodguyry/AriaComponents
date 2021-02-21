@@ -243,9 +243,7 @@ export default class MenuBar extends AriaComponent {
     rovingTabIndex(this.menuBarItems, this.firstItem);
 
     // Fire the init event.
-    if (! this._suppressDispatch.includes('init')) {
-      this.dispatch('init', { instance: this });
-    }
+    this.dispatch('init', { instance: this });
   }
 
   /**
@@ -445,8 +443,6 @@ export default class MenuBar extends AriaComponent {
     });
 
     // Fire the destroy event.
-    if (! this._suppressDispatch.includes('destroy')) {
-      this.dispatch('destroy', { element: this.element });
-    }
+    this.dispatch('destroy', { element: this.element });
   }
 }

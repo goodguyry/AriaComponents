@@ -124,16 +124,18 @@ export default class AriaComponent {
    * @param  {object} detail The event detail object.
    */
   dispatch(name, detail) {
-    const event = new CustomEvent(
-      name,
-      {
-        bubbles: true,
-        composed: true,
-        detail,
-      }
-    );
+    if (! this._suppressDispatch.includes(name)) {
+      const event = new CustomEvent(
+        name,
+        {
+          bubbles: true,
+          composed: true,
+          detail,
+        }
+      );
 
-    this.element.dispatchEvent(event);
+      this.element.dispatchEvent(event);
+    }
   }
 
   /**
@@ -149,17 +151,15 @@ export default class AriaComponent {
       this.stateWasUpdated(updatedProps);
     }
 
-    if (! this._suppressDispatch.includes('stateChange')) {
-      // Fire the stateChange event.
-      this.dispatch(
-        'stateChange',
-        {
-          instance: this,
-          props: updatedProps,
-          state: this.state,
-        }
-      );
-    }
+    // Fire the stateChange event.
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        props: updatedProps,
+        state: this.state,
+      }
+    );
   }
 
   /**
