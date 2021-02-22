@@ -236,7 +236,6 @@ export default class MenuBar extends AriaComponent {
     this.state = {
       menubarItem: this.firstItem,
       popup: this.constructor.getPopupFromMenubarItem(this.firstItem),
-      expanded: false,
     };
 
     // Set up initial tabindex.
@@ -299,7 +298,7 @@ export default class MenuBar extends AriaComponent {
           event.preventDefault();
 
           // Close the popup.
-          if (popup) {
+          if (popup && popup.getState().expanded) {
             popup.hide();
           }
 
@@ -321,7 +320,7 @@ export default class MenuBar extends AriaComponent {
           event.stopPropagation();
           event.preventDefault();
 
-          if (! popup.state.expanded) {
+          if (! popup.getState().expanded) {
             popup.show();
           }
 

@@ -25,12 +25,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
 - Component callbacks could be run more than once (#54)
 - MenuBar wasn't tracking the current Popup (6c2fe90)
+- MenuBar keydown left/right could trigger a Popup `stateChange` event ()
 
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
 - Popup no longer accepts `onInit` and `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` (#54)
 - Components no longer accept a `onStateChange` callback ()
+- MenuBar no longer tracks Popup `expanded` state separately ()
 
 ## 0.3.2
 

@@ -127,7 +127,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.listSecondItem);
-      expect(onStateChange).toHaveBeenCalledTimes(2);
+      expect(onStateChange).toHaveBeenCalledTimes(1);
 
       return Promise.resolve().then(() => {
         const { detail } = getEventDetails(onStateChange);
@@ -137,7 +137,6 @@ describe('Menu correctly responds to events', () => {
         expect(detail.state).toStrictEqual({
           menubarItem: domElements.listSecondItem,
           popup: false,
-          expanded: false,
         });
       });
     });
@@ -147,7 +146,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-      expect(onStateChange).toHaveBeenCalledTimes(3);
+      expect(onStateChange).toHaveBeenCalledTimes(2);
     });
 
   it('Should move to the last list item with end key',
@@ -155,7 +154,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(domElements.listLastItem);
-      expect(onStateChange).toHaveBeenCalledTimes(4);
+      expect(onStateChange).toHaveBeenCalledTimes(3);
     });
 
   it('Should move to the first list item with home key',
