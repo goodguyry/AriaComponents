@@ -1,4 +1,5 @@
 import getClassnames from 'js/getClassnames';
+import logEventDetail from 'js/logEventDetail';
 import { Dialog } from 'root';
 import './dialog.scss';
 
@@ -9,6 +10,11 @@ window.addEventListener('load', () => {
   // Get the elements.
   const controller = document.querySelector(link);
   const close = document.querySelector(closeButton);
+
+  // Report event details.
+  controller.addEventListener('init', logEventDetail);
+  controller.addEventListener('stateChange', logEventDetail);
+  controller.addEventListener('destroy', logEventDetail);
 
   // Create the Dialog.
   const dialog = new Dialog(controller);

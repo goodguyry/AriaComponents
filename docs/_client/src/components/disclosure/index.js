@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
+import logEventDetail from 'js/logEventDetail';
 import { Disclosure } from 'root';
 import './disclosure.scss';
 
@@ -10,9 +11,14 @@ const { button, info } = getClassnames(siteClassNames.disclosure);
 const controllers = document.querySelectorAll(button);
 
 // Create the Disclosures.
-const disclosures = Array.from(controllers).map((controller) => (
-  new Disclosure(controller)
-));
+const disclosures = Array.from(controllers).map((controller) => {
+  // Report event details.
+  controller.addEventListener('init', logEventDetail);
+  controller.addEventListener('stateChange', logEventDetail);
+  controller.addEventListener('destroy', logEventDetail);
+
+  return new Disclosure(controller);
+});
 
 window.addEventListener('load', disclosureHashCheck);
 window.addEventListener('hashchange', disclosureHashCheck);
