@@ -128,6 +128,9 @@ _**`destroy`**_
 > 
 > _**`detail.element`**_  
 > Returns the element passed to the `Dialog` instance.  
+> 
+> _**`detail.instance`**_  
+> Returns the `Dialog` instance from which the event originated.  
 
 ## References
 

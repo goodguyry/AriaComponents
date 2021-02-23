@@ -112,6 +112,9 @@ _**`destroy`**_
 > 
 > _**`detail.element`**_  
 > Returns the element passed to the `Listbox` instance.  
+> 
+> _**`detail.inlistance`**_  
+> Returns the `Listbox` instance from which the event originated.  
 
 ## References
 

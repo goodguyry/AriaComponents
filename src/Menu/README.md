@@ -109,6 +109,9 @@ _**`destroy`**_
 > 
 > _**`detail.element`**_  
 > Returns the element passed to the `Menu` instance.  
+> 
+> _**`detail.instance`**_  
+> Returns the `Menu` instance from which the event originated.  
 
 ## References
 

@@ -119,6 +119,9 @@ _**`destroy`**_
 > 
 > _**`detail.element`**_  
 > Returns the element passed to the `MenuBar` instance.  
+> 
+> _**`detail.instance`**_  
+> Returns the `MenuBar` instance from which the event originated.  
 
 ## Additional Notes
 

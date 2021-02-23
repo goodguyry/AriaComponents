@@ -112,6 +112,9 @@ _**`destroy`**_
 > 
 > _**`detail.element`**_  
 > Returns the element passed to the `Popup` instance.  
+> 
+> _**`detail.instance`**_  
+> Returns the `Popup` instance from which the event originated.  
 
 ## References
 

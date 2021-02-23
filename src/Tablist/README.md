@@ -120,6 +120,9 @@ _**`destroy`**_
 > 
 > _**`detail.element`**_  
 > Returns the element passed to the `Tablist` instance.  
+> 
+> _**`detail.instance`**_  
+> Returns the `Tablist` instance from which the event originated.  
 
 ## References
 
