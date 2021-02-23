@@ -130,7 +130,7 @@ describe('Menu correctly responds to events', () => {
       expect(onStateChange).toHaveBeenCalledTimes(1);
 
       return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onStateChange);
+        const { target, detail } = getEventDetails(onStateChange);
 
         expect(detail.props).toStrictEqual(['menubarItem']);
         expect(detail.instance).toStrictEqual(menuBar);
@@ -138,6 +138,7 @@ describe('Menu correctly responds to events', () => {
           menubarItem: domElements.listSecondItem,
           popup: false,
         });
+        expect(target).toStrictEqual(list);
       });
     });
 
@@ -201,11 +202,12 @@ describe('Menu correctly responds to events', () => {
       expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
 
       return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onStateChange);
+        const { target, detail } = getEventDetails(onStateChange);
 
         expect(detail.props).toStrictEqual(['expanded']);
         expect(detail.instance).toStrictEqual(domElements.listFirstItem.popup);
         expect(detail.state).toStrictEqual({ expanded: true });
+        expect(target).toStrictEqual(domElements.listFirstItem);
       });
     });
 

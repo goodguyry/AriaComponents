@@ -266,11 +266,12 @@ describe('Menu instatiates submenus as Disclosures', () => {
         expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
 
         return Promise.resolve().then(() => {
-          const { detail } = getEventDetails(onStateChange);
+          const { target, detail } = getEventDetails(onStateChange);
 
           expect(detail.props).toMatchObject(['expanded']);
           expect(detail.state).toStrictEqual({ expanded: true });
           expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+          expect(target).toStrictEqual(domElements.listThirdItem);
         });
       });
 
@@ -287,11 +288,12 @@ describe('Menu instatiates submenus as Disclosures', () => {
         expect(document.activeElement).toEqual(domElements.listThirdItem);
 
         return Promise.resolve().then(() => {
-          const { detail } = getEventDetails(onStateChange);
+          const { target, detail } = getEventDetails(onStateChange);
 
           expect(detail.props).toMatchObject(['expanded']);
           expect(detail.state).toStrictEqual({ expanded: false });
           expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+          expect(target).toStrictEqual(domElements.listThirdItem);
         });
       });
 
