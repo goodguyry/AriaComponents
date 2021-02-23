@@ -129,6 +129,7 @@ describe('Listbox with default configuration', () => {
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
 
+      expect(detail.props).toMatchObject(['activeDescendant']);
       expect(detail.state).toStrictEqual({
         expanded: true,
         activeDescendant: target.children[3],
