@@ -174,7 +174,9 @@ export default class AriaComponent {
    */
   setState(newState) {
     const updatedProps = Object.keys(newState);
-    Object.assign(this.state, newState);
+
+    const updatedState = { ...this.state, ...newState };
+    this.state = updatedState;
 
     if ('function' === typeof this.stateWasUpdated) {
       this.stateWasUpdated(updatedProps);
