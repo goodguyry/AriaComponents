@@ -169,11 +169,14 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {MouseEvent}
      */
-    this.clickEvent = new MouseEvent('click', {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-    });
+    this.clickEvent = new MouseEvent(
+      'click',
+      {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      }
+    );
 
     // Initialize popups for nested lists.
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
