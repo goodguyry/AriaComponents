@@ -40,7 +40,7 @@ export default class AriaComponent {
    * Create an AriaComponent.
    * @constructor
    */
-  constructor(element) {
+  constructor(element, options = {}) {
     // Validate the component element.
     if (null == element || ! (element instanceof HTMLElement)) {
       AriaComponent.configurationError(
@@ -84,12 +84,30 @@ export default class AriaComponent {
     this.referenceElements = [];
 
     /**
-     * Whether to suppress the `init` and `destroy` events.
-     * @private
+     * Options shape.
      *
-     * @type {Boolean}
+     * @type {object}
      */
-    this._stateDispatchesOnly = false;
+    const defaultOptions = {
+      /**
+       * Whether to suppress the `init` and `destroy` events.
+       * @private
+       *
+       * @type {Boolean}
+       */
+      _stateDispatchesOnly: false,
+
+      /**
+       * When `true`, monitors DOM changes via Mutation Observer and updates
+       * component attributes and properties as-needed.
+       *
+       * @type {Boolean}
+       */
+      watch: false,
+    };
+
+    // Merge options with defaults and save all as instance properties.
+    Object.assign(this, defaultOptions, options);
 
     // Bind class methods.
     this.setState = this.setState.bind(this);

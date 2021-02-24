@@ -5,6 +5,24 @@ src/
 
 Extend the `AriaComponent` class to get access to the methods below.
 
+## Constructor
+
+```javascript
+AriaComponent(controller = null, options = {});
+```
+
+_**`controller`**_ `HTMLElement`
+> The component element.
+
+_**`options`**_ `object`
+> Configuration options.
+
+### Available Options
+
+_**`watch`**_`= false`
+> When `true`, monitors DOM changes via MutationObserver and updates component
+> attributes and properties as-needed.
+
 ## API
 
 ### Instance Methods
