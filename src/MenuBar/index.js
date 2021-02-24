@@ -213,7 +213,7 @@ export default class MenuBar extends AriaComponent {
         list,
         {
           itemMatches: this.itemMatches,
-          _suppressDispatch: ['init', 'destroy'],
+          _stateDispatchesOnly: true,
         }
       );
       target.addEventListener('keydown', this.menuItemHandleKeydown);

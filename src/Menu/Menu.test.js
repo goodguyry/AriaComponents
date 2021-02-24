@@ -79,7 +79,7 @@ let menu = new Menu(
   list,
   {
     itemMatches: ':not(.exclude)',
-    _suppressDispatch: ['init'],
+    _stateDispatchesOnly: true,
   }
 );
 
@@ -207,13 +207,7 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistOne.getAttribute('role')).toBeNull();
     expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
 
-    expect(onDestroy).toHaveBeenCalledTimes(1);
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onDestroy);
-
-      expect(detail.element).toStrictEqual(list);
-      expect(detail.instance).toStrictEqual(menu);
-    });
+    expect(onDestroy).toHaveBeenCalledTimes(0);
   });
 });
 
@@ -248,7 +242,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
 
     expect(initwithDisclosures).toHaveBeenCalledTimes(1);
-    expect(menu.disclosures[0]._suppressDispatch).toMatchObject(['init', 'destroy']);
+    expect(menu.disclosures[0]._stateDispatchesOnly).toBe(true);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(initwithDisclosures);
@@ -327,5 +321,13 @@ describe('Menu instatiates submenus as Disclosures', () => {
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(menuMarkup);
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(list);
+      expect(detail.instance).toStrictEqual(menu);
+    });
   });
 });

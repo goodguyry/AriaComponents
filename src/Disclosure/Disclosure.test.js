@@ -207,13 +207,15 @@ describe('Disclosure with non-default configuration', () => {
 });
 
 describe('Disclosure supresses firing the `init` event', () => {
-  const shouldntBeCalled = jest.fn();
-  controller.addEventListener('init', shouldntBeCalled);
-  controller.addEventListener('stateChange', shouldntBeCalled);
-  controller.addEventListener('destroy', shouldntBeCalled);
+  const beCalled = jest.fn();
+  const shouldNotBeCalled = jest.fn();
+  controller.addEventListener('init', shouldNotBeCalled);
+  controller.addEventListener('stateChange', beCalled);
+  controller.addEventListener('destroy', shouldNotBeCalled);
 
-  disclosure = new Disclosure(controller, { _suppressDispatch: ['init', 'destroy', 'stateChange'] });
+  disclosure = new Disclosure(controller, { _stateDispatchesOnly: true });
   disclosure.open();
   disclosure.destroy();
-  expect(shouldntBeCalled).toHaveBeenCalledTimes(0);
+  expect(beCalled).toHaveBeenCalledTimes(1);
+  expect(shouldNotBeCalled).toHaveBeenCalledTimes(0);
 });

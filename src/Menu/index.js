@@ -173,7 +173,7 @@ export default class Menu extends AriaComponent {
       if (this.collapse && link.hasAttribute('target')) {
         const disclosure = new Disclosure(
           link,
-          { _suppressDispatch: ['init', 'destroy'] }
+          { _stateDispatchesOnly: true }
         );
 
         this.disclosures.push(disclosure);
@@ -184,7 +184,7 @@ export default class Menu extends AriaComponent {
         // Instantiate sub-Menus.
         const subList = new Menu(
           siblingList,
-          { _suppressDispatch: ['init', 'destroy'] }
+          { _stateDispatchesOnly: true }
         );
 
         // Save the list's previous sibling.

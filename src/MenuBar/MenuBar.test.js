@@ -89,7 +89,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
 
     expect(onInit).toHaveBeenCalledTimes(1);
-    expect(menuBar.subMenus[0]._suppressDispatch).toMatchObject(['init', 'destroy']);
+    expect(menuBar.subMenus[0]._stateDispatchesOnly).toBe(true);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onInit);

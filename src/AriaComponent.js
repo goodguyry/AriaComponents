@@ -84,12 +84,12 @@ export default class AriaComponent {
     this.referenceElements = [];
 
     /**
-     * Which events to suppress.
+     * Whether to suppress the `init` and `destroy` events.
      * @private
      *
-     * @type {Array}
+     * @type {Boolean}
      */
-    this._suppressDispatch = [];
+    this._stateDispatchesOnly = false;
 
     // Bind class methods.
     this.setState = this.setState.bind(this);
@@ -126,7 +126,9 @@ export default class AriaComponent {
    * @param  {object} detail The event detail object.
    */
   dispatch(name, detail) {
-    if (! this._suppressDispatch.includes(name)) {
+    const allowed = this._stateDispatchesOnly ? ('stateChange' === name) : true;
+
+    if (allowed) {
       const event = new CustomEvent(
         name,
         {

@@ -73,15 +73,14 @@ export default class MenuButton extends Popup {
      *
      * @type {Menu}
      */
-    const _suppressDispatch = ['init', 'destroy'];
     if (null != this.list && 'UL' === this.list.nodeName) {
-      this.menu = new Menu(this.list, { _suppressDispatch });
+      this.menu = new Menu(this.list, { _stateDispatchesOnly: true });
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
-      this.menu = new Menu(this.target, { _suppressDispatch });
+      this.menu = new Menu(this.target, { _stateDispatchesOnly: true });
     } else {
       const list = this.target.querySelector('ul');
-      this.menu = new Menu(list, { _suppressDispatch });
+      this.menu = new Menu(list, { _stateDispatchesOnly: true });
     }
 
     // Additional event listener(s).

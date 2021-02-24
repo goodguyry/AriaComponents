@@ -81,7 +81,7 @@ module.exports = {
       'error',
       {
         'allow': [
-          '_suppressDispatch',
+          '_stateDispatchesOnly',
         ],
       },
     ],
