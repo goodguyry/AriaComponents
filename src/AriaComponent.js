@@ -49,6 +49,13 @@ export default class AriaComponent {
     }
 
     /**
+     * The controlling element.
+     *
+     * @type {HTMLElement}
+     */
+    this.element = element;
+
+    /**
      * The default string description for this object.
      *
      * @type {string}
@@ -76,10 +83,21 @@ export default class AriaComponent {
      */
     this.referenceElements = [];
 
+    /**
+     * Whether to suppress the `init` and `destroy` events.
+     * @private
+     *
+     * @type {Boolean}
+     */
+    this._stateDispatchesOnly = false;
+
     // Bind class methods.
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
+    this.dispatch = this.dispatch.bind(this);
+    this.dispatchEventInit = this.dispatchEventInit.bind(this);
+    this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
   }
 
   /**
@@ -102,19 +120,77 @@ export default class AriaComponent {
   }
 
   /**
+   * Dispatch event.
+   *
+   * @param  {string} name   The event name.
+   * @param  {object} detail The event detail object.
+   */
+  dispatch(name, detail) {
+    const allowed = this._stateDispatchesOnly ? ('stateChange' === name) : true;
+
+    if (allowed) {
+      const event = new CustomEvent(
+        name,
+        {
+          bubbles: true,
+          composed: true,
+          detail,
+        }
+      );
+
+      this.element.dispatchEvent(event);
+    }
+  }
+
+  /**
+   * Dispatch the `init` event.
+   */
+  dispatchEventInit() {
+    this.dispatch(
+      'init',
+      {
+        instance: this,
+      }
+    );
+  }
+
+  /**
+   * Dispatch the `destroy` event.
+   */
+  dispatchEventDestroy() {
+    this.dispatch(
+      'destroy',
+      {
+        element: this.element,
+        instance: this,
+      }
+    );
+  }
+
+  /**
    * Set component state.
    *
    * @param {object} newState The new state to merge with existing state.
    */
   setState(newState) {
-    Object.assign(this.state, newState);
+    const updatedProps = Object.keys(newState);
+
+    const updatedState = { ...this.state, ...newState };
+    this.state = updatedState;
 
     if ('function' === typeof this.stateWasUpdated) {
-      this.stateWasUpdated(Object.keys(newState));
+      this.stateWasUpdated(updatedProps);
     }
 
-    // Run {stateChangeCallback}
-    this.onStateChange.call(this, this.state);
+    // Fire the `stateChange` event.
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        props: updatedProps,
+        state: this.state,
+      }
+    );
   }
 
   /**

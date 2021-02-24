@@ -43,13 +43,6 @@ export default class Popup extends AriaComponent {
        * @type {string}
        */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -199,7 +192,7 @@ export default class Popup extends AriaComponent {
        * Treat the Spacebar and Return keys as clicks in case the controller is
        * not a <button>.
        */
-      this.toggle(event);
+      this.toggle();
     } else if (expanded) {
       if (ESC === keyCode) {
         event.preventDefault();
@@ -367,7 +360,10 @@ export default class Popup extends AriaComponent {
   /**
    * Toggle the popup state.
    */
-  toggle() {
+  toggle(event) {
+    if (null != event) {
+      event.preventDefault();
+    }
     const { expanded } = this.state;
 
     this.setState({ expanded: ! expanded });

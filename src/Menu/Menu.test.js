@@ -67,15 +67,19 @@ const domElements = {
 
 // Mock functions.
 const onInit = jest.fn();
+const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
+
+list.addEventListener('stateChange', onStateChange);
+list.addEventListener('init', onInit);
+list.addEventListener('destroy', onDestroy);
 
 let menu = new Menu(
   list,
   {
     itemMatches: ':not(.exclude)',
-    onInit,
-    onDestroy,
+    _stateDispatchesOnly: true,
   }
 );
 
@@ -93,7 +97,7 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
     expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
 
-    expect(onInit).toHaveBeenCalledTimes(1);
+    expect(onInit).toHaveBeenCalledTimes(0);
   });
 
   it('Should set element attributes correctly', () => {
@@ -203,12 +207,17 @@ describe('Destroying the Menu removes attributes', () => {
     expect(domElements.sublistOne.getAttribute('role')).toBeNull();
     expect(domElements.sublistTwoSecondItem.getAttribute('role')).toBeNull();
 
-    expect(onDestroy).toHaveBeenCalledTimes(1);
+    expect(onDestroy).toHaveBeenCalledTimes(0);
   });
 });
 
 describe('Menu instatiates submenus as Disclosures', () => {
+  const initwithDisclosures = jest.fn();
+
   beforeAll(() => {
+    list.removeEventListener('init', onInit);
+    list.addEventListener('init', initwithDisclosures);
+
     menu = new Menu(
       list,
       {
@@ -231,6 +240,15 @@ describe('Menu instatiates submenus as Disclosures', () => {
 
     expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
     expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
+
+    expect(initwithDisclosures).toHaveBeenCalledTimes(1);
+    expect(menu.disclosures[0]._stateDispatchesOnly).toBe(true);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(initwithDisclosures);
+
+      expect(detail.instance).toStrictEqual(menu);
+    });
   });
 
   describe('MenuItem Disclosure correctly responds to events', () => {
@@ -240,6 +258,15 @@ describe('Menu instatiates submenus as Disclosures', () => {
         domElements.listThirdItem.dispatchEvent(keydownRight);
         expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(true);
         expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
+
+        return Promise.resolve().then(() => {
+          const { target, detail } = getEventDetails(onStateChange);
+
+          expect(detail.props).toMatchObject(['expanded']);
+          expect(detail.state).toStrictEqual({ expanded: true });
+          expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+          expect(target).toStrictEqual(domElements.listThirdItem);
+        });
       });
 
     it('Should move to the next sibling list item with down arrow key',
@@ -253,6 +280,15 @@ describe('Menu instatiates submenus as Disclosures', () => {
         domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
         expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(false);
         expect(document.activeElement).toEqual(domElements.listThirdItem);
+
+        return Promise.resolve().then(() => {
+          const { target, detail } = getEventDetails(onStateChange);
+
+          expect(detail.props).toMatchObject(['expanded']);
+          expect(detail.state).toStrictEqual({ expanded: false });
+          expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+          expect(target).toStrictEqual(domElements.listThirdItem);
+        });
       });
 
     it('Should move to the next sibling list item with down arrow key',
@@ -285,5 +321,13 @@ describe('Menu instatiates submenus as Disclosures', () => {
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(menuMarkup);
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(list);
+      expect(detail.instance).toStrictEqual(menu);
+    });
   });
 });

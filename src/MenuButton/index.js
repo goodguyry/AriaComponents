@@ -39,27 +39,6 @@ export default class MenuButton extends Popup {
        * @type {HTMLUListElement}
        */
       list: null,
-
-      /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -95,20 +74,20 @@ export default class MenuButton extends Popup {
      * @type {Menu}
      */
     if (null != this.list && 'UL' === this.list.nodeName) {
-      this.menu = new Menu(this.list);
+      this.menu = new Menu(this.list, { _stateDispatchesOnly: true });
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
-      this.menu = new Menu(this.target);
+      this.menu = new Menu(this.target, { _stateDispatchesOnly: true });
     } else {
       const list = this.target.querySelector('ul');
-      this.menu = new Menu(list);
+      this.menu = new Menu(list, { _stateDispatchesOnly: true });
     }
 
     // Additional event listener(s).
     this.controller.addEventListener('keydown', this.controllerHandleKeydown);
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatchEventInit();
   }
 
   /**
@@ -170,7 +149,7 @@ export default class MenuButton extends Popup {
       this.controllerHandleKeydown
     );
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    this.dispatchEventDestroy();
   }
 }

@@ -39,27 +39,6 @@ export default class Dialog extends Popup {
        * @type {HTMLElement|NodeList|Array}
        */
       content: [],
-
-      /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -116,8 +95,8 @@ export default class Dialog extends Popup {
       this.popupTargetKeydown
     );
 
-    /* Run {initCallback} */
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatchEventInit();
   }
 
   /**
@@ -232,7 +211,7 @@ export default class Dialog extends Popup {
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
-    /* Run {destroyCallback} */
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    this.dispatchEventDestroy();
   }
 }

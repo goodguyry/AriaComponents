@@ -25,6 +25,15 @@ document.body.innerHTML = disclosureMarkup;
 const controller = document.querySelector('button');
 const target = document.querySelector('#answer');
 
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
+controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
+
 let disclosure;
 
 describe('Disclosure with default configuration', () => {
@@ -41,6 +50,13 @@ describe('Disclosure with default configuration', () => {
 
       expect(controller.disclosure).toBeInstanceOf(Disclosure);
       expect(target.disclosure).toBeInstanceOf(Disclosure);
+
+      expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(disclosure);
+      });
     });
 
     it('Should add the correct attributes to the disclosure controller',
@@ -104,6 +120,20 @@ describe('Disclosure with default configuration', () => {
     });
   });
 
+  it('Should fire `stateChange` event on state change: open', () => {
+    disclosure.open();
+    expect(disclosure.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalled();
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.instance).toStrictEqual(disclosure);
+    });
+  });
+
   it('Should remove all DOM attributes when destroyed', () => {
     disclosure.destroy();
 
@@ -120,45 +150,44 @@ describe('Disclosure with default configuration', () => {
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
 
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(controller);
+      expect(detail.instance).toStrictEqual(disclosure);
+    });
   });
 });
 
 describe('Disclosure with non-default configuration', () => {
-  // Mock functions.
-  const onStateChange = jest.fn();
-  const onInit = jest.fn();
-  const onDestroy = jest.fn();
-
   beforeEach(() => {
     disclosure = new Disclosure(
       controller,
       {
         loadOpen: true,
         allowOutsideClick: false,
-        onStateChange,
-        onInit,
-        onDestroy,
       }
     );
   });
 
   it('Should run class methods and subscriber functions', () => {
-    expect(onInit).toHaveBeenCalledTimes(1);
-
     disclosure.open();
     expect(disclosure.getState().expanded).toBeTruthy();
-    expect(onStateChange).toHaveBeenCalledTimes(1);
+    expect(onStateChange).toHaveBeenCalled();
 
     disclosure.close();
     expect(disclosure.getState().expanded).toBeFalsy();
-    expect(onStateChange).toHaveBeenCalledTimes(2);
+    expect(onStateChange).toHaveBeenCalled();
 
     disclosure.destroy();
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalledTimes(1);
+    expect(onDestroy).toHaveBeenCalledTimes(2);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
@@ -175,4 +204,18 @@ describe('Disclosure with non-default configuration', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('hidden')).toEqual('');
   });
+});
+
+describe('Disclosure supresses firing the `init` event', () => {
+  const beCalled = jest.fn();
+  const shouldNotBeCalled = jest.fn();
+  controller.addEventListener('init', shouldNotBeCalled);
+  controller.addEventListener('stateChange', beCalled);
+  controller.addEventListener('destroy', shouldNotBeCalled);
+
+  disclosure = new Disclosure(controller, { _stateDispatchesOnly: true });
+  disclosure.open();
+  disclosure.destroy();
+  expect(beCalled).toHaveBeenCalledTimes(1);
+  expect(shouldNotBeCalled).toHaveBeenCalledTimes(0);
 });

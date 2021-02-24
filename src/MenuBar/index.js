@@ -69,27 +69,6 @@ export default class MenuBar extends AriaComponent {
        * @type {string}
        */
       itemMatches: '*',
-
-      /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -190,11 +169,14 @@ export default class MenuBar extends AriaComponent {
      *
      * @type {MouseEvent}
      */
-    this.clickEvent = new MouseEvent('click', {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-    });
+    this.clickEvent = new MouseEvent(
+      'click',
+      {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      }
+    );
 
     // Initialize popups for nested lists.
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
@@ -230,7 +212,13 @@ export default class MenuBar extends AriaComponent {
       }
 
       // Initialize submenu Menus.
-      const subMenu = new Menu(list, { itemMatches: this.itemMatches });
+      const subMenu = new Menu(
+        list,
+        {
+          itemMatches: this.itemMatches,
+          _stateDispatchesOnly: true,
+        }
+      );
       target.addEventListener('keydown', this.menuItemHandleKeydown);
 
       // Save the list's previous sibling.
@@ -251,14 +239,13 @@ export default class MenuBar extends AriaComponent {
     this.state = {
       menubarItem: this.firstItem,
       popup: this.constructor.getPopupFromMenubarItem(this.firstItem),
-      expanded: false,
     };
 
     // Set up initial tabindex.
     rovingTabIndex(this.menuBarItems, this.firstItem);
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatchEventInit();
   }
 
   /**
@@ -268,6 +255,9 @@ export default class MenuBar extends AriaComponent {
    */
   stateWasUpdated() {
     const { menubarItem } = this.state;
+
+    // Update the Popup tracked by state.
+    this.state.popup = this.constructor.getPopupFromMenubarItem(menubarItem);
 
     // Prevent tabbing to all but the currently-active menubar item.
     rovingTabIndex(this.menuBarItems, menubarItem);
@@ -291,8 +281,7 @@ export default class MenuBar extends AriaComponent {
       RETURN,
     } = keyCodes;
     const { keyCode } = event;
-    const { menubarItem } = this.state;
-    const popup = this.constructor.getPopupFromMenubarItem(menubarItem);
+    const { menubarItem, popup } = this.state;
 
     switch (keyCode) {
       /*
@@ -311,7 +300,7 @@ export default class MenuBar extends AriaComponent {
           event.preventDefault();
 
           // Close the popup.
-          if (popup) {
+          if (popup && popup.getState().expanded) {
             popup.hide();
           }
 
@@ -333,7 +322,7 @@ export default class MenuBar extends AriaComponent {
           event.stopPropagation();
           event.preventDefault();
 
-          if (! popup.state.expanded) {
+          if (! popup.getState().expanded) {
             popup.show();
           }
 
@@ -454,7 +443,7 @@ export default class MenuBar extends AriaComponent {
       submenu.destroy();
     });
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    this.dispatchEventDestroy();
   }
 }

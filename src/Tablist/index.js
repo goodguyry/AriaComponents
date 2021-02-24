@@ -38,36 +38,8 @@ export default class Tablist extends AriaComponent {
 
     this.tabs = tabs;
 
-    /**
-     * Component configuration options.
-     *
-     * @type {object}
-     */
-    const defaultOptions = {
-      /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
-       * Callback to run after component state is updated.
-       *
-       * @callback stateChangeCallback
-       */
-      onStateChange: () => {},
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
-    };
-
-    // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options);
+    // Merge options as instance properties.
+    Object.assign(this, options);
 
     // Bind class methods.
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
@@ -209,8 +181,8 @@ export default class Tablist extends AriaComponent {
     // Save the active panel's interactive children.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatchEventInit();
   }
 
   /**
@@ -444,7 +416,7 @@ export default class Tablist extends AriaComponent {
       );
     });
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    this.dispatchEventDestroy();
   }
 }

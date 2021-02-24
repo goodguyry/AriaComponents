@@ -10,7 +10,7 @@ export default function isInstanceOf(name, component) {
     return false;
   }
 
-  const toStringTag = component?.[Symbol.toStringTag];
+  const toStringTag = component[Symbol.toStringTag] || '';
 
-  return toStringTag?.toLowerCase() === name.toLowerCase();
+  return toStringTag.toLowerCase() === name.toLowerCase();
 }

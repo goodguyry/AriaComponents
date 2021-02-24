@@ -35,11 +35,9 @@ const target = document.querySelector('.wrapper');
 
 // Mock functions.
 const onStateChange = jest.fn();
+controller.addEventListener('stateChange', onStateChange);
 
-const popup = new Popup(
-  controller,
-  { onStateChange }
-);
+const popup = new Popup(controller);
 
 // Popup has to be instanitated.
 popup.init();
@@ -78,11 +76,39 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(target.getAttribute('hidden')).toEqual('');
   });
 
+  it('Should fire `stateChange` event on state change: open', () => {
+    popup.show();
+    expect(popup.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalledTimes(1);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.instance).toStrictEqual(popup);
+    });
+  });
+
+  it('Should fire `stateChange` event on state change: hidden', () => {
+    popup.hide();
+    expect(popup.getState().expanded).toBe(false);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({ expanded: false });
+      expect(detail.instance).toStrictEqual(popup);
+    });
+  });
+
   it('Should update attributes when the controller is clicked', () => {
     // Click to open.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeTruthy();
-    expect(onStateChange).toHaveBeenCalledTimes(1);
+    expect(onStateChange).toHaveBeenCalledTimes(3);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
     expect(target.getAttribute('hidden')).toBeNull();
@@ -95,7 +121,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     // Click again to close.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeFalsy();
-    expect(onStateChange).toHaveBeenCalledTimes(2);
+    expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('hidden')).toEqual('');
@@ -108,10 +134,10 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
   it('Should run class methods and subscriber functions', () => {
     popup.show();
-    expect(onStateChange).toHaveBeenCalledTimes(3);
+    expect(onStateChange).toHaveBeenCalledTimes(5);
 
     popup.hide();
-    expect(onStateChange).toHaveBeenCalledTimes(4);
+    expect(onStateChange).toHaveBeenCalledTimes(6);
   });
 });
 

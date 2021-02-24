@@ -71,20 +71,6 @@ export default class Menu extends AriaComponent {
        * @type {string}
        */
       itemMatches: '*',
-
-      /**
-       * Callback to run after the component initializes.
-       *
-       * @callback initCallback
-       */
-      onInit: () => {},
-
-      /**
-       * Callback to run after the component is destroyed.
-       *
-       * @callback destroyCallback
-       */
-      onDestroy: () => {},
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -185,7 +171,10 @@ export default class Menu extends AriaComponent {
 
       // Instantiate submenu Disclosures
       if (this.collapse && link.hasAttribute('target')) {
-        const disclosure = new Disclosure(link);
+        const disclosure = new Disclosure(
+          link,
+          { _stateDispatchesOnly: true }
+        );
 
         this.disclosures.push(disclosure);
       }
@@ -193,7 +182,11 @@ export default class Menu extends AriaComponent {
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
         // Instantiate sub-Menus.
-        const subList = new Menu(siblingList);
+        const subList = new Menu(
+          siblingList,
+          { _stateDispatchesOnly: true }
+        );
+
         // Save the list's previous sibling.
         subList.previousSibling = link;
       }
@@ -203,8 +196,8 @@ export default class Menu extends AriaComponent {
     const [firstItem, lastItem] = getFirstAndLastItems(this.menuItems);
     Object.assign(this, { firstItem, lastItem });
 
-    // Run {initCallback}
-    this.onInit.call(this);
+    // Fire the init event.
+    this.dispatchEventInit();
   }
 
   /**
@@ -376,7 +369,7 @@ export default class Menu extends AriaComponent {
       disclosure.destroy();
     });
 
-    // Run {destroyCallback}
-    this.onDestroy.call(this);
+    // Fire the destroy event.
+    this.dispatchEventDestroy();
   }
 }

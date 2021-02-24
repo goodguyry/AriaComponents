@@ -40,15 +40,11 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-const menuButton = new MenuButton(
-  controller,
-  {
-    list,
-    onStateChange,
-    onInit,
-    onDestroy,
-  }
-);
+controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
+
+const menuButton = new MenuButton(controller, { list });
 
 describe('MenuButton adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
@@ -60,6 +56,11 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
     expect(menuButton.getState().expanded).toBeFalsy();
 
     expect(onInit).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
+
+      expect(detail.instance).toStrictEqual(menuButton);
+    });
   });
 
   it('Should add the correct attributes to the menuButton controller', () => {
@@ -86,6 +87,34 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
     menuButton.hide();
     expect(onStateChange).toHaveBeenCalledTimes(2);
+  });
+});
+
+it('Should fire `stateChange` event on state change: open', () => {
+  menuButton.show();
+  expect(menuButton.getState().expanded).toBe(true);
+  expect(onStateChange).toHaveBeenCalledTimes(3);
+
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onStateChange);
+
+    expect(detail.props).toMatchObject(['expanded']);
+    expect(detail.state).toStrictEqual({ expanded: true });
+    expect(detail.instance).toStrictEqual(menuButton);
+  });
+});
+
+it('Should fire `stateChange` event on state change: hidden', () => {
+  menuButton.hide();
+  expect(menuButton.getState().expanded).toBe(false);
+  expect(onStateChange).toHaveBeenCalledTimes(4);
+
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onStateChange);
+
+    expect(detail.props).toMatchObject(['expanded']);
+    expect(detail.state).toStrictEqual({ expanded: false });
+    expect(detail.instance).toStrictEqual(menuButton);
   });
 });
 
@@ -188,8 +217,14 @@ it('Should destroy the menuButton as expected', () => {
   controller.dispatchEvent(click);
   expect(menuButton.getState().expanded).toBeFalsy();
 
-  expect(onDestroy).toHaveBeenCalledTimes(1);
-
   // Quick and dirty verification that the original markup is restored.
   expect(document.body.innerHTML).toEqual(menuButtonMarkup);
+
+  expect(onDestroy).toHaveBeenCalledTimes(1);
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onDestroy);
+
+    expect(detail.element).toStrictEqual(controller);
+    expect(detail.instance).toStrictEqual(menuButton);
+  });
 });

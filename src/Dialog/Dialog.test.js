@@ -51,15 +51,11 @@ const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
-const modal = new Dialog(
-  controller,
-  {
-    // content: [content, footer],
-    onStateChange,
-    onInit,
-    onDestroy,
-  }
-);
+controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
+
+const modal = new Dialog(controller, /* { content: [content, footer], } */);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
@@ -79,6 +75,11 @@ describe('Dialog with default configuration', () => {
       expect(modal.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(modal);
+      });
     });
 
     it('Should add the correct attributes',
@@ -151,6 +152,20 @@ describe('Dialog with default configuration', () => {
     });
   });
 
+  it('Should fire `stateChange` event on state change: open', () => {
+    modal.show();
+    expect(modal.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalled();
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.instance).toStrictEqual(modal);
+    });
+  });
+
   describe('Destroying the Dialog removes attributes', () => {
     it('Should remove properties and attributes on destroy', () => {
       modal.destroy();
@@ -163,10 +178,16 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('hidden')).toBeNull();
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-
       // Quick and dirty verification that the original markup is restored.
       expect(document.body.innerHTML).toEqual(dialogMarkup);
+
+      expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(controller);
+        expect(detail.instance).toStrictEqual(modal);
+      });
     });
   });
 });

@@ -19,6 +19,7 @@ module.exports = {
   },
   globals: {
     siteClassNames: true,
+    getEventDetails: true,
   },
   settings: {
     'import/resolver': {
@@ -76,5 +77,13 @@ module.exports = {
     'no-constant-condition': ['error'],
     'arrow-parens': ['error', 'always'],
     'no-param-reassign': ['error', { props: false }],
+    'no-underscore-dangle': [
+      'error',
+      {
+        'allow': [
+          '_stateDispatchesOnly',
+        ],
+      },
+    ],
   },
 };

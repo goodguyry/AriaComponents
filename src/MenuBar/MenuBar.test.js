@@ -73,15 +73,11 @@ const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
-const menuBar = new MenuBar(
-  list,
-  {
-    itemMatches: ':not(.exclude)',
-    onInit,
-    onStateChange,
-    onDestroy,
-  }
-);
+list.addEventListener('init', onInit);
+list.addEventListener('stateChange', onStateChange);
+list.addEventListener('destroy', onDestroy);
+
+const menuBar = new MenuBar(list, { itemMatches: ':not(.exclude)' });
 
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
@@ -90,9 +86,16 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(domElements.list.menubar).toBeInstanceOf(MenuBar);
     expect(domElements.list.menubar.itemMatches).toEqual(':not(.exclude)');
 
-    expect(onInit).toHaveBeenCalledTimes(1);
-
     expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
+
+    expect(onInit).toHaveBeenCalledTimes(1);
+    expect(menuBar.subMenus[0]._stateDispatchesOnly).toBe(true);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
+
+      expect(detail.instance).toStrictEqual(menuBar);
+    });
   });
 
   it('Should add the correct DOM attributes and collect elements', () => {
@@ -125,6 +128,18 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.listSecondItem);
       expect(onStateChange).toHaveBeenCalledTimes(1);
+
+      return Promise.resolve().then(() => {
+        const { target, detail } = getEventDetails(onStateChange);
+
+        expect(detail.props).toStrictEqual(['menubarItem']);
+        expect(detail.instance).toStrictEqual(menuBar);
+        expect(detail.state).toStrictEqual({
+          menubarItem: domElements.listSecondItem,
+          popup: false,
+        });
+        expect(target).toStrictEqual(list);
+      });
     });
 
   it('Should move to the previous sibling list item with left arrow key',
@@ -185,6 +200,15 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.dispatchEvent(keydownReturn);
       expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
       expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
+
+      return Promise.resolve().then(() => {
+        const { target, detail } = getEventDetails(onStateChange);
+
+        expect(detail.props).toStrictEqual(['expanded']);
+        expect(detail.instance).toStrictEqual(domElements.listFirstItem.popup);
+        expect(detail.state).toStrictEqual({ expanded: true });
+        expect(target).toStrictEqual(domElements.listFirstItem);
+      });
     });
 
   it('Should close the submenu on right arrow key on a menu item with no submenu', () => {
@@ -233,9 +257,15 @@ describe('Menu should destroy properly', () => {
     expect(domElements.sublistTwoLastItem.getAttribute('tabindex')).toBeNull();
 
     expect(domElements.list.menubar).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalledTimes(1);
-
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(menubarMarkup);
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(list);
+      expect(detail.instance).toStrictEqual(menuBar);
+    });
   });
 });

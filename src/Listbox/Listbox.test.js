@@ -44,16 +44,13 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('init', onInit);
+controller.addEventListener('destroy', onDestroy);
+
 describe('Listbox with default configuration', () => {
   beforeAll(() => {
-    listbox = new Listbox(
-      controller,
-      {
-        onStateChange,
-        onInit,
-        onDestroy,
-      }
-    );
+    listbox = new Listbox(controller);
   });
 
   describe('Listbox adds and manipulates DOM element attributes', () => {
@@ -69,6 +66,11 @@ describe('Listbox with default configuration', () => {
       expect(target.listbox).toBeInstanceOf(Listbox);
 
       expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(listbox);
+      });
     });
 
     it('Should add the correct attributes', () => {
@@ -101,6 +103,38 @@ describe('Listbox with default configuration', () => {
       expect(document.activeElement).toEqual(target);
 
       expect(onStateChange).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('Should fire `stateChange` event on state change: open', () => {
+    listbox.show();
+    expect(listbox.getState().expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({
+        expanded: true,
+        activeDescendant: target.children[0],
+      });
+      expect(detail.instance).toStrictEqual(listbox);
+    });
+  });
+
+  it('Should fire `stateChange` event on state change: active descendant', () => {
+    listbox.setState({ activeDescendant: target.children[3] });
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['activeDescendant']);
+      expect(detail.state).toStrictEqual({
+        expanded: true,
+        activeDescendant: target.children[3],
+      });
+      expect(detail.instance).toStrictEqual(listbox);
     });
   });
 
@@ -235,12 +269,18 @@ describe('Listbox with default configuration', () => {
       controller.dispatchEvent(click);
       expect(listbox.getState().expanded).toBeFalsy();
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-
       // Quick and dirty verification that the original markup is restored.
       // But first, restore the button's original text label.
       controller.textContent = 'Choose';
       expect(document.body.innerHTML).toEqual(listboxMarkup);
+
+      expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(controller);
+        expect(detail.instance).toStrictEqual(listbox);
+      });
     });
   });
 });

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
+import logEventDetail from 'js/logEventDetail';
 import { Tablist } from 'root';
 import './tablist.scss';
 
@@ -11,6 +12,11 @@ const tabs = document.querySelector(list);
 
 // Create the Tablist.
 const tablist = new Tablist(tabs);
+
+// Report event details.
+tabs.addEventListener('init', logEventDetail);
+tabs.addEventListener('stateChange', logEventDetail);
+tabs.addEventListener('destroy', logEventDetail);
 
 window.addEventListener('load', tablistHashCheck);
 window.addEventListener('hashchange', tablistHashCheck);

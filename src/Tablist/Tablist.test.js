@@ -72,16 +72,13 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+tabs.addEventListener('init', onInit);
+tabs.addEventListener('stateChange', onStateChange);
+tabs.addEventListener('destroy', onDestroy);
+
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
-    tablist = new Tablist(
-      tabs,
-      {
-        onStateChange,
-        onInit,
-        onDestroy,
-      }
-    );
+    tablist = new Tablist(tabs);
   });
 
   describe('Tablist adds and manipulates DOM element attributes', () => {
@@ -95,6 +92,11 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.tablist).toBeInstanceOf(Tablist);
 
       expect(onInit).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onInit);
+
+        expect(detail.instance).toStrictEqual(tablist);
+      });
     });
 
     it('Should add the correct attributes and overlay element',
@@ -177,6 +179,21 @@ describe('Tablist with default configuration', () => {
       expect(onStateChange).toHaveBeenCalledTimes(2);
     });
 
+    it('Should fire `stateChange` event on state change: open', () => {
+      tablist.switchTo(1);
+
+      expect(tablist.getState().activeIndex).toBe(1);
+      expect(onStateChange).toHaveBeenCalled();
+
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onStateChange);
+
+        expect(detail.props).toMatchObject(['activeIndex']);
+        expect(detail.state).toStrictEqual({ activeIndex: 1 });
+        expect(detail.instance).toStrictEqual(tablist);
+      });
+    });
+
     it('Should remove all DOM attributes when destroyed', () => {
       tablist.destroy();
       expect(tabs.getAttribute('role')).toBeNull();
@@ -213,6 +230,12 @@ describe('Tablist with default configuration', () => {
       expect(secondPanel.tablist).toBeUndefined();
 
       expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(tabs);
+        expect(detail.instance).toStrictEqual(tablist);
+      });
     });
 
     // Quick and dirty verification that the original markup is restored.
