@@ -318,7 +318,7 @@ export default class MenuBar extends AriaComponent {
       case SPACE:
       case RETURN:
       case DOWN: {
-        if (popup) {
+        if (popup && event.target === popup.controller) {
           event.stopPropagation();
           event.preventDefault();
 
