@@ -50,7 +50,7 @@ _**`options`**_ `object`
 
 ### Available Options
 
-_**`itemMatches`**_`= '*'`  
+_**`itemMatches`**_`= 'a,button'`  
 > A selector string used to validate menu items.
 > 
 > This can also be used to exclude items that would otherwise be given a  

@@ -70,7 +70,7 @@ export default class Menu extends AriaComponent {
        *
        * @type {string}
        */
-      itemMatches: '*',
+      itemMatches: 'a,button',
     };
 
     // Merge remaining options with defaults and save all as instance properties.
