@@ -45,11 +45,28 @@ export default class Dialog extends Popup {
     Object.assign(this, defaultOptions, options);
 
     // Bind class methods
+    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
+  }
+
+  /**
+   * Collect the Dialog's interactive child elements.
+   */
+  setInteractiveChildren() {
+    this.interactiveChildElements = interactiveChildren(this.target);
+
+    const [
+      firstInteractiveChild,
+      lastInteractiveChild,
+    ] = getFirstAndLastItems(this.interactiveChildElements);
+
+    // Save as instance properties.
+    this.firstInteractiveChild = firstInteractiveChild;
+    this.lastInteractiveChild = lastInteractiveChild;
   }
 
   /**
@@ -86,6 +103,8 @@ export default class Dialog extends Popup {
     // Add event listeners.
     this.target.addEventListener('keydown', this.targetHandleKeydown);
 
+    this.setInteractiveChildren();
+
     /*
      * Remove clashing Popup event listener. This Popup event listener is
      * clashing with the Dialog's ability to trap keyboard tabs.
@@ -105,12 +124,11 @@ export default class Dialog extends Popup {
    * @param {Object} state The component state.
    */
   stateWasUpdated() {
+    this.setInteractiveChildren();
     super.stateWasUpdated();
 
     const { expanded } = this.state;
     const contentLength = this.content.length;
-
-    this.interactiveChildElements = interactiveChildren(this.target);
 
     if (expanded) {
       for (let i = 0; i < contentLength; i += 1) {
@@ -152,25 +170,21 @@ export default class Dialog extends Popup {
 
     if (expanded && keyCode === TAB) {
       const { activeElement } = document;
-      const [
-        firstInteractiveChild,
-        lastInteractiveChild,
-      ] = getFirstAndLastItems(this.interactiveChildElements);
 
-      if (shiftKey && firstInteractiveChild === activeElement) {
+      if (shiftKey && this.firstInteractiveChild === activeElement) {
         event.preventDefault();
         /*
          * Move back from the first interactive child element to the last
          * interactive child element
          */
-        lastInteractiveChild.focus();
-      } else if (! shiftKey && lastInteractiveChild === activeElement) {
+        this.lastInteractiveChild.focus();
+      } else if (! shiftKey && this.lastInteractiveChild === activeElement) {
         event.preventDefault();
         /*
          * Move forward from the last interactive child element to the first
          * interactive child element.
          */
-        firstInteractiveChild.focus();
+        this.firstInteractiveChild.focus();
       }
     }
   }

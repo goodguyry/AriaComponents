@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Requires activating elements to have a target attribute matching the ID value of the target element (#51)
 - Dialog focuses the target element on open (#51)
 - Dialog, MenuButton, and ListBox now _extend_ Popup, rather than using it internally (#54)
+- Menu and MenuBar `itemMatches` option now defaults to `'a,button'` (75bcb56b9e5bad891c5127ffa4b975572c466a63)
 
 **Added**
 
@@ -24,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Component callbacks could be run more than once (#54)
 - MenuBar wasn't tracking the current Popup (6c2fe90)
 - MenuBar keydown left/right could trigger a Popup `stateChange` event (e86d06e)
+- Scopes MenuBar Popup events to the controller (800122675126a4602742b93219ebe51b8603d357)
 
 **Removed**
 
