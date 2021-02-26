@@ -52,7 +52,7 @@ _**`options`**_ `object`
 _**`collapse`**_`= false`  
 > Whether to instantiate submenus as Disclosures.
 
-_**`itemMatches`**_`= '*'`  
+_**`itemMatches`**_`= 'a,button'`  
 > A selector string used to validate menu items.
 > 
 > This can also be used to exclude items that would otherwise be given a  

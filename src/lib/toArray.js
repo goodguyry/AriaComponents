@@ -8,17 +8,17 @@ export default function toArray(maybeAnArray) {
     return maybeAnArray;
   }
 
-  let shouldBeAnArray = [];
-
   if (maybeAnArray instanceof HTMLElement) {
     // Convert a single element to an Array.
-    shouldBeAnArray = new Array(maybeAnArray);
-  } else if (
+    return new Array(maybeAnArray);
+  }
+
+  if (
     maybeAnArray instanceof NodeList
     || maybeAnArray instanceof HTMLCollection
   ) {
-    shouldBeAnArray = Array.from(maybeAnArray);
+    return Array.from(maybeAnArray);
   }
 
-  return shouldBeAnArray;
+  return [];
 }

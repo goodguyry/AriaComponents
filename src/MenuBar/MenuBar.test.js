@@ -191,7 +191,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownSpace);
       expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
-      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
+      expect(menuBar.getState().popup.getState().expanded).toBeTruthy();
     });
 
   it('Should move focus to the first popup child with return key from Menu bar',
@@ -199,7 +199,7 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownReturn);
       expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
-      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
+      expect(menuBar.getState().popup.getState().expanded).toBeTruthy();
 
       return Promise.resolve().then(() => {
         const { target, detail } = getEventDetails(onStateChange);
@@ -218,6 +218,7 @@ describe('Menu correctly responds to events', () => {
     domElements.sublistTwoThirdItem.focus();
     domElements.sublistTwoThirdItem.dispatchEvent(keydownRight);
     expect(document.activeElement).toEqual(domElements.listFourthItem);
+    expect(menuBar.getState().popup).toBeFalsy();
     expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
   });
 
@@ -228,6 +229,7 @@ describe('Menu correctly responds to events', () => {
     domElements.sublistTwoThirdItem.focus();
     domElements.sublistTwoThirdItem.dispatchEvent(keydownLeft);
     expect(document.activeElement).toEqual(domElements.listSecondItem);
+    expect(menuBar.getState().popup).toBeFalsy();
     expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
   });
 
