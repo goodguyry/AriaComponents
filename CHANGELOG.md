@@ -7,41 +7,32 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Changes constructor parameters to accept a component element and an object of options (#51)
 - Requires activating elements to have a target attribute matching the ID value of the target element (#51)
-- Dialog focuses the target element on open (#51)
 - Dialog, MenuButton, and ListBox now _extend_ Popup, rather than using it internally (#54)
-- Menu and MenuBar `itemMatches` option now defaults to `'a,button'` (75bcb56b9e5bad891c5127ffa4b975572c466a63)
+- Dialog focuses the target element on open (#51)
+- Loosens MenuBar and Menu components' markup requirements (#48, 3385f2e)
 
 **Added**
 
-- Throws a configuration error for misconfigured components (#51)
-- Gets Dialog content element(s) if none provided (#51)
-- Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
-- Exports `isInstanceOf` helper function (#52)
 - Component element fires `init`, `stateChange` and `destroy` events (#55)
+- Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
+- Adds `itemMatches` option for validating Menu & MenuBar menu items (#49, 75bcb56)
+- Gets Dialog content element(s) if none provided (#51)
+- Throws a configuration error for misconfigured components (#51)
+- Exports `isInstanceOf` helper function (#52)
 
 **Fixed**
 
 - MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
-- Component callbacks could be run more than once (#54)
+- Component callbacks (now, Custom Events) could be run more than once (#54)
 - MenuBar wasn't tracking the current Popup (6c2fe90)
-- MenuBar keydown left/right could trigger a Popup `stateChange` event (e86d06e)
-- Scopes MenuBar Popup events to the controller (800122675126a4602742b93219ebe51b8603d357)
+- MenuBar keydown could trigger an unexpected Popup `stateChange` event (e86d06e, 8001226)
+- Dialog no longer re-queries for interactive child elements on every TAB keydown (a964674)
 
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
 - Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` (#54, #55)
 - MenuBar no longer tracks Popup `expanded` state separately (e86d06e)
-
-## 0.3.2
-
-**Changed**
-
-- Loosens MenuBar and Menu components' menuitems' markup requirements (#48, 3385f2e)
-
-**Added**
-
-- Adds support for validating Menu & MenuBar menu items (#49)
 
 ## 0.3.1
 
