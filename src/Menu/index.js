@@ -184,7 +184,10 @@ export default class Menu extends AriaComponent {
         // Instantiate sub-Menus.
         const subList = new Menu(
           siblingList,
-          { _stateDispatchesOnly: true }
+          {
+            itemMatches: this.itemMatches,
+            _stateDispatchesOnly: true,
+          }
         );
 
         // Save the list's previous sibling.
