@@ -1,13 +1,15 @@
-import Popup from '../Popup';
+import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 import toArray from '../lib/toArray';
+import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
+import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class to set up an interactive Dialog element.
  */
-export default class Dialog extends Popup {
+export default class Dialog extends AriaComponent {
   /**
    * Create a Dialog.
    * @constructor
@@ -15,9 +17,9 @@ export default class Dialog extends Popup {
    * @param {HTMLElement} controller The activating element.
    * @param {object}      options    The options object.
    */
-  constructor(controller, options = {}) {
+  constructor(target, options = {}) {
     // Pass in the `dialog` type.
-    super(controller, { type: 'dialog' });
+    super(target);
 
     /**
      * The string description for this object.
@@ -25,6 +27,9 @@ export default class Dialog extends Popup {
      * @type {string}
      */
     this[Symbol.toStringTag] = 'Dialog';
+
+    this.target = target;
+    this.controller = super.constructor.getTargetElement(target);
 
     /**
      * Options shape.
@@ -73,8 +78,6 @@ export default class Dialog extends Popup {
    * Set the component's DOM attributes and event listeners.
    */
   init() {
-    super.init();
-
     // Get the content items if none are provided.
     if (0 === this.content.length || undefined === this.content) {
       this.content = Array.from(document.body.children)
@@ -85,8 +88,7 @@ export default class Dialog extends Popup {
 
     // If no content is found.
     if (0 === this.content.length) {
-      Object.getPrototypeOf(Popup).configurationError.call(
-        this,
+      AriaComponent.configurationError(
         'The Dialog target should not be within the main site content'
       );
     }
@@ -97,22 +99,43 @@ export default class Dialog extends Popup {
      */
     super.setSelfReference([this.controller, this.target]);
 
+    /*
+     * Collect the Dialog's interactive child elements. This is an initial pass
+     * to ensure values exists, but the interactive children will be collected
+     * each time the dialog opens, in case the dialog's contents change.
+     */
+    this.setInteractiveChildren();
+
+    // Focusable content should initially have tabindex='-1'.
+    tabIndexDeny(this.interactiveChildElements);
+
+    // Add target attribute.
+    setUniqueId(this.target);
+
     // Allow focus on the target element.
     this.target.setAttribute('tabindex', '0');
+
+    /*
+     * Set the taget as hidden by default. Using the `aria-hidden` attribute,
+     * rather than the `hidden` attribute, means authors must hide the target
+     * element via CSS.
+     */
+    this.target.setAttribute('aria-hidden', 'true');
+    this.target.setAttribute('hidden', '');
+
+    // Set additional attributes.
+    this.target.setAttribute('role', 'dialog');
+    this.target.setAttribute('aria-modal', 'true');
 
     // Add event listeners.
     this.target.addEventListener('keydown', this.targetHandleKeydown);
 
-    this.setInteractiveChildren();
-
-    /*
-     * Remove clashing Popup event listener. This Popup event listener is
-     * clashing with the Dialog's ability to trap keyboard tabs.
+    /**
+     * Set initial state.
+     *
+     * @type {object}
      */
-    this.target.removeEventListener(
-      'keydown',
-      this.popupTargetKeydown
-    );
+    this.state = { expanded: false };
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -124,23 +147,39 @@ export default class Dialog extends Popup {
    * @param {Object} state The component state.
    */
   stateWasUpdated() {
-    this.setInteractiveChildren();
-    super.stateWasUpdated();
-
     const { expanded } = this.state;
     const contentLength = this.content.length;
+
+    this.setInteractiveChildren();
 
     if (expanded) {
       for (let i = 0; i < contentLength; i += 1) {
         this.content[i].setAttribute('aria-hidden', 'true');
       }
+
+      // Update target element.
+      this.target.setAttribute('aria-hidden', 'false');
+      this.target.removeAttribute('hidden');
+
+      tabIndexAllow(this.interactiveChildElements);
+
       document.body.addEventListener('keydown', this.handleKeydownEsc);
+
       this.target.focus();
     } else {
       for (let i = 0; i < contentLength; i += 1) {
         this.content[i].removeAttribute('aria-hidden');
       }
+
+      // Update target element.
+      this.target.setAttribute('aria-hidden', 'true');
+      this.target.setAttribute('hidden', '');
+
+      // Focusable content should have tabindex='-1' or be removed from the DOM.
+      tabIndexDeny(this.interactiveChildElements);
+
       document.body.removeEventListener('keydown', this.handleKeydownEsc);
+
       this.controller.focus();
     }
   }
@@ -209,8 +248,8 @@ export default class Dialog extends Popup {
    * Destroy the Dialog and Popup.
    */
   destroy() {
-    // Destroy the Popup.
-    super.destroy();
+    // Remove the references to the class instance.
+    this.deleteSelfReferences();
 
     // Remove the `aria-hidden` attribute from the content wrapper.
     const contentLength = this.content.length;
@@ -218,14 +257,36 @@ export default class Dialog extends Popup {
       this.content[i].removeAttribute('aria-hidden');
     }
 
-    // Remove tabIndex attribute from target.
+    // Remove target attributes.
     this.target.removeAttribute('tabindex');
+    this.target.removeAttribute('aria-hidden');
+    this.target.removeAttribute('hidden');
+
+    // Remove tabindex attribute.
+    tabIndexAllow(this.interactiveChildElements);
 
     // Remove event listeners.
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
+    // Reset initial state.
+    this.state = { expanded: false };
+
     // Fire the destroy event.
     this.dispatchEventDestroy();
+  }
+
+  /**
+   * Show the Dialog.
+   */
+  show() {
+    this.setState({ expanded: true });
+  }
+
+  /**
+   * Hide the Dialog.
+   */
+  hide() {
+    this.setState({ expanded: false });
   }
 }
