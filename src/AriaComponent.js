@@ -116,6 +116,25 @@ export default class AriaComponent {
     this.dispatch = this.dispatch.bind(this);
     this.dispatchEventInit = this.dispatchEventInit.bind(this);
     this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
+
+    if (this.watch && 'function' === typeof this.observerCallback) {
+      /**
+       * MutationObserver options.
+       *
+       * @type {Object}
+       */
+      this.observerOptions = {
+        childList: true,
+        subtree: true,
+      };
+
+      /**
+       * Mutation Observer instance for use in components.
+       *
+       * @type {MutationObserver}
+       */
+      this.observer = new MutationObserver(this.observerCallback);
+    }
   }
 
   /**

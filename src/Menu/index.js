@@ -78,6 +78,7 @@ export default class Menu extends AriaComponent {
 
     // Bind class methods
     this.listHandleKeydown = this.listHandleKeydown.bind(this);
+    this.observerCallback = this.observerCallback.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
@@ -199,8 +200,18 @@ export default class Menu extends AriaComponent {
     const [firstItem, lastItem] = getFirstAndLastItems(this.menuItems);
     Object.assign(this, { firstItem, lastItem });
 
+    if (this.watch) {
+      this.observer.observe(this.list, this.observerOptions);
+    }
+
     // Fire the init event.
     this.dispatchEventInit();
+  }
+
+  observerCallback(/* mutationList */) { // eslint-disable-line class-methods-use-this
+    this.init();
+    // console.log(mutationList); // eslint-disable-line no-console
+    // console.log(observer);
   }
 
   /**
