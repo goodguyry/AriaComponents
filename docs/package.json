@@ -66,8 +66,5 @@
     "serve": "jekyll serve",
     "dev": "concurrently 'npm run webpack:dev' 'npm run serve'",
     "build": "webpack --config _client/config/webpack.config.js --mode production"
-  },
-  "dependencies": {
-    "aria-components": "file:../"
   }
 }
