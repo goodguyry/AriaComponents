@@ -51,7 +51,7 @@ describe('Find the search string', () => {
       document.dispatchEvent(typeCharacter('a'));
 
       expect(found).toEqual(list.children[7]);
-    },
+    }
   );
 
   test.each([
@@ -71,6 +71,6 @@ describe('Find the search string', () => {
       document.dispatchEvent(typeCharacter('l'));
 
       expect(found).toBeNull();
-    },
+    }
   );
 });

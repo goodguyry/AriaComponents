@@ -60,5 +60,6 @@ module.exports = {
   },
   ignoreFiles: [
     path.join(process.cwd(), 'node_modules/**/*.css'),
+    path.join(process.cwd(), '_site/**/*.css'),
   ],
 };

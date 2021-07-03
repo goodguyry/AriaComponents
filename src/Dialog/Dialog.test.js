@@ -1,4 +1,4 @@
-import { Dialog } from 'root';
+import { Dialog } from '../..';
 import { events } from '../lib/events';
 
 const {

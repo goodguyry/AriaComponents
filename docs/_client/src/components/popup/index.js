@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { Popup } from 'root';
+import { Popup } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
 import './popup.scss';
 
 // Get the components hashed classnames.

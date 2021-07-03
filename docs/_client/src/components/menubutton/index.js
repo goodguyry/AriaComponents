@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { MenuButton } from 'root';
+import { MenuButton } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
 import './menubutton.scss';
 
 // Get the components hashed classnames.

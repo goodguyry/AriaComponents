@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Disclosure } from 'root';
+import { Disclosure } from '../..';
 import { events } from '../lib/events';
 
 const {

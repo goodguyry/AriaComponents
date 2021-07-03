@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Dialog, MenuButton, and ListBox now _extend_ Popup, rather than using it internally (#54)
 - Dialog focuses the target element on open (#51)
 - Loosens MenuBar and Menu components' markup requirements (#48, 3385f2e)
+- Moves docs site packages and scripts to the docs directory (#57)
 
 **Added**
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { Tablist } from 'root';
+import { Tablist } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
 import './tablist.scss';
 
 // Get the components hashed classnames.

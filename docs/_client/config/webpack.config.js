@@ -62,7 +62,7 @@ module.exports = (env, argv) => {
         components: paths.components,
         scss: paths.scss,
         js: paths.js,
-        root: paths.root,
+        plugin: paths.plugin,
       },
     },
 
