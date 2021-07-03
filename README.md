@@ -46,5 +46,5 @@ Run Webpack in `production` mode. This is required prior to merging to ensure as
 
 [npmjs-img]: https://badge.fury.io/js/aria-components.svg
 [npmjs]: https://badge.fury.io/js/aria-components
-[ci-img]: https://travis-ci.com/goodguyry/AriaComponents.svg?branch=master
-[ci]: https://travis-ci.com/goodguyry/AriaComponents
+[ci-img]: https://github.com/goodguyry/AriaComponents/actions/workflows/action-test.yml/badge.svg?branch=master
+[ci]: https://github.com/goodguyry/AriaComponents/actions/
