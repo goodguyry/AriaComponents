@@ -61,7 +61,7 @@
   },
   "scripts": {
     "lint": "eslint _client/src/**/*.js",
-    "jekyll:build": "JEKYLL_ENV=production jekyll build --source docs --destination _site --config _config.yaml",
+    "jekyll:build": "JEKYLL_ENV=production jekyll build",
     "webpack:dev": "webpack --config _client/config/webpack.config.js --mode development --watch",
     "serve": "jekyll serve",
     "dev": "concurrently 'npm run webpack:dev' 'npm run serve'",

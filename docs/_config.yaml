@@ -10,6 +10,7 @@ port: 8080
 markdown: kramdown
 highlighter: rouge
 include: [_pages]
+exclude: [package.json, package-lock.json]
 timezone: America/Los_Angeles
 
 # kramdown settings
