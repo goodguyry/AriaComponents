@@ -1,0 +1,19 @@
+{
+  presets: [
+    '@babel/preset-env'
+  ],
+  plugins: [
+    'add-module-exports',
+    'syntax-dynamic-import',
+    'transform-object-assign',
+    ["module-resolver", {
+      "root": [
+        "./_client/src/**",
+        "./_client/src/js/**",
+      ],
+      "alias": {
+        "plugin": "../",
+      }
+    }],
+  ],
+}

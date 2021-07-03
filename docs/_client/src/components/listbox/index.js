@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { Listbox } from 'root';
+import { Listbox } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
 import './listbox.scss';
 
 // Get the components hashed classnames.

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Tablist } from 'root';
+import { Tablist } from '../..';
 import { events } from '../lib/events';
 
 const {

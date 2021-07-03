@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import Popup from 'root/src/Popup';
-import Menu from 'root/src/Menu';
+import Popup from '../Popup';
+import Menu from '../Menu';
 import isInstanceOf from './isInstanceOf';
 
 // Set up our document body

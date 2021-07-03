@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Popup } from 'root';
+import { Popup } from '../..';
 import { events } from '../lib/events';
 
 const {

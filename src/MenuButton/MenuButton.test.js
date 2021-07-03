@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { MenuButton, Menu } from 'root';
+import { MenuButton, Menu } from '../..';
 import { events } from '../lib/events';
 
 const {

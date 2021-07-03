@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Listbox } from 'root';
+import { Listbox } from '../..';
 import { events } from '../lib/events';
 
 const {

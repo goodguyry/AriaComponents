@@ -1,6 +1,6 @@
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { Dialog } from 'root';
+import { Dialog } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
 import './dialog.scss';
 
 // Get the components hashed classnames.

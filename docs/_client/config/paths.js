@@ -11,5 +11,5 @@ module.exports = {
   jekyllSass: path.join(__dirname, '../../_scss'),
   siteData: path.join(__dirname, '../../_data'),
   config: __dirname,
-  root: path.join(__dirname, '../../../'),
+  plugin: path.join(__dirname, '../../../'),
 };
