@@ -50,6 +50,7 @@ export default class Dialog extends AriaComponent {
 
     // Bind class methods
     this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
+    this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -127,6 +128,7 @@ export default class Dialog extends AriaComponent {
     this.target.setAttribute('aria-modal', 'true');
 
     // Add event listeners.
+    this.controller.addEventListener('click', this.controllerHandleClick);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
 
     /**
@@ -194,6 +196,13 @@ export default class Dialog extends AriaComponent {
     if (expanded && ! this.target.contains(event.target)) {
       this.hide();
     }
+  }
+
+  /**
+   * Show the Dialog when the controller is clicked.
+   */
+  controllerHandleClick() {
+    this.show();
   }
 
   /**
@@ -265,6 +274,7 @@ export default class Dialog extends AriaComponent {
     tabIndexAllow(this.interactiveChildElements);
 
     // Remove event listeners.
+    this.controller.removeEventListener('click', this.controllerHandleClick);
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleKeydownEsc);
 
