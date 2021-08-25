@@ -67,10 +67,12 @@ const domElements = {
 
 // Mock functions.
 const onInit = jest.fn();
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
+list.addEventListener('beforeStateChange', onBeforeStateChange);
 list.addEventListener('stateChange', onStateChange);
 list.addEventListener('init', onInit);
 list.addEventListener('destroy', onDestroy);
@@ -260,11 +262,18 @@ describe('Menu instatiates submenus as Disclosures', () => {
         expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
 
         return Promise.resolve().then(() => {
+          const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+          expect(beforeDetails.props).toMatchObject(['expanded']);
+          expect(beforeDetails.state).toStrictEqual({ expanded: false });
+          expect(beforeDetails.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+
           const { target, detail } = getEventDetails(onStateChange);
 
           expect(detail.props).toMatchObject(['expanded']);
           expect(detail.state).toStrictEqual({ expanded: true });
           expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+
           expect(target).toStrictEqual(domElements.listThirdItem);
         });
       });
@@ -282,6 +291,12 @@ describe('Menu instatiates submenus as Disclosures', () => {
         expect(document.activeElement).toEqual(domElements.listThirdItem);
 
         return Promise.resolve().then(() => {
+          const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+          expect(beforeDetails.props).toMatchObject(['expanded']);
+          expect(beforeDetails.state).toStrictEqual({ expanded: true });
+          expect(beforeDetails.instance).toStrictEqual(domElements.listThirdItem.disclosure);
+
           const { target, detail } = getEventDetails(onStateChange);
 
           expect(detail.props).toMatchObject(['expanded']);

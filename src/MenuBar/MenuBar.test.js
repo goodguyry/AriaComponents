@@ -69,11 +69,13 @@ const domElements = {
 
 // Mock functions.
 const onInit = jest.fn();
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
 list.addEventListener('init', onInit);
+list.addEventListener('beforeStateChange', onBeforeStateChange);
 list.addEventListener('stateChange', onStateChange);
 list.addEventListener('destroy', onDestroy);
 
@@ -128,8 +130,18 @@ describe('Menu correctly responds to events', () => {
       domElements.listFirstItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.listSecondItem);
       expect(onStateChange).toHaveBeenCalledTimes(1);
+      expect(onBeforeStateChange).toHaveBeenCalledTimes(1);
 
       return Promise.resolve().then(() => {
+        const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+        expect(beforeDetails.props).toMatchObject(['menubarItem']);
+        expect(beforeDetails.state).toStrictEqual({
+          menubarItem: domElements.listFirstItem,
+          popup: domElements.listFirstItem.popup,
+        });
+        expect(beforeDetails.instance).toStrictEqual(menuBar);
+
         const { target, detail } = getEventDetails(onStateChange);
 
         expect(detail.props).toStrictEqual(['menubarItem']);
@@ -138,6 +150,7 @@ describe('Menu correctly responds to events', () => {
           menubarItem: domElements.listSecondItem,
           popup: false,
         });
+
         expect(target).toStrictEqual(list);
       });
     });
@@ -202,11 +215,18 @@ describe('Menu correctly responds to events', () => {
       expect(menuBar.getState().popup.getState().expanded).toBeTruthy();
 
       return Promise.resolve().then(() => {
+        const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+        expect(beforeDetails.props).toMatchObject(['expanded']);
+        expect(beforeDetails.state).toStrictEqual({ expanded: false });
+        expect(beforeDetails.instance).toStrictEqual(domElements.listFirstItem.popup);
+
         const { target, detail } = getEventDetails(onStateChange);
 
         expect(detail.props).toStrictEqual(['expanded']);
         expect(detail.instance).toStrictEqual(domElements.listFirstItem.popup);
         expect(detail.state).toStrictEqual({ expanded: true });
+
         expect(target).toStrictEqual(domElements.listFirstItem);
       });
     });

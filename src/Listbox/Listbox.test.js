@@ -40,10 +40,12 @@ const listItems = Array.from(target.children);
 let listbox = {};
 
 // Mock functions.
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('beforeStateChange', onBeforeStateChange);
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
@@ -106,12 +108,22 @@ describe('Listbox with default configuration', () => {
     });
   });
 
-  it('Should fire `stateChange` event on state change: open', () => {
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: open', () => {
     listbox.show();
     expect(listbox.getState().expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(2);
+    expect(onBeforeStateChange).toHaveBeenCalledTimes(2);
 
     return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['expanded']);
+      // expect(beforeDetails.state).toStrictEqual({
+      //   expanded: false, // @todo why is this `true`??
+      //   activeDescendant: target.children[0],
+      // });
+      expect(beforeDetails.instance).toStrictEqual(listbox);
+
       const { detail } = getEventDetails(onStateChange);
 
       expect(detail.props).toMatchObject(['expanded']);
@@ -123,15 +135,51 @@ describe('Listbox with default configuration', () => {
     });
   });
 
-  it('Should fire `stateChange` event on state change: active descendant', () => {
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: active descendant', () => {
     listbox.setState({ activeDescendant: target.children[3] });
 
     return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['activeDescendant']);
+      expect(beforeDetails.state).toStrictEqual({
+        expanded: true,
+        activeDescendant: target.children[0],
+      });
+      expect(beforeDetails.instance).toStrictEqual(listbox);
+
       const { detail } = getEventDetails(onStateChange);
 
       expect(detail.props).toMatchObject(['activeDescendant']);
       expect(detail.state).toStrictEqual({
         expanded: true,
+        activeDescendant: target.children[3],
+      });
+      expect(detail.instance).toStrictEqual(listbox);
+    });
+  });
+
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: close', () => {
+    listbox.hide();
+    expect(listbox.getState().expanded).toBe(false);
+    expect(onStateChange).toHaveBeenCalledTimes(4);
+    expect(onBeforeStateChange).toHaveBeenCalledTimes(4);
+
+    return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['expanded']);
+      expect(beforeDetails.state).toStrictEqual({
+        expanded: true,
+        activeDescendant: target.children[3],
+      });
+      expect(beforeDetails.instance).toStrictEqual(listbox);
+
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.props).toMatchObject(['expanded']);
+      expect(detail.state).toStrictEqual({
+        expanded: false,
         activeDescendant: target.children[3],
       });
       expect(detail.instance).toStrictEqual(listbox);

@@ -68,11 +68,13 @@ const secondPanel = document.querySelector('#second-panel');
 const thirdPanel = document.querySelector('#third-panel');
 
 // Mock functions.
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 tabs.addEventListener('init', onInit);
+tabs.addEventListener('beforeStateChange', onBeforeStateChange);
 tabs.addEventListener('stateChange', onStateChange);
 tabs.addEventListener('destroy', onDestroy);
 
@@ -179,13 +181,20 @@ describe('Tablist with default configuration', () => {
       expect(onStateChange).toHaveBeenCalledTimes(2);
     });
 
-    it('Should fire `stateChange` event on state change: open', () => {
+    it('Should fire `beforeStateChange` and `stateChange` event on state change: open', () => {
       tablist.switchTo(1);
 
       expect(tablist.getState().activeIndex).toBe(1);
       expect(onStateChange).toHaveBeenCalled();
+      expect(onBeforeStateChange).toHaveBeenCalled();
 
       return Promise.resolve().then(() => {
+        const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+        expect(beforeDetails.props).toMatchObject(['activeIndex']);
+        expect(beforeDetails.state).toStrictEqual({ activeIndex: 0 });
+        expect(beforeDetails.instance).toStrictEqual(tablist);
+
         const { detail } = getEventDetails(onStateChange);
 
         expect(detail.props).toMatchObject(['activeIndex']);

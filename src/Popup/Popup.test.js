@@ -34,7 +34,9 @@ const controller = document.querySelector('.link');
 const target = document.querySelector('.wrapper');
 
 // Mock functions.
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
+controller.addEventListener('beforeStateChange', onBeforeStateChange);
 controller.addEventListener('stateChange', onStateChange);
 
 const popup = new Popup(controller);
@@ -76,12 +78,19 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(target.getAttribute('hidden')).toEqual('');
   });
 
-  it('Should fire `stateChange` event on state change: open', () => {
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: open', () => {
     popup.show();
     expect(popup.getState().expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(1);
+    expect(onBeforeStateChange).toHaveBeenCalledTimes(1);
 
     return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['expanded']);
+      expect(beforeDetails.state).toStrictEqual({ expanded: false });
+      expect(beforeDetails.instance).toStrictEqual(popup);
+
       const { detail } = getEventDetails(onStateChange);
 
       expect(detail.props).toMatchObject(['expanded']);
@@ -90,12 +99,19 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     });
   });
 
-  it('Should fire `stateChange` event on state change: hidden', () => {
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: hidden', () => {
     popup.hide();
     expect(popup.getState().expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(2);
+    expect(onBeforeStateChange).toHaveBeenCalledTimes(2);
 
     return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['expanded']);
+      expect(beforeDetails.state).toStrictEqual({ expanded: true });
+      expect(beforeDetails.instance).toStrictEqual(popup);
+
       const { detail } = getEventDetails(onStateChange);
 
       expect(detail.props).toMatchObject(['expanded']);

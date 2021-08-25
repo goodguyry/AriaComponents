@@ -26,11 +26,13 @@ const controller = document.querySelector('button');
 const target = document.querySelector('#answer');
 
 // Mock functions.
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
 controller.addEventListener('stateChange', onStateChange);
+controller.addEventListener('beforeStateChange', onBeforeStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
 
@@ -120,12 +122,19 @@ describe('Disclosure with default configuration', () => {
     });
   });
 
-  it('Should fire `stateChange` event on state change: open', () => {
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: open', () => {
     disclosure.open();
     expect(disclosure.getState().expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalled();
+    expect(onBeforeStateChange).toHaveBeenCalled();
 
     return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['expanded']);
+      expect(beforeDetails.state).toStrictEqual({ expanded: false });
+      expect(beforeDetails.instance).toStrictEqual(disclosure);
+
       const { detail } = getEventDetails(onStateChange);
 
       expect(detail.props).toMatchObject(['expanded']);

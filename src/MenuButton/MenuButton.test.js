@@ -36,10 +36,12 @@ const target = document.querySelector('.wrapper');
 const list = document.querySelector('ul');
 
 // Mock functions.
+const onBeforeStateChange = jest.fn();
 const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('beforeStateChange', onBeforeStateChange);
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
@@ -90,12 +92,19 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
   });
 });
 
-it('Should fire `stateChange` event on state change: open', () => {
+it('Should fire `beforeStateChange` and `stateChange` event on state change: open', () => {
   menuButton.show();
   expect(menuButton.getState().expanded).toBe(true);
   expect(onStateChange).toHaveBeenCalledTimes(3);
+  expect(onBeforeStateChange).toHaveBeenCalledTimes(3);
 
   return Promise.resolve().then(() => {
+    const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+    expect(beforeDetails.props).toMatchObject(['expanded']);
+    expect(beforeDetails.state).toStrictEqual({ expanded: false });
+    expect(beforeDetails.instance).toStrictEqual(menuButton);
+
     const { detail } = getEventDetails(onStateChange);
 
     expect(detail.props).toMatchObject(['expanded']);
@@ -104,12 +113,19 @@ it('Should fire `stateChange` event on state change: open', () => {
   });
 });
 
-it('Should fire `stateChange` event on state change: hidden', () => {
+it('Should fire `beforeStateChange` and `stateChange` event on state change: hidden', () => {
   menuButton.hide();
   expect(menuButton.getState().expanded).toBe(false);
   expect(onStateChange).toHaveBeenCalledTimes(4);
+  expect(onBeforeStateChange).toHaveBeenCalledTimes(4);
 
   return Promise.resolve().then(() => {
+    const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+    expect(beforeDetails.props).toMatchObject(['expanded']);
+    expect(beforeDetails.state).toStrictEqual({ expanded: true });
+    expect(beforeDetails.instance).toStrictEqual(menuButton);
+
     const { detail } = getEventDetails(onStateChange);
 
     expect(detail.props).toMatchObject(['expanded']);

@@ -51,8 +51,10 @@ const lastItem = document.querySelector('.last-item');
 // Mock functions.
 const onInit = jest.fn();
 const onStateChange = jest.fn();
+const onBeforeStateChange = jest.fn();
 const onDestroy = jest.fn();
 
+controller.addEventListener('beforeStateChange', onBeforeStateChange);
 controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
@@ -171,12 +173,19 @@ describe('Dialog with default configuration', () => {
     });
   });
 
-  it('Should fire `stateChange` event on state change: open', () => {
+  it('Should fire `beforeStateChange` and `stateChange` event on state change: open', () => {
     modal.show();
     expect(modal.getState().expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalled();
+    expect(onBeforeStateChange).toHaveBeenCalled();
 
     return Promise.resolve().then(() => {
+      const { detail: beforeDetails } = getEventDetails(onBeforeStateChange);
+
+      expect(beforeDetails.props).toMatchObject(['expanded']);
+      expect(beforeDetails.state).toStrictEqual({ expanded: false });
+      expect(beforeDetails.instance).toStrictEqual(modal);
+
       const { detail } = getEventDetails(onStateChange);
 
       expect(detail.props).toMatchObject(['expanded']);

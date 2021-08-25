@@ -126,7 +126,9 @@ export default class AriaComponent {
    * @param  {object} detail The event detail object.
    */
   dispatch(name, detail) {
-    const allowed = this._stateDispatchesOnly ? ('stateChange' === name) : true;
+    const allowed = this._stateDispatchesOnly
+      ? (['stateChange', 'beforeStateChange'].includes(name))
+      : true;
 
     if (allowed) {
       const event = new CustomEvent(
@@ -175,6 +177,16 @@ export default class AriaComponent {
   setState(newState) {
     const updatedProps = Object.keys(newState);
 
+    // Dispatch the `beforeStateChange` event.
+    this.dispatch(
+      'beforeStateChange',
+      {
+        instance: this,
+        props: updatedProps,
+        state: this.state,
+      }
+    );
+
     const updatedState = { ...this.state, ...newState };
     this.state = updatedState;
 
@@ -182,7 +194,7 @@ export default class AriaComponent {
       this.stateWasUpdated(updatedProps);
     }
 
-    // Fire the `stateChange` event.
+    // Dispatch the `stateChange` event.
     this.dispatch(
       'stateChange',
       {
