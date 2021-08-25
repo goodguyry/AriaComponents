@@ -6,10 +6,10 @@ module.exports = {
     ecmaFeatures: {
       globalReturn: true,
       impliedStrict: true,
-      jsx: true,
     },
     sourceType: 'module',
   },
+  parser: '@babel/eslint-parser',
   env: {
     es6: true,
     browser: true,
@@ -79,7 +79,7 @@ module.exports = {
     'no-underscore-dangle': [
       'error',
       {
-        'allow': [
+        allow: [
           '_stateDispatchesOnly',
         ],
       },

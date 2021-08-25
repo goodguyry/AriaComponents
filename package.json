@@ -16,11 +16,15 @@
   "homepage": "https://goodguyry.github.io/AriaComponents/",
   "devDependencies": {
     "@babel/core": "^7.14.6",
+    "@babel/eslint-parser": "^7.15.0",
     "@babel/preset-env": "^7.14.7",
     "babel-jest": "^27.0.5",
     "eslint": "^7.29.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
     "jest": "^27.0.5",
     "jest-cli": "^27.0.5"
   },
