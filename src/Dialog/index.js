@@ -17,9 +17,8 @@ export default class Dialog extends AriaComponent {
    * @param {HTMLElement} controller The activating element.
    * @param {object}      options    The options object.
    */
-  constructor(target, options = {}) {
-    // Pass in the `dialog` type.
-    super(target);
+  constructor(controller, options = {}) {
+    super(controller);
 
     /**
      * The string description for this object.
@@ -28,8 +27,8 @@ export default class Dialog extends AriaComponent {
      */
     this[Symbol.toStringTag] = 'Dialog';
 
-    this.target = target;
-    this.controller = super.constructor.getTargetElement(target);
+    this.controller = controller;
+    this.target = super.constructor.getTargetElement(controller);
 
     /**
      * Options shape.
