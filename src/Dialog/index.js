@@ -267,8 +267,12 @@ export default class Dialog extends AriaComponent {
 
     // Remove target attributes.
     this.target.removeAttribute('tabindex');
+
     this.target.removeAttribute('aria-hidden');
     this.target.removeAttribute('hidden');
+
+    this.target.removeAttribute('role');
+    this.target.removeAttribute('aria-modal');
 
     // Remove tabindex attribute.
     tabIndexAllow(this.interactiveChildElements);
