@@ -55,7 +55,7 @@ controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
 
-const modal = new Dialog(controller, /* { content: [content, footer], } */);
+const modal = new Dialog(controller);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
@@ -82,13 +82,15 @@ describe('Dialog with default configuration', () => {
       });
     });
 
-    it('Should add the correct attributes',
-      () => {
-        expect(controller.getAttribute('aria-haspopup')).toEqual('dialog');
-        expect(controller.getAttribute('aria-expanded')).toEqual('false');
-        expect(target.getAttribute('aria-hidden')).toEqual('true');
-        expect(target.getAttribute('hidden')).toEqual('');
-      });
+    it('Should add the correct attributes', () => {
+      expect(target.getAttribute('tabindex')).toEqual('0');
+
+      expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
+
+      expect(target.getAttribute('role')).toEqual('dialog');
+      expect(target.getAttribute('aria-modal')).toEqual('true');
+    });
   });
 
   describe('Dialog class methods', () => {
@@ -114,7 +116,6 @@ describe('Dialog with default configuration', () => {
     it('Should update attributes when the controller is clicked', () => {
       modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(footer.getAttribute('aria-hidden')).toBeNull();
       expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
@@ -123,7 +124,6 @@ describe('Dialog with default configuration', () => {
       // Click to re-open.
       controller.dispatchEvent(click);
       expect(modal.getState().expanded).toBeTruthy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(footer.getAttribute('aria-hidden')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
@@ -146,9 +146,9 @@ describe('Dialog with default configuration', () => {
       expect(modal.getState().expanded).toBeFalsy();
     });
 
-    it('Should close on outside click', () => {
+    it('Should not close on outside click', () => {
       document.body.dispatchEvent(click);
-      expect(modal.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeTruthy();
     });
   });
 
@@ -173,8 +173,6 @@ describe('Dialog with default configuration', () => {
       expect(controller.dialog).toBeUndefined();
       expect(target.dialog).toBeUndefined();
 
-      expect(controller.getAttribute('aria-haspopup')).toBeNull();
-      expect(controller.getAttribute('aria-expanded')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('hidden')).toBeNull();
 
