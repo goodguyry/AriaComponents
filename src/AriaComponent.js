@@ -3,7 +3,7 @@
  */
 export default class AriaComponent {
   /**
-   * Get the target element based on the controller's target attribute.
+   * Get the target element based on the controller's `target` attribute.
    *
    * @param  {HTMLElement} controller The component's controlling element.
    * @return {HTMLElement|null}
@@ -25,31 +25,6 @@ export default class AriaComponent {
     }
 
     return target;
-  }
-
-  /**
-   * Get the target element based on the controller's target attribute.
-   *
-   * @param  {HTMLElement} controller The component's controlling element.
-   * @return {HTMLElement|null}
-   */
-  static getControllerElement(target) {
-    if (! target.hasAttribute('controller')) {
-      AriaComponent.configurationError(
-        'The component element is missing the required \'controller\' attribute'
-      );
-    }
-
-    const controllerId = target.getAttribute('controller');
-    const controller = document.getElementById(controllerId);
-
-    if (null === controller) {
-      AriaComponent.configurationError(
-        `A controller element with ID of '${controllerId}' is not found`
-      );
-    }
-
-    return controller;
   }
 
   /**
