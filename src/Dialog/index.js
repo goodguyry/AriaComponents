@@ -269,11 +269,17 @@ export default class Dialog extends AriaComponent {
     if (expanded && keyCode === TAB) {
       const { activeElement } = document;
 
-      if (shiftKey && this.firstInteractiveChild === activeElement) {
+      if (
+        shiftKey
+        && (
+          this.firstInteractiveChild === activeElement
+          || this.target === activeElement
+        )
+      ) {
         event.preventDefault();
         /*
-         * Move back from the first interactive child element to the last
-         * interactive child element
+         * Move back from the first interactive child element, or dialog element
+         * itself, to the last interactive child element.
          */
         this.lastInteractiveChild.focus();
       } else if (! shiftKey && this.lastInteractiveChild === activeElement) {
