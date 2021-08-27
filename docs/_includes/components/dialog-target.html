@@ -1,7 +1,7 @@
 {% assign classes = site.data.classnames.dialog %}
 {% assign links = site.data.links %}
 
-<div id="dialog" class="{{ classes.dialog }}">
+<div id="dialog" class="{{ classes.dialog }}" aria-label="Test Dialog">
 	<button class="{{ classes.closeButton }}">Close</button>
 
 	<p>This is a Dialog Popup. The site's content wrapper is given an `aria-hidden` attribute in order to hide the main content while the Dialog is open. The "Close" button is required; if a reference to an existing close button is not passed in to the component, a very basic button will be created and inserted.</p>
