@@ -68,6 +68,12 @@ _**`content`**_`= null`
 
 See also [`src/README`](../).
 
+_**`Dialog.setCloseButton(closeButton)`**_
+> Helper for setting up the close button.  
+> 
+> _**`closeButton`**_ `HTMLButtonElement`  
+> The button used to close the Dialog.
+
 _**`Dialog.show()`**_
 > Updates component state to show the target element.
 

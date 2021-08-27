@@ -49,6 +49,7 @@ export default class Dialog extends AriaComponent {
     Object.assign(this, defaultOptions, options);
 
     // Bind class methods
+    this.setCloseButton = this.setCloseButton.bind(this);
     this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
@@ -213,6 +214,19 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
+   * Handles setting the close button's event listener
+   *
+   * @param {HTMLButtonElement} button The Dialog's close element.
+   */
+  setCloseButton(button) {
+    if (null != button) {
+      this.closeButton = button;
+
+      this.closeButton.addEventListener('click', this.hide);
+    }
+  }
+
+  /**
    * Close the dialog on when users click outside of the Dialog element.
    *
    * @param {Event} event The Event object.
@@ -348,6 +362,10 @@ export default class Dialog extends AriaComponent {
 
     if (this.controllerIsNotAButton) {
       this.controller.removeEventListener('keydown', this.controllerHandleKeydown);
+    }
+
+    if (null != this.closeButton) {
+      this.closeButton.removeEventListener('click', this.hide);
     }
 
     // Reset initial state.

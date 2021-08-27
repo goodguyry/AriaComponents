@@ -130,6 +130,17 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('hidden')).toBeNull();
     });
 
+    it('Should set the close button', () => {
+      modal.setCloseButton(firstItem);
+      firstItem.dispatchEvent(click);
+
+      expect(modal.getState().expanded).toBeFalsy();
+      expect(footer.getAttribute('aria-hidden')).toBeNull();
+      expect(content.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
+    });
+
     it('Should trap keyboard tabs within the modal', () => {
       firstItem.focus();
       firstItem.dispatchEvent(keydownShiftTab);
