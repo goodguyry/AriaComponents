@@ -242,7 +242,7 @@ export default class Dialog extends AriaComponent {
   /**
    * Show the Dialog when the controller is clicked.
    *
-   * @@param {Event} event The event object.
+   * @param {Event} event The event object.
    */
   controllerHandleClick(event) {
     event.preventDefault();
