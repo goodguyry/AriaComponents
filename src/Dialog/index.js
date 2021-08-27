@@ -53,6 +53,8 @@ export default class Dialog extends AriaComponent {
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
