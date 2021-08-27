@@ -12,6 +12,7 @@ const dialogMarkup = `
   <main>
     <article>
       <h1>The Article Title</h1>
+      <a href="#" class="outside-link">Link</a>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
       minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -41,6 +42,7 @@ const controller = document.querySelector('.link');
 const target = document.getElementById('dialog');
 const content = document.querySelector('main');
 const footer = document.querySelector('footer');
+const outsideLink = document.querySelector('.outside-link');
 
 // Cached elements.
 const firstItem = target.querySelector('button');
@@ -155,6 +157,12 @@ describe('Dialog with default configuration', () => {
       lastItem.focus();
       lastItem.dispatchEvent(keydownEsc);
       expect(modal.getState().expanded).toBeFalsy();
+    });
+
+    it('Should move focus back from outside', () => {
+      outsideLink.focus();
+      outsideLink.dispatchEvent(keydownTab);
+      expect(document.activeElement).toEqual(firstItem);
     });
 
     it('Should not close on outside click', () => {

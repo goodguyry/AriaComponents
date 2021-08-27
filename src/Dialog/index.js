@@ -54,7 +54,7 @@ export default class Dialog extends AriaComponent {
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
-    this.handleKeydownEsc = this.handleKeydownEsc.bind(this);
+    this.handleOutsideKeydown = this.handleOutsideKeydown.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -192,7 +192,7 @@ export default class Dialog extends AriaComponent {
 
       tabIndexAllow(this.interactiveChildElements);
 
-      document.body.addEventListener('keydown', this.handleKeydownEsc);
+      document.body.addEventListener('keydown', this.handleOutsideKeydown);
 
       this.target.focus();
     } else {
@@ -207,7 +207,7 @@ export default class Dialog extends AriaComponent {
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       tabIndexDeny(this.interactiveChildElements);
 
-      document.body.removeEventListener('keydown', this.handleKeydownEsc);
+      document.body.removeEventListener('keydown', this.handleOutsideKeydown);
 
       this.controller.focus();
     }
@@ -314,12 +314,18 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  handleKeydownEsc(event) {
-    const { ESC } = keyCodes;
-    const { keyCode } = event;
+  handleOutsideKeydown(event) {
+    const { ESC, TAB } = keyCodes;
+    const { keyCode, target: eventTarget } = event;
 
     if (ESC === keyCode) {
       this.hide();
+    } else if (keyCode === TAB && ! this.target.contains(eventTarget)) {
+      /*
+       * Move focus to the first interactive child element. This is a stopgap
+       * for instances where clicking outside of the Dialog moves focus out.
+       */
+      this.firstInteractiveChild.focus();
     }
   }
 
@@ -358,10 +364,13 @@ export default class Dialog extends AriaComponent {
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerHandleClick);
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
-    document.body.removeEventListener('keydown', this.handleKeydownEsc);
+    document.body.removeEventListener('keydown', this.handleOutsideKeydown);
 
     if (this.controllerIsNotAButton) {
-      this.controller.removeEventListener('keydown', this.controllerHandleKeydown);
+      this.controller.removeEventListener(
+        'keydown',
+        this.controllerHandleKeydown
+      );
     }
 
     if (null != this.closeButton) {
