@@ -18,5 +18,5 @@ window.addEventListener('load', () => {
 
   // Create the Dialog.
   const dialog = new Dialog(controller);
-  close.addEventListener('click', dialog.hide);
+  dialog.setCloseButton(close);
 });

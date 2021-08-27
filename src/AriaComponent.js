@@ -3,7 +3,7 @@
  */
 export default class AriaComponent {
   /**
-   * Get the target element based on the controller's target attribute.
+   * Get the target element based on the controller's `target` attribute.
    *
    * @param  {HTMLElement} controller The component's controlling element.
    * @return {HTMLElement|null}

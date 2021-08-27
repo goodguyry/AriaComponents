@@ -12,6 +12,7 @@ const dialogMarkup = `
   <main>
     <article>
       <h1>The Article Title</h1>
+      <a href="#" class="outside-link">Link</a>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
       minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -41,6 +42,7 @@ const controller = document.querySelector('.link');
 const target = document.getElementById('dialog');
 const content = document.querySelector('main');
 const footer = document.querySelector('footer');
+const outsideLink = document.querySelector('.outside-link');
 
 // Cached elements.
 const firstItem = target.querySelector('button');
@@ -55,7 +57,7 @@ controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
 
-const modal = new Dialog(controller, /* { content: [content, footer], } */);
+const modal = new Dialog(controller);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
@@ -82,13 +84,15 @@ describe('Dialog with default configuration', () => {
       });
     });
 
-    it('Should add the correct attributes',
-      () => {
-        expect(controller.getAttribute('aria-haspopup')).toEqual('dialog');
-        expect(controller.getAttribute('aria-expanded')).toEqual('false');
-        expect(target.getAttribute('aria-hidden')).toEqual('true');
-        expect(target.getAttribute('hidden')).toEqual('');
-      });
+    it('Should add the correct attributes', () => {
+      expect(target.getAttribute('tabindex')).toEqual('0');
+
+      expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
+
+      expect(target.getAttribute('role')).toEqual('dialog');
+      expect(target.getAttribute('aria-modal')).toEqual('true');
+    });
   });
 
   describe('Dialog class methods', () => {
@@ -114,7 +118,6 @@ describe('Dialog with default configuration', () => {
     it('Should update attributes when the controller is clicked', () => {
       modal.hide();
       expect(modal.getState().expanded).toBeFalsy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(footer.getAttribute('aria-hidden')).toBeNull();
       expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
@@ -123,11 +126,21 @@ describe('Dialog with default configuration', () => {
       // Click to re-open.
       controller.dispatchEvent(click);
       expect(modal.getState().expanded).toBeTruthy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(footer.getAttribute('aria-hidden')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
       expect(target.getAttribute('hidden')).toBeNull();
+    });
+
+    it('Should set the close button', () => {
+      modal.setCloseButton(firstItem);
+      firstItem.dispatchEvent(click);
+
+      expect(modal.getState().expanded).toBeFalsy();
+      expect(footer.getAttribute('aria-hidden')).toBeNull();
+      expect(content.getAttribute('aria-hidden')).toBeNull();
+      expect(target.getAttribute('aria-hidden')).toEqual('true');
+      expect(target.getAttribute('hidden')).toEqual('');
     });
 
     it('Should trap keyboard tabs within the modal', () => {
@@ -146,9 +159,15 @@ describe('Dialog with default configuration', () => {
       expect(modal.getState().expanded).toBeFalsy();
     });
 
-    it('Should close on outside click', () => {
+    it('Should move focus back from outside', () => {
+      outsideLink.focus();
+      outsideLink.dispatchEvent(keydownTab);
+      expect(document.activeElement).toEqual(firstItem);
+    });
+
+    it('Should not close on outside click', () => {
       document.body.dispatchEvent(click);
-      expect(modal.getState().expanded).toBeFalsy();
+      expect(modal.getState().expanded).toBeTruthy();
     });
   });
 
@@ -173,8 +192,6 @@ describe('Dialog with default configuration', () => {
       expect(controller.dialog).toBeUndefined();
       expect(target.dialog).toBeUndefined();
 
-      expect(controller.getAttribute('aria-haspopup')).toBeNull();
-      expect(controller.getAttribute('aria-expanded')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('hidden')).toBeNull();
 
