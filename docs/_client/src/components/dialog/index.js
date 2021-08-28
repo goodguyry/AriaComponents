@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
 
   // Report event details.
   controller.addEventListener('init', logEventDetail);
+  controller.addEventListener('beforeStateChange', logEventDetail);
   controller.addEventListener('stateChange', logEventDetail);
   controller.addEventListener('destroy', logEventDetail);
 

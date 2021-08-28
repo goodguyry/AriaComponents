@@ -12,6 +12,7 @@ const menuList = document.querySelector(list);
 
 // Report event details.
 menuList.addEventListener('init', logEventDetail);
+menuList.addEventListener('beforeStateChange', logEventDetail);
 menuList.addEventListener('stateChange', logEventDetail);
 menuList.addEventListener('destroy', logEventDetail);
 

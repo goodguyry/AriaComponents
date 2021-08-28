@@ -14,6 +14,7 @@ const controllers = document.querySelectorAll(button);
 const disclosures = Array.from(controllers).map((controller) => {
   // Report event details.
   controller.addEventListener('init', logEventDetail);
+  controller.addEventListener('beforeStateChange', logEventDetail);
   controller.addEventListener('stateChange', logEventDetail);
   controller.addEventListener('destroy', logEventDetail);
 

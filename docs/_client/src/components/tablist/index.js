@@ -15,6 +15,7 @@ const tablist = new Tablist(tabs);
 
 // Report event details.
 tabs.addEventListener('init', logEventDetail);
+tabs.addEventListener('beforeStateChange', logEventDetail);
 tabs.addEventListener('stateChange', logEventDetail);
 tabs.addEventListener('destroy', logEventDetail);
 

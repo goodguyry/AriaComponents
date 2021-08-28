@@ -12,6 +12,7 @@ const controller = document.querySelector(button);
 
 // Report event details.
 controller.addEventListener('init', logEventDetail);
+controller.addEventListener('beforeStateChange', logEventDetail);
 controller.addEventListener('stateChange', logEventDetail);
 controller.addEventListener('destroy', logEventDetail);
 
