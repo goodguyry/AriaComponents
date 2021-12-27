@@ -194,7 +194,7 @@ describe('Disclosure with non-default configuration', () => {
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 
-  it("Should not manage the target element's `hidden` attribute", () => {
+  it('Should not manage the target element\'s `hidden` attribute', () => {
     disclosure.open();
     expect(disclosure.target.getAttribute('hidden')).toBeNull();
 
