@@ -1,16 +1,25 @@
 .dialog {
   background-color: white;
   border: 1px solid black;
-  left: 50%;
+  height: max-content;
+  inset: 0;
+  margin: auto;
   max-height: calc(100vh - tidy-var(edge) * 2);
   max-width: rem(500);
   overflow-y: scroll;
   padding: rem(28 10 10 10);
   position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
   width: calc(100vw - tidy-var(edge) * 2);
   z-index: 1;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform 300ms ease-in-out;
+  }
+
+  &:not([aria-hidden]),
+  &[aria-hidden="true"] {
+    transform: translateY(-250%);
+  }
 
   @media (min(lg)) {
     padding: rem(28);

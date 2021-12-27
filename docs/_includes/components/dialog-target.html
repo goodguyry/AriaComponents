@@ -4,7 +4,9 @@
 <div id="dialog" class="{{ classes.dialog }}" aria-label="Test Dialog">
 	<button class="{{ classes.closeButton }}">Close</button>
 
-	<p>This is a Dialog Popup. The site's content wrapper is given an `aria-hidden` attribute in order to hide the main content while the Dialog is open. The "Close" button is required; if a reference to an existing close button is not passed in to the component, a very basic button will be created and inserted.</p>
+	<p>This is a Dialog Popup. The site's content wrapper is given an `aria-hidden` attribute in order to hide the main content while the Dialog is open. The "Close" button is set by passing the element to the `setCloseButton` instance method.</p>
+
+  <p>The `useHiddenAttribute` option is set to `false` here to allow the CSS transition to be visible in both states.</p>
 
 	<p>Keyboard focus is "trapped" within the Dialog, which prevents elements outside the Dialog from gaining focus until the Dialog is closed.</p>
 
