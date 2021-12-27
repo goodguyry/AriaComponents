@@ -30,12 +30,17 @@ const listbox = new Listbox(controller);
 ## Constructor
 
 ```javascript
-Listbox(controller = null);
+Listbox(controller = null, options = {});
 ```
 
 _**`controller`**_ `HTMLElement`  
 > The element used to activate the Listbox target; required to have a `target`  
 attribute with a value matching the `id` attribute value of the target element.
+
+### Available Options
+
+`Listbox` extends `Popup` and passes its own `type` option, which can't be 
+overriden. All other [`Popup` options](../Popup/README.md) are available for `Listbox`.
 
 ## API
 

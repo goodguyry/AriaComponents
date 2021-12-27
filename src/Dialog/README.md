@@ -62,6 +62,9 @@ _**`options`**_ `object`
 _**`content`**_`= null`  
 > The element or NodeList of elements that should be inaccessible when the Dialog element is open.
 
+_**`useHiddenAttribute`**_`= true`  
+> Whether to use the `hidden` attribute to manage the target element's visibility.
+
 ## API
 
 ### Instance Methods

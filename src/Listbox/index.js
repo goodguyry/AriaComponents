@@ -19,7 +19,7 @@ export default class ListBox extends Popup {
    */
   constructor(controller, options = {}) {
     // Pass in the `listbox` type.
-    super(controller, { type: 'listbox' });
+    super(controller, { ...options, type: 'listbox' });
 
     /**
      * The string description for this object.

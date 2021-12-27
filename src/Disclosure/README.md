@@ -45,6 +45,9 @@ _**`loadOpen`**_`= false`
 _**`allowOutsideClick`**_`= true`  
 > Whether to keep the Disclosure open when clicking outside of it.
 
+_**`useHiddenAttribute`**_`= true`  
+> Whether to use the `hidden` attribute to manage the target element's visibility.
+
 ## API
 
 ### Instance Methods

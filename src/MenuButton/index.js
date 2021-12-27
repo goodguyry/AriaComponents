@@ -18,7 +18,7 @@ export default class MenuButton extends Popup {
    */
   constructor(controller, options = {}) {
     // Pass in the `menu` type.
-    super(controller, { type: 'menu' });
+    super(controller, { ...options, type: 'menu' });
 
     /**
      * The string description for this object.

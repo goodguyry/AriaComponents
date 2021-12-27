@@ -43,6 +43,9 @@ _**`type`**_`= 'true'`
 > The string value of the Popup's `aria-haspopup` attribute, required to  
 match the `role` attribute of the Popup container.
 
+_**`useHiddenAttribute`**_`= true`  
+> Whether to use the `hidden` attribute to manage the target element's visibility.
+
 ## API
 
 ### Instance Methods
