@@ -64,6 +64,8 @@ _**`content`**_`= null`
 
 _**`useHiddenAttribute`**_`= true`  
 > Whether to use the `hidden` attribute to manage the target element's visibility.
+>
+> Set to `false` if the target element needs to animate between states.
 
 ## API
 
