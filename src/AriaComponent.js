@@ -201,13 +201,11 @@ export default class AriaComponent {
    */
   setSelfReference(...elements) {
     const referenceElements = elements.map((element) => {
-      if (null !== element) {
-        Object.defineProperty(
-          element,
-          this.stringDescription.toLowerCase(),
-          { value: this, configurable: true }
-        );
-      }
+      Object.defineProperty(
+        element,
+        this.stringDescription.toLowerCase(),
+        { value: this, configurable: true }
+      );
 
       return element;
     });
