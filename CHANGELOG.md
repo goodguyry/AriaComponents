@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Gets Dialog content element(s) if none provided (#51)
 - Throws a configuration error for misconfigured components (#51)
 - Exports `isInstanceOf` helper function (#52)
+- Allows authors to disable the use of the hidden attribute in Dialog, Disclosure, and Popup state changes via the `useHiddenAttribute` option. (#61)
 
 **Fixed**
 

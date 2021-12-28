@@ -17,6 +17,6 @@ window.addEventListener('load', () => {
   controller.addEventListener('destroy', logEventDetail);
 
   // Create the Dialog.
-  const dialog = new Dialog(controller);
+  const dialog = new Dialog(controller, { useHiddenAttribute: false });
   dialog.setCloseButton(close);
 });

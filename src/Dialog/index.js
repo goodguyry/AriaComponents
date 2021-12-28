@@ -43,6 +43,13 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement|NodeList|Array}
        */
       content: [],
+
+      /**
+       * Whether to use the `hidden` attribute to manage the target element's visibility.
+       *
+       * @type {Boolean}
+       */
+      useHiddenAttribute: true,
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -140,12 +147,15 @@ export default class Dialog extends AriaComponent {
     this.target.setAttribute('tabindex', '0');
 
     /*
-     * Set the taget as hidden by default. Using the `aria-hidden` attribute,
+     * Set the target as hidden by default. Using the `aria-hidden` attribute,
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
      */
     this.target.setAttribute('aria-hidden', 'true');
-    this.target.setAttribute('hidden', '');
+
+    if (this.useHiddenAttribute) {
+      this.target.setAttribute('hidden', '');
+    }
 
     // Set additional attributes.
     this.target.setAttribute('role', 'dialog');
@@ -188,7 +198,10 @@ export default class Dialog extends AriaComponent {
 
       // Update target element.
       this.target.setAttribute('aria-hidden', 'false');
-      this.target.removeAttribute('hidden');
+
+      if (this.useHiddenAttribute) {
+        this.target.removeAttribute('hidden');
+      }
 
       tabIndexAllow(this.interactiveChildElements);
 
@@ -202,7 +215,10 @@ export default class Dialog extends AriaComponent {
 
       // Update target element.
       this.target.setAttribute('aria-hidden', 'true');
-      this.target.setAttribute('hidden', '');
+
+      if (this.useHiddenAttribute) {
+        this.target.setAttribute('hidden', '');
+      }
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       tabIndexDeny(this.interactiveChildElements);
@@ -353,7 +369,10 @@ export default class Dialog extends AriaComponent {
     this.target.removeAttribute('tabindex');
 
     this.target.removeAttribute('aria-hidden');
-    this.target.removeAttribute('hidden');
+
+    if (this.useHiddenAttribute) {
+      this.target.removeAttribute('hidden');
+    }
 
     this.target.removeAttribute('role');
     this.target.removeAttribute('aria-modal');

@@ -39,5 +39,6 @@
     "setupFiles": [
       "<rootDir>/setupFile.js"
     ]
-  }
+  },
+  "dependencies": {}
 }

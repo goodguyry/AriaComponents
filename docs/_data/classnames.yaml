@@ -2,8 +2,8 @@ index: { screen-reader-text: 'index__screen-reader-text___2E0Dc', skip-link: 'in
 popup: { wrapper: 'popup__wrapper___2mfod', button: 'popup__button___2oSBX', info: 'popup__info___3thCC' }
 tablist: { list: 'tablist__list___1Ndvo', list-item: 'tablist__list-item___3ohi5', panel: 'tablist__panel___3LIHO' }
 listbox: { wrapper: 'listbox__wrapper___3oIYc', button: 'listbox__button___2Lnmh', list: 'listbox__list___1kXd3', list-item: 'listbox__list-item___FAKpW' }
-menu: { list: 'menu__list___3AHuN', sub-list: 'menu__sub-list___3w9jR', list-item: 'menu__list-item___1uTC_' }
+menu: { nav: 'menu__nav___3Vy_l', list: 'menu__list___3AHuN', list-item: 'menu__list-item___1uTC_', has-children: 'menu__has-children___c6sJE', sub-list: 'menu__sub-list___3w9jR' }
 dialog: { dialog: 'dialog__dialog___3UUuL', link: 'dialog__link___29suk', closeButton: 'dialog__closeButton___pBXw4', doc-link: 'dialog__doc-link___2RaPu' }
-menubar: { nav: 'menubar__nav___3sKJ3', list: 'menubar__list___6Sh-s', list-item: 'menubar__list-item___20MNG', sub-list: 'menubar__sub-list___3zYcF' }
+menubar: { nav: 'menubar__nav___3sKJ3', list: 'menubar__list___6Sh-s', list-item: 'menubar__list-item___20MNG', has-children: 'menubar__has-children___303w5', sub-list: 'menubar__sub-list___3zYcF' }
 disclosure: { list: 'disclosure__list___1AiFp', list-item: 'disclosure__list-item___Jkcxx', button: 'disclosure__button___3dxoV', info: 'disclosure__info___23-hV' }
-menubutton: { wrapper: 'menubutton__wrapper___ewinl', button: 'menubutton__button___3RCmL', menu-wrapper: 'menubutton__menu-wrapper___3DOED', menu: 'menubutton__menu___3HJaf', sub-menu: 'menubutton__sub-menu___3FOhf', menu-item: 'menubutton__menu-item___2tbUu' }
+menubutton: { wrapper: 'menubutton__wrapper___ewinl', button: 'menubutton__button___3RCmL', menu-wrapper: 'menubutton__menu-wrapper___3DOED', nav: 'menubutton__nav___aPM5j', menu: 'menubutton__menu___3HJaf', menu-item: 'menubutton__menu-item___2tbUu', has-children: 'menubutton__has-children___2KPmi', sub-menu: 'menubutton__sub-menu___3FOhf' }

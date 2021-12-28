@@ -39,6 +39,11 @@ _**`options`**_ `object`
 
 ### Available Options
 
+`MenuButton` extends `Popup` and passes its own `type` option, which can't be overriden.  
+All other [`Popup` options](../Popup/README.md) are available for `MenuButton`.
+
+#### Additional Options
+
 _**`list`**_`= null`  
 > Use this option if neither of the following should be used as the Menu list:  
 > 1. The target element, if it is an instance of `HTMLUListElement`

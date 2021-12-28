@@ -171,6 +171,7 @@ describe('Disclosure with non-default configuration', () => {
       {
         loadOpen: true,
         allowOutsideClick: false,
+        useHiddenAttribute: false,
       }
     );
   });
@@ -193,6 +194,23 @@ describe('Disclosure with non-default configuration', () => {
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
   });
 
+  it('Should not manage the target element\'s `hidden` attribute', () => {
+    disclosure.open();
+    expect(disclosure.target.getAttribute('hidden')).toBeNull();
+
+    disclosure.close();
+    expect(disclosure.target.getAttribute('hidden')).toBeNull();
+
+    /**
+     * Add the `hidden` attribute, then test that it isn't removed since we've
+     * set `useHiddenAttribute` to `false`.
+     */
+    disclosure.target.setAttribute('hidden', 'hidden-test');
+
+    disclosure.destroy();
+    expect(disclosure.target.getAttribute('hidden')).toEqual('hidden-test');
+  });
+
   it('Should load open', () => {
     expect(disclosure.getState().expanded).toBeTruthy();
   });
@@ -202,7 +220,6 @@ describe('Disclosure with non-default configuration', () => {
     expect(disclosure.getState().expanded).toBeFalsy();
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
   });
 });
 

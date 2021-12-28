@@ -1,1 +1,1 @@
-global: { css: 'build/css/global.5c404dca0188acb851b2.min.css', js: 'build/js/global.655caddca734f61a484c.bundle.min.js' }
+global: { css: 'build/css/global.css', js: 'build/js/global.bundle.js' }
