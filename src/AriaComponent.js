@@ -197,18 +197,17 @@ export default class AriaComponent {
    * Set a reference to the class instance on the element upon which the class
    * is instantiated.
    *
-   * @param {array}  elements An array of elements upon which to add a reference to `this`.
-   * @param {string} propName Override the string description.
+   * @param {HTMLElement} elements One or more elements upon which to add a reference to `this`.
    */
-  setSelfReference(elements, propName) {
-    const name = propName || this.stringDescription.toLowerCase();
-
-    const referenceElements = [...elements].map((element) => {
-      Object.defineProperty(
-        element,
-        name,
-        { value: this, configurable: true }
-      );
+  setSelfReference(...elements) {
+    const referenceElements = elements.map((element) => {
+      if (null !== element) {
+        Object.defineProperty(
+          element,
+          this.stringDescription.toLowerCase(),
+          { value: this, configurable: true }
+        );
+      }
 
       return element;
     });

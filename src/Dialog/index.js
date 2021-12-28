@@ -105,10 +105,10 @@ export default class Dialog extends AriaComponent {
     }
 
     /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
      */
-    super.setSelfReference([this.controller, this.target]);
+    super.setSelfReference(this.controller, this.target);
 
     /*
      * Collect the Dialog's interactive child elements. This is an initial pass

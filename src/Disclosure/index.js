@@ -83,10 +83,10 @@ export default class Disclosure extends AriaComponent {
    */
   init() {
     /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
      */
-    super.setSelfReference([this.controller, this.target]);
+    super.setSelfReference(this.controller, this.target);
 
     // Component state is initially set in the constructor.
     const { expanded } = this.state;
