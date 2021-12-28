@@ -125,10 +125,10 @@ export default class Tablist extends AriaComponent {
     // Set attributes for each tab.
     this.tabLinks.forEach((tab, index) => {
       /*
-       * A reference to the class instance added to the controller and target
-       * elements to enable external interactions with this instance.
+       * Add a reference to the class instance to enable external interactions
+       * with this instance.
        */
-      super.setSelfReference([tab]);
+      super.setSelfReference(tab);
 
       // Ensure each tab has an ID.
       setUniqueId(tab);
@@ -156,7 +156,7 @@ export default class Tablist extends AriaComponent {
        * Add a reference to the class instance to enable external interactions
        * with this instance.
        */
-      super.setSelfReference([panel]);
+      super.setSelfReference(panel);
 
       // Ensure each panel has an ID.
       setUniqueId(panel);

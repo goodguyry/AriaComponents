@@ -89,10 +89,10 @@ export default class MenuBar extends AriaComponent {
    */
   init() {
     /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
      */
-    super.setSelfReference([this.list]);
+    super.setSelfReference(this.list);
 
     // Set the menu role.
     this.list.setAttribute('role', 'menubar');
@@ -199,7 +199,7 @@ export default class MenuBar extends AriaComponent {
 
       // Set Popup self-references.
       Object.getPrototypeOf(popup).setSelfReference
-        .call(popup, [controller, target], 'popup');
+        .call(popup, controller, target);
 
       // If target isn't a UL, find the UL in target and use it.
       const list = ('UL' === target.nodeName)

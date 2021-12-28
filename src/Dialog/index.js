@@ -105,10 +105,10 @@ export default class Dialog extends AriaComponent {
     }
 
     /*
-     * A reference to the class instance added to the controller and target
-     * elements to enable external interactions with this instance.
+     * Add a reference to the class instance to enable external interactions
+     * with this instance.
      */
-    super.setSelfReference([this.controller, this.target]);
+    super.setSelfReference(this.controller, this.target);
 
     /*
      * Collect the Dialog's interactive child elements. This is an initial pass
@@ -159,7 +159,6 @@ export default class Dialog extends AriaComponent {
 
     // Set additional attributes.
     this.target.setAttribute('role', 'dialog');
-    this.target.setAttribute('aria-modal', 'true');
 
     // Add event listeners.
     this.controller.addEventListener('click', this.controllerHandleClick);
@@ -375,7 +374,6 @@ export default class Dialog extends AriaComponent {
     }
 
     this.target.removeAttribute('role');
-    this.target.removeAttribute('aria-modal');
 
     // Remove tabindex attribute.
     tabIndexAllow(this.interactiveChildElements);
