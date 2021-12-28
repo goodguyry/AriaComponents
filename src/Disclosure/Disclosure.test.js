@@ -205,10 +205,10 @@ describe('Disclosure with non-default configuration', () => {
      * Add the `hidden` attribute, then test that it isn't removed since we've
      * set `useHiddenAttribute` to `false`.
      */
-    disclosure.target.setAttribute('hidden', '');
+    disclosure.target.setAttribute('hidden', 'hidden-test');
 
     disclosure.destroy();
-    expect(disclosure.target.getAttribute('hidden')).toEqual('');
+    expect(disclosure.target.getAttribute('hidden')).toEqual('hidden-test');
   });
 
   it('Should load open', () => {

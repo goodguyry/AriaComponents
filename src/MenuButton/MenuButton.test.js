@@ -44,7 +44,7 @@ controller.addEventListener('stateChange', onStateChange);
 controller.addEventListener('init', onInit);
 controller.addEventListener('destroy', onDestroy);
 
-const menuButton = new MenuButton(controller, { list });
+const menuButton = new MenuButton(controller, { list, useHiddenAttribute: false });
 
 describe('MenuButton adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {
@@ -78,7 +78,8 @@ describe('MenuButton adds and manipulates DOM element attributes', () => {
 
   it('Should add the correct attributes to the menuButton target', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
+    // We passsed `useHiddenAttribute: false`.
+    expect(target.getAttribute('hidden')).toBeNull();
   });
 
   it('Should run class methods and subscriber functions', () => {
@@ -104,10 +105,31 @@ it('Should fire `stateChange` event on state change: open', () => {
   });
 });
 
+it('Should not manage the target element\'s `hidden` attribute', () => {
+  /**
+   * Add the `hidden` attribute, then test that it isn't removed since we've
+   * set `useHiddenAttribute` to `false`.
+   */
+  target.setAttribute('hidden', 'hidden-test');
+
+  menuButton.show();
+  expect(target.getAttribute('hidden')).toBe('hidden-test');
+
+  menuButton.hide();
+  expect(target.getAttribute('hidden')).toBe('hidden-test');
+
+  // Clear the test attribute.
+  target.removeAttribute('hidden');
+
+  // The next test expects the target to be open.
+  menuButton.show();
+});
+
+
 it('Should fire `stateChange` event on state change: hidden', () => {
   menuButton.hide();
   expect(menuButton.getState().expanded).toBe(false);
-  expect(onStateChange).toHaveBeenCalledTimes(4);
+  expect(onStateChange).toHaveBeenCalledTimes(7);
 
   return Promise.resolve().then(() => {
     const { detail } = getEventDetails(onStateChange);
