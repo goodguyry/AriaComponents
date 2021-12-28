@@ -91,7 +91,7 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('hidden')).toEqual('');
 
       expect(target.getAttribute('role')).toEqual('dialog');
-      expect(target.getAttribute('aria-modal')).toEqual('true');
+      expect(target.getAttribute('aria-modal')).toBeNull();
     });
   });
 
