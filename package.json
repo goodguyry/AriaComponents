@@ -15,30 +15,24 @@
   },
   "homepage": "https://goodguyry.github.io/AriaComponents/",
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/eslint-parser": "^7.15.0",
-    "@babel/preset-env": "^7.14.7",
-    "babel-jest": "^27.0.5",
-    "eslint": "^7.29.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.24.0",
-    "jest": "^27.0.5",
-    "jest-cli": "^27.0.5"
+    "@babel/core": "^7.20.2",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-env": "^7.20.2",
+    "babel-jest": "^29.3.1",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.11",
+    "jest": "^29.3.1",
+    "jest-cli": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1"
   },
   "scripts": {
     "test": "jest",
     "lint": "eslint src/**/*.js",
     "watch": "jest --watchAll",
     "watch:verbose": "jest --watchAll  --verbose"
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFiles": [
-      "<rootDir>/setupFile.js"
-    ]
-  },
-  "dependencies": {}
+  }
 }
