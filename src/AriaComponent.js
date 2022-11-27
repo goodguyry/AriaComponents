@@ -28,6 +28,33 @@ export default class AriaComponent {
   }
 
   /**
+   * Get the controlling element based on its `target` attribute matching the
+   * target element's ID attribute.
+   *
+   * @param  {HTMLElement} controller The component's controlling element.
+   * @return {HTMLElement|null}
+   */
+  static getControllingElement(target) {
+    if (! target.hasAttribute('id')) {
+      AriaComponent.configurationError(
+        'The target element is missing the required \'id\' attribute'
+      );
+    }
+
+    const targetId = target.id;
+    const controller = document.querySelector(`[target="${targetId}"]`);
+
+    if (null === controller) {
+      AriaComponent.configurationError(
+        // eslint-disable-next-line max-len
+        `A controlling element with \`target\` attribute of '${targetId}' is not found`
+      );
+    }
+
+    return controller;
+  }
+
+  /**
    * Throw a confguration error.
    *
    * @param {string} message The error message.
