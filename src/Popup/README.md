@@ -6,7 +6,7 @@ Class for setting up an interactive popup button to activate a target element.
 ## Example
 
 ```html
-<button target="popup">Open</button>
+<button aria-controls="popup">Open</button>
 <div id="popup">
   <ul>
     <li><a href="example.com"></a></li>
@@ -31,7 +31,7 @@ Popup(controller = null, options = {});
 ```
 
 _**`controller`**_ `HTMLElement`  
-> The element used to activate the Popup target; required to have a `target`  
+> The element used to activate the Popup target; required to have a `aria-controls`  
 attribute with a value matching the `id` attribute value of the target element.
 
 _**`options`**_ `object`  

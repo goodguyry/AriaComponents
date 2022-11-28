@@ -16,7 +16,7 @@ const {
 } = events;
 
 const listboxMarkup = `
-  <button target="options">Choose</button>
+  <button aria-controls="options">Choose</button>
   <ul id="options">
     <li>Anchorage</li>
     <li>Baltimore</li>

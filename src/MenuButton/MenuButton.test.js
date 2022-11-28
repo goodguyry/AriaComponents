@@ -14,7 +14,7 @@ const {
 } = events;
 
 const menuButtonMarkup = `
-  <button target="dropdown">Open</button>
+  <button aria-controls="dropdown">Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>

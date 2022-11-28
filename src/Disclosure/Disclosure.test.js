@@ -11,7 +11,7 @@ const {
 const disclosureMarkup = `
   <dl>
     <dt>
-      <button target="answer">What is Lorem Ipsum?</button>
+      <button aria-controls="answer">What is Lorem Ipsum?</button>
     </dt>
     <dd id="answer">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -62,7 +62,6 @@ describe('Disclosure with default configuration', () => {
     it('Should add the correct attributes to the disclosure controller',
       () => {
         expect(controller.getAttribute('aria-expanded')).toEqual('false');
-        expect(controller.getAttribute('aria-controls')).toEqual(target.id);
         expect(controller.getAttribute('tabindex')).toBeNull();
         expect(controller.getAttribute('aria-owns')).toEqual(target.id);
       });
@@ -139,7 +138,7 @@ describe('Disclosure with default configuration', () => {
 
     expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toEqual(target.id);
     expect(controller.getAttribute('tabindex')).toBeNull();
     // The test markup isn't detatched, so this doesn't apply.
     expect(controller.getAttribute('aria-owns')).toBeNull();

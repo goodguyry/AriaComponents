@@ -5,7 +5,7 @@ import isInstanceOf from './isInstanceOf';
 
 // Set up our document body
 document.body.innerHTML = `
-  <button target="dropdown">Open</button>
+  <button aria-controls="dropdown">Open</button>
   <div class="wrapper" id="dropdown">
     <ul class="menu">
       <li><a href="example.com"></a></li>

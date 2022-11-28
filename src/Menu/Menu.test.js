@@ -15,7 +15,7 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
-        <button target="first-disclosure" class="first-item">Fruit</button>
+        <button aria-controls="first-disclosure" class="first-item">Fruit</button>
         <ul id="first-disclosure" class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
@@ -25,7 +25,7 @@ const menuMarkup = `
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
         <svg><use href="my-icon"></use></svg>
-        <a target="second-disclosure" class="third-item" href="example.com">Vegetables</a>
+        <a aria-controls="second-disclosure" class="third-item" href="example.com">Vegetables</a>
         <ul id="second-disclosure" class="sublist2">
           <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
           <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>

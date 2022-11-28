@@ -12,7 +12,7 @@ const {
 } = events;
 
 const popupMarkup = `
-  <a target="dropdown" href="#dropdown" class="link">Open</a>
+  <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -61,7 +61,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should add the correct attributes to the popup controller', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
 
     // Link controller should get button role.
     expect(controller.getAttribute('role')).toEqual('button');
@@ -218,7 +217,7 @@ describe('Popup destroy', () => {
     }
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
     expect(controller.getAttribute('aria-owns')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('hidden')).toBeNull();

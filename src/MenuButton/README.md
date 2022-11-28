@@ -6,7 +6,7 @@ Class for setting up an interactive popup button to activate a target menu eleme
 ## Example
 
 ```html
-<button target="menu">Open</button>
+<button aria-controls="menu">Open</button>
 <div id="menu">
   <ul>
     <li><a href="example.com"></a></li>
@@ -31,8 +31,9 @@ MenuButton(controller = null, options = {});
 ```
 
 _**`controller`**_ `HTMLElement`  
-> The element used to activate the MenuButton target; required to have a `target`  
-attribute with a value matching the `id` attribute value of the target element.
+> The element used to activate the MenuButton target; required to have a  
+> `aria-controls` attribute with a value matching the `id` attribute value of the  
+> target element.
 
 _**`options`**_ `object`  
 > Configuration options.
