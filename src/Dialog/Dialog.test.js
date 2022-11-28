@@ -53,11 +53,11 @@ const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
-controller.addEventListener('stateChange', onStateChange);
-controller.addEventListener('init', onInit);
-controller.addEventListener('destroy', onDestroy);
+target.addEventListener('stateChange', onStateChange);
+target.addEventListener('init', onInit);
+target.addEventListener('destroy', onDestroy);
 
-const modal = new Dialog(controller);
+const modal = new Dialog(target);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {
@@ -202,7 +202,7 @@ describe('Dialog with default configuration', () => {
       return Promise.resolve().then(() => {
         const { detail } = getEventDetails(onDestroy);
 
-        expect(detail.element).toStrictEqual(controller);
+        expect(detail.element).toStrictEqual(target);
         expect(detail.instance).toStrictEqual(modal);
       });
     });
