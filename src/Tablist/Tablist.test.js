@@ -15,9 +15,9 @@ const {
 
 const tablistMarkup = `
   <ul class="tablist">
-    <li><a href="#first-panel"></a></li>
-    <li><a href="#second-panel"></a></li>
-    <li><a href="#third-panel"></a></li>
+    <li><a aria-controls="first-panel" href="#first-panel"></a></li>
+    <li><a aria-controls="second-panel" href="#second-panel"></a></li>
+    <li><a aria-controls="third-panel" href="#third-panel"></a></li>
   </ul>
   <div id="first-panel" class="panel">
     <h1>The Article Title</h1>
@@ -60,9 +60,9 @@ const panels = document.querySelectorAll('.panel');
 let tablist = {};
 
 // Cached selectors.
-const firstTab = document.querySelector('a[href="#first-panel"]');
-const secondTab = document.querySelector('a[href="#second-panel"]');
-const thirdTab = document.querySelector('a[href="#third-panel"]');
+const firstTab = document.querySelector('[aria-controls="first-panel"]');
+const secondTab = document.querySelector('[aria-controls="second-panel"]');
+const thirdTab = document.querySelector('[aria-controls="third-panel"]');
 const firstPanel = document.querySelector('#first-panel');
 const secondPanel = document.querySelector('#second-panel');
 const thirdPanel = document.querySelector('#third-panel');
@@ -115,7 +115,6 @@ describe('Tablist with default configuration', () => {
           expect(tab.getAttribute('aria-selected')).toEqual((0 === index) ? 'true' : null);
           expect(tab.getAttribute('tabindex')).toEqual((0 === index) ? null : '-1');
           expect(tab.id).not.toBeNull();
-          expect(tabLinks[index].getAttribute('aria-controls')).toEqual(panels[index].id);
         });
 
         Array.from(panels).forEach((panel, index) => {
@@ -212,7 +211,7 @@ describe('Tablist with default configuration', () => {
         expect(tab.getAttribute('role')).toBeNull();
         expect(tab.getAttribute('aria-selected')).toBeNull();
         expect(tab.getAttribute('tabindex')).toBeNull();
-        expect(tabLinks[index].getAttribute('aria-controls')).toBeNull();
+        expect(tabLinks[index].getAttribute('aria-controls')).toEqual(panels[index].id);
       });
 
       Array.from(panels).forEach((panel) => {

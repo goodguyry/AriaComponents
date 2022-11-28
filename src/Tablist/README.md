@@ -8,9 +8,9 @@ at a time.
 
 ```html
 <ul class="tabs">
-  <li><a href="#first-panel"></a></li>
-  <li><a href="#second-panel"></a></li>
-  <li><a href="#third-panel"></a></li>
+  <li><a aria-controls="first-panel" href="#first-panel"></a></li>
+  <li><a aria-controls="second-panel" href="#second-panel"></a></li>
+  <li><a aria-controls="third-panel" href="#third-panel"></a></li>
 </ul>
 <div id="first-panel" class="panel">
   <h3>The First Panel Title</h3>
@@ -51,8 +51,8 @@ Tablist(tabsListElement = null);
 ```
 
 _**`tabsListElement`**_ `HTMLUListElement`  
-> The list element containing tab links; each link's `href` is a fragment  
-identifier linking to the associated panel.
+> The list element containing tab links; each link must contain an \`aria-controls\`  
+> attribute referencing the ID of the associated tabPanel.
 
 ## API
 
