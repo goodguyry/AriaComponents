@@ -75,7 +75,10 @@ _**`Disclosure.toString()`**_
 > Returns `'[object Disclosure]'`.
 
 _**`Disclosure.on(event, listener, options)`**_  
-> Registers an event handler for the given event type.
+> Registers an event handler for the given event type.  
+>
+> **Note**: It is not possible to respond to the `init` event using the  
+> `on` and `off` methods.
 
 _**`Disclosure.off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.

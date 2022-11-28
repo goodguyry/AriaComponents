@@ -98,7 +98,10 @@ _**`Dialog.toString()`**_
 > Returns `'[object Dialog]'`.
 
 _**`Dialog.on(event, listener, options)`**_  
-> Registers an event handler for the given event type.
+> Registers an event handler for the given event type.  
+>
+> **Note**: It is not possible to respond to the `init` event using the  
+> `on` and `off` methods.
 
 _**`Dialog.off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.

@@ -79,7 +79,10 @@ _**`Tablist.toString()`**_
 > Returns `'[object Tablist]'`.
 
 _**`Tablist.on(event, listener, options)`**_  
-> Registers an event handler for the given event type.
+> Registers an event handler for the given event type.  
+>
+> **Note**: It is not possible to respond to the `init` event using the  
+> `on` and `off` methods.
 
 _**`Tablist.off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.
