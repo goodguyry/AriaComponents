@@ -15,7 +15,7 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li>
-        <button target="first-disclosure" class="first-item">Fruit</button>
+        <button aria-controls="first-disclosure" class="first-item">Fruit</button>
         <ul id="first-disclosure" class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
@@ -25,7 +25,7 @@ const menuMarkup = `
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
         <svg><use href="my-icon"></use></svg>
-        <a target="second-disclosure" class="third-item" href="example.com">Vegetables</a>
+        <a aria-controls="second-disclosure" class="third-item" href="example.com">Vegetables</a>
         <ul id="second-disclosure" class="sublist2">
           <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
           <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>
@@ -119,61 +119,77 @@ describe('Menu collects DOM elements and adds attributes', () => {
 });
 
 describe('MenuItem correctly responds to events', () => {
-  it('Should move to the next sibling list item with down arrow key',
+  it(
+    'Should move to the next sibling list item with down arrow key',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(domElements.listSecondItem);
-    });
+    }
+  );
 
-  it('Should move to the first sibling list item with up arrow key from last item',
+  it(
+    'Should move to the first sibling list item with up arrow key from last item',
     () => {
       domElements.listLastItem.focus();
       domElements.listLastItem.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
+    }
+  );
 
-  it('Should move to the last list item with end key',
+  it(
+    'Should move to the last list item with end key',
     () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(domElements.listLastItem);
-    });
+    }
+  );
 
-  it('Should move to the first list item with home key',
+  it(
+    'Should move to the first list item with home key',
     () => {
       domElements.listThirdItem.focus();
       domElements.listThirdItem.dispatchEvent(keydownHome);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
+    }
+  );
 
-  it('Should move to the previous sibling list item with up arrow key',
+  it(
+    'Should move to the previous sibling list item with up arrow key',
     () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownUp);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
+    }
+  );
 
-  it('Should move to the last sibling list item with up arrow key from first item',
+  it(
+    'Should move to the last sibling list item with up arrow key from first item',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownUp);
       expect(document.activeElement).toEqual(domElements.listLastItem);
-    });
+    }
+  );
 
-  it('Should move to the first sublist item with right arrow key',
+  it(
+    'Should move to the first sublist item with right arrow key',
     () => {
       domElements.listThirdItem.focus();
       domElements.listThirdItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.sublistTwoFirstItem);
-    });
+    }
+  );
 
-  it('Should move to the parent list with left arrow key',
+  it(
+    'Should move to the parent list with left arrow key',
     () => {
       domElements.sublistTwoSecondItem.focus();
       domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listThirdItem);
-    });
+    }
+  );
 
   it('Should scope search to the current list', () => {
     domElements.sublistTwoLastItem.focus();
@@ -252,7 +268,8 @@ describe('Menu instatiates submenus as Disclosures', () => {
   });
 
   describe('MenuItem Disclosure correctly responds to events', () => {
-    it('Should expand the Disclosure and move to the first sublist item with right arrow key',
+    it(
+      'Should expand the Disclosure and move to the first sublist item with right arrow key',
       () => {
         domElements.listThirdItem.focus();
         domElements.listThirdItem.dispatchEvent(keydownRight);
@@ -267,15 +284,19 @@ describe('Menu instatiates submenus as Disclosures', () => {
           expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
           expect(target).toStrictEqual(domElements.listThirdItem);
         });
-      });
+      }
+    );
 
-    it('Should move to the next sibling list item with down arrow key',
+    it(
+      'Should move to the next sibling list item with down arrow key',
       () => {
         domElements.sublistTwoFirstItem.dispatchEvent(keydownDown);
         expect(document.activeElement).toEqual(domElements.sublistTwoSecondItem);
-      });
+      }
+    );
 
-    it('Should collapse the Disclosure and move to the parent list with left arrow key',
+    it(
+      'Should collapse the Disclosure and move to the parent list with left arrow key',
       () => {
         domElements.sublistTwoSecondItem.dispatchEvent(keydownLeft);
         expect(domElements.listThirdItem.disclosure.getState().expanded).toBe(false);
@@ -289,13 +310,16 @@ describe('Menu instatiates submenus as Disclosures', () => {
           expect(detail.instance).toStrictEqual(domElements.listThirdItem.disclosure);
           expect(target).toStrictEqual(domElements.listThirdItem);
         });
-      });
+      }
+    );
 
-    it('Should move to the next sibling list item with down arrow key',
+    it(
+      'Should move to the next sibling list item with down arrow key',
       () => {
         domElements.listThirdItem.dispatchEvent(keydownDown);
         expect(document.activeElement).toEqual(domElements.listFourthItem);
-      });
+      }
+    );
   });
 
   it('Should remove all Menu Disclosure DOM attributes when destroyed', () => {
@@ -304,7 +328,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(list.getAttribute('role')).toBeNull();
 
     expect(domElements.listFirstItem.getAttribute('aria-expanded')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('aria-controls')).toBeNull();
+    expect(domElements.listFirstItem.getAttribute('aria-controls')).toEqual(domElements.sublistOne.id);
     expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
     // The test markup isn't detatched, so this doesn't apply.
     expect(domElements.listFirstItem.getAttribute('aria-owns')).toBeNull();

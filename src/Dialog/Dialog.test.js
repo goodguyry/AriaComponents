@@ -20,7 +20,7 @@ const dialogMarkup = `
       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
       sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
       mollit anim id est laborum.</p>
-      <a target="dialog" class="link" href="#dialog">Open dialog</a>
+      <a aria-controls="dialog" class="link" href="#dialog">Open dialog</a>
     </article>
   </main>
   <footer class="site-footer">Site footer</footer>

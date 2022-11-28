@@ -14,7 +14,7 @@ const {
 } = events;
 
 const menuButtonMarkup = `
-  <button target="dropdown">Open</button>
+  <button aria-controls="dropdown">Open</button>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -125,7 +125,6 @@ it('Should not manage the target element\'s `hidden` attribute', () => {
   menuButton.show();
 });
 
-
 it('Should fire `stateChange` event on state change: hidden', () => {
   menuButton.hide();
   expect(menuButton.getState().expanded).toBe(false);
@@ -141,87 +140,107 @@ it('Should fire `stateChange` event on state change: hidden', () => {
 });
 
 describe('MenuButton correctly responds to events', () => {
-  it('Should close the menuButton when the ESC key is pressed',
+  it(
+    'Should close the menuButton when the ESC key is pressed',
     () => {
       menuButton.show();
       controller.focus();
       controller.dispatchEvent(keydownEsc);
       expect(menuButton.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should move focus to the first menu item with Return key from controller',
+  it(
+    'Should move focus to the first menu item with Return key from controller',
     () => {
       menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownReturn);
       expect(menuButton.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(domFirstChild);
-    });
+    }
+  );
 
-  it('Should move focus to the first menu item with Spacebar from controller',
+  it(
+    'Should move focus to the first menu item with Spacebar from controller',
     () => {
       menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownSpace);
       expect(menuButton.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(domFirstChild);
-    });
+    }
+  );
 
-  it('Should move focus to the first menu item with down arrow from controller',
+  it(
+    'Should move focus to the first menu item with down arrow from controller',
     () => {
       menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownDown);
       expect(menuButton.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(domFirstChild);
-    });
+    }
+  );
 
-  it('Should move focus to the last menu item with up arrow from controller',
+  it(
+    'Should move focus to the last menu item with up arrow from controller',
     () => {
       menuButton.hide();
       controller.focus();
       controller.dispatchEvent(keydownUp);
       expect(menuButton.getState().expanded).toBeTruthy();
       expect(document.activeElement).toEqual(domLastChild);
-    });
+    }
+  );
 
-  it('Should move focus to the first menu child on TAB from controller',
+  it(
+    'Should move focus to the first menu child on TAB from controller',
     () => {
       menuButton.show();
       controller.dispatchEvent(keydownTab);
       expect(document.activeElement).toEqual(domFirstChild);
-    });
+    }
+  );
 
-  it('Should close the menuButton and focus the controller when the ESC key is pressed',
+  it(
+    'Should close the menuButton and focus the controller when the ESC key is pressed',
     () => {
       menuButton.show();
       target.dispatchEvent(keydownEsc);
       expect(menuButton.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the menuButton when tabbing from the last child',
+  it(
+    'Should close the menuButton when tabbing from the last child',
     () => {
       menuButton.show();
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
       expect(menuButton.getState().expanded).toBeFalsy();
-    });
+    }
+  );
 
-  it('Should focus the controller when tabbing back from the first child',
+  it(
+    'Should focus the controller when tabbing back from the first child',
     () => {
       menuButton.show();
       domFirstChild.focus();
       target.dispatchEvent(keydownShiftTab);
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the menuButton when an outside element it clicked',
+  it(
+    'Should close the menuButton when an outside element it clicked',
     () => {
       document.body.dispatchEvent(click);
       expect(menuButton.getState().expanded).toBeFalsy();
-    });
+    }
+  );
 });
 
 it('Should destroy the menuButton as expected', () => {
@@ -229,7 +248,7 @@ it('Should destroy the menuButton as expected', () => {
 
   expect(controller.getAttribute('aria-haspopup')).toBeNull();
   expect(controller.getAttribute('aria-expanded')).toBeNull();
-  expect(controller.getAttribute('aria-controls')).toBeNull();
+  expect(controller.getAttribute('aria-controls')).toEqual(target.id);
   expect(target.getAttribute('aria-hidden')).toBeNull();
   expect(target.getAttribute('hidden')).toBeNull();
 

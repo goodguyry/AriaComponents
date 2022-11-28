@@ -69,7 +69,7 @@ export default class Tablist extends AriaComponent {
      */
     const { tabLinks, panels } = Array.from(this.tabs.children)
       .reduce((acc, child) => {
-        const tabLink = child.querySelector('a[href]');
+        const tabLink = child.querySelector('a[aria-controls]');
 
         if (null === tabLink) {
           return acc;
@@ -142,8 +142,6 @@ export default class Tablist extends AriaComponent {
         // Set the first tab as selected by default.
         tab.setAttribute('aria-selected', 'true');
       }
-
-      tab.setAttribute('aria-controls', this.panels[index].id);
     });
 
     // Add event listeners.
@@ -392,7 +390,6 @@ export default class Tablist extends AriaComponent {
       tab.removeAttribute('role');
       tab.removeAttribute('aria-selected');
       tab.removeAttribute('tabindex');
-      tab.removeAttribute('aria-controls');
 
       tab.removeEventListener('click', this.tabsHandleClick);
       tab.removeEventListener('keydown', this.tabsHandleKeydown);

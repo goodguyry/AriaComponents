@@ -6,7 +6,7 @@ Class for independently revealing and hiding inline content.
 ## Example
 
 ```html
-<button target="disclosure">Open</button>
+<button aria-controls="disclosure">Open</button>
 <div id="disclosure">
   <ul>
     <li><a href="example.com"></a></li>
@@ -31,7 +31,7 @@ Disclosure(controller = null, options = {});
 ```
 
 _**`controller`**_ `HTMLElement`  
-> The element used to activate the Disclosure target; required to have a `target`  
+> The element used to activate the Disclosure target; required to have a `aria-controls`  
 attribute with a value matching the `id` attribute value of the target element.
 
 _**`options`**_ `object`  

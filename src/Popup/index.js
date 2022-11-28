@@ -104,7 +104,6 @@ export default class Popup extends AriaComponent {
     // Add controller attributes
     this.controller.setAttribute('aria-haspopup', this.type);
     this.controller.setAttribute('aria-expanded', 'false');
-    this.controller.setAttribute('aria-controls', this.target.id);
     setUniqueId(this.controller);
 
     /**
@@ -330,7 +329,6 @@ export default class Popup extends AriaComponent {
     // Remove controller attributes.
     this.controller.removeAttribute('aria-haspopup');
     this.controller.removeAttribute('aria-expanded');
-    this.controller.removeAttribute('aria-controls');
     this.controller.removeAttribute('aria-owns');
 
     // Remove role and tabindex added to a link controller.

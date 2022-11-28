@@ -20,7 +20,7 @@ Class for setting up an interactive Dialog element.
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.</p>
 
-        <button target="dialog">Open dialog</button>
+        <button aria-controls="dialog">Open dialog</button>
       </article>
     </main>
   </div>
@@ -52,7 +52,7 @@ Dialog(target = null, options = {});
 
 _**`target`**_ `HTMLElement`  
 > The element used as the Dialog; required to have an `id` attribute with a value  
-> matching the `target` attribute value of the controlling element.
+> matching the `aria-controls` attribute value of the controlling element.
 
 _**`options`**_ `object`  
 > Configuration options.

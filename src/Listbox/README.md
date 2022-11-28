@@ -6,7 +6,7 @@ Class for setting up an interactive Listbox element.
 ## Example
 
 ```html
-<button target="options">Choose</button>
+<button aria-controls="options">Choose</button>
 <ul id="options">
   <li>Anchorage</li>
   <li>Baltimore</li>
@@ -34,7 +34,7 @@ Listbox(controller = null, options = {});
 ```
 
 _**`controller`**_ `HTMLElement`  
-> The element used to activate the Listbox target; required to have a `target`  
+> The element used to activate the Listbox target; required to have a `aria-controls`  
 attribute with a value matching the `id` attribute value of the target element.
 
 ### Available Options

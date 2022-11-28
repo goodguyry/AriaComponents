@@ -6,8 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Changed**
 
 - Changes constructor parameters to accept a component element and an object of options (#51)
-- Requires activating elements to have a target attribute matching the ID value of the target element (#51)
-- MenuButton, and ListBox now _extend_ Popup, rather than using it internally (#54)
+- Requires activating elements to have an `aria-current` attribute matching the ID value of the target element (#51, #66)
+- MenuButton and ListBox now _extend_ Popup, rather than using it internally (#54)
 - Dialog is no longer a Popup (#59)
 - Dialog focuses the target element on open (#51)
 - Loosens MenuBar and Menu components' markup requirements (#48, 3385f2e)

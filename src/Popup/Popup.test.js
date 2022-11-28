@@ -12,7 +12,7 @@ const {
 } = events;
 
 const popupMarkup = `
-  <a target="dropdown" href="#dropdown" class="link">Open</a>
+  <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -61,7 +61,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
   it('Should add the correct attributes to the popup controller', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
 
     // Link controller should get button role.
     expect(controller.getAttribute('role')).toEqual('button');
@@ -147,20 +146,24 @@ describe('Popup correctly responds to events', () => {
     popup.show();
   });
 
-  it('Should close the popup when the ESC key is pressed',
+  it(
+    'Should close the popup when the ESC key is pressed',
     () => {
       controller.focus();
       controller.dispatchEvent(keydownEsc);
       expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should move focus to the first popup child on TAB from controller',
+  it(
+    'Should move focus to the first popup child on TAB from controller',
     () => {
       controller.dispatchEvent(keydownTab);
       expect(document.activeElement)
         .toEqual(domFirstChild);
-    });
+    }
+  );
 
   it('Should update Popup state with keyboard', () => {
     // Toggle popup
@@ -173,39 +176,49 @@ describe('Popup correctly responds to events', () => {
   });
 
   // eslint-disable-next-line max-len
-  it('Should close the popup and focus the controller when the ESC key is pressed',
+  it(
+    'Should close the popup and focus the controller when the ESC key is pressed',
     () => {
       target.dispatchEvent(keydownEsc);
       expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the popup when tabbing from the last child',
+  it(
+    'Should close the popup when tabbing from the last child',
     () => {
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
       expect(popup.getState().expanded).toBeFalsy();
-    });
+    }
+  );
 
-  it('Should not close the popup when tabbing back from the last child',
+  it(
+    'Should not close the popup when tabbing back from the last child',
     () => {
       domLastChild.focus();
       target.dispatchEvent(keydownShiftTab);
       expect(popup.getState().expanded).toBeTruthy();
-    });
+    }
+  );
 
-  it('Should focus the controller when tabbing back from the first child',
+  it(
+    'Should focus the controller when tabbing back from the first child',
     () => {
       domFirstChild.focus();
       target.dispatchEvent(keydownShiftTab);
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the popup when an outside element it clicked',
+  it(
+    'Should close the popup when an outside element it clicked',
     () => {
       document.body.dispatchEvent(click);
       expect(popup.getState().expanded).toBeFalsy();
-    });
+    }
+  );
 });
 
 describe('Popup destroy', () => {
@@ -218,7 +231,7 @@ describe('Popup destroy', () => {
     }
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
     expect(controller.getAttribute('aria-owns')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('hidden')).toBeNull();
