@@ -181,7 +181,7 @@ export default class MenuBar extends AriaComponent {
     // Initialize popups for nested lists.
     const { popups, subMenus } = this.menuBarItems.reduce((acc, controller) => {
       // Bail if there's no target attribute.
-      if (! controller.hasAttribute('target')) {
+      if (! controller.hasAttribute('aria-controls')) {
         return acc;
       }
 

@@ -3,19 +3,20 @@
  */
 export default class AriaComponent {
   /**
-   * Get the target element based on the controller's `target` attribute.
+   * Get the target element based on the controller's `aria-controls` attribute.
    *
    * @param  {HTMLElement} controller The component's controlling element.
    * @return {HTMLElement|null}
    */
   static getTargetElement(controller) {
-    if (! controller.hasAttribute('target')) {
+    if (! controller.hasAttribute('aria-controls')) {
       AriaComponent.configurationError(
-        'The component element is missing the required \'target\' attribute'
+        // eslint-disable-next-line max-len
+        'The component element is missing the required \'aria-controls\' attribute'
       );
     }
 
-    const targetId = controller.getAttribute('target');
+    const targetId = controller.getAttribute('aria-controls');
     const target = document.getElementById(targetId);
 
     if (null === target) {
@@ -42,12 +43,12 @@ export default class AriaComponent {
     }
 
     const targetId = target.id;
-    const controller = document.querySelector(`[target="${targetId}"]`);
+    const controller = document.querySelector(`[aria-controls="${targetId}"]`);
 
     if (null === controller) {
       AriaComponent.configurationError(
         // eslint-disable-next-line max-len
-        `A controlling element with \`target\` attribute of '${targetId}' is not found`
+        `A controlling element with \`aria-controls\` attribute of '${targetId}' is not found`
       );
     }
 

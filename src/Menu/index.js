@@ -170,7 +170,7 @@ export default class Menu extends AriaComponent {
       link.setAttribute('aria-posinset', index + 1);
 
       // Instantiate submenu Disclosures
-      if (this.collapse && link.hasAttribute('target')) {
+      if (this.collapse && link.hasAttribute('aria-controls')) {
         const disclosure = new Disclosure(
           link,
           { _stateDispatchesOnly: true }

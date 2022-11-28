@@ -104,7 +104,6 @@ export default class Disclosure extends AriaComponent {
 
     // Add controller attributes
     this.controller.setAttribute('aria-expanded', `${expanded}`);
-    this.controller.setAttribute('aria-controls', this.target.id);
 
     // Patch button role and behavior for non-button controller.
     if ('BUTTON' !== this.controller.nodeName) {
@@ -267,7 +266,6 @@ export default class Disclosure extends AriaComponent {
 
     // Remove controller attributes.
     this.controller.removeAttribute('aria-expanded');
-    this.controller.removeAttribute('aria-controls');
     this.controller.removeAttribute('aria-owns');
     this.controller.removeAttribute('tabindex');
 
