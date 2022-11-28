@@ -99,7 +99,8 @@ describe('Tablist with default configuration', () => {
       });
     });
 
-    it('Should add the correct attributes and overlay element',
+    it(
+      'Should add the correct attributes and overlay element',
       () => {
         expect(tabs.getAttribute('role')).toEqual('tablist');
 
@@ -129,7 +130,8 @@ describe('Tablist with default configuration', () => {
           expect(panel.getAttribute('aria-labelledby')).not.toBeNull();
           expect(panel.id).not.toBeNull();
         });
-      });
+      }
+    );
   });
 
   describe('Tablist methods work as expected', () => {

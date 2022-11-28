@@ -59,18 +59,22 @@ describe('Disclosure with default configuration', () => {
       });
     });
 
-    it('Should add the correct attributes to the disclosure controller',
+    it(
+      'Should add the correct attributes to the disclosure controller',
       () => {
         expect(controller.getAttribute('aria-expanded')).toEqual('false');
         expect(controller.getAttribute('tabindex')).toBeNull();
         expect(controller.getAttribute('aria-owns')).toEqual(target.id);
-      });
+      }
+    );
 
-    it('Should add the correct attributes to the disclosure target',
+    it(
+      'Should add the correct attributes to the disclosure target',
       () => {
         expect(target.getAttribute('aria-hidden')).toEqual('true');
         expect(target.getAttribute('hidden')).toEqual('');
-      });
+      }
+    );
   });
 
   describe('Disclosure correctly responds to events', () => {

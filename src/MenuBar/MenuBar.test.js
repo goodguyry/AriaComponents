@@ -122,7 +122,8 @@ describe('Menu collects DOM elements and adds attributes', () => {
 // Events:
 //    down moves into the sublist
 describe('Menu correctly responds to events', () => {
-  it('Should move to the next sibling list item with right arrow key',
+  it(
+    'Should move to the next sibling list item with right arrow key',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownRight);
@@ -140,61 +141,77 @@ describe('Menu correctly responds to events', () => {
         });
         expect(target).toStrictEqual(list);
       });
-    });
+    }
+  );
 
-  it('Should move to the previous sibling list item with left arrow key',
+  it(
+    'Should move to the previous sibling list item with left arrow key',
     () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
       expect(onStateChange).toHaveBeenCalledTimes(2);
-    });
+    }
+  );
 
-  it('Should move to the last list item with end key',
+  it(
+    'Should move to the last list item with end key',
     () => {
       domElements.listSecondItem.focus();
       domElements.listSecondItem.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(domElements.listLastItem);
       expect(onStateChange).toHaveBeenCalledTimes(3);
-    });
+    }
+  );
 
-  it('Should move to the first list item with home key',
+  it(
+    'Should move to the first list item with home key',
     () => {
       domElements.listThirdItem.focus();
       domElements.listThirdItem.dispatchEvent(keydownHome);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
+    }
+  );
 
-  it('Should move to the last sibling list item with left arrow key from first item',
+  it(
+    'Should move to the last sibling list item with left arrow key from first item',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownLeft);
       expect(document.activeElement).toEqual(domElements.listLastItem);
-    });
+    }
+  );
 
-  it('Should move to the first sibling list item with right arrow key from last item',
+  it(
+    'Should move to the first sibling list item with right arrow key from last item',
     () => {
       domElements.listLastItem.focus();
       domElements.listLastItem.dispatchEvent(keydownRight);
       expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
+    }
+  );
 
-  it('Should move focus to the first popup child with down arrow from Menu bar',
+  it(
+    'Should move focus to the first popup child with down arrow from Menu bar',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownDown);
       expect(document.activeElement).toEqual(domElements.sublistOneFirstItem);
-    });
+    }
+  );
 
-  it('Should move focus to the first popup child with spacebar from Menu bar',
+  it(
+    'Should move focus to the first popup child with spacebar from Menu bar',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownSpace);
       expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
       expect(menuBar.getState().popup.getState().expanded).toBeTruthy();
-    });
+    }
+  );
 
-  it('Should move focus to the first popup child with return key from Menu bar',
+  it(
+    'Should move focus to the first popup child with return key from Menu bar',
     () => {
       domElements.listFirstItem.focus();
       domElements.listFirstItem.dispatchEvent(keydownReturn);
@@ -209,7 +226,8 @@ describe('Menu correctly responds to events', () => {
         expect(detail.state).toStrictEqual({ expanded: true });
         expect(target).toStrictEqual(domElements.listFirstItem);
       });
-    });
+    }
+  );
 
   it('Should close the submenu on right arrow key on a menu item with no submenu', () => {
     menuBar.setState({

@@ -12,15 +12,18 @@ document.body.innerHTML = `
 `;
 
 describe('Should get the first and last items', () => {
-  it('From an Array',
+  it(
+    'From an Array',
     () => {
       const testArray = ['first', 'hello', 'world', 'last'];
       const firstLast = getFirstAndLastItems(testArray);
 
       expect(firstLast).toEqual(['first', 'last']);
-    });
+    }
+  );
 
-  it('From a NodeList',
+  it(
+    'From a NodeList',
     () => {
       const nodeList = document.querySelectorAll('div');
       const firstLast = getFirstAndLastItems(nodeList);
@@ -29,17 +32,21 @@ describe('Should get the first and last items', () => {
       const domLast = document.querySelector('.last');
 
       expect(firstLast).toEqual([domFirst, domLast]);
-    });
+    }
+  );
 
-  it('From a single-item Array',
+  it(
+    'From a single-item Array',
     () => {
       const testArray = ['only'];
       const firstLast = getFirstAndLastItems(testArray);
 
       expect(firstLast).toEqual(['only', 'only']);
-    });
+    }
+  );
 
-  it('From a single-item NodeList',
+  it(
+    'From a single-item NodeList',
     () => {
       const nodeList = document.querySelectorAll('.first');
       const firstLast = getFirstAndLastItems(nodeList);
@@ -47,5 +54,6 @@ describe('Should get the first and last items', () => {
       const expected = nodeList[0];
 
       expect(firstLast).toEqual([expected, expected]);
-    });
+    }
+  );
 });

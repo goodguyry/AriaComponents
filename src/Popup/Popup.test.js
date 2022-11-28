@@ -146,20 +146,24 @@ describe('Popup correctly responds to events', () => {
     popup.show();
   });
 
-  it('Should close the popup when the ESC key is pressed',
+  it(
+    'Should close the popup when the ESC key is pressed',
     () => {
       controller.focus();
       controller.dispatchEvent(keydownEsc);
       expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should move focus to the first popup child on TAB from controller',
+  it(
+    'Should move focus to the first popup child on TAB from controller',
     () => {
       controller.dispatchEvent(keydownTab);
       expect(document.activeElement)
         .toEqual(domFirstChild);
-    });
+    }
+  );
 
   it('Should update Popup state with keyboard', () => {
     // Toggle popup
@@ -172,39 +176,49 @@ describe('Popup correctly responds to events', () => {
   });
 
   // eslint-disable-next-line max-len
-  it('Should close the popup and focus the controller when the ESC key is pressed',
+  it(
+    'Should close the popup and focus the controller when the ESC key is pressed',
     () => {
       target.dispatchEvent(keydownEsc);
       expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the popup when tabbing from the last child',
+  it(
+    'Should close the popup when tabbing from the last child',
     () => {
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
       expect(popup.getState().expanded).toBeFalsy();
-    });
+    }
+  );
 
-  it('Should not close the popup when tabbing back from the last child',
+  it(
+    'Should not close the popup when tabbing back from the last child',
     () => {
       domLastChild.focus();
       target.dispatchEvent(keydownShiftTab);
       expect(popup.getState().expanded).toBeTruthy();
-    });
+    }
+  );
 
-  it('Should focus the controller when tabbing back from the first child',
+  it(
+    'Should focus the controller when tabbing back from the first child',
     () => {
       domFirstChild.focus();
       target.dispatchEvent(keydownShiftTab);
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the popup when an outside element it clicked',
+  it(
+    'Should close the popup when an outside element it clicked',
     () => {
       document.body.dispatchEvent(click);
       expect(popup.getState().expanded).toBeFalsy();
-    });
+    }
+  );
 });
 
 describe('Popup destroy', () => {
