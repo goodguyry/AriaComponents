@@ -35,9 +35,9 @@ const target = document.querySelector('.wrapper');
 
 // Mock functions.
 const onStateChange = jest.fn();
-controller.addEventListener('stateChange', onStateChange);
 
 const popup = new Popup(controller);
+popup.on('stateChange', onStateChange);
 
 // Popup has to be instanitated.
 popup.init();

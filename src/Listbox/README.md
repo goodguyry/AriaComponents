@@ -66,6 +66,12 @@ _**`Listbox.destroy()`**_
 _**`Listbox.toString()`**_  
 > Returns `'[object Listbox]'`.
 
+_**`Listbox.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.
+
+_**`Listbox.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ### Properties
 
 _**`Listbox.controller`**_  

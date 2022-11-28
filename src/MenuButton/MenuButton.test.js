@@ -40,11 +40,12 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-controller.addEventListener('stateChange', onStateChange);
+// The `init` event is not trackable via on/off.
 controller.addEventListener('init', onInit);
-controller.addEventListener('destroy', onDestroy);
 
 const menuButton = new MenuButton(controller, { list, useHiddenAttribute: false });
+menuButton.on('stateChange', onStateChange);
+menuButton.on('destroy', onDestroy);
 
 describe('MenuButton adds and manipulates DOM element attributes', () => {
   it('Should be instantiated as expected', () => {

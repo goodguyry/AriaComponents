@@ -80,6 +80,12 @@ _**`MenuBar.destroy()`**_
 _**`MenuBar.toString()`**_  
 > Returns `'[object MenuBar]'`.
 
+_**`MenuBar.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.
+
+_**`MenuBar.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ### Properties
 
 _**`MenuBar.menu`**_  

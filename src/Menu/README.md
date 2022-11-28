@@ -70,6 +70,12 @@ _**`Menu.destroy()`**_
 _**`Menu.toString()`**_  
 > Returns `'[object Menu]'`.
 
+_**`Menu.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.
+
+_**`Menu.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ### Properties
 
 _**`Menu.menu`**_  

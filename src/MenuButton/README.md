@@ -74,6 +74,12 @@ _**`MenuButton.destroy()`**_
 _**`MenuButton.toString()`**_  
 > Returns `'[object MenuButton]'`.
 
+_**`MenuButton.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.
+
+_**`MenuButton.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ### Properties
 
 _**`MenuButton.controller`**_  

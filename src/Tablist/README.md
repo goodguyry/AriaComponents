@@ -78,6 +78,12 @@ _**`Tablist.destroy()`**_
 _**`Tablist.toString()`**_  
 > Returns `'[object Tablist]'`.
 
+_**`Tablist.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.
+
+_**`Tablist.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ### Properties
 
 _**`Tablist.tabs`**_  
