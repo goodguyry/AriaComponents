@@ -53,11 +53,12 @@ const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
-target.addEventListener('stateChange', onStateChange);
+// The `init` event is not trackable via on/off.
 target.addEventListener('init', onInit);
-target.addEventListener('destroy', onDestroy);
 
 const modal = new Dialog(target);
+modal.on('stateChange', onStateChange);
+modal.on('destroy', onDestroy);
 
 describe('Dialog with default configuration', () => {
   beforeEach(() => {

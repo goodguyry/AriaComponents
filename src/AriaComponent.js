@@ -126,6 +126,8 @@ export default class AriaComponent {
     this.dispatch = this.dispatch.bind(this);
     this.dispatchEventInit = this.dispatchEventInit.bind(this);
     this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
+    this.on = this.on.bind(this);
+    this.off = this.off.bind(this);
   }
 
   /**
@@ -193,6 +195,32 @@ export default class AriaComponent {
         instance: this,
       }
     );
+  }
+
+  /**
+   * Register an event handler for the given event type.
+   *
+   * @param {string}   type     The event type.
+   * @param {function} listener The event listener callback.
+   * @param {object}   options  Event options.
+   */
+  on(type, listener, options = {}) {
+    this.element.addEventListener(type, listener, options);
+
+    return this;
+  }
+
+  /**
+   * Unregister an event handler for the given event type.
+   *
+   * @param {string}   type     The event type.
+   * @param {function} listener The event callback.
+   * @param {object}   options  Event options.
+   */
+  off(type, listener, options = {}) {
+    this.element.removeEventListener(type, listener, options);
+
+    return this;
   }
 
   /**

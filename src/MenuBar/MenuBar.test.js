@@ -73,11 +73,12 @@ const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 const { list } = domElements;
 
+// The `init` event is not trackable via on/off.
 list.addEventListener('init', onInit);
-list.addEventListener('stateChange', onStateChange);
-list.addEventListener('destroy', onDestroy);
 
 const menuBar = new MenuBar(list, { itemMatches: ':not(.exclude)' });
+menuBar.on('stateChange', onStateChange);
+menuBar.on('destroy', onDestroy);
 
 describe('Menu collects DOM elements and adds attributes', () => {
   it('Should instantiate the Menu class with correct instance values', () => {

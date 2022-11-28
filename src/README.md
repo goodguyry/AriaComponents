@@ -21,6 +21,15 @@ _**`AriaComponent.getState()`**_
 _**`AriaComponent.toString()`**_  
 > Returns `'[object AriaComponent]'`.
 
+_**`AriaComponent.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.  
+>
+> **Note**: It is not possible to respond to the `init` event using the  
+> `on` and `off` methods.
+
+_**`AriaComponent.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ## lib/ Modules
 
 The `src/lib/` directory contains modules available for use in creating 

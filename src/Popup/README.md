@@ -72,6 +72,15 @@ _**`Popup.destroy()`**_
 _**`Popup.toString()`**_  
 > Returns `'[object Popup]'`.
 
+_**`Popup.on(event, listener, options)`**_  
+> Registers an event handler for the given event type.  
+>
+> **Note**: It is not possible to respond to the `init` event using the  
+> `on` and `off` methods.
+
+_**`Popup.off(event, listener, options)`**_  
+> Unregisters an event handler for the given event type.
+
 ### Properties
 
 _**`Popup.controller`**_  
