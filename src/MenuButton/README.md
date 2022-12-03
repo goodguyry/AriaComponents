@@ -3,6 +3,13 @@ MenuButton
 
 Class for setting up an interactive popup button to activate a target menu element.
 
+```
+This component is only appropriate for application-like
+menus and should not be used for a website navigation.
+
+Pass `__is_application_menu: true` to suppress the warning.
+```
+
 ## Example
 
 ```html
@@ -49,6 +56,9 @@ _**`list`**_`= null`
 > Use this option if neither of the following should be used as the Menu list:  
 > 1. The target element, if it is an instance of `HTMLUListElement`
 > 2. The value returned by `target.querySelector('ul')`
+
+_**`__is_application_menu`**_`= false`  
+> Quiet console warnings.
 
 ## API
 
