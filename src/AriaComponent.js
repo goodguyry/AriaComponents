@@ -128,6 +128,7 @@ export default class AriaComponent {
     this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
     this.on = this.on.bind(this);
     this.off = this.off.bind(this);
+    this.warnMenu = this.warnMenu.bind(this);
   }
 
   /**
@@ -285,5 +286,17 @@ export default class AriaComponent {
    */
   getState() {
     return this.state;
+  }
+
+  /**
+   * Menu-specific warning helper.
+   */
+  warnMenu() {
+    /* eslint-disable no-console, max-len */
+    console.group(`[aria-components]: ${this.stringDescription}`);
+    console.warn('This component is only appropriate for application-like menus and should not be used for a website navigation.');
+    console.info('Pass `__is_application_menu: true` to quiet this warning.');
+    console.groupEnd();
+    /* eslint-enable */
   }
 }

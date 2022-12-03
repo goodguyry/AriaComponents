@@ -76,7 +76,14 @@ const { list } = domElements;
 // The `init` event is not trackable via on/off.
 list.addEventListener('init', onInit);
 
-const menuBar = new MenuBar(list, { itemMatches: ':not(.exclude)' });
+const menuBar = new MenuBar(
+  list,
+  {
+    itemMatches: ':not(.exclude)',
+    __is_application_menu: true,
+  }
+);
+
 menuBar.on('stateChange', onStateChange);
 menuBar.on('destroy', onDestroy);
 

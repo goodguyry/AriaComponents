@@ -4,6 +4,13 @@ MenuBar
 Class for managing a visually persistent (horizontally-oriented) menubar, with 
 each submenu instantiated as a Disclosure.
 
+```
+This component is only appropriate for application-like
+menus and should not be used for a website navigation.
+
+Pass `__is_application_menu: true` to suppress the warning.
+```
+
 ## Example
 
 ```html
@@ -55,6 +62,9 @@ _**`itemMatches`**_`= 'a,button'`
 > 
 > This can also be used to exclude items that would otherwise be given a  
 > "menuitem" role; e.g., `':not(.hidden)'`.
+
+_**`__is_application_menu`**_`= false`  
+> Quiet console warnings.
 
 ## API
 

@@ -39,10 +39,22 @@ export default class MenuButton extends Popup {
        * @type {HTMLUListElement}
        */
       list: null,
+
+      /**
+       * This is an application menu.
+       *
+       * @type {Boolean}
+       */
+      __is_application_menu: false,
     };
 
     // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, defaultOptions, options);
+
+    // Log a warning to alert about menu anti-pattern.
+    if (! this.__is_application_menu) { // eslint-disable-line no-underscore-dangle
+      this.warnMenu();
+    }
 
     // Bind class methods.
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
@@ -64,6 +76,13 @@ export default class MenuButton extends Popup {
      */
     super.setSelfReference(this.controller, this.target);
 
+    // Inner menu options.
+    const menuOptions = {
+      _stateDispatchesOnly: true,
+      // Quiet duplicated warnings.
+      __is_application_menu: true,
+    };
+
     /**
      * The MenuButton is a Popup to present a Menu. The element used as the Menu
      * is determined by the following "logic":
@@ -74,13 +93,13 @@ export default class MenuButton extends Popup {
      * @type {Menu}
      */
     if (null != this.list && 'UL' === this.list.nodeName) {
-      this.menu = new Menu(this.list, { _stateDispatchesOnly: true });
+      this.menu = new Menu(this.list, menuOptions);
     } else if ('UL' === this.target.nodeName) {
       // Fallback to the target if it's a UL.
-      this.menu = new Menu(this.target, { _stateDispatchesOnly: true });
+      this.menu = new Menu(this.target, menuOptions);
     } else {
       const list = this.target.querySelector('ul');
-      this.menu = new Menu(list, { _stateDispatchesOnly: true });
+      this.menu = new Menu(list, menuOptions);
     }
 
     // Additional event listener(s).

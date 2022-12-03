@@ -22,7 +22,7 @@ const target = document.querySelector('.wrapper');
 const list = document.querySelector('.menu');
 
 const popup = new Popup(controller);
-const menu = new Menu(list);
+const menu = new Menu(list, { __is_application_menu: true });
 
 const helloWorld = { hello: 'world' };
 

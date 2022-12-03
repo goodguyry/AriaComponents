@@ -71,10 +71,22 @@ export default class Menu extends AriaComponent {
        * @type {string}
        */
       itemMatches: 'a,button',
+
+      /**
+       * This is an application menu.
+       *
+       * @type {Boolean}
+       */
+      __is_application_menu: false,
     };
 
     // Merge remaining options with defaults and save all as instance properties.
     Object.assign(this, defaultOptions, options);
+
+    // Log a warning to alert about menu anti-pattern.
+    if (! this.__is_application_menu) { // eslint-disable-line no-underscore-dangle
+      this.warnMenu();
+    }
 
     // Bind class methods
     this.listHandleKeydown = this.listHandleKeydown.bind(this);
@@ -187,6 +199,8 @@ export default class Menu extends AriaComponent {
           {
             itemMatches: this.itemMatches,
             _stateDispatchesOnly: true,
+            // Quiet duplicated warnings.
+            __is_application_menu: true,
           }
         );
 
