@@ -79,6 +79,7 @@ let menu = new Menu(
   {
     itemMatches: ':not(.exclude)',
     _stateDispatchesOnly: true,
+    __is_application_menu: true,
   }
 );
 menu.on('stateChange', onStateChange);
@@ -240,6 +241,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
       {
         itemMatches: ':not(.exclude)',
         collapse: true,
+        __is_application_menu: true,
       }
     );
   });

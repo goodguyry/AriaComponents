@@ -43,7 +43,15 @@ const onDestroy = jest.fn();
 // The `init` event is not trackable via on/off.
 controller.addEventListener('init', onInit);
 
-const menuButton = new MenuButton(controller, { list, useHiddenAttribute: false });
+const menuButton = new MenuButton(
+  controller,
+  {
+    list,
+    useHiddenAttribute: false,
+    __is_application_menu: true,
+  }
+);
+
 menuButton.on('stateChange', onStateChange);
 menuButton.on('destroy', onDestroy);
 
