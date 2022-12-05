@@ -1,4 +1,8 @@
-@import 'reset';
+@use '~scss/core/a11y';
+@use '~scss/core/layout';
+@use '~scss/core/theme';
+@use '~scss/core/utilities' as *;
+@use 'reset';
 
 :root {
   font-size: medium;
@@ -71,11 +75,11 @@ abbr {
 }
 
 ::selection {
-  @include invert-text;
+  @include theme.invert-text;
 }
 
 .site {
-  @include container;
+  @include layout.container;
 }
 
 .header {
@@ -91,9 +95,9 @@ abbr {
 }
 
 .screen-reader-only {
-  @include screen-reader-only;
+  @include a11y.screen-reader-only;
 }
 
 .skip-link {
-  @include skip-link;
+  @include a11y.skip-link;
 }

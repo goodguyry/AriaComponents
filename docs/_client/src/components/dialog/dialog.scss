@@ -1,3 +1,7 @@
+@use '~scss/core/a11y';
+@use '~scss/core/breakpoints' as *;
+@use '~scss/core/utilities' as *;
+
 .dialog {
   background-color: white;
   border: 1px solid black;
@@ -28,7 +32,7 @@
 }
 
 .link {
-  @include role-button;
+  @include a11y.role-button;
 }
 
 .closeButton {
