@@ -38,14 +38,14 @@
     "eslint-plugin-react": "^7.16.0",
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.5",
-    "node-sass": "^5.0.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "postcss": "^7.0.6",
+    "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "postcss": "^8.4.19",
     "postcss-loader": "^3.0.0",
     "postcss-modules": "^1.4.1",
-    "postcss-tidy-columns": "^0.4.0",
+    "postcss-tidy-columns": "^1.0.0-beta-3",
     "read-yaml": "^1.1.0",
     "resolve-url-loader": "^3.1.2",
+    "sass": "^1.56.1",
     "sass-loader": "^10.1.0",
     "sass-resources-loader": "^2.0.0",
     "style-loader": "^0.23.1",
@@ -66,6 +66,5 @@
     "serve": "jekyll serve",
     "dev": "concurrently 'npm run webpack:dev' 'npm run serve'",
     "build": "webpack --config _client/config/webpack.config.js --mode production"
-  },
-  "dependencies": {}
+  }
 }
