@@ -24,7 +24,7 @@
   top: 100%;
 
   @media (min(lg)) {
-    tidy-span: 6;
+    width: tidy-span(6);
   }
 }
 

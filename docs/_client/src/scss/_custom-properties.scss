@@ -1,0 +1,14 @@
+@use '~scss/core/breakpoints' as *;
+
+:root {
+  --site-columns: 8;
+  --site-gap: 0.5rem;
+  --site-edge: 0.75rem;
+
+  @media (min(lg)) {
+    --site-columns: 12;
+    --site-gap: 1.25rem;
+    --site-edge: 1.875rem;
+    --site-max: 80rem;
+  }
+}

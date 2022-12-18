@@ -3,6 +3,7 @@
 @use '~scss/core/theme';
 @use '~scss/core/utilities' as *;
 @use 'reset';
+@use 'custom-properties';
 
 :root {
   font-size: medium;

@@ -31,8 +31,8 @@
   @media (min(lg)) {
     left: calc(100% + #{rem(20)});
     padding: rem(20);
-    tidy-span: 6;
     top: 50%;
     transform: translateY(-50%);
+    width: tidy-span(6);
   }
 }

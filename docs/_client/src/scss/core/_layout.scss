@@ -45,7 +45,7 @@
   @include auto-margins;
 
   @include keep-tidy {
-    tidy-span: tidy-var(columns);
+    width: tidy-span(tidy-var(columns));
   }
 }
 
