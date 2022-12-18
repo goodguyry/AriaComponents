@@ -78,12 +78,6 @@ module.exports = [
           },
         },
       },
-      {
-        loader: 'sass-resources-loader',
-        options: {
-          resources: sassCoreResources,
-        },
-      },
     ],
   },
 ];

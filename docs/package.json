@@ -47,7 +47,6 @@
     "resolve-url-loader": "^3.1.2",
     "sass": "^1.56.1",
     "sass-loader": "^10.1.0",
-    "sass-resources-loader": "^2.0.0",
     "style-loader": "^0.23.1",
     "stylelint": "^13.3.3",
     "stylelint-webpack-plugin": "^2.1.1",
