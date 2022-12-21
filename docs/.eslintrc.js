@@ -1,7 +1,8 @@
 module.exports = {
+  // @todo Can I just use the root config?
   // Extend the AirBnb lint config
-  extends: 'airbnb',
-  parser: 'babel-eslint',
+  // extends: 'airbnb',
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 6,
     ecmaFeatures: {

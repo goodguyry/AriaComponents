@@ -1,4 +1,5 @@
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 // Modules
 const rules = require('./modules/rules');
@@ -37,8 +38,10 @@ module.exports = (env, argv) => {
 
     optimization: productionMode
       ? {
+        minimize: true,
         minimizer: [
-          new OptimizeCSSAssetsPlugin({}),
+          new OptimizeCSSAssetsPlugin(),
+          new TerserPlugin(),
         ],
       }
       : {},

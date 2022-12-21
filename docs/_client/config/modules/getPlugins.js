@@ -4,9 +4,9 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const StatsPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-// const MinifyPlugin = require('babel-minify-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 // Helpers
 const path = require('path');
@@ -55,11 +55,11 @@ module.exports = (productionMode) => {
 
   if (productionMode) {
     return [
-      new CleanWebpackPlugin(
-        [`${paths.build}/*`],
-        { root: paths.docs }
-      ),
-      // new MinifyPlugin(),
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: [`${paths.build}/*`],
+        root: paths.docs
+      }),
+      new ESLintPlugin(),
     ].concat(common);
   }
 
