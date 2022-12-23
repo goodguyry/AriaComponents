@@ -2,7 +2,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const paths = require('../paths');
-const sassCoreResources = require('./sassCoreResources');
 
 const include = [
   paths.components,
@@ -22,6 +21,9 @@ module.exports = [
     include,
     use: {
       loader: 'babel-loader',
+      options: {
+        rootMode: 'upward',
+      },
     },
   },
   {

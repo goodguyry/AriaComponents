@@ -23,14 +23,16 @@ module.exports = (env, argv) => {
     },
 
     output: productionMode
-      ? Object.assign({}, common, {
+      ? {
+        ...common,
         filename: 'js/[name].[contenthash].bundle.min.js',
         chunkFilename: 'js/[name].[contenthash].chunk.min.js',
-      })
-      : Object.assign({}, common, {
+      }
+      : {
+        ...common,
         filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[name].chunk.js',
-      }),
+      },
 
     devtool: productionMode
       ? 'cheap-source-map'

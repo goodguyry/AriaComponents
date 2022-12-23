@@ -6,7 +6,6 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const StatsPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin');
 
 // Helpers
 const path = require('path');
@@ -39,8 +38,7 @@ module.exports = (productionMode) => {
             .filter((asset) => '.map' !== path.parse(asset).ext)
             .reduce((lines, line) => {
               const { ext } = path.parse(line);
-              // eslint-disable-next-line max-len
-              return Object.assign({}, lines, { [ext.replace('.', '')]: `build/${line}` });
+              return { ...lines, [ext.replace('.', '')]: `build/${line}` };
             }, {});
 
           return { ...acc, [key]: assetList };
@@ -57,9 +55,8 @@ module.exports = (productionMode) => {
     return [
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: [`${paths.build}/*`],
-        root: paths.docs
+        root: paths.docs,
       }),
-      new ESLintPlugin(),
     ].concat(common);
   }
 

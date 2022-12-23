@@ -28,14 +28,6 @@
     "concurrently": "^5.2.0",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
-    "eslint": "^8.30.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-import-resolver-babel-module": "^5.3.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-react": "^7.31.11",
-    "eslint-webpack-plugin": "^3.2.0",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^2.7.2",
     "postcss": "^8.4.20",
@@ -59,11 +51,11 @@
     "write-file-webpack-plugin": "^4.5.1"
   },
   "scripts": {
-    "lint": "eslint _client/src/**/*.js",
+    "lint": "eslint _client/",
     "jekyll:build": "JEKYLL_ENV=production jekyll build",
     "webpack:dev": "webpack --config _client/config/webpack.config.js --mode development --watch",
     "serve": "jekyll serve",
     "dev": "concurrently 'npm run webpack:dev' 'npm run serve'",
-    "build": "webpack --config _client/config/webpack.config.js --mode production"
+    "build": "npm run lint && webpack --config _client/config/webpack.config.js --mode production"
   }
 }
