@@ -27,21 +27,19 @@ module.exports = () => ({
         const { name } = path.parse(cssFileName);
         let modulesMap;
 
-        if (0 < Object.keys(json).length) {
-          try {
-            modulesMap = readYaml.sync(
-              path.join(paths.siteData, 'classnames.yaml')
-            );
-          } catch (error) {
-            modulesMap = {};
-          }
-
-          modulesMap[name] = json;
-          fs.writeFileSync(
-            path.join(paths.siteData, 'classnames.yaml'),
-            yamlDictFromObject(modulesMap)
-          );
+        try {
+          modulesMap = readYaml.sync(
+            path.join(paths.siteData, 'classnames.yaml')
+          ) || {};
+        } catch (error) {
+          modulesMap = {};
         }
+
+        modulesMap[name] = json;
+        fs.writeFileSync(
+          path.join(paths.siteData, 'classnames.yaml'),
+          yamlDictFromObject(modulesMap)
+        );
       },
     }),
   ],
