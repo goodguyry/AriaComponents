@@ -16,4 +16,4 @@ controller.addEventListener('stateChange', logEventDetail);
 controller.addEventListener('destroy', logEventDetail);
 
 // Create the MenuButton.
-const menuButton = new MenuButton(controller);
+const menuButton = new MenuButton(controller, { __is_application_menu: true });
