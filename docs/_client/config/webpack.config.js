@@ -34,9 +34,7 @@ module.exports = (env, argv) => {
         chunkFilename: 'js/[name].chunk.js',
       },
 
-    devtool: productionMode
-      ? 'cheap-source-map'
-      : 'cheap-module-eval-source-map',
+    devtool: productionMode ? false : 'eval',
 
     optimization: productionMode
       ? {
