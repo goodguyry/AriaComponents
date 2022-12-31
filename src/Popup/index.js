@@ -1,4 +1,5 @@
 import AriaComponent from '../AriaComponent';
+import getElementPair from '../lib/getElementPair';
 import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
@@ -14,11 +15,11 @@ export default class Popup extends AriaComponent {
    * Create a MenuBar.
    * @constructor
    *
-   * @param {HTMLElement} controller The activating element.
-   * @param {object}      options    The options object.
+   * @param {HTMLElement} element The activating element.
+   * @param {object}      options The options object.
    */
-  constructor(controller, options = {}) {
-    super(controller);
+  constructor(element, options = {}) {
+    super(element);
 
     /**
      * The string description for this object.
@@ -27,8 +28,10 @@ export default class Popup extends AriaComponent {
      */
     super[Symbol.toStringTag] = 'Popup';
 
+    // Get the component elements.
+    const { controller, target } = getElementPair(element);
     this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
+    this.target = target;
 
     /**
      * Component configuration options.

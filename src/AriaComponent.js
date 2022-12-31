@@ -3,59 +3,6 @@
  */
 export default class AriaComponent {
   /**
-   * Get the target element based on the controller's `aria-controls` attribute.
-   *
-   * @param  {HTMLElement} controller The component's controlling element.
-   * @return {HTMLElement|null}
-   */
-  static getTargetElement(controller) {
-    if (! controller.hasAttribute('aria-controls')) {
-      AriaComponent.configurationError(
-        // eslint-disable-next-line max-len
-        'The component element is missing the required \'aria-controls\' attribute'
-      );
-    }
-
-    const targetId = controller.getAttribute('aria-controls');
-    const target = document.getElementById(targetId);
-
-    if (null === target) {
-      AriaComponent.configurationError(
-        `A target element with ID of '${targetId}' is not found`
-      );
-    }
-
-    return target;
-  }
-
-  /**
-   * Get the controlling element based on its `target` attribute matching the
-   * target element's ID attribute.
-   *
-   * @param  {HTMLElement} controller The component's controlling element.
-   * @return {HTMLElement|null}
-   */
-  static getControllingElement(target) {
-    if (! target.hasAttribute('id')) {
-      AriaComponent.configurationError(
-        'The target element is missing the required \'id\' attribute'
-      );
-    }
-
-    const targetId = target.id;
-    const controller = document.querySelector(`[aria-controls="${targetId}"]`);
-
-    if (null === controller) {
-      AriaComponent.configurationError(
-        // eslint-disable-next-line max-len
-        `A controlling element with \`aria-controls\` attribute of '${targetId}' is not found`
-      );
-    }
-
-    return controller;
-  }
-
-  /**
    * Throw a confguration error.
    *
    * @param {string} message The error message.
