@@ -1,5 +1,6 @@
 @use '~scss/core/layout';
 @use '~scss/core/theme';
+@use '~scss/core/utilities' as *;
 
 /**
  * Visually hide an element and leave it only for screenreaders
