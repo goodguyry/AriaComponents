@@ -39,7 +39,7 @@ const getElementPair = (element) => {
     }
   }
 
-  return false;
+  throw new Error(`Configuration error: The element is missing the required attributes`);
 };
 
 export default getElementPair;

@@ -7,6 +7,7 @@ describe('Collects interactive child elements', () => {
     <div id="existing-id"></div>
     <button class="no-target" aria-controls="non-existant-id">Correct<button>
     <div class="no-controller" id="no-matching-controller"></div>
+    <div class="no-attributes"></div>
   `;
 
   const validController = document.querySelector('.with-pair');
@@ -14,6 +15,7 @@ describe('Collects interactive child elements', () => {
 
   const hasNoTarget = document.querySelector('.no-target');
   const hasNoController = document.querySelector('.no-controller');
+  const hasNoAttributes = document.querySelector('.no-attributes');
 
   it('Given a valid controller, should return a matching pair of elements', () => {
     const actual = getElementPair(validController);
@@ -33,11 +35,15 @@ describe('Collects interactive child elements', () => {
     });
   });
 
-  it('Invalid: Controller has no target', () => {
+  it('Error: Controller has no target', () => {
     expect(() => getElementPair(hasNoTarget)).toThrow();
   });
 
-  it('Invalid: Target has no controller', () => {
+  it('Error: Target has no controller', () => {
     expect(() => getElementPair(hasNoController)).toThrow();
+  });
+
+  it('Error: Element has no required attributes', () => {
+    expect(() => getElementPair(hasNoAttributes)).toThrow();
   });
 });
