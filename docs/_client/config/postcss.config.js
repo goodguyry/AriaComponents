@@ -15,7 +15,7 @@ module.exports = () => ({
       columns: 'var(--site-columns)',
       gap: 'var(--site-gap)',
       edge: 'var(--site-edge)',
-      max: 'var(--site-siteMax)',
+      max: 'var(--site-max)',
     }),
     autoprefixer(),
     modules({
