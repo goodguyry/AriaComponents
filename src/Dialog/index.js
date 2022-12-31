@@ -1,4 +1,5 @@
 import AriaComponent from '../AriaComponent';
+import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
 import keyCodes from '../lib/keyCodes';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
@@ -14,11 +15,11 @@ export default class Dialog extends AriaComponent {
    * Create a Dialog.
    * @constructor
    *
-   * @param {HTMLElement} target  The dialog element.
+   * @param {HTMLElement} element The dialog element.
    * @param {object}      options The options object.
    */
-  constructor(target, options = {}) {
-    super(target);
+  constructor(element, options = {}) {
+    super(element);
 
     /**
      * The string description for this object.
@@ -26,8 +27,11 @@ export default class Dialog extends AriaComponent {
      * @type {string}
      */
     this[Symbol.toStringTag] = 'Dialog';
+
+    // Get the component elements.
+    const { controller, target } = getElementPair(element);
+    this.controller = controller;
     this.target = target;
-    this.controller = super.constructor.getControllingElement(target);
 
     /**
      * Options shape.

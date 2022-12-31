@@ -1,4 +1,5 @@
 import Popup from '../Popup';
+import getElementPair from '../lib/getElementPair';
 import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
 import Search from '../lib/Search';
@@ -14,12 +15,12 @@ export default class ListBox extends Popup {
    * Create a ListBox.
    * @constructor
    *
-   * @param {HTMLElement} controller The activating element.
-   * @param {object}      options    The options object.
+   * @param {HTMLElement} lement  The activating element.
+   * @param {object}      options The options object.
    */
-  constructor(controller, options = {}) {
+  constructor(element, options = {}) {
     // Pass in the `listbox` type.
-    super(controller, { ...options, type: 'listbox' });
+    super(element, { ...options, type: 'listbox' });
 
     /**
      * The string description for this object.
@@ -28,8 +29,10 @@ export default class ListBox extends Popup {
      */
     this[Symbol.toStringTag] = 'Listbox';
 
+    // Get the component elements.
+    const { controller, target } = getElementPair(element);
     this.controller = controller;
-    this.target = super.constructor.getTargetElement(controller);
+    this.target = target;
 
     // Merge options as instance properties.
     Object.assign(this, options);
