@@ -1,3 +1,8 @@
+@use '~scss/core/a11y';
+@use '~scss/core/breakpoints' as *;
+@use '~scss/core/theme';
+@use '~scss/core/utilities' as *;
+
 .wrapper {
   display: inline-block;
   position: relative;
@@ -6,8 +11,8 @@
 
 .button {
   @include button-reset;
-  @include role-button;
-  @include button;
+  @include a11y.role-button;
+  @include theme.button;
 }
 
 .menu-wrapper {
@@ -19,7 +24,7 @@
   top: 100%;
 
   @media (min(lg)) {
-    tidy-span: 6;
+    width: tidy-span(6);
   }
 }
 

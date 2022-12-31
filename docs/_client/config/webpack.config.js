@@ -1,4 +1,5 @@
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 // Modules
 const rules = require('./modules/rules');
@@ -22,23 +23,25 @@ module.exports = (env, argv) => {
     },
 
     output: productionMode
-      ? Object.assign({}, common, {
+      ? {
+        ...common,
         filename: 'js/[name].[contenthash].bundle.min.js',
         chunkFilename: 'js/[name].[contenthash].chunk.min.js',
-      })
-      : Object.assign({}, common, {
+      }
+      : {
+        ...common,
         filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[name].chunk.js',
-      }),
+      },
 
-    devtool: productionMode
-      ? 'cheap-source-map'
-      : 'cheap-module-eval-source-map',
+    devtool: productionMode ? false : 'eval',
 
     optimization: productionMode
       ? {
+        minimize: true,
         minimizer: [
-          new OptimizeCSSAssetsPlugin({}),
+          new OptimizeCSSAssetsPlugin(),
+          new TerserPlugin(),
         ],
       }
       : {},

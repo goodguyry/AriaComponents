@@ -1,4 +1,6 @@
 /* stylelint-disable selector-list-comma-newline-after */
+@use '~scss/core/layout';
+@use '~scss/core/utilities' as *;
 
 /**
  * Reset styles and setup.
@@ -115,7 +117,7 @@ code {
 }
 
 hr {
-  @include auto-margins;
+  @include layout.auto-margins;
   height: 1px;
   border: none;
   background-color: lightgray;

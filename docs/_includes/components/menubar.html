@@ -6,7 +6,7 @@
 <nav class="{{ classes.nav }}" aria-label="MenuBar Component Example">
 	<ul class="{{ classes.list }}">
 		<li class="{{ classes.list-item }} {{ classes.has-children }}">
-			<a target="menubar-sublist-one" href="{{ links.src }}">Popups</a>
+			<a aria-controls="menubar-sublist-one" href="{{ links.src }}">Popups</a>
 			<ul id="menubar-sublist-one" class="{{ classes.sub-list }}">
 				<li class="{{ classes.list-item }}"><a href="{{ links.dialog }}">Dialog</a></li>
 				<li class="{{ classes.list-item }}"><a href="{{ links.listbox }}">Listbox</a></li>
@@ -16,7 +16,7 @@
 		</li>
 		<li class="{{ classes.list-item }}"><a href="{{ links.disclosure }}">Disclosure</a></li>
 		<li class="{{ classes.list-item }} {{ classes.has-children }}">
-			<a target="menubar-sublist-two" href="{{ links.src }}">Menus</a>
+			<a aria-controls="menubar-sublist-two" href="{{ links.src }}">Menus</a>
 			<ul id="menubar-sublist-two"  class="{{ classes.sub-list }}">
 				<li class="{{ classes.list-item }}"><a href="{{ links.menu }}">Menu</a></li>
 				<li class="{{ classes.list-item }}"><a href="{{ links.menubar }}">MenuBar</a></li>

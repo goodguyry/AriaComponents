@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "sass:math";
+
 $bp-values: (
   full: 1280,
   lg: 1024,
@@ -13,8 +16,8 @@ $bp-values: (
   $merged: ();
 
   @each $name, $value in $bp-values {
-    $merged: map_merge($merged, (
-      '#{$name}': 'min-width: #{$value / 16}rem',
+    $merged: map.merge($merged, (
+      '#{$name}': 'min-width: #{math.div($value, 16)}rem',
     ));
   }
 
@@ -31,10 +34,10 @@ $media-queries: _create-breakpoints();
  * @return {string}
  */
 @function min($key) {
-  @if (not map-has-key($media-queries, #{$key})) {
+  @if (not map.has-key($media-queries, #{$key})) {
     @error "$media-queries[#{$key}] doesn't exist.";
     @return false;
   }
 
-  @return map-get($media-queries, #{$key});
+  @return map.get($media-queries, #{$key});
 }

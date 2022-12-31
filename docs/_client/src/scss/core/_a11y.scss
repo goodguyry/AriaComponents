@@ -1,3 +1,7 @@
+@use '~scss/core/layout';
+@use '~scss/core/theme';
+@use '~scss/core/utilities' as *;
+
 /**
  * Visually hide an element and leave it only for screenreaders
  */
@@ -46,7 +50,7 @@
 
   &[role="button"] {
     @include remove-helpful-link-hover-styles;
-    @include button;
+    @include theme.button;
   }
 }
 
@@ -54,7 +58,7 @@
  * Styles the 'Skip to content' link; hidden until it has focus.
  */
 @mixin skip-link {
-  @include auto-margins;
+  @include layout.auto-margins;
   background-color: white;
   color: inherit;
   left: 0;

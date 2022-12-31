@@ -1,3 +1,7 @@
+@use "sass:list";
+@use "sass:meta";
+@use "sass:math";
+
 /**
  * Strip CSS units from a value.
  *
@@ -6,8 +10,8 @@
  * @returns {String} A unitless value.
  */
 @function _strip-units($value) {
-  @if (type-of($value) == 'number' and not unitless($value)) {
-    @return $value / ($value * 0 + 1);
+  @if (meta.type-of($value) == 'number' and not math.is-unitless($value)) {
+    @return math.div($value, $value * 0 + 1);
   }
 
   @return $value;
@@ -23,11 +27,11 @@
  * @returns {String} A rem value.
  */
 @function _px-to-relative($px, $base-value) {
-  @if ('rem' == unit($px) or 0 == $px) {
+  @if ('rem' == math.unit($px) or 0 == $px) {
     @return $px;
   }
 
-  @return _strip-units($px) / $base-value * 1rem;
+  @return math.div(_strip-units($px), $base-value) * 1rem;
 }
 
 /**
@@ -41,22 +45,22 @@
 @function _px-to-relative-list($values, $base-value) {
   $rem-values: ();
 
-  @for $i from 1 through length($values) {
-    $value: nth($values, $i);
+  @for $i from 1 through list.length($values) {
+    $value: list.nth($values, $i);
 
     $rem-value: if(
-      string == type-of($value),
+      string == meta.type-of($value),
       $value,
-      _px-to-relative(nth($values, $i), $base-value)
+      _px-to-relative(list.nth($values, $i), $base-value)
     );
 
-    $rem-values: append($rem-values, $rem-value);
+    $rem-values: list.append($rem-values, $rem-value);
   }
 
   @return if(
-    1 < length($rem-values),
+    1 < list.length($rem-values),
     $rem-values,
-    nth($rem-values, 1)
+    list.nth($rem-values, 1)
   );
 }
 

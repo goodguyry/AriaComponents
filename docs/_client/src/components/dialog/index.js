@@ -4,19 +4,19 @@ import { Dialog } from 'plugin'; // eslint-disable-line import/no-extraneous-dep
 import './dialog.scss';
 
 // Get the components hashed classnames.
-const { link, closeButton } = getClassnames(siteClassNames.dialog);
+const { closeButton } = getClassnames(siteClassNames.dialog);
 
 window.addEventListener('load', () => {
   // Get the elements.
-  const controller = document.querySelector(link);
+  const target = document.getElementById('dialog');
   const close = document.querySelector(closeButton);
 
   // Report event details.
-  controller.addEventListener('init', logEventDetail);
-  controller.addEventListener('stateChange', logEventDetail);
-  controller.addEventListener('destroy', logEventDetail);
+  target.addEventListener('init', logEventDetail);
+  target.addEventListener('stateChange', logEventDetail);
+  target.addEventListener('destroy', logEventDetail);
 
   // Create the Dialog.
-  const dialog = new Dialog(controller, { useHiddenAttribute: false });
+  const dialog = new Dialog(target, { useHiddenAttribute: false });
   dialog.setCloseButton(close);
 });

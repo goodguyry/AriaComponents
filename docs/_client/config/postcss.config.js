@@ -12,17 +12,10 @@ const yamlDictFromObject = require('./bin/yamlDictFromObject');
 module.exports = () => ({
   plugins: [
     postcssTidyColumns({
-      columns: 8,
-      gap: '.5rem',
-      edge: '.75rem',
-      breakpoints: {
-        '64rem': {
-          columns: 12,
-          gap: '1.25rem',
-          edge: '1.875rem',
-          siteMax: '80rem',
-        },
-      },
+      columns: 'var(--site-columns)',
+      gap: 'var(--site-gap)',
+      edge: 'var(--site-edge)',
+      max: 'var(--site-max)',
     }),
     autoprefixer(),
     modules({
@@ -34,21 +27,19 @@ module.exports = () => ({
         const { name } = path.parse(cssFileName);
         let modulesMap;
 
-        if (0 < Object.keys(json).length) {
-          try {
-            modulesMap = readYaml.sync(
-              path.join(paths.siteData, 'classnames.yaml')
-            );
-          } catch (error) {
-            modulesMap = {};
-          }
-
-          modulesMap[name] = json;
-          fs.writeFileSync(
-            path.join(paths.siteData, 'classnames.yaml'),
-            yamlDictFromObject(modulesMap)
-          );
+        try {
+          modulesMap = readYaml.sync(
+            path.join(paths.siteData, 'classnames.yaml')
+          ) || {};
+        } catch (error) {
+          modulesMap = {};
         }
+
+        modulesMap[name] = json;
+        fs.writeFileSync(
+          path.join(paths.siteData, 'classnames.yaml'),
+          yamlDictFromObject(modulesMap)
+        );
       },
     }),
   ],

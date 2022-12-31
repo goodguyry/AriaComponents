@@ -1,5 +1,5 @@
 module.exports = {
-  // Extend the AirBnb lint config
+  // Extend the AirBnb lint config.
   extends: 'airbnb',
   parserOptions: {
     ecmaVersion: 6,
