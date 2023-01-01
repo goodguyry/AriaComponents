@@ -111,6 +111,6 @@ import { isInstanceOf } from 'aria-components/utils';
 
 const navUlElement = document.querySelectory('nav ul');
 
-// Check if the nav list is an instance of the MenuBar component.
-const isMenuBar = isInstanceOf('MenuBar', navUlElement);
+// Check if the nav list is an instance of the Menu component.
+const isMenuBar = isInstanceOf('Menu', navUlElement.menu);
 ```
