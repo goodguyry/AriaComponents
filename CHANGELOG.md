@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Loosens MenuBar and Menu components' markup requirements (#48, 3385f2e)
 - Moves docs site packages and scripts to the docs directory (#57)
 - Removes Travis, adds GitHub Action (#58)
-- Dialog accepts a target element, rather than controller (#65)
+- Components can accept either a controller or target element (#65, #70)
 
 **Added**
 

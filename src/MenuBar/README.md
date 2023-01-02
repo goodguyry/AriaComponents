@@ -101,6 +101,9 @@ _**`MenuBar.off(event, listener, options)`**_
 
 ### Properties
 
+_**`MenuBar.element`**_  
+> Returns the element passed to the constructor.
+
 _**`MenuBar.menu`**_  
 > Returns the list element containing menu items.
 

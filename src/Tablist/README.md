@@ -89,6 +89,9 @@ _**`Tablist.off(event, listener, options)`**_
 
 ### Properties
 
+_**`Tablist.element`**_  
+> Returns the element passed to the constructor.
+
 _**`Tablist.tabs`**_  
 > Returns the list element containing tab links.
 

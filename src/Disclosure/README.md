@@ -85,6 +85,9 @@ _**`Disclosure.off(event, listener, options)`**_
 
 ### Properties
 
+_**`Disclosure.element`**_  
+> Returns the element passed to the constructor.
+
 _**`Disclosure.controller`**_  
 > Returns the Disclosure's activating element.
 

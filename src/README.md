@@ -30,6 +30,11 @@ _**`AriaComponent.on(event, listener, options)`**_
 _**`AriaComponent.off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.
 
+### Properties
+
+_**`AriaComponent.element`**_  
+> Returns the element passed to the constructor.
+
 ## lib/ Modules
 
 The `src/lib/` directory contains modules available for use in creating 

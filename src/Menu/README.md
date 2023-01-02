@@ -91,6 +91,9 @@ _**`Menu.off(event, listener, options)`**_
 
 ### Properties
 
+_**`Menu.element`**_  
+> Returns the element passed to the constructor.
+
 _**`Menu.menu`**_  
 > Returns the list element containing menu items.
 

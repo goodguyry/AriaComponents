@@ -77,6 +77,9 @@ _**`Listbox.off(event, listener, options)`**_
 
 ### Properties
 
+_**`Listbox.element`**_  
+> Returns the element passed to the constructor.
+
 _**`Listbox.controller`**_  
 > Returns the Listbox's activating element.
 
