@@ -80,6 +80,7 @@ export default class AriaComponent {
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
+    this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
     this.removeAttributes = this.removeAttributes.bind(this);
     this.dispatch = this.dispatch.bind(this);
@@ -110,6 +111,25 @@ export default class AriaComponent {
   }
 
   /**
+   * Returns tracked attributes for the given element after ensuring it has the required ID attribute.
+   *
+   * @param  {HTMLElement} element The element for which attributes are being retrieved.
+   * @return {array}
+   */
+  getTrackedAttributesFor(element) {
+    const id = element.id || getUniqueId();
+    const { [id]: trackedAttributes = []} = this.__trackedAttributes;
+
+    // Force an id attribute if none present.
+    if ('' === element.id) {
+      element.setAttribute('id', id);
+      trackedAttributes.push('id');
+    }
+
+    return trackedAttributes;
+  }
+
+  /**
    * Adds an attribute for the given element and tracks it for later removal.
    *
    * @param {HTMLElement} element   The element to which attributes should be added.
@@ -122,14 +142,7 @@ export default class AriaComponent {
       return void 0;
     }
 
-    const id = element.id || getUniqueId();
-    const trackedAttributes = (this.__trackedAttributes[id] ?? []);
-
-    // Force an id attribute if none present.
-    if ('' === element.id) {
-      element.setAttribute('id', id);
-      trackedAttributes.push('id');
-    }
+    const trackedAttributes = this.getTrackedAttributesFor(element);
 
     element.setAttribute(attribute, value);
     trackedAttributes.push(attribute);
@@ -145,14 +158,7 @@ export default class AriaComponent {
    * @param {string}      value     The attribute value.
    */
   updateAttribute(element, attribute, value) {
-    const id = element.id || getUniqueId();
-    const trackedAttributes = (this.__trackedAttributes[id] ?? []);
-
-    // Force an id attribute if none present.
-    if ('' === element.id) {
-      element.setAttribute('id', id);
-      trackedAttributes.push('id');
-    }
+    const trackedAttributes = this.getTrackedAttributesFor(element);
 
     // Remove null/undefined attributes.
     if (null == value) {
@@ -172,8 +178,8 @@ export default class AriaComponent {
    * @param {HTMLElement} element The elemen on which attributes were added.
    */
   removeAttributes(element) {
-    const attributes = (this.__trackedAttributes[element.id] ?? []);
-    attributes.forEach((attr) => element.removeAttribute(attr));
+    const trackedAttributes = this.getTrackedAttributesFor(element);
+    trackedAttributes.forEach((attr) => element.removeAttribute(attr));
   }
 
   /**
