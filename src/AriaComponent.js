@@ -118,7 +118,7 @@ export default class AriaComponent {
    */
   getTrackedAttributesFor(element) {
     const id = element.id || getUniqueId();
-    const { [id]: trackedAttributes = []} = this.__trackedAttributes;
+    const { [id]: trackedAttributes = [] } = this.__trackedAttributes;
 
     // Force an id attribute if none present.
     if ('' === element.id) {
