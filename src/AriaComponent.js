@@ -153,7 +153,7 @@ export default class AriaComponent {
   /**
    * Updates an attribute for the given element and tracks it for later removal.
    *
-   * @param {HTMLElement} element   The element to which attributes should be added.
+   * @param {HTMLElement} element   The element to which attributes should be updated.
    * @param {string}      attribute The attribute name.
    * @param {string}      value     The attribute value.
    */
