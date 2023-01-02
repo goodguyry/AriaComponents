@@ -95,6 +95,9 @@ _**`MenuButton.off(event, listener, options)`**_
 
 ### Properties
 
+_**`MenuButton.element`**_  
+> Returns the element passed to the constructor.
+
 _**`MenuButton.controller`**_  
 > Returns the MenuButton's activating element.
 

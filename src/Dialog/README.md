@@ -108,6 +108,9 @@ _**`Dialog.off(event, listener, options)`**_
 
 ### Properties
 
+_**`Dialog.element`**_  
+> Returns the element passed to the constructor.
+
 _**`Dialog.controller`**_  
 > Returns the Dialog's activating element.
 

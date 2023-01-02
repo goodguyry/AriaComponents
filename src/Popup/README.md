@@ -83,6 +83,9 @@ _**`Popup.off(event, listener, options)`**_
 
 ### Properties
 
+_**`Popup.element`**_  
+> Returns the element passed to the constructor.
+
 _**`Popup.controller`**_  
 > Returns the Popup's activating element.
 
