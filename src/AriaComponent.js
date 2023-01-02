@@ -1,3 +1,5 @@
+import { getUniqueId } from './lib/uniqueId';
+
 /**
  * Class for facilitating accessible components.
  */
@@ -59,6 +61,13 @@ export default class AriaComponent {
     this.referenceElements = [];
 
     /**
+     * Track attributes added by this script.
+     *
+     * @type {Object}
+     */
+    this.__trackedAttributes = {};
+
+    /**
      * Whether to suppress the `init` and `destroy` events.
      * @private
      *
@@ -70,6 +79,9 @@ export default class AriaComponent {
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
+    this.addAttribute = this.addAttribute.bind(this);
+    this.updateAttribute = this.updateAttribute.bind(this);
+    this.removeAttributes = this.removeAttributes.bind(this);
     this.dispatch = this.dispatch.bind(this);
     this.dispatchEventInit = this.dispatchEventInit.bind(this);
     this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
@@ -95,6 +107,73 @@ export default class AriaComponent {
    */
   get [Symbol.toStringTag]() {
     return this.stringDescription;
+  }
+
+  /**
+   * Adds an attribute for the given element and tracks it for later removal.
+   *
+   * @param {HTMLElement} element   The element to which attributes should be added.
+   * @param {string}      attribute The attribute name.
+   * @param {string}      value     The attribute value.
+   */
+  addAttribute(element, attribute, value) {
+    // Don't overwrite existing attributes.
+    if (element.hasAttribute(attribute) || null == value) {
+      return void 0;
+    }
+
+    const id = element.id || getUniqueId();
+    const trackedAttributes = (this.__trackedAttributes[id] ?? []);
+
+    // Force an id attribute if none present.
+    if ('' === element.id) {
+      element.setAttribute('id', id);
+      trackedAttributes.push('id');
+    }
+
+    element.setAttribute(attribute, value);
+    trackedAttributes.push(attribute);
+
+    this.__trackedAttributes[element.id] = trackedAttributes;
+  }
+
+  /**
+   * Updates an attribute for the given element and tracks it for later removal.
+   *
+   * @param {HTMLElement} element   The element to which attributes should be added.
+   * @param {string}      attribute The attribute name.
+   * @param {string}      value     The attribute value.
+   */
+  updateAttribute(element, attribute, value) {
+    const id = element.id || getUniqueId();
+    const trackedAttributes = (this.__trackedAttributes[id] ?? []);
+
+    // Force an id attribute if none present.
+    if ('' === element.id) {
+      element.setAttribute('id', id);
+      trackedAttributes.push('id');
+    }
+
+    // Remove null/undefined attributes.
+    if (null == value) {
+      element.removeAttribute(attribute);
+      trackedAttributes.filter((item) => item !== attribute);
+    } else {
+      element.setAttribute(attribute, value);
+      trackedAttributes.push(attribute);
+    }
+
+    this.__trackedAttributes[element.id] = trackedAttributes;
+  }
+
+  /**
+   * Removes tracked attributes added to the given element.
+   *
+   * @param {HTMLElement} element The elemen on which attributes were added.
+   */
+  removeAttributes(element) {
+    const attributes = (this.__trackedAttributes[element.id] ?? []);
+    attributes.forEach((attr) => element.removeAttribute(attr));
   }
 
   /**

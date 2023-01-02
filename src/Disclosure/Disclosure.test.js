@@ -38,6 +38,10 @@ let disclosure;
 
 describe('Disclosure with default configuration', () => {
   beforeEach(() => {
+    if (disclosure instanceof Disclosure) {
+      disclosure.destroy();
+    }
+
     disclosure = new Disclosure(controller);
   });
 
@@ -153,7 +157,7 @@ describe('Disclosure with default configuration', () => {
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
 
-    expect(onDestroy).toHaveBeenCalledTimes(1);
+    expect(onDestroy).toHaveBeenCalledTimes(7);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
@@ -169,6 +173,10 @@ describe('Disclosure with default configuration', () => {
 
 describe('Disclosure with non-default configuration', () => {
   beforeEach(() => {
+    if (disclosure instanceof Disclosure) {
+      disclosure.destroy();
+    }
+
     disclosure = new Disclosure(
       controller,
       {
@@ -191,7 +199,7 @@ describe('Disclosure with non-default configuration', () => {
     disclosure.destroy();
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalledTimes(2);
+    expect(onDestroy).toHaveBeenCalledTimes(9);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);

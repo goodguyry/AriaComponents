@@ -107,7 +107,7 @@ export default class MenuBar extends AriaComponent {
     super.setSelfReference(this.list);
 
     // Set the menu role.
-    this.list.setAttribute('role', 'menubar');
+    this.addAttribute(this.list, 'role', 'menubar');
 
     /**
      * The menubar's child elements.
@@ -159,14 +159,14 @@ export default class MenuBar extends AriaComponent {
      */
     this.menuBarItems.forEach((link, index) => {
       // Set the item's role.
-      link.setAttribute('role', 'menuitem');
+      this.addAttribute(link, 'role', 'menuitem');
 
       // Add size and position attributes.
-      link.setAttribute('aria-setsize', this.menuLength);
-      link.setAttribute('aria-posinset', index + 1);
+      this.addAttribute(link, 'aria-setsize', this.menuLength);
+      this.addAttribute(link, 'aria-posinset', (index + 1));
 
       // Set menubar item role.
-      link.parentElement.setAttribute('role', 'presentation');
+      this.addAttribute(link.parentElement, 'role', 'presentation');
 
       link.parentElement.addEventListener('keydown', this.menubarHandleKeydown);
       link.addEventListener('click', this.menubarHandleClick);
@@ -197,10 +197,7 @@ export default class MenuBar extends AriaComponent {
         return acc;
       }
 
-      const popup = new Popup(
-        controller,
-        { type: 'menu' }
-      );
+      const popup = new Popup(controller, { type: 'menu' });
 
       // Popup has to be instantiated.
       popup.init();
@@ -423,16 +420,29 @@ export default class MenuBar extends AriaComponent {
     this.deleteSelfReferences();
 
     // Remove the menu role.
-    this.list.removeAttribute('role');
+    this.removeAttributes(this.list);
+
+    /*
+     * Destroy inner Popup(s).
+     *
+     * Inner instances of aria-components must be destroyed before the outer
+     * component so the id attribute persists, otherwise the attribute tracking is broken.
+     */
+    this.popups.forEach((popup) => {
+      popup.target.removeEventListener('keydown', this.menuItemHandleKeydown);
+
+      popup.destroy();
+    });
+
+    // Destroy subMenus.
+    this.subMenus.forEach((submenu) => submenu.destroy());
 
     this.menuBarItems.forEach((link) => {
       // Remove list item role.
-      link.parentElement.removeAttribute('role');
+      this.removeAttributes(link.parentElement);
 
       // Remove size and position attributes.
-      link.removeAttribute('aria-setsize');
-      link.removeAttribute('aria-posinset');
-      link.removeAttribute('role');
+      this.removeAttributes(link);
 
       // Remove event listeners.
       link.parentElement.removeEventListener(
@@ -444,18 +454,6 @@ export default class MenuBar extends AriaComponent {
 
     // Remove tabindex attribute.
     tabIndexAllow(this.menuBarItems);
-
-    // Destroy popups.
-    this.popups.forEach((popup) => {
-      popup.target.removeEventListener('keydown', this.menuItemHandleKeydown);
-
-      popup.destroy();
-    });
-
-    // Destroy subMenus.
-    this.subMenus.forEach((submenu) => {
-      submenu.destroy();
-    });
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

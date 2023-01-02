@@ -24,7 +24,7 @@ const dialogMarkup = `
     </article>
   </main>
   <footer class="site-footer">Site footer</footer>
-  <div class="wrapper" id="dialog">
+  <div class="wrapper" id="dialog" tabindex="0">
     <button>Close</button>
     <ul>
       <li><a href="example.com"></a></li>

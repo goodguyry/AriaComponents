@@ -3,7 +3,6 @@ import getElementPair from '../lib/getElementPair';
 import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class to set up a controller-target relationship for independently revealing
@@ -100,13 +99,8 @@ export default class Disclosure extends AriaComponent {
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    // Ensure the target and controller each have an ID attribute.
-    [this.controller, this.target].forEach((element) => {
-      setUniqueId(element);
-    });
-
     // Add controller attributes
-    this.controller.setAttribute('aria-expanded', `${expanded}`);
+    this.addAttribute(this.controller, 'aria-expanded', expanded);
 
     // Patch button role and behavior for non-button controller.
     if ('BUTTON' !== this.controller.nodeName) {
@@ -114,14 +108,11 @@ export default class Disclosure extends AriaComponent {
        * Some elements semantics conflict with the button role. You really
        * should just use a button.
        */
-      this.controller.setAttribute('role', 'button');
+      this.addAttribute(this.controller, 'role', 'button');
 
-      // Ensure we can TAB to the controller if it's not a button or anchor.
-      if (
-        'A' !== this.controller.nodeName
-        && null === this.controller.getAttribute('tabindex')
-      ) {
-        this.controller.setAttribute('tabindex', '0');
+      // Ensure we can TAB to the controller if it's not a button nor anchor.
+      if ('A' !== this.controller.nodeName) {
+        this.addAttribute(this.controller, 'tabindex', '0');
       }
     }
 
@@ -130,7 +121,7 @@ export default class Disclosure extends AriaComponent {
      * a relationship exists.
      */
     if (this.target !== this.controller.nextElementSibling) {
-      this.controller.setAttribute('aria-owns', this.target.id);
+      this.addAttribute(this.controller, 'aria-owns', this.target.id);
     }
 
     /*
@@ -139,10 +130,10 @@ export default class Disclosure extends AriaComponent {
      * element via CSS.
      */
     if (! expanded) {
-      this.target.setAttribute('aria-hidden', 'true');
+      this.addAttribute(this.target, 'aria-hidden', 'true');
 
       if (this.useHiddenAttribute) {
-        this.target.setAttribute('hidden', '');
+        this.addAttribute(this.target, 'hidden', '');
       }
     }
 
@@ -174,7 +165,7 @@ export default class Disclosure extends AriaComponent {
   stateWasUpdated() {
     const { expanded } = this.state;
 
-    this.controller.setAttribute('aria-expanded', `${expanded}`);
+    this.updateAttribute(this.controller, 'aria-expanded', expanded);
 
     /*
      * https://developer.paciellogroup.com/blog/2016/01/the-state-of-hidden-content-support-in-2016/
@@ -184,16 +175,16 @@ export default class Disclosure extends AriaComponent {
      *   results in the content being unhidden.
      */
     if (expanded) {
-      this.target.setAttribute('aria-hidden', 'false');
+      this.updateAttribute(this.target, 'aria-hidden', 'false');
 
       if (this.useHiddenAttribute) {
-        this.target.removeAttribute('hidden');
+        this.updateAttribute(this.target, 'hidden', null);
       }
     } else {
-      this.target.setAttribute('aria-hidden', 'true');
+      this.updateAttribute(this.target, 'aria-hidden', 'true');
 
       if (this.useHiddenAttribute) {
-        this.target.setAttribute('hidden', '');
+        this.updateAttribute(this.target, 'hidden', '');
       }
     }
 
@@ -260,28 +251,9 @@ export default class Disclosure extends AriaComponent {
     // Remove the references to the class instance.
     this.deleteSelfReferences();
 
-    // Remove IDs set by this class.
-    [this.controller, this.target].forEach((element) => {
-      if (element.getAttribute('id').includes('id_')) {
-        element.removeAttribute('id');
-      }
-    });
-
-    // Remove controller attributes.
-    this.controller.removeAttribute('aria-expanded');
-    this.controller.removeAttribute('aria-owns');
-    this.controller.removeAttribute('tabindex');
-
-    if ('BUTTON' !== this.controller.nodeName) {
-      this.controller.removeAttribute('role');
-    }
-
-    // Remove target attributes.
-    this.target.removeAttribute('aria-hidden');
-
-    if (this.useHiddenAttribute) {
-      this.target.removeAttribute('hidden');
-    }
+    // Remove attributes.
+    this.removeAttributes(this.controller);
+    this.removeAttributes(this.target);
 
     // Remove tabindex attributes.
     tabIndexAllow(this.interactiveChildElements);

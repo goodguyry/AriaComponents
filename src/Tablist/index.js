@@ -1,6 +1,5 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
-import { setUniqueId } from '../lib/uniqueId';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 import keyCodes from '../lib/keyCodes';
@@ -110,7 +109,7 @@ export default class Tablist extends AriaComponent {
      *
      * https://www.w3.org/TR/wai-aria-1.1/#tablist
      */
-    this.tabs.setAttribute('role', 'tablist');
+    this.addAttribute(this.tabs, 'role', 'tablist');
 
     /*
      * Prevent the Tablist LI element from being announced as list-items as
@@ -118,7 +117,7 @@ export default class Tablist extends AriaComponent {
      */
     Array.from(this.tabs.children).forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
-        listChild.setAttribute('role', 'presentation');
+        this.addAttribute(listChild, 'role', 'presentation');
       }
     });
 
@@ -130,17 +129,15 @@ export default class Tablist extends AriaComponent {
        */
       super.setSelfReference(tab);
 
-      // Ensure each tab has an ID.
-      setUniqueId(tab);
       // Add the `tab` role to indicate its relationship to the Tablist.
-      tab.setAttribute('role', 'tab');
+      this.addAttribute(tab, 'role', 'tab');
 
       if (activeIndex !== index) {
         // Don't allow focus on inactive tabs.
-        tab.setAttribute('tabindex', '-1');
+        this.addAttribute(tab, 'tabindex', '-1');
       } else {
         // Set the first tab as selected by default.
-        tab.setAttribute('aria-selected', 'true');
+        this.addAttribute(tab, 'aria-selected', 'true');
       }
     });
 
@@ -156,20 +153,19 @@ export default class Tablist extends AriaComponent {
        */
       super.setSelfReference(panel);
 
-      // Ensure each panel has an ID.
-      setUniqueId(panel);
       // Add the `tabpanel` role to indicate its relationship to the tablist.
-      panel.setAttribute('role', 'tabpanel');
+      this.addAttribute(panel, 'role', 'tabpanel');
       // Create a relationship between the tab and its panel.
-      panel.setAttribute('aria-labelledby', this.tabLinks[index].id);
+      this.addAttribute(panel, 'aria-labelledby', this.tabLinks[index].id);
+
       // All but the first tab should be hidden by default.
       if (activeIndex === index) {
-        panel.setAttribute('tabindex', '0');
-        panel.setAttribute('aria-hidden', 'false');
-        panel.removeAttribute('hidden');
+        this.addAttribute(panel, 'tabindex', '0');
+        this.addAttribute(panel, 'aria-hidden', 'false');
+        this.addAttribute(panel, 'hidden', null);
       } else {
-        panel.setAttribute('aria-hidden', 'true');
-        panel.setAttribute('hidden', '');
+        this.addAttribute(panel, 'aria-hidden', 'true');
+        this.addAttribute(panel, 'hidden', '');
       }
 
       // Listen for panel keydown events.
@@ -196,26 +192,31 @@ export default class Tablist extends AriaComponent {
     const [deactivate] = this.tabLinks.filter((tab) => (
       'true' === tab.getAttribute('aria-selected')
     ));
+
     // Get the index; this is essentially the previous `activeIndex` state.
     const deactiveIndex = this.tabLinks.indexOf(deactivate);
 
     // Deactivate the previously-selected tab.
-    deactivate.setAttribute('tabindex', '-1');
-    deactivate.removeAttribute('aria-selected');
-    this.panels[deactiveIndex].setAttribute('aria-hidden', 'true');
-    this.panels[deactiveIndex].setAttribute('hidden', '');
-    this.panels[deactiveIndex].removeAttribute('tabindex');
+    this.updateAttribute(deactivate, 'tabindex', '-1');
+    this.updateAttribute(deactivate, 'aria-selected', null);
+
+    // Deactivate the previously-active panel.
+    this.updateAttribute(this.panels[deactiveIndex], 'aria-hidden', 'true');
+    this.updateAttribute(this.panels[deactiveIndex], 'hidden', '');
+    this.updateAttribute(this.panels[deactiveIndex], 'tabindex', null);
 
     // Prevent tabbing to interactive children of the deactivated panel.
     const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
     tabIndexDeny(deactiveChildren);
 
     // Actvate the newly active tab.
-    this.tabLinks[activeIndex].removeAttribute('tabindex');
-    this.tabLinks[activeIndex].setAttribute('aria-selected', 'true');
-    this.panels[activeIndex].setAttribute('aria-hidden', 'false');
-    this.panels[activeIndex].removeAttribute('hidden');
-    this.panels[activeIndex].setAttribute('tabindex', '0');
+    this.updateAttribute(this.tabLinks[activeIndex], 'tabindex', null);
+    this.updateAttribute(this.tabLinks[activeIndex], 'aria-selected', 'true');
+
+    // Actvate the newly active panel.
+    this.updateAttribute(this.panels[activeIndex], 'aria-hidden', 'false');
+    this.updateAttribute(this.panels[activeIndex], 'hidden', null);
+    this.updateAttribute(this.panels[activeIndex], 'tabindex', '0');
 
     // Allow tabbing to the newly-active panel.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
@@ -307,7 +308,7 @@ export default class Tablist extends AriaComponent {
       case DOWN: {
         event.preventDefault();
 
-        this.panels[currentIndex].setAttribute('tabindex', '0');
+        this.updateAttribute(this.panels[currentIndex], 'tabindex', '0');
         this.panels[currentIndex].focus();
 
         break;
@@ -373,12 +374,12 @@ export default class Tablist extends AriaComponent {
    */
   destroy() {
     // Remove the tablist role.
-    this.tabs.removeAttribute('role');
+    this.removeAttributes(this.tabs);
 
     // Remove the 'presentation' role from each list item.
     Array.from(this.tabs.children).forEach((listChild) => {
       if ('LI' === listChild.nodeName) {
-        listChild.removeAttribute('role');
+        this.removeAttributes(listChild);
       }
     });
 
@@ -387,9 +388,7 @@ export default class Tablist extends AriaComponent {
 
     // Remove tab attributes and event listeners.
     this.tabLinks.forEach((tab) => {
-      tab.removeAttribute('role');
-      tab.removeAttribute('aria-selected');
-      tab.removeAttribute('tabindex');
+      this.removeAttributes(tab);
 
       tab.removeEventListener('click', this.tabsHandleClick);
       tab.removeEventListener('keydown', this.tabsHandleKeydown);
@@ -397,11 +396,7 @@ export default class Tablist extends AriaComponent {
 
     // Remove panel attributes and event listeners.
     this.panels.forEach((panel) => {
-      panel.removeAttribute('role');
-      panel.removeAttribute('aria-hidden');
-      panel.removeAttribute('hidden');
-      panel.removeAttribute('tabindex');
-      panel.removeAttribute('aria-labelledby');
+      this.removeAttributes(panel);
 
       // Make sure to allow tabbing to all children of all panels.
       const interactiveChildElements = interactiveChildren(panel);

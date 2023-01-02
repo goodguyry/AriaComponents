@@ -5,7 +5,6 @@ import keyCodes from '../lib/keyCodes';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 import toArray from '../lib/toArray';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import { setUniqueId } from '../lib/uniqueId';
 
 /**
  * Class to set up an interactive Dialog element.
@@ -107,6 +106,12 @@ export default class Dialog extends AriaComponent {
       );
     }
 
+    // Be sure each element has an id attribute for internal attribute tracking.
+    const contentLength = this.content.length;
+    for (let i = 0; i < contentLength; i += 1) {
+      this.addAttribute(this.content[i]); // Will set an ID by default if none present.
+    }
+
     /*
      * Add a reference to the class instance to enable external interactions
      * with this instance.
@@ -122,9 +127,6 @@ export default class Dialog extends AriaComponent {
 
     // Focusable content should initially have tabindex='-1'.
     tabIndexDeny(this.interactiveChildElements);
-
-    // Add target attribute.
-    setUniqueId(this.target);
 
     /**
      * Check if the controller is a button, but only if it doesn't already have
@@ -142,27 +144,27 @@ export default class Dialog extends AriaComponent {
      */
     if (this.controllerIsNotAButton) {
       // https://www.w3.org/TR/wai-aria-1.1/#button
-      this.controller.setAttribute('role', 'button');
-      this.controller.setAttribute('tabindex', '0');
+      this.addAttribute(this.controller, 'role', 'button');
+      this.addAttribute(this.controller, 'tabindex', '0');
     }
 
     // Allow focus on the target element.
-    this.target.setAttribute('tabindex', '0');
+    this.addAttribute(this.target, 'tabindex', '0');
 
     /*
      * Set the target as hidden by default. Using the `aria-hidden` attribute,
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
      */
-    this.target.setAttribute('aria-hidden', 'true');
+    this.addAttribute(this.target, 'aria-hidden', 'true');
 
     if (this.useHiddenAttribute) {
-      this.target.setAttribute('hidden', '');
+      this.addAttribute(this.target, 'hidden', '');
     }
 
     // Set additional attributes.
-    this.target.setAttribute('role', 'dialog');
-    this.target.setAttribute('aria-modal', 'true');
+    this.addAttribute(this.target, 'role', 'dialog');
+    this.addAttribute(this.target, 'aria-modal', 'true');
 
     // Add event listeners.
     this.controller.addEventListener('click', this.controllerHandleClick);
@@ -196,14 +198,13 @@ export default class Dialog extends AriaComponent {
 
     if (expanded) {
       for (let i = 0; i < contentLength; i += 1) {
-        this.content[i].setAttribute('aria-hidden', 'true');
+        this.updateAttribute(this.content[i], 'aria-hidden', 'true');
       }
 
-      // Update target element.
-      this.target.setAttribute('aria-hidden', 'false');
+      this.updateAttribute(this.target, 'aria-hidden', 'false');
 
       if (this.useHiddenAttribute) {
-        this.target.removeAttribute('hidden');
+        this.updateAttribute(this.target, 'hidden', null);
       }
 
       tabIndexAllow(this.interactiveChildElements);
@@ -213,14 +214,13 @@ export default class Dialog extends AriaComponent {
       this.target.focus();
     } else {
       for (let i = 0; i < contentLength; i += 1) {
-        this.content[i].removeAttribute('aria-hidden');
+        this.updateAttribute(this.content[i], 'aria-hidden', null);
       }
 
-      // Update target element.
-      this.target.setAttribute('aria-hidden', 'true');
+      this.updateAttribute(this.target, 'aria-hidden', 'true');
 
       if (this.useHiddenAttribute) {
-        this.target.setAttribute('hidden', '');
+        this.updateAttribute(this.target, 'hidden', '');
       }
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
@@ -358,27 +358,12 @@ export default class Dialog extends AriaComponent {
     // Remove the `aria-hidden` attribute from the content wrapper.
     const contentLength = this.content.length;
     for (let i = 0; i < contentLength; i += 1) {
-      this.content[i].removeAttribute('aria-hidden');
+      this.removeAttributes(this.content[i]);
     }
 
-    // Remove controller attributes.
-    if (this.controllerIsNotAButton) {
-      // https://www.w3.org/TR/wai-aria-1.1/#button
-      this.controller.removeAttribute('role');
-      this.controller.removeAttribute('tabindex');
-    }
-
-    // Remove target attributes.
-    this.target.removeAttribute('tabindex');
-
-    this.target.removeAttribute('aria-hidden');
-
-    if (this.useHiddenAttribute) {
-      this.target.removeAttribute('hidden');
-    }
-
-    this.target.removeAttribute('role');
-    this.target.removeAttribute('aria-modal');
+    // Remove attributes.
+    this.removeAttributes(this.controller);
+    this.removeAttributes(this.target);
 
     // Remove tabindex attribute.
     tabIndexAllow(this.interactiveChildElements);

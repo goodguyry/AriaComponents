@@ -1,6 +1,5 @@
 import Popup from '../Popup';
 import getElementPair from '../lib/getElementPair';
-import { setUniqueId } from '../lib/uniqueId';
 import keyCodes from '../lib/keyCodes';
 import Search from '../lib/Search';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
@@ -75,12 +74,11 @@ export default class ListBox extends Popup {
     this.search = new Search(this.options);
 
     /*
-     * Set the `option` role for each list itme and ensure each has a unique ID.
+     * Set the `option` role for each list item and ensure each has a unique ID.
      * The ID here is what will be used to track the active descendant.
      */
     this.options.forEach((listItem) => {
-      setUniqueId(listItem);
-      listItem.setAttribute('role', 'option');
+      this.addAttribute(listItem, 'role', 'option');
     });
 
     // Save first and last option as properties.
@@ -101,7 +99,7 @@ export default class ListBox extends Popup {
      * Add the 'listbox' role to signify a component that presents a listbox of
      * options from which to select.
      */
-    this.target.setAttribute('role', 'listbox');
+    this.addAttribute(this.target, 'role', 'listbox');
 
     /*
      * Set up the target element to allow programatically setting focus to it
@@ -109,7 +107,7 @@ export default class ListBox extends Popup {
      *
      * @see this.stateWasUpdated()
      */
-    this.target.setAttribute('tabindex', '-1');
+    this.addAttribute(this.target, 'tabindex', '-1');
 
     // Add event listeners.
     this.controller.addEventListener('keyup', this.controllerHandleKeyup);
@@ -156,9 +154,10 @@ export default class ListBox extends Popup {
        */
       const selected = this.target.querySelector('[aria-selected="true"]');
       if (null !== selected) {
-        selected.removeAttribute('aria-selected');
+        this.updateAttribute(selected, 'aria-selected', null);
       }
-      activeDescendant.setAttribute('aria-selected', 'true');
+
+      this.updateAttribute(activeDescendant, 'aria-selected', 'true');
 
       /*
        * If the selected option is beyond the bounds of the list, scroll it into
@@ -171,14 +170,14 @@ export default class ListBox extends Popup {
        * Track the newly selected option via the `aria-activedescendant`
        * attribute on the target.
        */
-      this.target.setAttribute('aria-activedescendant', activeDescendant.id);
+      this.updateAttribute(this.target, 'aria-activedescendant', activeDescendant.id);
     } else {
       /*
        * When the Popup is hidden, the `aria-activedescendant` attribute should
        * be removed from the list and the selected option should be used as the
        * button text.
        */
-      this.target.removeAttribute('aria-activedescendant');
+      this.updateAttribute(this.target, 'aria-activedescendant', null);
       this.controller.textContent = activeDescendant.textContent;
 
       /*
@@ -361,21 +360,11 @@ export default class ListBox extends Popup {
     // Destroy the Popup.
     super.destroy();
 
-    // Remove the role attribute from each of the options.
-    this.options.forEach((listItem) => {
-      listItem.removeAttribute('role');
-      listItem.removeAttribute('aria-selected');
+    // Remove list item attributes.
+    this.options.forEach((listItem) => this.removeAttributes(listItem));
 
-      // Remove IDs set by this class.
-      if (listItem.getAttribute('id').includes('id_')) {
-        listItem.removeAttribute('id');
-      }
-    });
-
-    // Remove the listbox role.
-    this.target.removeAttribute('role');
-    this.target.removeAttribute('tabindex');
-    this.target.removeAttribute('aria-activedescendant');
+    // Remove target attributes.
+    this.removeAttributes(this.target);
 
     // Remove event listeners.
     this.controller.removeEventListener('keyup', this.controllerHandleKeyup);
