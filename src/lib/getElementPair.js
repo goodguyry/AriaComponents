@@ -8,13 +8,13 @@ const getElementPair = (element) => {
   let controller = null;
   let target = null;
 
-
   // Use the aria-controls attribute value to find the target element.
   if (element.hasAttribute('aria-controls')) {
     const elementControls = element.getAttribute('aria-controls');
     target = document.getElementById(elementControls);
 
-    if (target === null) {
+    if (null === target) {
+      // eslint-disable-next-line max-len
       throw new Error(`Configuration error: A target element with \`id="${elementControls}"\` is not found`);
     } else {
       return {
@@ -29,7 +29,8 @@ const getElementPair = (element) => {
     const elementId = element.id;
     controller = document.querySelector(`[aria-controls="${elementId}"]`);
 
-    if (controller === null) {
+    if (null === controller) {
+      // eslint-disable-next-line max-len
       throw new Error(`Configuration error: A controlling element with \`aria-controls="${elementId}"\` is not found`);
     } else {
       return {
@@ -39,7 +40,7 @@ const getElementPair = (element) => {
     }
   }
 
-  throw new Error(`Configuration error: The element is missing the required attributes`);
+  throw new Error('Configuration error: The element is missing the required attributes');
 };
 
 export default getElementPair;
