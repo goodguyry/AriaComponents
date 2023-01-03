@@ -1,16 +1,27 @@
-import { getUniqueId } from './lib/uniqueId';
-
 /**
  * Class for facilitating accessible components.
  */
 export default class AriaComponent {
   /**
    * Throw a confguration error.
+   * @static
    *
    * @param {string} message The error message.
    */
   static configurationError(message) {
     throw new Error(`Configuration error: ${message}`);
+  }
+
+  /**
+   * Create a passably unique `id` attribute.
+   * @static
+   *
+   * @param {Number} radix An optional base for converting the Number to a String.
+   * @returns {String}
+   */
+  static getUniqueId(radix = 36) {
+    const [, attr] = Math.random().toString(radix).split('.');
+    return `ac-id_${attr}`;
   }
 
   /**
@@ -117,7 +128,7 @@ export default class AriaComponent {
    * @return {array}
    */
   getTrackedAttributesFor(element) {
-    const id = element.id || getUniqueId();
+    const id = element.id || this.constructor.getUniqueId();
     const { [id]: trackedAttributes = [] } = this.__trackedAttributes;
 
     // Force an id attribute if none present.
