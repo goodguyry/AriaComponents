@@ -22,6 +22,10 @@
   overflow-y: scroll;
   position: absolute;
   top: 0;
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 .list-item {

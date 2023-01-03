@@ -36,6 +36,10 @@
   top: calc(100% + #{rem(20)});
   width: max-content;
 
+  &[aria-hidden="true"] {
+    display: none;
+  }
+
   .list-item {
 
     &:not(:last-child) { /* stylelint-disable-line selector-max-specificity */

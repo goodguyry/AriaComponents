@@ -26,6 +26,10 @@
   @media (min(lg)) {
     width: tidy-span(6);
   }
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 .nav {

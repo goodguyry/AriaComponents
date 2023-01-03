@@ -20,4 +20,8 @@
 
 .info {
   padding: rem(10);
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 }

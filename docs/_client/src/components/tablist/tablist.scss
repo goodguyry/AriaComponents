@@ -37,4 +37,8 @@
   @media (min(lg)) {
     width: 50%;
   }
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
 }
