@@ -201,6 +201,7 @@ export default class Dialog extends AriaComponent {
         this.updateAttribute(this.content[i], 'aria-hidden', 'true');
       }
 
+      // Update target element.
       this.updateAttribute(this.target, 'aria-hidden', 'false');
 
       if (this.useHiddenAttribute) {
@@ -217,6 +218,7 @@ export default class Dialog extends AriaComponent {
         this.updateAttribute(this.content[i], 'aria-hidden', null);
       }
 
+      // Update target element.
       this.updateAttribute(this.target, 'aria-hidden', 'true');
 
       if (this.useHiddenAttribute) {
