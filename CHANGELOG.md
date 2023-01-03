@@ -26,7 +26,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Allows authors to disable the use of the hidden attribute in Dialog, Disclosure, and Popup state changes via the `useHiddenAttribute` option. (#61)
 - `instance.on()` and `instance.off()` methods for subscribing to events (#67)
 - Menu, MenuBar, and MenuButton will log a warning if used for website navigation (#68)
-- Components track attributes they add and will only overwrite existing attribute values where required
+- Components track attributes they add and will only overwrite existing attribute values where required (#73)
 
 **Fixed**
 
