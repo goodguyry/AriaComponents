@@ -41,6 +41,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Dialog no longer requires a close button, and will not create one (#51)
 - Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` (#54, #55)
 - MenuBar no longer tracks Popup `expanded` state separately (e86d06e)
+- Components no longer manage the `hidden` attribute (#74)
 
 ## 0.3.1
 
