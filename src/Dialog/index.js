@@ -109,7 +109,7 @@ export default class Dialog extends AriaComponent {
     // Be sure each element has an id attribute for internal attribute tracking.
     const contentLength = this.content.length;
     for (let i = 0; i < contentLength; i += 1) {
-      this.addAttribute(this.content[i]); // Will set an ID by default if none present.
+      this.addAttribute(this.content[i], this.constructor.getUniqueId());
     }
 
     /*
