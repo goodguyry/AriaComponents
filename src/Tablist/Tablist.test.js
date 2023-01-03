@@ -78,6 +78,9 @@ tabs.addEventListener('destroy', onDestroy);
 
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
+    if (tablist instanceof Tablist) {
+      tablist.destroy();
+    }
     tablist = new Tablist(tabs);
   });
 
@@ -230,7 +233,7 @@ describe('Tablist with default configuration', () => {
       expect(firstTab.tablist).toBeUndefined();
       expect(secondPanel.tablist).toBeUndefined();
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
+      expect(onDestroy).toHaveBeenCalledTimes(5);
       return Promise.resolve().then(() => {
         const { detail } = getEventDetails(onDestroy);
 

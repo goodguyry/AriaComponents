@@ -31,7 +31,7 @@ module.exports = {
       { SwitchCase: 1 },
     ],
     'max-len': [
-      2, 80, 4,
+      2, 100, 4,
       {
         ignoreComments: true,
         ignoreUrls: true,

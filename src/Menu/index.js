@@ -109,7 +109,7 @@ export default class Menu extends AriaComponent {
      * Add the 'menu' role to signify a widget that offers a list of choices to
      * the user, such as a set of actions or functions.
      */
-    this.list.setAttribute('role', 'menu');
+    this.addAttribute(this.list, 'role', 'menu');
 
     /**
      * The list's child elements.
@@ -172,14 +172,14 @@ export default class Menu extends AriaComponent {
      */
     this.menuItems.forEach((link, index) => {
       // Remove semantics from list items.
-      link.parentElement.setAttribute('role', 'presentation');
+      this.addAttribute(link.parentElement, 'role', 'presentation');
 
       // Set the menuitem role.
-      link.setAttribute('role', 'menuitem');
+      this.addAttribute(link, 'role', 'menuitem');
 
       // Add size and position attributes.
-      link.setAttribute('aria-setsize', this.menuItemsLength);
-      link.setAttribute('aria-posinset', index + 1);
+      this.addAttribute(link, 'aria-setsize', this.menuItemsLength);
+      this.addAttribute(link, 'aria-posinset', (index + 1));
 
       // Instantiate submenu Disclosures
       if (this.collapse && link.hasAttribute('aria-controls')) {
@@ -359,31 +359,32 @@ export default class Menu extends AriaComponent {
     // Remove the reference to the class instance.
     this.deleteSelfReferences();
 
-    // Remove the list's role attritbute.
-    this.list.removeAttribute('role');
+    // Remove the list attritbutes.
+    this.removeAttributes(this.list);
 
     // Remove event listener.
     this.list.removeEventListener('keydown', this.listHandleKeydown);
 
+    /*
+     * Destroy inner Disclosure(s).
+     *
+     * Inner instances of aria-components must be destroyed before the outer
+     * component so the id attribute persists, otherwise the attribute tracking is broken.
+     */
+    this.disclosures.forEach((disclosure) => disclosure.destroy());
+
     this.menuItems.forEach((link) => {
-      // Remove list item role.
-      link.parentElement.removeAttribute('role');
+      // Remove list item attributes.
+      this.removeAttributes(link.parentElement);
 
       // Remove menuitem attributes.
-      link.removeAttribute('role');
-      link.removeAttribute('aria-setsize');
-      link.removeAttribute('aria-posinset');
+      this.removeAttributes(link);
 
       // Destroy nested Menus.
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList && isInstanceOf('Menu', siblingList.menu)) {
         siblingList.menu.destroy();
       }
-    });
-
-    // Destroy inner Disclosure(s).
-    this.disclosures.forEach((disclosure) => {
-      disclosure.destroy();
     });
 
     // Fire the destroy event.

@@ -3,7 +3,6 @@ import getElementPair from '../lib/getElementPair';
 import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import { setUniqueId } from '../lib/uniqueId';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
@@ -101,13 +100,9 @@ export default class Popup extends AriaComponent {
       Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }
 
-    // Add target attribute.
-    setUniqueId(this.target);
-
     // Add controller attributes
-    this.controller.setAttribute('aria-haspopup', this.type);
-    this.controller.setAttribute('aria-expanded', 'false');
-    setUniqueId(this.controller);
+    this.addAttribute(this.controller, 'aria-haspopup', this.type);
+    this.addAttribute(this.controller, 'aria-expanded', 'false');
 
     /**
      * Check if the controller is a button, but only if it doesn't already have
@@ -125,8 +120,8 @@ export default class Popup extends AriaComponent {
      */
     if (this.controllerIsNotAButton) {
       // https://www.w3.org/TR/wai-aria-1.1/#button
-      this.controller.setAttribute('role', 'button');
-      this.controller.setAttribute('tabindex', '0');
+      this.addAttribute(this.controller, 'role', 'button');
+      this.addAttribute(this.controller, 'tabindex', '0');
     }
 
     /*
@@ -134,7 +129,7 @@ export default class Popup extends AriaComponent {
      * a relationship exists.
      */
     if (this.target !== this.controller.nextElementSibling) {
-      this.controller.setAttribute('aria-owns', this.target.id);
+      this.addAttribute(this.controller, 'aria-owns', this.target.id);
     }
 
     /*
@@ -142,10 +137,10 @@ export default class Popup extends AriaComponent {
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
      */
-    this.target.setAttribute('aria-hidden', 'true');
+    this.addAttribute(this.target, 'aria-hidden', 'true');
 
     if (this.useHiddenAttribute) {
-      this.target.setAttribute('hidden', '');
+      this.addAttribute(this.target, 'hidden', '');
     }
 
     // Add event listeners
@@ -163,24 +158,24 @@ export default class Popup extends AriaComponent {
   stateWasUpdated() {
     const { expanded } = this.state;
 
-    this.controller.setAttribute('aria-expanded', `${expanded}`);
+    this.updateAttribute(this.controller, 'aria-expanded', expanded);
 
     /*
      * Update Popup and interactive children's attributes.
      */
     if (expanded) {
-      this.target.setAttribute('aria-hidden', 'false');
+      this.updateAttribute(this.target, 'aria-hidden', 'false');
 
       if (this.useHiddenAttribute) {
-        this.target.removeAttribute('hidden');
+        this.updateAttribute(this.target, 'hidden', null);
       }
 
       tabIndexAllow(this.interactiveChildElements);
     } else {
-      this.target.setAttribute('aria-hidden', 'true');
+      this.updateAttribute(this.target, 'aria-hidden', 'true');
 
       if (this.useHiddenAttribute) {
-        this.target.setAttribute('hidden', '');
+        this.updateAttribute(this.target, 'hidden', '');
       }
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
@@ -322,30 +317,9 @@ export default class Popup extends AriaComponent {
     // Remove the references to the class instance.
     this.deleteSelfReferences();
 
-    // Remove IDs set by this class.
-    [this.controller, this.target].forEach((element) => {
-      if (element.getAttribute('id').includes('id_')) {
-        element.removeAttribute('id');
-      }
-    });
-
-    // Remove controller attributes.
-    this.controller.removeAttribute('aria-haspopup');
-    this.controller.removeAttribute('aria-expanded');
-    this.controller.removeAttribute('aria-owns');
-
-    // Remove role and tabindex added to a link controller.
-    if (this.controllerIsNotAButton) {
-      this.controller.removeAttribute('role');
-      this.controller.removeAttribute('tabindex');
-    }
-
-    // Remove target attributes.
-    this.target.removeAttribute('aria-hidden');
-
-    if (this.useHiddenAttribute) {
-      this.target.removeAttribute('hidden');
-    }
+    // Remove attributes.
+    this.removeAttributes(this.controller);
+    this.removeAttributes(this.target);
 
     // Remove tabindex attribute.
     tabIndexAllow(this.interactiveChildElements);

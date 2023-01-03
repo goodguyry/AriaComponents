@@ -4,11 +4,24 @@
 export default class AriaComponent {
   /**
    * Throw a confguration error.
+   * @static
    *
    * @param {string} message The error message.
    */
   static configurationError(message) {
     throw new Error(`Configuration error: ${message}`);
+  }
+
+  /**
+   * Create a passably unique `id` attribute.
+   * @static
+   *
+   * @param {Number} radix An optional base for converting the Number to a String.
+   * @returns {String}
+   */
+  static getUniqueId(radix = 36) {
+    const [, attr] = Math.random().toString(radix).split('.');
+    return `ac-id_${attr}`;
   }
 
   /**
@@ -59,6 +72,13 @@ export default class AriaComponent {
     this.referenceElements = [];
 
     /**
+     * Track attributes added by this script.
+     *
+     * @type {Object}
+     */
+    this.__trackedAttributes = {};
+
+    /**
      * Whether to suppress the `init` and `destroy` events.
      * @private
      *
@@ -70,6 +90,10 @@ export default class AriaComponent {
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
     this.setSelfReference = this.setSelfReference.bind(this);
+    this.addAttribute = this.addAttribute.bind(this);
+    this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
+    this.updateAttribute = this.updateAttribute.bind(this);
+    this.removeAttributes = this.removeAttributes.bind(this);
     this.dispatch = this.dispatch.bind(this);
     this.dispatchEventInit = this.dispatchEventInit.bind(this);
     this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
@@ -95,6 +119,78 @@ export default class AriaComponent {
    */
   get [Symbol.toStringTag]() {
     return this.stringDescription;
+  }
+
+  /**
+   * Returns tracked attributes for the given element after ensuring it has the required ID attribute.
+   *
+   * @param  {HTMLElement} element The element for which attributes are being retrieved.
+   * @return {array}
+   */
+  getTrackedAttributesFor(element) {
+    const id = element.id || this.constructor.getUniqueId();
+    const { [id]: trackedAttributes = [] } = this.__trackedAttributes;
+
+    // Force an id attribute if none present.
+    if ('' === element.id) {
+      element.setAttribute('id', id);
+      trackedAttributes.push('id');
+    }
+
+    return trackedAttributes;
+  }
+
+  /**
+   * Adds an attribute for the given element and tracks it for later removal.
+   *
+   * @param {HTMLElement} element   The element to which attributes should be added.
+   * @param {string}      attribute The attribute name.
+   * @param {string}      value     The attribute value.
+   */
+  addAttribute(element, attribute, value) {
+    // Don't overwrite existing attributes.
+    if (element.hasAttribute(attribute) || null == value) {
+      return void 0;
+    }
+
+    const trackedAttributes = this.getTrackedAttributesFor(element);
+
+    element.setAttribute(attribute, value);
+    trackedAttributes.push(attribute);
+
+    this.__trackedAttributes[element.id] = trackedAttributes;
+  }
+
+  /**
+   * Updates an attribute for the given element and tracks it for later removal.
+   *
+   * @param {HTMLElement} element   The element to which attributes should be updated.
+   * @param {string}      attribute The attribute name.
+   * @param {string}      value     The attribute value.
+   */
+  updateAttribute(element, attribute, value) {
+    const trackedAttributes = this.getTrackedAttributesFor(element);
+
+    // Remove null/undefined attributes.
+    if (null == value) {
+      element.removeAttribute(attribute);
+      trackedAttributes.filter((item) => item !== attribute);
+    } else {
+      element.setAttribute(attribute, value);
+      trackedAttributes.push(attribute);
+    }
+
+    this.__trackedAttributes[element.id] = trackedAttributes;
+  }
+
+  /**
+   * Removes tracked attributes added to the given element.
+   *
+   * @param {HTMLElement} element The elemen on which attributes were added.
+   */
+  removeAttributes(element) {
+    const trackedAttributes = this.getTrackedAttributesFor(element);
+    trackedAttributes.forEach((attr) => element.removeAttribute(attr));
   }
 
   /**

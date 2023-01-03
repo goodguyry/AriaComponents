@@ -1,4 +1,4 @@
-import { getUniqueId, setUniqueId } from './uniqueId';
+import AriaComponent from '../AriaComponent';
 
 describe('Adds a unique ID attribute to the given element.', () => {
   // Set up our document body
@@ -14,22 +14,10 @@ describe('Adds a unique ID attribute to the given element.', () => {
 
   // get
   it('Should return an ID', () => {
-    expect(getUniqueId()).toMatch(/id_[\d\w]+/);
+    expect(AriaComponent.getUniqueId()).toMatch(/ac-id_[\d\w]+/);
   });
 
   it('Should return unique IDs', () => {
-    expect(getUniqueId()).not.toEqual(getUniqueId());
-  });
-
-  // set
-  it('Should add an ID attribute', () => {
-    setUniqueId(span);
-    expect(span.id).toMatch(/id_[\d\w]+/);
-  });
-
-  it('Should add unique ID attributes', () => {
-    setUniqueId(span);
-    setUniqueId(div);
-    expect(span.id).not.toEqual(div.id);
+    expect(AriaComponent.getUniqueId()).not.toEqual(AriaComponent.getUniqueId());
   });
 });
