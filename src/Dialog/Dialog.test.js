@@ -89,7 +89,6 @@ describe('Dialog with default configuration', () => {
       expect(target.getAttribute('tabindex')).toEqual('0');
 
       expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
 
       expect(target.getAttribute('role')).toEqual('dialog');
       expect(target.getAttribute('aria-modal')).toEqual('true');
@@ -122,7 +121,6 @@ describe('Dialog with default configuration', () => {
       expect(footer.getAttribute('aria-hidden')).toBeNull();
       expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
 
       // Click to re-open.
       controller.dispatchEvent(click);
@@ -130,7 +128,6 @@ describe('Dialog with default configuration', () => {
       expect(footer.getAttribute('aria-hidden')).toEqual('true');
       expect(content.getAttribute('aria-hidden')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
     });
 
     it('Should set the close button', () => {
@@ -141,7 +138,6 @@ describe('Dialog with default configuration', () => {
       expect(footer.getAttribute('aria-hidden')).toBeNull();
       expect(content.getAttribute('aria-hidden')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
     });
 
     it('Should trap keyboard tabs within the modal', () => {
@@ -194,7 +190,6 @@ describe('Dialog with default configuration', () => {
       expect(target.dialog).toBeUndefined();
 
       expect(target.getAttribute('aria-hidden')).toBeNull();
-      expect(target.getAttribute('hidden')).toBeNull();
 
       // Quick and dirty verification that the original markup is restored.
       expect(document.body.innerHTML).toEqual(dialogMarkup);

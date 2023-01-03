@@ -81,7 +81,6 @@ describe('Listbox with default configuration', () => {
 
       expect(target.getAttribute('role')).toEqual('listbox');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
       // expect(target.getAttribute('aria-labelledby')).toEqual('label');
       expect(target.getAttribute('tabindex')).toEqual('-1');
 
@@ -98,7 +97,6 @@ describe('Listbox with default configuration', () => {
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
 
       expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
       expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
       expect(document.activeElement).toEqual(target);
 
@@ -256,7 +254,6 @@ describe('Listbox with default configuration', () => {
       expect(controller.getAttribute('aria-controls')).toEqual(target.id);
       expect(target.getAttribute('aria-activedescendant')).toBeNull();
       expect(target.getAttribute('aria-hidden')).toBeNull();
-      expect(target.getAttribute('hidden')).toBeNull();
 
       listItems.forEach((item) => {
         expect(item.getAttribute('role')).toBeNull();

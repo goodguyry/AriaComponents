@@ -45,13 +45,6 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement|NodeList|Array}
        */
       content: [],
-
-      /**
-       * Whether to use the `hidden` attribute to manage the target element's visibility.
-       *
-       * @type {Boolean}
-       */
-      useHiddenAttribute: true,
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -158,10 +151,6 @@ export default class Dialog extends AriaComponent {
      */
     this.addAttribute(this.target, 'aria-hidden', 'true');
 
-    if (this.useHiddenAttribute) {
-      this.addAttribute(this.target, 'hidden', '');
-    }
-
     // Set additional attributes.
     this.addAttribute(this.target, 'role', 'dialog');
     this.addAttribute(this.target, 'aria-modal', 'true');
@@ -204,10 +193,6 @@ export default class Dialog extends AriaComponent {
       // Update target element.
       this.updateAttribute(this.target, 'aria-hidden', 'false');
 
-      if (this.useHiddenAttribute) {
-        this.updateAttribute(this.target, 'hidden', null);
-      }
-
       tabIndexAllow(this.interactiveChildElements);
 
       document.body.addEventListener('keydown', this.handleOutsideKeydown);
@@ -220,10 +205,6 @@ export default class Dialog extends AriaComponent {
 
       // Update target element.
       this.updateAttribute(this.target, 'aria-hidden', 'true');
-
-      if (this.useHiddenAttribute) {
-        this.updateAttribute(this.target, 'hidden', '');
-      }
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       tabIndexDeny(this.interactiveChildElements);

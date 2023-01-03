@@ -72,7 +72,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
   it('Should add the correct attributes to the popup target', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
   });
 
   it('Should fire `stateChange` event on state change: open', () => {
@@ -110,7 +109,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(onStateChange).toHaveBeenCalledTimes(3);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
-    expect(target.getAttribute('hidden')).toBeNull();
 
     // All interactive children should initially have a negative tabindex.
     popup.interactiveChildElements.forEach((link) => {
@@ -123,7 +121,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
 
     // All interactive children should initially have a negative tabindex.
     popup.interactiveChildElements.forEach((link) => {
@@ -234,7 +231,6 @@ describe('Popup destroy', () => {
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
     expect(controller.getAttribute('aria-owns')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toBeNull();
-    expect(target.getAttribute('hidden')).toBeNull();
 
     expect(controller.popup).toBeUndefined();
     expect(target.popup).toBeUndefined();
