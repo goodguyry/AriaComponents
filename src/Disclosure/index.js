@@ -52,13 +52,6 @@ export default class Disclosure extends AriaComponent {
        * @type {boolean}
        */
       allowOutsideClick: true,
-
-      /**
-       * Whether to use the `hidden` attribute to manage the target element's visibility.
-       *
-       * @type {Boolean}
-       */
-      useHiddenAttribute: true,
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -131,10 +124,6 @@ export default class Disclosure extends AriaComponent {
      */
     if (! expanded) {
       this.addAttribute(this.target, 'aria-hidden', 'true');
-
-      if (this.useHiddenAttribute) {
-        this.addAttribute(this.target, 'hidden', '');
-      }
     }
 
     // Add event listeners
@@ -176,16 +165,8 @@ export default class Disclosure extends AriaComponent {
      */
     if (expanded) {
       this.updateAttribute(this.target, 'aria-hidden', 'false');
-
-      if (this.useHiddenAttribute) {
-        this.updateAttribute(this.target, 'hidden', null);
-      }
     } else {
       this.updateAttribute(this.target, 'aria-hidden', 'true');
-
-      if (this.useHiddenAttribute) {
-        this.updateAttribute(this.target, 'hidden', '');
-      }
     }
 
     // Allow or deny keyboard focus depending on component state.

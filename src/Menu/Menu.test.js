@@ -341,7 +341,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(domElements.listFirstItem.getAttribute('aria-posinset')).toBeNull();
 
     expect(domElements.sublistOne.getAttribute('aria-hidden')).toBeNull();
-    expect(domElements.sublistOne.getAttribute('hidden')).toBeNull();
 
     expect(domElements.listFirstItem.disclosure).toBeUndefined();
     expect(domElements.sublistOne.disclosure).toBeUndefined();

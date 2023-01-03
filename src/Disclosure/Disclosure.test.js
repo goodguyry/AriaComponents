@@ -76,7 +76,6 @@ describe('Disclosure with default configuration', () => {
       'Should add the correct attributes to the disclosure target',
       () => {
         expect(target.getAttribute('aria-hidden')).toEqual('true');
-        expect(target.getAttribute('hidden')).toEqual('');
       }
     );
   });
@@ -88,14 +87,12 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
 
       // Click again to close.
       controller.dispatchEvent(click);
       expect(disclosure.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
 
       // Re-open the disclosure.
       disclosure.open();
@@ -104,7 +101,6 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
     });
 
     it('Should update attributes when Return or Spacebar are pressed', () => {
@@ -116,14 +112,12 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
 
       // Spacebar to close.
       controller.dispatchEvent(keydownSpace);
       expect(disclosure.getState().expanded).toBeFalsy();
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
     });
   });
 
@@ -152,7 +146,6 @@ describe('Disclosure with default configuration', () => {
     expect(controller.getAttribute('aria-owns')).toBeNull();
 
     expect(target.getAttribute('aria-hidden')).toBeNull();
-    expect(target.getAttribute('hidden')).toBeNull();
 
     expect(disclosure.controller.disclosure).toBeUndefined();
     expect(disclosure.target.disclosure).toBeUndefined();
@@ -182,7 +175,6 @@ describe('Disclosure with non-default configuration', () => {
       {
         loadOpen: true,
         allowOutsideClick: false,
-        useHiddenAttribute: false,
       }
     );
   });
@@ -203,23 +195,6 @@ describe('Disclosure with non-default configuration', () => {
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
-  });
-
-  it('Should not manage the target element\'s `hidden` attribute', () => {
-    disclosure.open();
-    expect(disclosure.target.getAttribute('hidden')).toBeNull();
-
-    disclosure.close();
-    expect(disclosure.target.getAttribute('hidden')).toBeNull();
-
-    /**
-     * Add the `hidden` attribute, then test that it isn't removed since we've
-     * set `useHiddenAttribute` to `false`.
-     */
-    disclosure.target.setAttribute('hidden', 'hidden-test');
-
-    disclosure.destroy();
-    expect(disclosure.target.getAttribute('hidden')).toEqual('hidden-test');
   });
 
   it('Should load open', () => {

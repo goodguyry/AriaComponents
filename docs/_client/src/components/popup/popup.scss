@@ -28,6 +28,10 @@
   width: 100%;
   z-index: 2;
 
+  &[aria-hidden="true"] {
+    display: none;
+  }
+
   @media (min(lg)) {
     left: calc(100% + #{rem(20)});
     padding: rem(20);

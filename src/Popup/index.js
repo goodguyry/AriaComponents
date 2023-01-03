@@ -45,13 +45,6 @@ export default class Popup extends AriaComponent {
        * @type {string}
        */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
-
-      /**
-       * Whether to use the `hidden` attribute to manage the target element's visibility.
-       *
-       * @type {Boolean}
-       */
-      useHiddenAttribute: true,
     };
 
     // Merge remaining options with defaults and save all as instance properties.
@@ -139,10 +132,6 @@ export default class Popup extends AriaComponent {
      */
     this.addAttribute(this.target, 'aria-hidden', 'true');
 
-    if (this.useHiddenAttribute) {
-      this.addAttribute(this.target, 'hidden', '');
-    }
-
     // Add event listeners
     this.controller.addEventListener('click', this.toggle);
     this.controller.addEventListener('keydown', this.popupControllerKeydown);
@@ -166,17 +155,9 @@ export default class Popup extends AriaComponent {
     if (expanded) {
       this.updateAttribute(this.target, 'aria-hidden', 'false');
 
-      if (this.useHiddenAttribute) {
-        this.updateAttribute(this.target, 'hidden', null);
-      }
-
       tabIndexAllow(this.interactiveChildElements);
     } else {
       this.updateAttribute(this.target, 'aria-hidden', 'true');
-
-      if (this.useHiddenAttribute) {
-        this.updateAttribute(this.target, 'hidden', '');
-      }
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       tabIndexDeny(this.interactiveChildElements);
