@@ -2,9 +2,6 @@ import AriaComponent from '../AriaComponent';
 import Disclosure from '../Disclosure';
 import keyCodes from '../lib/keyCodes';
 import isInstanceOf from '../lib/isInstanceOf';
-import { nextPreviousFromUpDown } from '../lib/nextPrevious';
-import Search from '../lib/Search';
-import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -49,50 +46,64 @@ export default class Menu extends AriaComponent {
 
     this.list = list;
 
-    /**
-     * Options shape.
-     *
-     * @type {object}
-     */
-    const defaultOptions = {
+    // Merge options.
+    const {
+      collapse,
+      autoClose,
+      _stateDispatchesOnly,
+    } = {
       /**
-       * Instantiate submenus as Disclosures.
+       * Defaults.
        *
-       * @type {Boolean}
+       * @type {object}
        */
-      collapse: false,
+      collapse: true,
+      autoClose: true,
+      _stateDispatchesOnly: false,
 
-      /**
-       * Selector used to validate menu items.
-       *
-       * This can also be used to exclude items that would otherwise be given a
-       * "menuitem" role; e.g., `:not(.hidden)`.
-       *
-       * @type {string}
-       */
-      itemMatches: 'a,button',
-
-      /**
-       * This is an application menu.
-       *
-       * @type {Boolean}
-       */
-      __is_application_menu: false,
+      ...options,
     };
 
-    // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options);
+    /**
+     * Instantiate submenus as Disclosures.
+     *
+     * @type {Boolean}
+     */
+    this.collapse = collapse;
 
-    // Log a warning to alert about menu anti-pattern.
-    if (! this.__is_application_menu) { // eslint-disable-line no-underscore-dangle
-      this.warnMenu();
-    }
+    /**
+     * Close submenu Disclosures when they lose focus.
+     *
+     * @type {Boolean}
+     */
+    this.autoClose = (collapse && autoClose);
+
+    /**
+     * Whether to suppress Disclosure init and destroy events.
+     *
+     * @type {Boolean}
+     */
+    this._stateDispatchesOnly = _stateDispatchesOnly;
 
     // Bind class methods
-    this.listHandleKeydown = this.listHandleKeydown.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
+  }
+
+  /**
+   * Update the auto-close option.
+   *
+   * @param {bool} autoClose Whether submenu Disclosures close on their own.
+   */
+  set autoClose(autoClose) {
+    this.handleKeydown = autoClose;
+
+    if (this.handleKeydown) {
+      this.on('keydown', this.listHandleKeydown);
+    } else {
+      this.off('keydown', this.listHandleKeydown);
+    }
   }
 
   /**
@@ -104,12 +115,6 @@ export default class Menu extends AriaComponent {
      * with this instance.
      */
     super.setSelfReference(this.list);
-
-    /*
-     * Add the 'menu' role to signify a widget that offers a list of choices to
-     * the user, such as a set of actions or functions.
-     */
-    this.addAttribute(this.list, 'role', 'menu');
 
     /**
      * The list's child elements.
@@ -133,20 +138,15 @@ export default class Menu extends AriaComponent {
       if (null === itemLink || ! itemLink.matches('a,button')) {
         [itemLink] = Array.from(theRest)
           .filter((child) => child.matches('a,button'));
+
+        // No filter match.
+        if (undefined === itemLink) {
+          return acc;
+        }
       }
 
-      if (undefined !== itemLink && itemLink.matches(this.itemMatches)) {
-        return [...acc, itemLink];
-      }
-
-      return acc;
+      return [...acc, itemLink];
     }, []);
-
-    /**
-     * Initialize search.
-     * @type {Search}
-     */
-    this.search = new Search(this.menuItems);
 
     /**
      * The number of menu items.
@@ -154,11 +154,6 @@ export default class Menu extends AriaComponent {
      * @type {number}
      */
     this.menuItemsLength = this.menuItems.length;
-
-    /**
-     * Listen for keydown events on the menu.
-     */
-    this.list.addEventListener('keydown', this.listHandleKeydown);
 
     /**
      * The submenu Disclosures.
@@ -170,17 +165,7 @@ export default class Menu extends AriaComponent {
     /*
      * Set menu link attributes and instantiate submenus.
      */
-    this.menuItems.forEach((link, index) => {
-      // Remove semantics from list items.
-      this.addAttribute(link.parentElement, 'role', 'presentation');
-
-      // Set the menuitem role.
-      this.addAttribute(link, 'role', 'menuitem');
-
-      // Add size and position attributes.
-      this.addAttribute(link, 'aria-setsize', this.menuItemsLength);
-      this.addAttribute(link, 'aria-posinset', (index + 1));
-
+    this.menuItems.forEach((link) => {
       // Instantiate submenu Disclosures
       if (this.collapse && link.hasAttribute('aria-controls')) {
         const disclosure = new Disclosure(
@@ -194,24 +179,12 @@ export default class Menu extends AriaComponent {
       const siblingList = this.constructor.nextElementIsUl(link);
       if (siblingList) {
         // Instantiate sub-Menus.
-        const subList = new Menu(
-          siblingList,
-          {
-            itemMatches: this.itemMatches,
-            _stateDispatchesOnly: true,
-            // Quiet duplicated warnings.
-            __is_application_menu: true,
-          }
-        );
+        const subList = new Menu(siblingList, { _stateDispatchesOnly: true });
 
         // Save the list's previous sibling.
         subList.previousSibling = link;
       }
     });
-
-    // Save the menu's first and last items.
-    const [firstItem, lastItem] = getFirstAndLastItems(this.menuItems);
-    Object.assign(this, { firstItem, lastItem });
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -224,131 +197,16 @@ export default class Menu extends AriaComponent {
    */
   listHandleKeydown(event) {
     const { keyCode } = event;
-    const {
-      UP,
-      DOWN,
-      LEFT,
-      RIGHT,
-      HOME,
-      END,
-      ESC,
-    } = keyCodes;
+    const { TAB } = keyCodes;
     const { activeElement } = document;
     const activeDescendant = (this.list.contains(activeElement)
       ? activeElement
       : this.menuItems[0]);
 
-    switch (keyCode) {
-      /*
-       * Move through sibling list items.
-       */
-      case UP:
-      case DOWN: {
-        const nextItem = nextPreviousFromUpDown(
-          keyCode,
-          activeDescendant,
-          this.menuItems
-        );
-
-        if (nextItem) {
-          event.stopPropagation();
-          event.preventDefault();
-
-          nextItem.focus();
-        }
-
-        break;
-      }
-
-      /*
-       * Select the first Menu item.
-       */
-      case HOME: {
-        event.preventDefault();
-
-        this.firstItem.focus();
-
-        break;
-      }
-
-      /*
-       * Select the last Menu item.
-       */
-      case END: {
-        event.preventDefault();
-
-        this.lastItem.focus();
-
-        break;
-      }
-
-      /*
-       * Drill down into a nested list, if present.
-       */
-      case RIGHT: {
-        const siblingElement = this.constructor.nextElementIsUl(activeDescendant); // eslint-disable-line max-len
-
-        if (siblingElement && isInstanceOf('Menu', siblingElement.menu)) {
-          event.stopPropagation();
-          event.preventDefault();
-
-          // Open the submenu Disclosure.
-          if (isInstanceOf('Disclosure', activeDescendant.disclosure)) {
-            activeDescendant.disclosure.open();
-          }
-
-          const { menu } = siblingElement;
-          menu.firstItem.focus();
-        }
-
-        break;
-      }
-
-      /*
-       * Move up to the list's previous sibling, if present.
-       */
-      case LEFT: {
-        if (
-          undefined !== this.previousSibling
-          && ! this.previousSibling.hasAttribute('aria-haspopup')
-        ) {
-          // The previous sibling is not a Popup.
-          event.preventDefault();
-          event.stopPropagation();
-
-          // Close the submenu Disclosure.
-          if (isInstanceOf('Disclosure', this.previousSibling.disclosure)) {
-            this.previousSibling.disclosure.close();
-          }
-
-          this.previousSibling.focus();
-        }
-
-        break;
-      }
-
-      /*
-       * Listen for the ESC key to prevent it from being caught as a search
-       * string. Otherwise the MenuButton won't close as expected.
-       */
-      case ESC: {
-        // do nothing.
-        break;
-      }
-
-      /*
-       * Select the Menu item based on a search string created by
-       * collecting key presses.
-       */
-      default: {
-        event.stopPropagation();
-        const itemToFocus = this.search.getItem(keyCode);
-        if (null !== itemToFocus) {
-          itemToFocus.focus();
-        }
-
-        break;
-      }
+    if (TAB === keyCode) {
+      // etc.
+      console.log(this); // eslint-disable-line
+      console.log(activeDescendant); // eslint-disable-line
     }
   }
 
