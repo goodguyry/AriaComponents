@@ -146,26 +146,6 @@ export default class Menu extends AriaComponent {
   }
 
   /**
-   * Handle keydown events on menu items.
-   *
-   * @param {Event} event The event object.
-   */
-  listHandleKeydown(event) {
-    const { keyCode } = event;
-    const { TAB } = keyCodes;
-    const { activeElement } = document;
-    // const activeDescendant = (this.list.contains(activeElement)
-    //   ? activeElement
-    //   : this.menuItems[0]);
-
-    if (TAB === keyCode) {
-      // etc.
-      console.log(this); // eslint-disable-line
-      console.log(activeElement); // eslint-disable-line
-    }
-  }
-
-  /**
    * Destroy the Menu and any submenus.
    */
   destroy() {
@@ -182,9 +162,6 @@ export default class Menu extends AriaComponent {
 
     // Remove the list attritbutes.
     this.removeAttributes(this.list);
-
-    // Remove event listener.
-    this.list.removeEventListener('keydown', this.listHandleKeydown);
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
