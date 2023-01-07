@@ -97,12 +97,11 @@ export default class Menu extends AriaComponent {
    * @param {bool} autoClose Whether submenu Disclosures close on their own.
    */
   set autoClose(autoClose) {
-    if (this.disclosures.length) {
-      this.disclosures.forEach((disclosure) => {
-        disclosure.allowOutsideClick = autoClose;
-        disclosure.autoClose = autoClose;
-      });
-    }
+    this.disclosures.forEach((disclosure) => {
+      disclosure.allowOutsideClick = (! autoClose);
+      // @todo Add autoClose option to Disclosure.
+      // disclosure.autoClose = autoClose;
+    });
   }
 
   /**
@@ -116,6 +115,7 @@ export default class Menu extends AriaComponent {
     super.setSelfReference(this.list);
 
     if (this.collapse) {
+      // Set and collect submenu Disclosures.
       Array.from(this.list.children).forEach((item) => {
         const [firstChild, ...theRest] = Array.from(item.children);
 
@@ -131,7 +131,7 @@ export default class Menu extends AriaComponent {
           const disclosure = new Disclosure(
             itemLink,
             {
-              allowOutsideClick: (! this.collapse),
+              allowOutsideClick: (! this.autoClose),
               _stateDispatchesOnly: true,
             }
           );
