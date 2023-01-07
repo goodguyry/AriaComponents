@@ -1,15 +1,8 @@
 /* eslint-disable max-len */
 import { Menu, Disclosure } from '../..';
-import { events, typeCharacter } from '../lib/events';
+// import { events } from '../lib/events';
 
-const {
-  keydownDown,
-  keydownUp,
-  keydownRight,
-  keydownLeft,
-  keydownEnd,
-  keydownHome,
-} = events;
+// const { keydownTab } = events;
 
 const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
@@ -90,18 +83,10 @@ describe('Menu collects DOM elements and adds attributes', () => {
     expect(menu.toString()).toEqual('[object Menu]');
     expect(domElements.list.menu).toBeInstanceOf(Menu);
 
-    expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
-    expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
-
     expect(domElements.listFirstItem.disclosure).not.toBeInstanceOf(Disclosure);
     expect(domElements.sublistOne.disclosure).not.toBeInstanceOf(Disclosure);
 
     expect(onInit).toHaveBeenCalledTimes(0);
-  });
-
-  test('constructor.nextElementIsUl() correctly detects list siblings', () => {
-    expect(Menu.nextElementIsUl(domElements.listThirdItem)).toBeTruthy();
-    expect(Menu.nextElementIsUl(domElements.listSecondItem)).toBeFalsy();
   });
 });
 
@@ -110,8 +95,6 @@ describe('Destroying the Menu removes attributes', () => {
     menu.destroy();
 
     expect(domElements.list.list).toBeUndefined();
-    expect(domElements.sublistOne.menu).toBeUndefined();
-
     expect(onDestroy).toHaveBeenCalledTimes(0);
   });
 });
@@ -129,9 +112,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menu).toBeInstanceOf(Menu);
     expect(domElements.list.menu).toBeInstanceOf(Menu);
-
-    expect(domElements.sublistOne.menu).toBeInstanceOf(Menu);
-    expect(domElements.sublistOne.menu.previousSibling).toEqual(domElements.listFirstItem);
 
     expect(domElements.listFirstItem.disclosure.getState().expanded).toBe(false);
 

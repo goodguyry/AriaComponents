@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import Disclosure from '../Disclosure';
 import keyCodes from '../lib/keyCodes';
-import isInstanceOf from '../lib/isInstanceOf';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -9,17 +8,6 @@ import isInstanceOf from '../lib/isInstanceOf';
  * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
  */
 export default class Menu extends AriaComponent {
-  /**
-   * Test for a list as the next sibling element.
-   *
-   * @param {HTMLElement} element The element whose sibling we're testing.
-   * @return {HTMLElement|boolean}
-   */
-  static nextElementIsUl(element) {
-    const next = element.nextElementSibling;
-    return (null !== next && 'UL' === next.nodeName) ? next : false;
-  }
-
   /**
    * Create a Menu.
    * @constructor
@@ -44,7 +32,19 @@ export default class Menu extends AriaComponent {
      */
     this[Symbol.toStringTag] = 'Menu';
 
+    /**
+     * The menu list element.
+     *
+     * @type {HTMLUListElement}
+     */
     this.list = list;
+
+    /**
+     * Submenu Disclosures.
+     *
+     * @type {array}
+     */
+    this.disclosures = [];
 
     // Merge options.
     const {
@@ -97,12 +97,11 @@ export default class Menu extends AriaComponent {
    * @param {bool} autoClose Whether submenu Disclosures close on their own.
    */
   set autoClose(autoClose) {
-    this.handleKeydown = autoClose;
-
-    if (this.handleKeydown) {
-      this.on('keydown', this.listHandleKeydown);
-    } else {
-      this.off('keydown', this.listHandleKeydown);
+    if (this.disclosures.length) {
+      this.disclosures.forEach((disclosure) => {
+        disclosure.allowOutsideClick = autoClose;
+        disclosure.autoClose = autoClose;
+      });
     }
   }
 
@@ -116,75 +115,31 @@ export default class Menu extends AriaComponent {
      */
     super.setSelfReference(this.list);
 
-    /**
-     * The list's child elements.
-     *
-     * @type {array}
-     */
-    this.listItems = Array.from(this.list.children);
+    if (this.collapse) {
+      Array.from(this.list.children).forEach((item) => {
+        const [firstChild, ...theRest] = Array.from(item.children);
 
-    /**
-     * Collected menu links.
-     *
-     * @type {array}
-     */
-    this.menuItems = this.listItems.reduce((acc, item) => {
-      const [firstChild, ...theRest] = Array.from(item.children);
+        // Try to use the first child of the menu item.
+        let itemLink = firstChild;
 
-      // Try to use the first child of the menu item.
-      let itemLink = firstChild;
-
-      // If the first child isn't a link or button, find the first instance of either.
-      if (null === itemLink || ! itemLink.matches('a,button')) {
-        [itemLink] = Array.from(theRest)
-          .filter((child) => child.matches('a,button'));
-
-        // No filter match.
-        if (undefined === itemLink) {
-          return acc;
+        // If the first child isn't a link or button, find the first instance of either.
+        if (null === itemLink || ! itemLink.matches('a,button')) {
+          [itemLink] = Array.from(theRest).filter((child) => child.matches('a,button'));
         }
-      }
 
-      return [...acc, itemLink];
-    }, []);
+        if (undefined !== itemLink && itemLink.hasAttribute('aria-controls')) {
+          const disclosure = new Disclosure(
+            itemLink,
+            {
+              allowOutsideClick: (! this.collapse),
+              _stateDispatchesOnly: true,
+            }
+          );
 
-    /**
-     * The number of menu items.
-     *
-     * @type {number}
-     */
-    this.menuItemsLength = this.menuItems.length;
-
-    /**
-     * The submenu Disclosures.
-     *
-     * @type {array}
-     */
-    this.disclosures = [];
-
-    /*
-     * Set menu link attributes and instantiate submenus.
-     */
-    this.menuItems.forEach((link) => {
-      // Instantiate submenu Disclosures
-      if (this.collapse && link.hasAttribute('aria-controls')) {
-        const disclosure = new Disclosure(
-          link,
-          { _stateDispatchesOnly: true }
-        );
-
-        this.disclosures.push(disclosure);
-      }
-
-      const siblingList = this.constructor.nextElementIsUl(link);
-      if (siblingList) {
-        // Instantiate sub-Menus.
-        const subList = new Menu(siblingList, { _stateDispatchesOnly: true });
-
-        // Save the list's previous sibling.
-        subList.previousSibling = link;
-      }
-    });
+          this.disclosures.push(disclosure);
+        }
+      });
+    }
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -199,14 +154,14 @@ export default class Menu extends AriaComponent {
     const { keyCode } = event;
     const { TAB } = keyCodes;
     const { activeElement } = document;
-    const activeDescendant = (this.list.contains(activeElement)
-      ? activeElement
-      : this.menuItems[0]);
+    // const activeDescendant = (this.list.contains(activeElement)
+    //   ? activeElement
+    //   : this.menuItems[0]);
 
     if (TAB === keyCode) {
       // etc.
       console.log(this); // eslint-disable-line
-      console.log(activeDescendant); // eslint-disable-line
+      console.log(activeElement); // eslint-disable-line
     }
   }
 
@@ -217,12 +172,6 @@ export default class Menu extends AriaComponent {
     // Remove the reference to the class instance.
     this.deleteSelfReferences();
 
-    // Remove the list attritbutes.
-    this.removeAttributes(this.list);
-
-    // Remove event listener.
-    this.list.removeEventListener('keydown', this.listHandleKeydown);
-
     /*
      * Destroy inner Disclosure(s).
      *
@@ -231,19 +180,11 @@ export default class Menu extends AriaComponent {
      */
     this.disclosures.forEach((disclosure) => disclosure.destroy());
 
-    this.menuItems.forEach((link) => {
-      // Remove list item attributes.
-      this.removeAttributes(link.parentElement);
+    // Remove the list attritbutes.
+    this.removeAttributes(this.list);
 
-      // Remove menuitem attributes.
-      this.removeAttributes(link);
-
-      // Destroy nested Menus.
-      const siblingList = this.constructor.nextElementIsUl(link);
-      if (siblingList && isInstanceOf('Menu', siblingList.menu)) {
-        siblingList.menu.destroy();
-      }
-    });
+    // Remove event listener.
+    this.list.removeEventListener('keydown', this.listHandleKeydown);
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
