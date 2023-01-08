@@ -45,6 +45,9 @@ _**`loadOpen`**_`= false`
 _**`allowOutsideClick`**_`= true`  
 > Whether to keep the Disclosure open when clicking outside of it.
 
+_**`autoClose`**_`= false`  
+> Automatically close the Disclosure when its contents lose focus.
+
 ## API
 
 ### Instance Methods

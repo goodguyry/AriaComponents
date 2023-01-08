@@ -48,12 +48,9 @@ export default class Menu extends AriaComponent {
     // Merge options.
     const {
       _stateDispatchesOnly,
+      autoClose,
     } = {
-      /**
-       * Defaults.
-       *
-       * @type {object}
-       */
+      autoClose: false,
       _stateDispatchesOnly: false,
 
       ...options,
@@ -65,6 +62,13 @@ export default class Menu extends AriaComponent {
      * @type {Boolean}
      */
     this._stateDispatchesOnly = _stateDispatchesOnly;
+
+    /**
+     * Close submenu Disclosures when they lose focus.
+     *
+     * @type {Boolean}
+     */
+    this.autoClose = autoClose;
 
     // Bind class methods
     this.destroy = this.destroy.bind(this);
@@ -95,7 +99,13 @@ export default class Menu extends AriaComponent {
       }
 
       if (undefined !== itemLink && itemLink.hasAttribute('aria-controls')) {
-        const disclosure = new Disclosure(itemLink, { _stateDispatchesOnly: true });
+        const disclosure = new Disclosure(
+          itemLink,
+          {
+            autoClose: this.autoClose,
+            _stateDispatchesOnly: true,
+          }
+        );
 
         this.disclosures.push(disclosure);
       }

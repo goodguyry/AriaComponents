@@ -157,8 +157,7 @@ describe('Popup correctly responds to events', () => {
     'Should move focus to the first popup child on TAB from controller',
     () => {
       controller.dispatchEvent(keydownTab);
-      expect(document.activeElement)
-        .toEqual(domFirstChild);
+      expect(document.activeElement).toEqual(domFirstChild);
     }
   );
 

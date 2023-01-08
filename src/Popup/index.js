@@ -177,7 +177,7 @@ export default class Popup extends AriaComponent {
       SPACE,
       RETURN,
     } = keyCodes;
-    const { keyCode } = event;
+    const { keyCode, shiftKey } = event;
 
     if ([SPACE, RETURN].includes(keyCode)) {
       event.preventDefault();
@@ -197,7 +197,7 @@ export default class Popup extends AriaComponent {
          * controller), there's no need to move focus.
          */
         this.hide();
-      } else if (TAB === keyCode) {
+      } else if (TAB === keyCode && ! shiftKey) {
         event.preventDefault();
 
         /*
