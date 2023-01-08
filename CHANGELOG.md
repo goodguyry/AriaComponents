@@ -29,6 +29,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `instance.on()` and `instance.off()` methods for subscribing to events (#67)
 - Menu, MenuBar, and MenuButton will log a warning if used for website navigation (#68)
 - Components track attributes they add and will only overwrite existing attribute values where required (#73)
+- Adds an autoClose option to Disclosure and Menu (#76)
 
 **Fixed**
 
@@ -37,6 +38,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - MenuBar wasn't tracking the current Popup (6c2fe90)
 - MenuBar keydown could trigger an unexpected Popup `stateChange` event (e86d06e, 8001226)
 - Dialog no longer re-queries for interactive child elements on every TAB keydown (a964674)
+- Corrects an issue where shift-tab from the Popup controller would focus the target's first child (#76)
 
 **Removed**
 
