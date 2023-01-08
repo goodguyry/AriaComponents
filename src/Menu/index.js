@@ -49,11 +49,6 @@ export default class Menu extends AriaComponent {
     const {
       _stateDispatchesOnly,
     } = {
-      /**
-       * Defaults.
-       *
-       * @type {object}
-       */
       _stateDispatchesOnly: false,
 
       ...options,
