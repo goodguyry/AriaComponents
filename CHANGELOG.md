@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Moves docs site packages and scripts to the docs directory (#57)
 - Removes Travis, adds GitHub Action (#58)
 - Components can accept either a controller or target element (#65, #70)
+- Deprecates MenuBar component; use Menu instead (#75)
+- Removes antipatterns from Menu component (#75)
 
 **Added**
 
@@ -39,9 +41,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Removed**
 
 - Dialog no longer requires a close button, and will not create one (#51)
-- Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks; additionally, MenuBar no longer acepts `onPopupInit` (#54, #55)
+- Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks (#54, #55)
 - MenuBar no longer tracks Popup `expanded` state separately (e86d06e)
 - Components no longer manage the `hidden` attribute (#74)
+- MenuButton component (#75)
+- Remove `collapse` and `itemMatches` Menu options (#75)
 
 ## 0.3.1
 
