@@ -71,6 +71,7 @@ export default class Menu extends AriaComponent {
     this.autoClose = autoClose;
 
     // Bind class methods
+    this.handleAutoClose = this.handleAutoClose.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
@@ -111,8 +112,30 @@ export default class Menu extends AriaComponent {
       }
     });
 
+    if (this.autoClose) {
+      this.on('stateChange', this.handleAutoClose);
+    }
+
     // Fire the init event.
     this.dispatchEventInit();
+  }
+
+  /**
+   * Close any open Disclosure(s) when another is opened.
+   *
+   * @param {Event} event The Event object.
+   */
+  handleAutoClose(event) {
+    const { detail : { instance } } = event;
+
+    if (instance.getState().expanded) {
+      // There should only be one /shrug.
+      const open = this.disclosures.find((disclosure) =>
+        (disclosure.getState().expanded && instance.id !== disclosure.id)
+      );
+
+      open?.close();
+    }
   }
 
   /**
@@ -132,6 +155,8 @@ export default class Menu extends AriaComponent {
 
     // Remove the list attritbutes.
     this.removeAttributes(this.list);
+
+    this.off('stateChange', this.handleAutoClose);
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

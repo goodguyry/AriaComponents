@@ -51,6 +51,13 @@ export default class AriaComponent {
     this.stringDescription = 'AriaComponent';
 
     /**
+     * The instance ID.
+     *
+     * @type {string}
+     */
+    this.id = this.constructor.getUniqueId();
+
+    /**
      * Component state.
      *
      * @type {object}

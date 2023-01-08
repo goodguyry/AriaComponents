@@ -37,6 +37,7 @@ document.body.innerHTML = menuMarkup;
 const list = document.querySelector('.menu');
 const listFirstItem = document.querySelector('.first-item');
 const sublistOne = document.querySelector('.sublist1');
+const listThirdItem = document.querySelector('.third-item');
 
 // Mock functions.
 const onInit = jest.fn();
@@ -114,5 +115,23 @@ describe('Menu the respects `_stateDispatchesOnly` option', () => {
 
     menu.destroy();
     expect(doNotCall).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe('Menu the respects `autoClose` option', () => {
+  beforeAll(() => {
+    menu = new Menu(list, { autoClose: true });
+  });
+
+  it('Should close other Disclosures when one opens', () => {
+    listThirdItem.disclosure.open();
+    listFirstItem.disclosure.open();
+
+    expect(listThirdItem.disclosure.getState().expanded).toBeFalsy();
+    expect(listFirstItem.disclosure.getState().expanded).toBeTruthy();
+
+    listThirdItem.disclosure.open();
+    expect(listThirdItem.disclosure.getState().expanded).toBeTruthy();
+    expect(listFirstItem.disclosure.getState().expanded).toBeFalsy();
   });
 });
