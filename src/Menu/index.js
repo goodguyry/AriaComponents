@@ -104,6 +104,7 @@ export default class Menu extends AriaComponent {
           itemLink,
           {
             autoClose: this.autoClose,
+            allowOutsideClick: ! this.autoClose,
             _stateDispatchesOnly: true,
           }
         );
