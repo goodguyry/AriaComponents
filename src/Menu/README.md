@@ -1,14 +1,7 @@
 Menu
 ====
 
-Class to set up an vertically oriented interactive Menu element.
-
-```
-This component is only appropriate for application-like
-menus and should not be used for a website navigation.
-
-Pass `__is_application_menu: true` to suppress the warning.
-```
+Class to set up a Menu with collapsible submenus.
 
 ## Example
 
@@ -39,34 +32,17 @@ Pass `__is_application_menu: true` to suppress the warning.
 import { Menu } from 'aria-components';
 
 const menu = document.querySelector('.menu');
-const menu = new Menu(menu, { collapse: true });
+const menu = new Menu(menu);
 ```
 
 ## Constructor
 
 ```javascript
-Menu(menuListElement = null, options = {});
+Menu(menuListElement = null);
 ```
 
 _**`menuListElement`**_ `HTMLUListElement`  
 > The list element containing menu items.
-
-_**`options`**_ `object`  
-> Configuration options.
-
-### Available Options
-
-_**`collapse`**_`= false`  
-> Whether to instantiate submenus as Disclosures.
-
-_**`itemMatches`**_`= 'a,button'`  
-> A selector string used to validate menu items.
-> 
-> This can also be used to exclude items that would otherwise be given a  
-> "menuitem" role; e.g., `':not(.hidden)'`.
-
-_**`__is_application_menu`**_`= false`  
-> Quiet console warnings.
 
 ## API
 
@@ -94,7 +70,7 @@ _**`Menu.off(event, listener, options)`**_
 _**`Menu.element`**_  
 > Returns the element passed to the constructor.
 
-_**`Menu.menu`**_  
+_**`Menu.list`**_  
 > Returns the list element containing menu items.
 
 _**`Menu.disclosures`**_  

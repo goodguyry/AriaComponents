@@ -1,8 +1,5 @@
 /* eslint-disable max-len */
 import { Menu, Disclosure } from '../..';
-// import { events } from '../lib/events';
-
-// const { keydownTab } = events;
 
 const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
@@ -37,126 +34,85 @@ const menuMarkup = `
 document.body.innerHTML = menuMarkup;
 
 // Collect references to DOM elements.
-const domElements = {
-  list: document.querySelector('.menu'),
-  listFirstItem: document.querySelector('.first-item'),
-  listSecondItem: document.querySelector('.second-item'),
-  listThirdItem: document.querySelector('.third-item'),
-  listFourthItem: document.querySelector('.fourth-item'),
-  listLastItem: document.querySelector('.last-item'),
-  excludedItem: document.querySelector('.exclude'),
-
-  sublistOne: document.querySelector('.sublist1'),
-  sublistOneFirstItem: document.querySelector('.sublist1-first-item'),
-  sublistOneSecondItem: document.querySelector('.sublist1-second-item'),
-  sublistOneLastItem: document.querySelector('.sublist1-last-item'),
-
-  sublistTwo: document.querySelector('.sublist2'),
-  sublistTwoFirstItem: document.querySelector('.sublist2-first-item'),
-  sublistTwoSecondItem: document.querySelector('.sublist2-second-item'),
-  sublistTwoThirdItem: document.querySelector('.sublist2-third-item'),
-  sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
-};
+const list = document.querySelector('.menu');
+const listFirstItem = document.querySelector('.first-item');
+const sublistOne = document.querySelector('.sublist1');
 
 // Mock functions.
 const onInit = jest.fn();
 const onStateChange = jest.fn();
 const onDestroy = jest.fn();
-const { list } = domElements;
 
 // The `init` event is not trackable via on/off.
 list.addEventListener('init', onInit);
 
-let menu = new Menu(
-  list,
-  {
-    _stateDispatchesOnly: true,
-    collapse: false,
-  }
-);
+let menu = new Menu(list);
+
 menu.on('stateChange', onStateChange);
 menu.on('destroy', onDestroy);
 
-describe('Menu collects DOM elements and adds attributes', () => {
+describe('Menu instatiates submenus as Disclosures', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menu).toBeInstanceOf(Menu);
-    expect(menu.toString()).toEqual('[object Menu]');
-    expect(domElements.list.menu).toBeInstanceOf(Menu);
+    expect(list.menu).toBeInstanceOf(Menu);
 
-    expect(domElements.listFirstItem.disclosure).not.toBeInstanceOf(Disclosure);
-    expect(domElements.sublistOne.disclosure).not.toBeInstanceOf(Disclosure);
+    expect(listFirstItem.disclosure.getState().expanded).toBe(false);
 
-    expect(onInit).toHaveBeenCalledTimes(0);
+    expect(listFirstItem.disclosure).toBeInstanceOf(Disclosure);
+    expect(sublistOne.disclosure).toBeInstanceOf(Disclosure);
+
+    expect(onInit).toHaveBeenCalledTimes(1);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
+
+      expect(detail.instance).toStrictEqual(menu);
+    });
+  });
+
+  describe('Destroying the Menu removes attributes', () => {
+    it('Should remove attributes on destroy', () => {
+      menu.destroy();
+
+      expect(list.list).toBeUndefined();
+      expect(onDestroy).toHaveBeenCalledTimes(1);
+
+      expect(sublistOne.getAttribute('aria-hidden')).toBeNull();
+
+      expect(listFirstItem.disclosure).toBeUndefined();
+      expect(sublistOne.disclosure).toBeUndefined();
+
+      // Quick and dirty verification that the original markup is restored.
+      expect(document.body.innerHTML).toEqual(menuMarkup);
+
+      expect(onDestroy).toHaveBeenCalledTimes(1);
+      return Promise.resolve().then(() => {
+        const { detail } = getEventDetails(onDestroy);
+
+        expect(detail.element).toStrictEqual(list);
+        expect(detail.instance).toStrictEqual(menu);
+      });
+    });
   });
 });
 
-describe('Destroying the Menu removes attributes', () => {
-  it('Should remove attributes on destroy', () => {
-    menu.destroy();
-
-    expect(domElements.list.list).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalledTimes(0);
-  });
-});
-
-describe('Menu instatiates submenus as Disclosures', () => {
-  const initwithDisclosures = jest.fn();
+describe('Menu the respects `_stateDispatchesOnly` option', () => {
+  const doNotCall = jest.fn();
 
   beforeAll(() => {
     list.removeEventListener('init', onInit);
-    list.addEventListener('init', initwithDisclosures);
+    list.removeEventListener('destroy', onDestroy);
 
-    menu = new Menu(list, { autoClose: false });
+    menu = new Menu(list, { _stateDispatchesOnly: true });
+    menu.on('init', doNotCall);
+    menu.on('destroy', doNotCall);
   });
 
   it('Should instantiate the Menu class with correct instance values', () => {
-    expect(menu).toBeInstanceOf(Menu);
-    expect(domElements.list.menu).toBeInstanceOf(Menu);
+    // Init.
+    expect(doNotCall).toHaveBeenCalledTimes(0);
 
-    expect(domElements.listFirstItem.disclosure.getState().expanded).toBe(false);
-
-    expect(domElements.listFirstItem.disclosure).toBeInstanceOf(Disclosure);
-    expect(domElements.sublistOne.disclosure).toBeInstanceOf(Disclosure);
-
-    expect(initwithDisclosures).toHaveBeenCalledTimes(1);
-    expect(menu.disclosures[0]._stateDispatchesOnly).toBe(true);
-
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(initwithDisclosures);
-
-      expect(detail.instance).toStrictEqual(menu);
-    });
-  });
-
-  it('Should remove all Menu Disclosure DOM attributes when destroyed', () => {
     menu.destroy();
-
-    expect(list.getAttribute('role')).toBeNull();
-
-    expect(domElements.listFirstItem.getAttribute('aria-expanded')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('aria-controls')).toEqual(domElements.sublistOne.id);
-    expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
-    // The test markup isn't detatched, so this doesn't apply.
-    expect(domElements.listFirstItem.getAttribute('aria-owns')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('role')).toBeNull();
-    expect(domElements.listFirstItem.parentElement.getAttribute('role')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('aria-posinset')).toBeNull();
-
-    expect(domElements.sublistOne.getAttribute('aria-hidden')).toBeNull();
-
-    expect(domElements.listFirstItem.disclosure).toBeUndefined();
-    expect(domElements.sublistOne.disclosure).toBeUndefined();
-
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(menuMarkup);
-
-    expect(onDestroy).toHaveBeenCalledTimes(1);
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onDestroy);
-
-      expect(detail.element).toStrictEqual(list);
-      expect(detail.instance).toStrictEqual(menu);
-    });
+    expect(doNotCall).toHaveBeenCalledTimes(0);
   });
 });

@@ -1,6 +1,5 @@
 import AriaComponent from '../AriaComponent';
 import Disclosure from '../Disclosure';
-import keyCodes from '../lib/keyCodes';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -48,8 +47,6 @@ export default class Menu extends AriaComponent {
 
     // Merge options.
     const {
-      collapse,
-      autoClose,
       _stateDispatchesOnly,
     } = {
       /**
@@ -57,26 +54,10 @@ export default class Menu extends AriaComponent {
        *
        * @type {object}
        */
-      collapse: true,
-      autoClose: true,
       _stateDispatchesOnly: false,
 
       ...options,
     };
-
-    /**
-     * Instantiate submenus as Disclosures.
-     *
-     * @type {Boolean}
-     */
-    this.collapse = collapse;
-
-    /**
-     * Close submenu Disclosures when they lose focus.
-     *
-     * @type {Boolean}
-     */
-    this.autoClose = (collapse && autoClose);
 
     /**
      * Whether to suppress Disclosure init and destroy events.
@@ -92,19 +73,6 @@ export default class Menu extends AriaComponent {
   }
 
   /**
-   * Update the auto-close option.
-   *
-   * @param {bool} autoClose Whether submenu Disclosures close on their own.
-   */
-  set autoClose(autoClose) {
-    this.disclosures.forEach((disclosure) => {
-      disclosure.allowOutsideClick = (! autoClose);
-      // @todo Add autoClose option to Disclosure.
-      // disclosure.autoClose = autoClose;
-    });
-  }
-
-  /**
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init() {
@@ -114,32 +82,24 @@ export default class Menu extends AriaComponent {
      */
     super.setSelfReference(this.list);
 
-    if (this.collapse) {
-      // Set and collect submenu Disclosures.
-      Array.from(this.list.children).forEach((item) => {
-        const [firstChild, ...theRest] = Array.from(item.children);
+    // Set and collect submenu Disclosures.
+    Array.from(this.list.children).forEach((item) => {
+      const [firstChild, ...theRest] = Array.from(item.children);
 
-        // Try to use the first child of the menu item.
-        let itemLink = firstChild;
+      // Try to use the first child of the menu item.
+      let itemLink = firstChild;
 
-        // If the first child isn't a link or button, find the first instance of either.
-        if (null === itemLink || ! itemLink.matches('a,button')) {
-          [itemLink] = Array.from(theRest).filter((child) => child.matches('a,button'));
-        }
+      // If the first child isn't a link or button, find the first instance of either.
+      if (null === itemLink || ! itemLink.matches('a,button')) {
+        [itemLink] = Array.from(theRest).filter((child) => child.matches('a,button'));
+      }
 
-        if (undefined !== itemLink && itemLink.hasAttribute('aria-controls')) {
-          const disclosure = new Disclosure(
-            itemLink,
-            {
-              allowOutsideClick: (! this.autoClose),
-              _stateDispatchesOnly: true,
-            }
-          );
+      if (undefined !== itemLink && itemLink.hasAttribute('aria-controls')) {
+        const disclosure = new Disclosure(itemLink, { _stateDispatchesOnly: true });
 
-          this.disclosures.push(disclosure);
-        }
-      });
-    }
+        this.disclosures.push(disclosure);
+      }
+    });
 
     // Fire the init event.
     this.dispatchEventInit();
