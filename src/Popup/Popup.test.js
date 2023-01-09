@@ -37,7 +37,7 @@ const target = document.querySelector('.wrapper');
 const onStateChange = jest.fn();
 
 const popup = new Popup(controller);
-popup.on('stateChange', onStateChange);
+popup.on('popup.stateChange', onStateChange);
 
 // Popup has to be instanitated.
 popup.init();

@@ -44,9 +44,9 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-controller.addEventListener('stateChange', onStateChange);
-controller.addEventListener('init', onInit);
-controller.addEventListener('destroy', onDestroy);
+controller.addEventListener('listbox.stateChange', onStateChange);
+controller.addEventListener('listbox.init', onInit);
+controller.addEventListener('listbox.destroy', onDestroy);
 
 describe('Listbox with default configuration', () => {
   beforeAll(() => {

@@ -80,7 +80,7 @@ module.exports = {
       'error',
       {
         allow: [
-          '_stateDispatchesOnly',
+          '__trackedAttributes',
         ],
       },
     ],

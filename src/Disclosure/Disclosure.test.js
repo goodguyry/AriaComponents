@@ -38,9 +38,9 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-controller.addEventListener('stateChange', onStateChange);
-controller.addEventListener('init', onInit);
-controller.addEventListener('destroy', onDestroy);
+controller.addEventListener('disclosure.stateChange', onStateChange);
+controller.addEventListener('disclosure.init', onInit);
+controller.addEventListener('disclosure.destroy', onDestroy);
 
 let disclosure;
 
@@ -218,20 +218,6 @@ describe('Disclosure with non-default configuration', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
-});
-
-describe('Disclosure supresses firing the `init` event', () => {
-  const beCalled = jest.fn();
-  const shouldNotBeCalled = jest.fn();
-  controller.addEventListener('init', shouldNotBeCalled);
-  controller.addEventListener('stateChange', beCalled);
-  controller.addEventListener('destroy', shouldNotBeCalled);
-
-  disclosure = new Disclosure(controller, { _stateDispatchesOnly: true });
-  disclosure.open();
-  disclosure.destroy();
-  expect(beCalled).toHaveBeenCalledTimes(1);
-  expect(shouldNotBeCalled).toHaveBeenCalledTimes(0);
 });
 
 describe('Disclosure with autoClose: true', () => {

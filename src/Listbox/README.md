@@ -100,7 +100,7 @@ _**`Listbox.popup`**_
 
 ### Events
 
-_**`init`**_  
+_**`'listbox.init'`**_  
 > Fired after the component is initialized.
 
 > **Event Properties**
@@ -108,7 +108,7 @@ _**`init`**_
 > _**`detail.instance`**_  
 > Returns the `Listbox` instance from which the event originated.  
 
-_**`stateChange`**_  
+_**`'listbox.stateChange'`**_  
 > Fired after component state is updated.
 
 > **Event Properties**
@@ -122,7 +122,7 @@ _**`stateChange`**_
 > _**`detail.state`**_  
 > Returns an object representing the current component state.
 
-_**`destroy`**_  
+_**`'listbox.destroy'`**_  
 > Fired after the component is destroyed.
 
 > **Event Properties**

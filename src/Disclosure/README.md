@@ -94,7 +94,7 @@ _**`Disclosure.target`**_
 
 ### Events
 
-_**`init`**_  
+_**`'disclosure.init'`**_  
 > Fired after the component is initialized.
 
 > **Event Properties**
@@ -102,7 +102,7 @@ _**`init`**_
 > _**`detail.instance`**_  
 > Returns the `Disclosure` instance from which the event originated.  
 
-_**`stateChange`**_  
+_**`'disclosure.stateChange'`**_  
 > Fired after component state is updated.
 
 > **Event Properties**
@@ -116,7 +116,7 @@ _**`stateChange`**_
 > _**`detail.state`**_  
 > Returns an object representing the current component state.
 
-_**`destroy`**_  
+_**`'disclosure.destroy'`**_  
 > Fired after the component is destroyed.
 
 > **Event Properties**

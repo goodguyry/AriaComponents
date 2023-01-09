@@ -47,21 +47,12 @@ export default class Menu extends AriaComponent {
 
     // Merge options.
     const {
-      _stateDispatchesOnly,
       autoClose,
     } = {
       autoClose: false,
-      _stateDispatchesOnly: false,
 
       ...options,
     };
-
-    /**
-     * Whether to suppress Disclosure init and destroy events.
-     *
-     * @type {Boolean}
-     */
-    this._stateDispatchesOnly = _stateDispatchesOnly;
 
     /**
      * Close submenu Disclosures when they lose focus.
@@ -105,7 +96,6 @@ export default class Menu extends AriaComponent {
           {
             autoClose: this.autoClose,
             allowOutsideClick: ! this.autoClose,
-            _stateDispatchesOnly: true,
           }
         );
 
@@ -114,7 +104,7 @@ export default class Menu extends AriaComponent {
     });
 
     if (this.autoClose) {
-      this.on('stateChange', this.handleAutoClose);
+      this.on('disclosure.stateChange', this.handleAutoClose);
     }
 
     // Fire the init event.
