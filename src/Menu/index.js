@@ -104,7 +104,7 @@ export default class Menu extends AriaComponent {
     });
 
     if (this.autoClose) {
-      this.on('stateChange', this.handleAutoClose);
+      this.on('disclosure.stateChange', this.handleAutoClose);
     }
 
     // Fire the init event.

@@ -199,7 +199,7 @@ export default class AriaComponent {
    */
   dispatch(name, detail) {
     const event = new CustomEvent(
-      name,
+      `${this.stringDescription.toLowerCase()}.${name}`,
       {
         bubbles: true,
         composed: true,
