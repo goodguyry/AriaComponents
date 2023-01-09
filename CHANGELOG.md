@@ -30,6 +30,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Menu, MenuBar, and MenuButton will log a warning if used for website navigation (#68)
 - Components track attributes they add and will only overwrite existing attribute values where required (#73)
 - Adds an autoClose option to Disclosure and Menu (#75, #76)
+- Adds event namespaces: `'<componentName>.<eventName>'` (#77)
 
 **Fixed**
 
