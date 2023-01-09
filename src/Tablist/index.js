@@ -123,12 +123,6 @@ export default class Tablist extends AriaComponent {
 
     // Set attributes for each tab.
     this.tabLinks.forEach((tab, index) => {
-      /*
-       * Add a reference to the class instance to enable external interactions
-       * with this instance.
-       */
-      super.setSelfReference(tab);
-
       // Add the `tab` role to indicate its relationship to the Tablist.
       this.addAttribute(tab, 'role', 'tab');
 
@@ -147,12 +141,6 @@ export default class Tablist extends AriaComponent {
 
     // Set attributes or each panel.
     this.panels.forEach((panel, index) => {
-      /*
-       * Add a reference to the class instance to enable external interactions
-       * with this instance.
-       */
-      super.setSelfReference(panel);
-
       // Add the `tabpanel` role to indicate its relationship to the tablist.
       this.addAttribute(panel, 'role', 'tabpanel');
       // Create a relationship between the tab and its panel.
@@ -380,9 +368,6 @@ export default class Tablist extends AriaComponent {
         this.removeAttributes(listChild);
       }
     });
-
-    // Remove the references to the class instance.
-    this.deleteSelfReferences();
 
     // Remove tab attributes and event listeners.
     this.tabLinks.forEach((tab) => {

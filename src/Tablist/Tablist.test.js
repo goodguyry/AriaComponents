@@ -91,9 +91,6 @@ describe('Tablist with default configuration', () => {
 
       expect(tablist.getState().activeIndex).toEqual(0);
 
-      expect(firstTab.tablist).toBeInstanceOf(Tablist);
-      expect(secondPanel.tablist).toBeInstanceOf(Tablist);
-
       expect(onInit).toHaveBeenCalledTimes(1);
       return Promise.resolve().then(() => {
         const { detail } = getEventDetails(onInit);
@@ -201,8 +198,6 @@ describe('Tablist with default configuration', () => {
 
       const tabLinks = tabs.querySelectorAll('a[href]');
       Array.from(tabLinks).forEach((tab, index) => {
-        expect(tab.tablist).toBeUndefined();
-        expect(tab.tablist).toBeUndefined();
         expect(tab.getAttribute('role')).toBeNull();
         expect(tab.getAttribute('aria-selected')).toBeNull();
         expect(tab.getAttribute('tabindex')).toBeNull();
@@ -210,8 +205,6 @@ describe('Tablist with default configuration', () => {
       });
 
       Array.from(panels).forEach((panel) => {
-        expect(panel.tablist).toBeUndefined();
-        expect(panel.tablist).toBeUndefined();
         expect(panel.getAttribute('role')).toBeNull();
         expect(panel.getAttribute('aria-hidden')).toBeNull();
         expect(panel.getAttribute('aria-labelledby')).toBeNull();
@@ -220,9 +213,6 @@ describe('Tablist with default configuration', () => {
         const firstChild = panel.querySelector('a[href]');
         expect(firstChild.getAttribute('tabindex')).toBeNull();
       });
-
-      expect(firstTab.tablist).toBeUndefined();
-      expect(secondPanel.tablist).toBeUndefined();
 
       expect(onDestroy).toHaveBeenCalledTimes(5);
       return Promise.resolve().then(() => {

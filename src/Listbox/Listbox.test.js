@@ -62,9 +62,6 @@ describe('Listbox with default configuration', () => {
       const [firstListItem] = listItems;
       expect(listbox.getState().activeDescendant).toEqual(firstListItem);
 
-      expect(controller.listbox).toBeInstanceOf(Listbox);
-      expect(target.listbox).toBeInstanceOf(Listbox);
-
       expect(onInit).toHaveBeenCalledTimes(1);
       return Promise.resolve().then(() => {
         const { detail } = getEventDetails(onInit);
@@ -259,9 +256,6 @@ describe('Listbox with default configuration', () => {
         expect(item.getAttribute('role')).toBeNull();
         expect(item.getAttribute('aria-selected')).toBeNull();
       });
-
-      expect(controller.listbox).toBeUndefined();
-      expect(target.listbox).toBeUndefined();
 
       controller.dispatchEvent(click);
       expect(listbox.getState().expanded).toBeFalsy();

@@ -295,9 +295,6 @@ export default class Popup extends AriaComponent {
    * Remove all attributes and event listeners added by this class.
    */
   destroy() {
-    // Remove the references to the class instance.
-    this.deleteSelfReferences();
-
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);

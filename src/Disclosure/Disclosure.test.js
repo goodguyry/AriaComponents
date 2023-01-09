@@ -60,9 +60,6 @@ describe('Disclosure with default configuration', () => {
 
       expect(disclosure.getState().expanded).toBeFalsy();
 
-      expect(controller.disclosure).toBeInstanceOf(Disclosure);
-      expect(target.disclosure).toBeInstanceOf(Disclosure);
-
       expect(disclosure.firstInteractiveChild).toEqual(domFirstChild);
       expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
 
@@ -157,10 +154,6 @@ describe('Disclosure with default configuration', () => {
     expect(controller.getAttribute('aria-owns')).toBeNull();
 
     expect(target.getAttribute('aria-hidden')).toBeNull();
-
-    expect(disclosure.controller.disclosure).toBeUndefined();
-    expect(disclosure.target.disclosure).toBeUndefined();
-
     expect(onDestroy).toHaveBeenCalledTimes(7);
 
     // Quick and dirty verification that the original markup is restored.
@@ -200,8 +193,6 @@ describe('Disclosure with non-default configuration', () => {
     expect(onStateChange).toHaveBeenCalled();
 
     disclosure.destroy();
-    expect(disclosure.controller.disclosure).toBeUndefined();
-    expect(disclosure.target.disclosure).toBeUndefined();
     expect(onDestroy).toHaveBeenCalledTimes(9);
 
     // Quick and dirty verification that the original markup is restored.
