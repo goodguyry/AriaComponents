@@ -35,9 +35,7 @@ document.body.innerHTML = menuMarkup;
 
 // Collect references to DOM elements.
 const list = document.querySelector('.menu');
-const listFirstItem = document.querySelector('.first-item');
 const sublistOne = document.querySelector('.sublist1');
-const listThirdItem = document.querySelector('.third-item');
 
 // Mock functions.
 const onInit = jest.fn();
