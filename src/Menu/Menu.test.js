@@ -45,12 +45,12 @@ const onStateChange = jest.fn();
 const onDestroy = jest.fn();
 
 // The `init` event is not trackable via on/off.
-list.addEventListener('init', onInit);
+list.addEventListener('menu.init', onInit);
 
 let menu = new Menu(list);
 
-menu.on('stateChange', onStateChange);
-menu.on('destroy', onDestroy);
+menu.on('menu.stateChange', onStateChange);
+menu.on('menu.destroy', onDestroy);
 
 describe('Menu instatiates submenus as Disclosures', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
@@ -94,27 +94,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
         expect(detail.instance).toStrictEqual(menu);
       });
     });
-  });
-});
-
-describe('Menu the respects `_stateDispatchesOnly` option', () => {
-  const doNotCall = jest.fn();
-
-  beforeAll(() => {
-    list.removeEventListener('init', onInit);
-    list.removeEventListener('destroy', onDestroy);
-
-    menu = new Menu(list, { _stateDispatchesOnly: true });
-    menu.on('init', doNotCall);
-    menu.on('destroy', doNotCall);
-  });
-
-  it('Should instantiate the Menu class with correct instance values', () => {
-    // Init.
-    expect(doNotCall).toHaveBeenCalledTimes(0);
-
-    menu.destroy();
-    expect(doNotCall).toHaveBeenCalledTimes(0);
   });
 });
 

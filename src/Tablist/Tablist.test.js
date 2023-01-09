@@ -72,9 +72,9 @@ const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-tabs.addEventListener('init', onInit);
-tabs.addEventListener('stateChange', onStateChange);
-tabs.addEventListener('destroy', onDestroy);
+tabs.addEventListener('tablist.init', onInit);
+tabs.addEventListener('tablist.stateChange', onStateChange);
+tabs.addEventListener('tablist.destroy', onDestroy);
 
 describe('Tablist with default configuration', () => {
   beforeEach(() => {
