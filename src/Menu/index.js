@@ -127,13 +127,13 @@ export default class Menu extends AriaComponent {
    * @param {Event} event The Event object.
    */
   handleAutoClose(event) {
-    const { detail : { instance } } = event;
+    const { detail: { instance } } = event;
 
     if (instance.getState().expanded) {
       // There should only be one /shrug.
-      const open = this.disclosures.find((disclosure) =>
-        (disclosure.getState().expanded && instance.id !== disclosure.id)
-      );
+      const open = this.disclosures.find((disclosure) => (
+        disclosure.getState().expanded && instance.id !== disclosure.id
+      ));
 
       open?.close();
     }
