@@ -55,12 +55,9 @@ menu.on('menu.destroy', onDestroy);
 describe('Menu instatiates submenus as Disclosures', () => {
   it('Should instantiate the Menu class with correct instance values', () => {
     expect(menu).toBeInstanceOf(Menu);
-    expect(list.menu).toBeInstanceOf(Menu);
 
-    expect(listFirstItem.disclosure.getState().expanded).toBe(false);
-
-    expect(listFirstItem.disclosure).toBeInstanceOf(Disclosure);
-    expect(sublistOne.disclosure).toBeInstanceOf(Disclosure);
+    expect(menu.disclosures[0].getState().expanded).toBe(false);
+    expect(menu.disclosures[0]).toBeInstanceOf(Disclosure);
 
     expect(onInit).toHaveBeenCalledTimes(1);
 
@@ -79,9 +76,6 @@ describe('Menu instatiates submenus as Disclosures', () => {
       expect(onDestroy).toHaveBeenCalledTimes(1);
 
       expect(sublistOne.getAttribute('aria-hidden')).toBeNull();
-
-      expect(listFirstItem.disclosure).toBeUndefined();
-      expect(sublistOne.disclosure).toBeUndefined();
 
       // Quick and dirty verification that the original markup is restored.
       expect(document.body.innerHTML).toEqual(menuMarkup);
@@ -103,14 +97,14 @@ describe('Menu the respects `autoClose` option', () => {
   });
 
   it('Should close other Disclosures when one opens', () => {
-    listThirdItem.disclosure.open();
-    listFirstItem.disclosure.open();
+    menu.disclosures[0].open();
+    menu.disclosures[1].open();
 
-    expect(listThirdItem.disclosure.getState().expanded).toBeFalsy();
-    expect(listFirstItem.disclosure.getState().expanded).toBeTruthy();
+    expect(menu.disclosures[0].getState().expanded).toBeFalsy();
+    expect(menu.disclosures[1].getState().expanded).toBeTruthy();
 
-    listThirdItem.disclosure.open();
-    expect(listThirdItem.disclosure.getState().expanded).toBeTruthy();
-    expect(listFirstItem.disclosure.getState().expanded).toBeFalsy();
+    menu.disclosures[0].open();
+    expect(menu.disclosures[0].getState().expanded).toBeTruthy();
+    expect(menu.disclosures[1].getState().expanded).toBeFalsy();
   });
 });

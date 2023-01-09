@@ -90,12 +90,6 @@ export default class Disclosure extends AriaComponent {
    * Add initial attributes, establish relationships, and listen for events
    */
   init() {
-    /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
-     */
-    super.setSelfReference(this.controller, this.target);
-
     // Component state is initially set in the constructor.
     const { expanded } = this.state;
 
@@ -308,9 +302,6 @@ export default class Disclosure extends AriaComponent {
    * Remove all ARIA attributes added by this class.
    */
   destroy() {
-    // Remove the references to the class instance.
-    this.deleteSelfReferences();
-
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);

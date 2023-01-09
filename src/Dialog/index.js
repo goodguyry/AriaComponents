@@ -106,12 +106,6 @@ export default class Dialog extends AriaComponent {
     }
 
     /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
-     */
-    super.setSelfReference(this.controller, this.target);
-
-    /*
      * Collect the Dialog's interactive child elements. This is an initial pass
      * to ensure values exists, but the interactive children will be collected
      * each time the dialog opens, in case the dialog's contents change.
@@ -335,9 +329,6 @@ export default class Dialog extends AriaComponent {
    * Destroy the Dialog and Popup.
    */
   destroy() {
-    // Remove the references to the class instance.
-    this.deleteSelfReferences();
-
     // Remove the `aria-hidden` attribute from the content wrapper.
     const contentLength = this.content.length;
     for (let i = 0; i < contentLength; i += 1) {

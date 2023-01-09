@@ -72,12 +72,6 @@ export default class Menu extends AriaComponent {
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init() {
-    /*
-     * Add a reference to the class instance to enable external interactions
-     * with this instance.
-     */
-    super.setSelfReference(this.list);
-
     // Set and collect submenu Disclosures.
     Array.from(this.list.children).forEach((item) => {
       const [firstChild, ...theRest] = Array.from(item.children);
@@ -133,9 +127,6 @@ export default class Menu extends AriaComponent {
    * Destroy the Menu and any submenus.
    */
   destroy() {
-    // Remove the reference to the class instance.
-    this.deleteSelfReferences();
-
     /*
      * Destroy inner Disclosure(s).
      *

@@ -70,11 +70,6 @@ describe('Dialog with default configuration', () => {
       expect(modal).toBeInstanceOf(Dialog);
       expect(modal.toString()).toEqual('[object Dialog]');
 
-      expect(controller.dialog).toBeInstanceOf(Dialog);
-      expect(target.dialog).toBeInstanceOf(Dialog);
-
-      expect(controller.dialog).toBeInstanceOf(Dialog);
-      expect(target.dialog).toBeInstanceOf(Dialog);
       expect(modal.getState().expanded).toBeFalsy();
 
       expect(onInit).toHaveBeenCalledTimes(1);
@@ -185,9 +180,6 @@ describe('Dialog with default configuration', () => {
   describe('Destroying the Dialog removes attributes', () => {
     it('Should remove properties and attributes on destroy', () => {
       modal.destroy();
-
-      expect(controller.dialog).toBeUndefined();
-      expect(target.dialog).toBeUndefined();
 
       expect(target.getAttribute('aria-hidden')).toBeNull();
 

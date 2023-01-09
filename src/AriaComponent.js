@@ -88,7 +88,6 @@ export default class AriaComponent {
     // Bind class methods.
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
-    this.setSelfReference = this.setSelfReference.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
     this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
@@ -285,35 +284,6 @@ export default class AriaComponent {
         state: this.state,
       }
     );
-  }
-
-  /**
-   * Set a reference to the class instance on the element upon which the class
-   * is instantiated.
-   *
-   * @param {HTMLElement} elements One or more elements upon which to add a reference to `this`.
-   */
-  setSelfReference(...elements) {
-    const referenceElements = elements.map((element) => {
-      Object.defineProperty(
-        element,
-        this.stringDescription.toLowerCase(),
-        { value: this, configurable: true }
-      );
-
-      return element;
-    });
-
-    this.referenceElements = [...this.referenceElements, ...referenceElements];
-  }
-
-  /**
-   * Delete self references from component elements.
-   */
-  deleteSelfReferences() {
-    this.referenceElements.forEach((element) => {
-      delete element[this.stringDescription.toLowerCase()];
-    });
   }
 
   /**
