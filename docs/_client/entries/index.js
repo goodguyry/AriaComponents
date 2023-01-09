@@ -10,4 +10,3 @@ import 'components/menu';
 import 'components/dialog';
 import 'components/menubar';
 import 'components/disclosure';
-import 'components/menubutton';

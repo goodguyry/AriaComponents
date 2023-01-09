@@ -16,4 +16,4 @@ menuBarList.addEventListener('stateChange', logEventDetail);
 menuBarList.addEventListener('destroy', logEventDetail);
 
 // Create the MenuBar.
-const menuBar = new MenuBar(menuBarList, { __is_application_menu: true });
+const menuBar = new MenuBar(menuBarList, { autoClose: true });

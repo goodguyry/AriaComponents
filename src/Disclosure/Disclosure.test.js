@@ -6,15 +6,20 @@ const {
   click,
   keydownReturn,
   keydownSpace,
+  keydownEsc,
+  keydownTab,
+  keydownShiftTab,
 } = events;
 
 const disclosureMarkup = `
   <dl>
     <dt>
-      <button aria-controls="answer">What is Lorem Ipsum?</button>
+      <a href="#" aria-controls="answer">What is Lorem Ipsum?</a>
     </dt>
     <dd id="answer">
+      <a class="first-child" href="example.com"></a>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <a class="last-child" href="example.com"></a>
     </dd>
   </dl>
 `;
@@ -22,8 +27,11 @@ const disclosureMarkup = `
 // Set up our document body
 document.body.innerHTML = disclosureMarkup;
 
-const controller = document.querySelector('button');
+const controller = document.querySelector('[aria-controls="answer"]');
 const target = document.querySelector('#answer');
+
+const domFirstChild = document.querySelector('.first-child');
+const domLastChild = document.querySelector('.last-child');
 
 // Mock functions.
 const onStateChange = jest.fn();
@@ -54,6 +62,9 @@ describe('Disclosure with default configuration', () => {
 
       expect(controller.disclosure).toBeInstanceOf(Disclosure);
       expect(target.disclosure).toBeInstanceOf(Disclosure);
+
+      expect(disclosure.firstInteractiveChild).toEqual(domFirstChild);
+      expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
 
       expect(onInit).toHaveBeenCalledTimes(1);
       return Promise.resolve().then(() => {
@@ -221,4 +232,93 @@ describe('Disclosure supresses firing the `init` event', () => {
   disclosure.destroy();
   expect(beCalled).toHaveBeenCalledTimes(1);
   expect(shouldNotBeCalled).toHaveBeenCalledTimes(0);
+});
+
+describe('Disclosure with autoClose: true', () => {
+  beforeEach(() => {
+    if (disclosure instanceof Disclosure) {
+      disclosure.destroy();
+    }
+
+    disclosure = new Disclosure(controller, { autoClose: true });
+  });
+
+  describe('Disclosure correctly responds to events', () => {
+    // Ensure the Disclosure is open before all tests.
+    beforeEach(() => {
+      disclosure.open();
+    });
+
+    it(
+      'Should close the Disclosure when the ESC key is pressed',
+      () => {
+        controller.focus();
+        controller.dispatchEvent(keydownEsc);
+        expect(disclosure.getState().expanded).toBeFalsy();
+        expect(document.activeElement).toEqual(controller);
+      }
+    );
+
+    it.skip(
+      'Should move focus to the first Disclosure child on TAB from controller',
+      () => {
+        controller.dispatchEvent(keydownTab);
+        expect(document.activeElement).toEqual(domFirstChild);
+      }
+    );
+
+    it('Should update Disclosure state with keyboard', () => {
+      // Toggle Disclosure
+      controller.dispatchEvent(keydownSpace);
+      expect(disclosure.getState().expanded).toBeFalsy();
+
+      // Toggle Disclosure
+      controller.dispatchEvent(keydownReturn);
+      expect(disclosure.getState().expanded).toBeTruthy();
+    });
+
+    it(
+      'Should close the Disclosure and focus the controller when the ESC key is pressed',
+      () => {
+        target.dispatchEvent(keydownEsc);
+        expect(disclosure.getState().expanded).toBeFalsy();
+        expect(document.activeElement).toEqual(controller);
+      }
+    );
+
+    it(
+      'Should close the Disclosure when tabbing from the last child',
+      () => {
+        domLastChild.focus();
+        target.dispatchEvent(keydownTab);
+        expect(disclosure.getState().expanded).toBeFalsy();
+      }
+    );
+
+    it.skip(
+      'Should not close the Disclosure when tabbing back from the last child',
+      () => {
+        domLastChild.focus();
+        target.dispatchEvent(keydownShiftTab);
+        expect(disclosure.getState().expanded).toBeTruthy();
+      }
+    );
+
+    it.skip(
+      'Should focus the controller when tabbing back from the first child',
+      () => {
+        domFirstChild.focus();
+        target.dispatchEvent(keydownShiftTab);
+        expect(document.activeElement).toEqual(controller);
+      }
+    );
+
+    it.skip(
+      'Should close the Disclosure when an outside element it clicked',
+      () => {
+        document.body.dispatchEvent(click);
+        expect(disclosure.getState().expanded).toBeFalsy();
+      }
+    );
+  });
 });

@@ -16,11 +16,4 @@ menuList.addEventListener('stateChange', logEventDetail);
 menuList.addEventListener('destroy', logEventDetail);
 
 // Create the Menu.
-// Alteratively pass `{ collapse: true }` to collapse submenus as Disclosures.
-const menu = new Menu(
-  menuList,
-  {
-    collapse: true,
-    __is_application_menu: true,
-  }
-);
+const menu = new Menu(menuList);
