@@ -38,11 +38,19 @@ const menu = new Menu(menu);
 ## Constructor
 
 ```javascript
-Menu(menuListElement = null);
+Menu(menuListElement = null, options = {});
 ```
 
 _**`menuListElement`**_ `HTMLUListElement`  
 > The list element containing menu items.
+
+_**`options`**_ `object`  
+> Configuration options.
+
+### Available Options
+
+_**`autoClose`**_`= false`  
+> Automatically close the Disclosure when its contents lose focus.
 
 ## API
 
