@@ -226,9 +226,8 @@ export default class Disclosure extends AriaComponent {
       SPACE,
       RETURN,
       ESC,
-      TAB,
     } = keyCodes;
-    const { keyCode, shiftKey } = event;
+    const { keyCode } = event;
 
     if ([SPACE, RETURN].includes(keyCode)) {
       /*
@@ -247,18 +246,6 @@ export default class Disclosure extends AriaComponent {
        * controller), there's no need to move focus.
        */
       this.close();
-    }
-
-    if (TAB === keyCode && ! shiftKey) {
-      event.preventDefault();
-
-      /*
-       * When the Disclosure is open, pressing the TAB key should move focus to the
-       * first interctive child of the target element. This would likely be
-       * the default behavior in most cases, but this patches the behavior in
-       * cases where the markup is disconnected or out-of-order.
-       */
-      this.firstInteractiveChild.focus();
     }
   }
 
@@ -287,23 +274,17 @@ export default class Disclosure extends AriaComponent {
        * element.
        */
       this.controller.focus();
-    } else if (TAB === keyCode) {
-      if (shiftKey) {
-        if (this.firstInteractiveChild === activeElement) {
-          event.preventDefault();
-          /*
-           * Move focus back to the controller if the Shift key is pressed with
-           * the Tab key, but only if the Event target is the Disclosure's first
-           * interactive child or the Disclosure itself.
-           */
-          this.controller.focus();
-        }
-      } else if (this.lastInteractiveChild === activeElement) {
-        /*
-         * Close the Disclosure when tabbing from the last child.
-         */
-        this.close();
-      }
+    }
+
+    if (
+      TAB === keyCode
+      && ! shiftKey
+      && this.lastInteractiveChild === activeElement
+    ) {
+      /*
+       * Close the Disclosure when tabbing forward from the last interactve child.
+       */
+      this.close();
     }
   }
 

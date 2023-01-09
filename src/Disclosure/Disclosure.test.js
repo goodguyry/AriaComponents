@@ -259,12 +259,11 @@ describe('Disclosure with autoClose: true', () => {
       }
     );
 
-    it(
+    it.skip(
       'Should move focus to the first Disclosure child on TAB from controller',
       () => {
         controller.dispatchEvent(keydownTab);
-        expect(document.activeElement)
-          .toEqual(domFirstChild);
+        expect(document.activeElement).toEqual(domFirstChild);
       }
     );
 
@@ -296,7 +295,7 @@ describe('Disclosure with autoClose: true', () => {
       }
     );
 
-    it(
+    it.skip(
       'Should not close the Disclosure when tabbing back from the last child',
       () => {
         domLastChild.focus();
@@ -305,7 +304,7 @@ describe('Disclosure with autoClose: true', () => {
       }
     );
 
-    it(
+    it.skip(
       'Should focus the controller when tabbing back from the first child',
       () => {
         domFirstChild.focus();
