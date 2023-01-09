@@ -85,14 +85,6 @@ export default class AriaComponent {
      */
     this.__trackedAttributes = {};
 
-    /**
-     * Whether to suppress the `init` and `destroy` events.
-     * @private
-     *
-     * @type {Boolean}
-     */
-    this._stateDispatchesOnly = false;
-
     // Bind class methods.
     this.setState = this.setState.bind(this);
     this.getState = this.getState.bind(this);
@@ -206,20 +198,16 @@ export default class AriaComponent {
    * @param  {object} detail The event detail object.
    */
   dispatch(name, detail) {
-    const allowed = this._stateDispatchesOnly ? ('stateChange' === name) : true;
+    const event = new CustomEvent(
+      name,
+      {
+        bubbles: true,
+        composed: true,
+        detail,
+      }
+    );
 
-    if (allowed) {
-      const event = new CustomEvent(
-        name,
-        {
-          bubbles: true,
-          composed: true,
-          detail,
-        }
-      );
-
-      this.element.dispatchEvent(event);
-    }
+    this.element.dispatchEvent(event);
   }
 
   /**

@@ -38,12 +38,10 @@ export default class Disclosure extends AriaComponent {
     const {
       loadOpen,
       allowOutsideClick,
-      _stateDispatchesOnly,
       autoClose,
     } = {
       loadOpen: false,
       allowOutsideClick: true,
-      _stateDispatchesOnly: false,
       autoClose: false,
 
       ...options,
@@ -62,13 +60,6 @@ export default class Disclosure extends AriaComponent {
      * @type {boolean}
      */
     this.allowOutsideClick = allowOutsideClick;
-
-    /**
-     * Whether to suppress Disclosure init and destroy events.
-     *
-     * @type {Boolean}
-     */
-    this._stateDispatchesOnly = _stateDispatchesOnly;
 
     /**
      * Automatically close the Disclosure when its contents lose focus.
