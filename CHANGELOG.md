@@ -29,7 +29,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `instance.on()` and `instance.off()` methods for subscribing to events (#67)
 - Menu, MenuBar, and MenuButton will log a warning if used for website navigation (#68)
 - Components track attributes they add and will only overwrite existing attribute values where required (#73)
-- Adds an autoClose option to Disclosure and Menu (#76)
+- Adds an autoClose option to Disclosure and Menu (#75, #76)
 
 **Fixed**
 
