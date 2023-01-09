@@ -49,6 +49,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Components no longer manage the `hidden` attribute (#74)
 - MenuButton component (#75)
 - Remove `collapse` and `itemMatches` Menu options (#75)
+- Components no longer set a reference to their instance on the component's HTML elements (#78)
 
 ## 0.3.1
 
