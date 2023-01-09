@@ -85,7 +85,8 @@ export default class Disclosure extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
-    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
+    this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
+    this.closeOnEscKey = this.closeOnEscKey.bind(this);
     this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
     this.toggleExpandedState = this.toggleExpandedState.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
@@ -136,6 +137,7 @@ export default class Disclosure extends AriaComponent {
        * should just use a button.
        */
       this.addAttribute(this.controller, 'role', 'button');
+      this.controller.addEventListener('keydown', this.patchButtonKeydown);
 
       // Ensure we can TAB to the controller if it's not a button nor anchor.
       if ('A' !== this.controller.nodeName) {
@@ -162,7 +164,8 @@ export default class Disclosure extends AriaComponent {
 
     // Add event listeners
     this.controller.addEventListener('click', this.toggleExpandedState);
-    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
+    this.controller.addEventListener('keydown', this.closeOnEscKey);
+    this.target.addEventListener('keydown', this.closeOnEscKey);
 
     if (this.autoClose) {
       this.target.addEventListener('keydown', this.handleTargetKeydown);
@@ -217,35 +220,44 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
+   * Close the Disclosure when the Escape key is pressed.
+   *
+   * @param {Event} event The Event object.
+   */
+  closeOnEscKey(event) {
+    const { ESC } = keyCodes;
+    const { keyCode, target } = event;
+    const { expanded } = this.state;
+
+    if (ESC === keyCode && expanded) {
+      event.preventDefault();
+
+      this.close();
+
+      /*
+       * Move focus to the Disclosure controller to avoid the confusion of focus
+       * being within a hidden element.
+       */
+      if (target === this.target) {
+        this.controller.focus();
+      }
+    }
+  }
+
+  /**
    * Handle keydown events on the Disclosure controller.
    *
    * @param {Event} event The event object.
    */
-  controllerHandleKeydown(event) {
-    const {
-      SPACE,
-      RETURN,
-      ESC,
-    } = keyCodes;
+  patchButtonKeydown(event) {
+    const { SPACE, RETURN } = keyCodes;
     const { keyCode } = event;
 
     if ([SPACE, RETURN].includes(keyCode)) {
       /*
-       * Treat the Spacebar and Return keys as clicks in case the controller is
-       * not a <button>.
+       * Treat the Spacebar and Return keys as clicks if the controller is not a <button>.
        */
       this.toggleExpandedState(event);
-    }
-
-    if (ESC === keyCode) {
-      event.preventDefault();
-
-      /*
-       * Close the Disclosure when the Escape key is pressed. Because focus is not
-       * inside the target (based on the fact that the event was fired on the
-       * controller), there's no need to move focus.
-       */
-      this.close();
     }
   }
 
@@ -259,22 +271,6 @@ export default class Disclosure extends AriaComponent {
     const { keyCode, shiftKey } = event;
     const { expanded } = this.state;
     const { activeElement } = document;
-
-    if (ESC === keyCode && expanded) {
-      event.preventDefault();
-
-      /*
-       * Close the Disclosure when the Escape key is pressed.
-       */
-      this.close();
-
-      /*
-       * Because the activeElement is within the Disclosure, move focus to the Disclosure
-       * controller to avoid the confusion of focus being within a hidden
-       * element.
-       */
-      this.controller.focus();
-    }
 
     if (
       TAB === keyCode
@@ -334,8 +330,10 @@ export default class Disclosure extends AriaComponent {
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggleExpandedState);
-    this.controller.removeEventListener('keydown', this.controllerHandleKeydown);
+    this.controller.removeEventListener('keydown', this.patchButtonKeydown);
     document.body.removeEventListener('click', this.closeOnOutsideClick);
+    this.controller.removeEventListener('keydown', this.closeOnEscKey);
+    this.target.removeEventListener('keydown', this.closeOnEscKey);
 
     // Reset initial state.
     this.state = { expanded: this.loadOpen };

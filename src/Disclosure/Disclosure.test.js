@@ -14,7 +14,7 @@ const {
 const disclosureMarkup = `
   <dl>
     <dt>
-      <button aria-controls="answer">What is Lorem Ipsum?</button>
+      <a href="#" aria-controls="answer">What is Lorem Ipsum?</a>
     </dt>
     <dd id="answer">
       <a class="first-child" href="example.com"></a>
@@ -27,7 +27,7 @@ const disclosureMarkup = `
 // Set up our document body
 document.body.innerHTML = disclosureMarkup;
 
-const controller = document.querySelector('button');
+const controller = document.querySelector('[aria-controls="answer"]');
 const target = document.querySelector('#answer');
 
 const domFirstChild = document.querySelector('.first-child');
