@@ -258,9 +258,8 @@ export default class Disclosure extends AriaComponent {
    * @param {Event} event The event object.
    */
   handleTargetKeydown(event) {
-    const { ESC, TAB } = keyCodes;
+    const { TAB } = keyCodes;
     const { keyCode, shiftKey } = event;
-    const { expanded } = this.state;
     const { activeElement } = document;
 
     if (
