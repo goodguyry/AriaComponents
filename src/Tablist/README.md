@@ -103,7 +103,7 @@ _**`Tablist.tabLinks`**_
 
 ### Events
 
-_**`init`**_  
+_**`'tablist.init'`**_  
 > Fired after the component is initialized.
 
 > **Event Properties**
@@ -111,7 +111,7 @@ _**`init`**_
 > _**`detail.instance`**_  
 > Returns the `Tablist` instance from which the event originated.  
 
-_**`stateChange`**_  
+_**`'tablist.stateChange'`**_  
 > Fired after component state is updated.
 
 > **Event Properties**
@@ -125,7 +125,7 @@ _**`stateChange`**_
 > _**`detail.state`**_  
 > Returns an object representing the current component state.
 
-_**`destroy`**_  
+_**`'tablist.destroy'`**_  
 > Fired after the component is destroyed.
 
 > **Event Properties**
