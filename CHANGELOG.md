@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Components can accept either a controller or target element (#65, #70)
 - Deprecates MenuBar component; use Menu instead (#75)
 - Removes antipatterns from Menu component (#75)
+- Replaces `KeyboardEvent.keyCode` with `KeyboardEvent.key`; removes keyCodes helper (#79)
 
 **Added**
 
