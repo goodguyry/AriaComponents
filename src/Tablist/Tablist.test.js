@@ -6,9 +6,9 @@ const {
   click,
   keydownTab,
   keydownShiftTab,
-  keydownLeft,
-  keydownRight,
-  keydownDown,
+  keydownArrowLeft,
+  keydownArrowRight,
+  keydownArrowDown,
   keydownHome,
   keydownEnd,
 } = events;
@@ -291,32 +291,32 @@ describe('Tablist with default configuration', () => {
 
     it('Should switch tabs when arrow keys are pressed', () => {
       firstTab.focus();
-      firstTab.dispatchEvent(keydownRight);
+      firstTab.dispatchEvent(keydownArrowRight);
       expect(document.activeElement).toEqual(secondTab);
       expect(secondTab.getAttribute('aria-selected')).toEqual('true');
 
-      secondTab.dispatchEvent(keydownRight);
+      secondTab.dispatchEvent(keydownArrowRight);
       expect(document.activeElement).toEqual(thirdTab);
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
-      thirdTab.dispatchEvent(keydownRight);
+      thirdTab.dispatchEvent(keydownArrowRight);
       expect(document.activeElement).toEqual(firstTab); // cycle
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
 
-      thirdTab.dispatchEvent(keydownLeft);
+      thirdTab.dispatchEvent(keydownArrowLeft);
       expect(document.activeElement).toEqual(secondTab);
       expect(secondTab.getAttribute('aria-selected')).toEqual('true');
 
-      secondTab.dispatchEvent(keydownLeft);
+      secondTab.dispatchEvent(keydownArrowLeft);
       expect(document.activeElement).toEqual(firstTab);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
 
-      firstTab.dispatchEvent(keydownLeft);
+      firstTab.dispatchEvent(keydownArrowLeft);
       expect(document.activeElement).toEqual(thirdTab); // cycle
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
     });
 
-    it('Should set first element as activedescendant on target HOME key', () => {
+    it('Should set first element as activedescendant on target Home key', () => {
       tablist.switchTo(1);
 
       secondTab.focus();
@@ -326,7 +326,7 @@ describe('Tablist with default configuration', () => {
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
     });
 
-    it('Should set last element as activedescendant on target END key', () => {
+    it('Should set last element as activedescendant on target End key', () => {
       tablist.switchTo(1);
 
       secondTab.focus();
@@ -338,7 +338,7 @@ describe('Tablist with default configuration', () => {
 
     it('Should focus the panel from tab when down arrow pressed', () => {
       secondTab.focus();
-      secondTab.dispatchEvent(keydownDown);
+      secondTab.dispatchEvent(keydownArrowDown);
       expect(document.activeElement).toEqual(secondPanel);
       expect(secondPanel.getAttribute('tabindex')).toEqual('0');
     });

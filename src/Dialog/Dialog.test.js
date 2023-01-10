@@ -5,7 +5,7 @@ const {
   click,
   keydownTab,
   keydownShiftTab,
-  keydownEsc,
+  keydownEscape,
 } = events;
 
 const dialogMarkup = `
@@ -145,9 +145,9 @@ describe('Dialog with default configuration', () => {
       expect(document.activeElement).toEqual(firstItem);
     });
 
-    it('Should close when the ESC key is pressed', () => {
+    it('Should close when the Escape key is pressed', () => {
       lastItem.focus();
-      lastItem.dispatchEvent(keydownEsc);
+      lastItem.dispatchEvent(keydownEscape);
       expect(modal.getState().expanded).toBeFalsy();
     });
 

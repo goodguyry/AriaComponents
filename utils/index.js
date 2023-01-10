@@ -2,7 +2,6 @@
  * Select utility function exports.
  */
 import interactiveChildren from '../src/lib/interactiveChildren';
-import keyCodes from '../src/lib/keyCodes';
 import {
   tabIndexAllow,
   tabIndexDeny,
@@ -15,7 +14,6 @@ import isInstanceOf from '../src/lib/isInstanceOf';
 
 export {
   interactiveChildren,
-  keyCodes,
   tabIndexAllow,
   tabIndexDeny,
   rovingTabIndex,

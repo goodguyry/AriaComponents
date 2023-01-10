@@ -32,7 +32,7 @@ describe('Find the search string', () => {
       const search = new Search(input);
       let found = null;
       document.addEventListener('keydown', (event) => {
-        found = search.getItem(event.keyCode);
+        found = search.getItem(event.key);
       });
 
       // Typing 'El Paso'
@@ -63,7 +63,7 @@ describe('Find the search string', () => {
       const search = new Search(input);
       let found = null;
       document.addEventListener('keydown', (event) => {
-        found = search.getItem(event.keyCode);
+        found = search.getItem(event.key);
       });
 
       // Typing 'El Paso'

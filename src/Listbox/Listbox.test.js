@@ -4,15 +4,15 @@ import { events } from '../lib/events';
 
 const {
   click,
-  keydownReturn,
-  keydownEsc,
+  keydownEnter,
+  keydownEscape,
   keydownSpace,
-  keydownUp,
-  keydownDown,
+  keydownArrowUp,
+  keydownArrowDown,
   keydownHome,
   keydownEnd,
-  keyUpUp,
-  keyUpDown,
+  keyupArrowUp,
+  keyupArrowDown,
 } = events;
 
 const listboxMarkup = `
@@ -139,14 +139,14 @@ describe('Listbox with default configuration', () => {
       expect(listbox.getState().expanded).toBeFalsy();
     });
 
-    it('Should open the popup on controller DOWN arrow key', () => {
-      controller.dispatchEvent(keyUpDown);
+    it('Should open the popup on controller arrow down key', () => {
+      controller.dispatchEvent(keyupArrowDown);
       expect(document.activeElement).toEqual(target);
       expect(listbox.getState().expanded).toBeTruthy();
     });
 
-    it('Should open the popup on controller UP arrow key', () => {
-      controller.dispatchEvent(keyUpUp);
+    it('Should open the popup on controller arrow up key', () => {
+      controller.dispatchEvent(keyupArrowUp);
       expect(document.activeElement).toEqual(target);
       expect(listbox.getState().expanded).toBeTruthy();
     });
@@ -157,29 +157,29 @@ describe('Listbox with default configuration', () => {
       listbox.show();
     });
 
-    it('Should close the popup and focus the controller on RETURN key', () => {
-      target.dispatchEvent(keydownReturn);
+    it('Should close the popup and focus the controller on Enter key', () => {
+      target.dispatchEvent(keydownEnter);
       expect(listbox.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
-    it('Should close the popup and focus the controller on ESC key', () => {
-      target.dispatchEvent(keydownEsc);
+    it('Should close the popup and focus the controller on Escape key', () => {
+      target.dispatchEvent(keydownEscape);
       expect(listbox.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
-    it('Should close the popup and focus the controller on SPACE key', () => {
+    it('Should close the popup and focus the controller on Space key', () => {
       target.dispatchEvent(keydownSpace);
       expect(listbox.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     });
 
-    it('Should set previous element as activedescendant on target UP arrow key', () => {
+    it('Should set previous element as activedescendant on target arrow up key', () => {
       listbox.setState({ activeDescendant: target.children[3] });
       expect(target.children[3].getAttribute('aria-selected')).toEqual('true');
 
-      target.dispatchEvent(keydownUp);
+      target.dispatchEvent(keydownArrowUp);
 
       expect(document.activeElement).toEqual(target);
       expect(target.children[3].getAttribute('aria-selected')).toBeNull();
@@ -187,11 +187,11 @@ describe('Listbox with default configuration', () => {
       expect(target.children[2].getAttribute('aria-selected')).toEqual('true');
     });
 
-    it('Should set next element as activedescendant on target DOWN arrow key', () => {
+    it('Should set next element as activedescendant on target arrow down key', () => {
       listbox.setState({ activeDescendant: target.children[4] });
       expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
 
-      target.dispatchEvent(keydownDown);
+      target.dispatchEvent(keydownArrowDown);
 
       expect(document.activeElement).toEqual(target);
       expect(target.children[4].getAttribute('aria-selected')).toBeNull();
@@ -199,7 +199,7 @@ describe('Listbox with default configuration', () => {
       expect(target.children[5].getAttribute('aria-selected')).toEqual('true');
     });
 
-    it('Should set first element as activedescendant on target HOME key', () => {
+    it('Should set first element as activedescendant on target Home key', () => {
       target.dispatchEvent(keydownHome);
 
       expect(document.activeElement).toEqual(target);
@@ -207,7 +207,7 @@ describe('Listbox with default configuration', () => {
       expect(target.children[0].getAttribute('aria-selected')).toEqual('true');
     });
 
-    it('Should set last element as activedescendant on target END key', () => {
+    it('Should set last element as activedescendant on target End key', () => {
       const lastChild = target.children[target.children.length - 1];
 
       target.dispatchEvent(keydownEnd);

@@ -1,6 +1,5 @@
 import Popup from '../Popup';
 import getElementPair from '../lib/getElementPair';
-import keyCodes from '../lib/keyCodes';
 import Search from '../lib/Search';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
@@ -109,7 +108,7 @@ export default class ListBox extends Popup {
     this.target.addEventListener('click', this.targetHandleClick);
     this.target.addEventListener('blur', this.targetHandleBlur);
 
-    // Prevent scrolling when using UP/DOWN arrows on the button
+    // Prevent scrolling when using arrow up/down on the button.
     window.addEventListener('keydown', this.preventWindowScroll);
 
     // Fire the init event.
@@ -191,24 +190,21 @@ export default class ListBox extends Popup {
    * @param {Event} event The event object.
    */
   preventWindowScroll(event) {
-    const { UP, DOWN } = keyCodes;
-    const { target: keydownTarget, keyCode } = event;
+    const { target: keydownTarget, key } = event;
 
-    if (keydownTarget === this.target && [UP, DOWN].includes(keyCode)) {
+    if (keydownTarget === this.target && ['ArrowUp', 'ArrowDown'].includes(key)) {
       event.preventDefault();
     }
   }
 
   /**
    * Handle keyup events on the button.
-   * Both the UP and DOWN arrow keys should show the Listbox popup.
+   * Both the arrow up and down keys should show the Listbox popup.
    *
    * @param {Event} event The event object.
    */
   controllerHandleKeyup(event) {
-    const { UP, DOWN } = keyCodes;
-
-    if ([UP, DOWN].includes(event.keyCode)) {
+    if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
       event.preventDefault();
 
       this.show();
@@ -222,25 +218,17 @@ export default class ListBox extends Popup {
    */
   targetHandleKeydown(event) {
     const { activeDescendant } = this.state;
-    const { keyCode } = event;
-    const {
-      RETURN,
-      UP,
-      DOWN,
-      SPACE,
-      HOME,
-      END,
-    } = keyCodes;
+    const { key } = event;
 
-    switch (keyCode) {
+    switch (key) {
       /*
        * Close the Listbox when the Return, Escape, or Spacebar are pressed. No
        * need to update state here; if the Listbox is open rest assured an
        * option is selected.
        */
-      // ESC is handled via Popup.
-      case RETURN:
-      case SPACE: {
+      // 'Escape' is handled via Popup.
+      case 'Enter':
+      case ' ': {
         event.preventDefault();
         this.hide();
 
@@ -253,11 +241,11 @@ export default class ListBox extends Popup {
       /*
        * Select the next or previous Listbox option.
        */
-      case UP:
-      case DOWN: {
+      case 'ArrowUp':
+      case 'ArrowDown': {
         let moveTo = activeDescendant;
 
-        moveTo = (keyCode === UP)
+        moveTo = ('ArrowUp' === key)
           ? moveTo.previousElementSibling
           : moveTo.nextElementSibling;
 
@@ -272,7 +260,7 @@ export default class ListBox extends Popup {
       /*
        * Select the first Listbox option.
        */
-      case HOME: {
+      case 'Home': {
         event.preventDefault();
         this.setState({ activeDescendant: this.firstOption });
 
@@ -282,7 +270,7 @@ export default class ListBox extends Popup {
       /*
        * Select the last Listbox option.
        */
-      case END: {
+      case 'End': {
         event.preventDefault();
         this.setState({ activeDescendant: this.lastOption });
 
@@ -294,7 +282,7 @@ export default class ListBox extends Popup {
        * collecting key presses.
        */
       default: {
-        const itemToFocus = this.search.getItem(keyCode);
+        const itemToFocus = this.search.getItem(key);
         if (null !== itemToFocus) {
           this.setState({ activeDescendant: itemToFocus });
         }
