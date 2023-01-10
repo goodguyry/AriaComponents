@@ -175,10 +175,7 @@ export default class Tablist extends AriaComponent {
     const { activeIndex } = this.state;
 
     // Get the tab currently designated as `aria-selected`.
-    // @todo Switch to `find()`.
-    const [deactivate] = this.tabLinks.filter((tab) => (
-      'true' === tab.getAttribute('aria-selected')
-    ));
+    const deactivate = this.tabLinks.find((tab) => 'true' === tab.getAttribute('aria-selected'));
 
     // Get the index; this is essentially the previous `activeIndex` state.
     const deactiveIndex = this.tabLinks.indexOf(deactivate);
