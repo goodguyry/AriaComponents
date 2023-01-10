@@ -335,11 +335,11 @@ export default class Tablist extends AriaComponent {
     event.preventDefault();
 
     // Don't act when an active tab is clicked.
-    // @todo Simplify this into one condition.
-    if ('true' !== target.getAttribute('aria-selected')) {
-      if (this.tabLinks.includes(target)) {
-        this.switchTo(this.tabLinks.indexOf(target));
-      }
+    if (
+      'true' !== target.getAttribute('aria-selected')
+      && this.tabLinks.includes(target)
+    ) {
+      this.switchTo(this.tabLinks.indexOf(target));
     }
   }
 
