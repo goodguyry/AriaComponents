@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
-import keyCodes from '../lib/keyCodes';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 import toArray from '../lib/toArray';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
@@ -252,10 +251,7 @@ export default class Dialog extends AriaComponent {
    * @param {Event} event The event object.
    */
   controllerHandleKeydown(event) {
-    const { SPACE, RETURN } = keyCodes;
-    const { keyCode } = event;
-
-    if ([SPACE, RETURN].includes(keyCode)) {
+    if ([' ', 'Return'].includes(event.key)) {
       event.preventDefault();
 
       /*
@@ -272,11 +268,10 @@ export default class Dialog extends AriaComponent {
    * @param {Event} event The Event object.
    */
   targetHandleKeydown(event) {
-    const { TAB } = keyCodes;
-    const { keyCode, shiftKey } = event;
+    const { key, shiftKey } = event;
     const { expanded } = this.state;
 
-    if (expanded && keyCode === TAB) {
+    if (expanded && 'Tab' === key) {
       const { activeElement } = document;
 
       if (
@@ -304,19 +299,18 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
-   * Close the dialog on ESC key press. This is added to the body element, so
-   * any press of the ESC key will short-circuit the dialog and move forcus back
+   * Close the dialog on 'Escape' key press. This is added to the body element, so
+   * any press of the 'Escape' key will short-circuit the dialog and move forcus back
    * to the controller.
    *
    * @param {Event} event The Event object.
    */
   handleOutsideKeydown(event) {
-    const { ESC, TAB } = keyCodes;
-    const { keyCode, target: eventTarget } = event;
+    const { key, target: eventTarget } = event;
 
-    if (ESC === keyCode) {
+    if ('Escape' === key) {
       this.hide();
-    } else if (keyCode === TAB && ! this.target.contains(eventTarget)) {
+    } else if ('Tab' === key && ! this.target.contains(eventTarget)) {
       /*
        * Move focus to the first interactive child element. This is a stopgap
        * for instances where clicking outside of the Dialog moves focus out.

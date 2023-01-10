@@ -2,7 +2,6 @@ import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
-import keyCodes from '../lib/keyCodes';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -211,19 +210,18 @@ export default class Tablist extends AriaComponent {
    * @param {Event} event The event object.
    */
   panelHandleKeydown(event) {
-    const { TAB } = keyCodes;
     const { activeIndex } = this.state;
-    const { keyCode, shiftKey } = event;
+    const { key, shiftKey } = event;
     const { activeElement } = document;
     const [firstInteractiveChild] = this.interactiveChildElements;
 
-    if (keyCode === TAB && shiftKey) {
+    if ('Tab' === key && shiftKey) {
       if (activeElement === this.panels[activeIndex]) {
         event.preventDefault();
         this.tabLinks[activeIndex].focus();
       } else if (activeElement === firstInteractiveChild) {
         /*
-         * Ensure navigating with Shift-TAB from the first interactive child of
+         * Ensure navigating with Shift-Tab from the first interactive child of
          * the active panel returns focus to the active panel.
          */
         event.preventDefault();
@@ -238,22 +236,14 @@ export default class Tablist extends AriaComponent {
    * @param {Event} event The event object.
    */
   tabsHandleKeydown(event) {
-    const {
-      TAB,
-      LEFT,
-      RIGHT,
-      DOWN,
-      HOME,
-      END,
-    } = keyCodes;
-    const { keyCode, shiftKey, target } = event;
+    const { key, shiftKey, target } = event;
     const currentIndex = this.tabLinks.indexOf(target);
 
-    switch (keyCode) {
+    switch (key) {
       /*
        * Move focus from the active tab to the active panel.
        */
-      case TAB: {
+      case 'Tab': {
         if (! shiftKey) {
           event.preventDefault();
 
@@ -266,10 +256,10 @@ export default class Tablist extends AriaComponent {
       /*
        * Move to and activate the previous or next tab.
        */
-      case LEFT:
-      case RIGHT: {
+      case 'ArrowLeft':
+      case 'ArrowRight': {
         const newItem = nextPreviousFromLeftRight(
-          keyCode,
+          key,
           target,
           this.tabLinks
         );
@@ -287,7 +277,7 @@ export default class Tablist extends AriaComponent {
       /*
        * Focus the active panel itself with the down arrow.
        */
-      case DOWN: {
+      case 'ArrowDown': {
         event.preventDefault();
 
         this.updateAttribute(this.panels[currentIndex], 'tabindex', '0');
@@ -299,7 +289,7 @@ export default class Tablist extends AriaComponent {
       /*
        * Select the first Tablist tab.
        */
-      case HOME: {
+      case 'Home': {
         event.preventDefault();
         this.switchTo(0);
         this.tabLinks[0].focus();
@@ -310,7 +300,7 @@ export default class Tablist extends AriaComponent {
       /*
        * Select the last Tablist tab.
        */
-      case END: {
+      case 'End': {
         event.preventDefault();
         const lastIndex = this.tabLinks.length - 1;
         this.switchTo(lastIndex);

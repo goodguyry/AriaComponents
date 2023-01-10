@@ -1,6 +1,5 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
-import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
@@ -124,7 +123,7 @@ export default class Disclosure extends AriaComponent {
       this.addAttribute(this.controller, 'role', 'button');
       this.controller.addEventListener('keydown', this.patchButtonKeydown);
 
-      // Ensure we can TAB to the controller if it's not a button nor anchor.
+      // Ensure we can Tab to the controller if it's not a button nor anchor.
       if ('A' !== this.controller.nodeName) {
         this.addAttribute(this.controller, 'tabindex', '0');
       }
@@ -210,11 +209,10 @@ export default class Disclosure extends AriaComponent {
    * @param {Event} event The Event object.
    */
   closeOnEscKey(event) {
-    const { ESC } = keyCodes;
-    const { keyCode, target } = event;
+    const { key, target } = event;
     const { expanded } = this.state;
 
-    if (ESC === keyCode && expanded) {
+    if ('Escape' === key && expanded) {
       event.preventDefault();
 
       this.close();
@@ -235,10 +233,7 @@ export default class Disclosure extends AriaComponent {
    * @param {Event} event The event object.
    */
   patchButtonKeydown(event) {
-    const { SPACE, RETURN } = keyCodes;
-    const { keyCode } = event;
-
-    if ([SPACE, RETURN].includes(keyCode)) {
+    if ([' ', 'Enter'].includes(event.key)) {
       /*
        * Treat the Spacebar and Return keys as clicks if the controller is not a <button>.
        */
@@ -252,12 +247,11 @@ export default class Disclosure extends AriaComponent {
    * @param {Event} event The event object.
    */
   handleTargetKeydown(event) {
-    const { TAB } = keyCodes;
-    const { keyCode, shiftKey } = event;
+    const { key, shiftKey } = event;
     const { activeElement } = document;
 
     if (
-      TAB === keyCode
+      'Tab' === key
       && ! shiftKey
       && this.lastInteractiveChild === activeElement
     ) {

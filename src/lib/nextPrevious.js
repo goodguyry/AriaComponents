@@ -1,5 +1,3 @@
-import keyCodes from './keyCodes';
-
 function nextPrevious(keyCode, activeDescendant, menuItems, keys) {
   const { next, previous } = keys;
   const activeIndex = menuItems.indexOf(activeDescendant);
@@ -22,22 +20,20 @@ function nextPrevious(keyCode, activeDescendant, menuItems, keys) {
 }
 
 function nextPreviousFromUpDown(keyCode, activeDescendant, menuItems) {
-  const { UP, DOWN } = keyCodes;
   return nextPrevious(
     keyCode,
     activeDescendant,
     menuItems,
-    { previous: UP, next: DOWN }
+    { previous: 'ArrowUp', next: 'ArrowDown' }
   );
 }
 
 function nextPreviousFromLeftRight(keyCode, activeDescendant, menuItems) {
-  const { LEFT, RIGHT } = keyCodes;
   return nextPrevious(
     keyCode,
     activeDescendant,
     menuItems,
-    { previous: LEFT, next: RIGHT }
+    { previous: 'ArrowLeft', next: 'ArrowRight' }
   );
 }
 

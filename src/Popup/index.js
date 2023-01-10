@@ -1,6 +1,5 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
-import keyCodes from '../lib/keyCodes';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 import getFirstAndLastItems from '../lib/getFirstAndLastItems';
@@ -171,15 +170,9 @@ export default class Popup extends AriaComponent {
    */
   popupControllerKeydown(event) {
     const { expanded } = this.state;
-    const {
-      ESC,
-      TAB,
-      SPACE,
-      RETURN,
-    } = keyCodes;
-    const { keyCode, shiftKey } = event;
+    const { key, shiftKey } = event;
 
-    if ([SPACE, RETURN].includes(keyCode)) {
+    if ([' ', 'Enter'].includes(key)) {
       event.preventDefault();
 
       /*
@@ -188,7 +181,7 @@ export default class Popup extends AriaComponent {
        */
       this.toggle();
     } else if (expanded) {
-      if (ESC === keyCode) {
+      if ('Escape' === key) {
         event.preventDefault();
 
         /*
@@ -197,11 +190,11 @@ export default class Popup extends AriaComponent {
          * controller), there's no need to move focus.
          */
         this.hide();
-      } else if (TAB === keyCode && ! shiftKey) {
+      } else if ('Tab' === key && ! shiftKey) {
         event.preventDefault();
 
         /*
-         * When the Popup is open, pressing the TAB key should move focus to the
+         * When the Popup is open, pressing the Tab key should move focus to the
          * first interctive child of the target element. This would likely be
          * the default behavior in most cases, but this patches the behavior in
          * cases where the markup is disconnected or out-of-order.
@@ -217,12 +210,11 @@ export default class Popup extends AriaComponent {
    * @param {Event} event The event object.
    */
   popupTargetKeydown(event) {
-    const { ESC, TAB } = keyCodes;
-    const { keyCode, shiftKey } = event;
+    const { key, shiftKey } = event;
     const { expanded } = this.state;
     const { activeElement } = document;
 
-    if (ESC === keyCode && expanded) {
+    if ('Escape' === key && expanded) {
       event.preventDefault();
 
       /*
@@ -236,7 +228,7 @@ export default class Popup extends AriaComponent {
        * element.
        */
       this.controller.focus();
-    } else if (TAB === keyCode) {
+    } else if ('Tab' === key) {
       if (shiftKey) {
         if ([this.firstInteractiveChild, this.target].includes(activeElement)) {
           event.preventDefault();
@@ -264,10 +256,9 @@ export default class Popup extends AriaComponent {
    */
   hideOnTabOut(event) {
     const { expanded } = this.state;
-    const { TAB } = keyCodes;
-    const { keyCode, shiftKey } = event;
+    const { key, shiftKey } = event;
 
-    if (TAB === keyCode && ! shiftKey && expanded) {
+    if ('Tab' === key && ! shiftKey && expanded) {
       this.hide();
     }
   }

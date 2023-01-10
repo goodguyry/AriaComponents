@@ -4,11 +4,11 @@ import { events } from '../lib/events';
 
 const {
   click,
-  keydownEsc,
+  keydownEscape,
   keydownTab,
   keydownShiftTab,
   keydownSpace,
-  keydownReturn,
+  keydownEnter,
 } = events;
 
 const popupMarkup = `
@@ -144,17 +144,17 @@ describe('Popup correctly responds to events', () => {
   });
 
   it(
-    'Should close the popup when the ESC key is pressed',
+    'Should close the popup when the Escape key is pressed',
     () => {
       controller.focus();
-      controller.dispatchEvent(keydownEsc);
+      controller.dispatchEvent(keydownEscape);
       expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     }
   );
 
   it(
-    'Should move focus to the first popup child on TAB from controller',
+    'Should move focus to the first popup child on Tab from controller',
     () => {
       controller.dispatchEvent(keydownTab);
       expect(document.activeElement).toEqual(domFirstChild);
@@ -167,15 +167,15 @@ describe('Popup correctly responds to events', () => {
     expect(popup.getState().expanded).toBeFalsy();
 
     // Toggle popup
-    controller.dispatchEvent(keydownReturn);
+    controller.dispatchEvent(keydownEnter);
     expect(popup.getState().expanded).toBeTruthy();
   });
 
   // eslint-disable-next-line max-len
   it(
-    'Should close the popup and focus the controller when the ESC key is pressed',
+    'Should close the popup and focus the controller when the Escape key is pressed',
     () => {
-      target.dispatchEvent(keydownEsc);
+      target.dispatchEvent(keydownEscape);
       expect(popup.getState().expanded).toBeFalsy();
       expect(document.activeElement).toEqual(controller);
     }

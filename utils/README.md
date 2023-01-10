@@ -17,23 +17,6 @@ const element = document.querySelector('div');
 const interactiveChildElements = interactiveChildren(element);
 ```
 
-## `keyCodes`
-
-```javascript
-/**
- * Event keyCode values mapped to a key name.
- */
-import { keyCodes } from 'aria-components/utils';
-
-document.querySelector('ul').addEventListener('keydown', (event) => {
-  const { SPACE, RETURN } = keyCodes;
-
-  if ([SPACE, RETURN].includes(event.keyCode)) {
-    console.log('😎 You pressed the Spacebar or the Return key');
-  }
-});
-```
-
 ## `rovingTabIndex`
 
 ```javascript

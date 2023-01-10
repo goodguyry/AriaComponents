@@ -12,79 +12,79 @@ const events = {
   keydownTab: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 9, bubbles: true }
+      { key: 'Tab', bubbles: true }
     )
   ),
   keydownShiftTab: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 9, shiftKey: true, bubbles: true }
+      { key: 'Tab', shiftKey: true, bubbles: true }
     )
   ),
-  keydownReturn: (
+  keydownEnter: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 13, bubbles: true }
+      { key: 'Enter', bubbles: true }
     )
   ),
-  keydownEsc: (
+  keydownEscape: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 27, bubbles: true }
+      { key: 'Escape', bubbles: true }
     )
   ),
   keydownSpace: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 32, bubbles: true }
+      { key: ' ', bubbles: true }
     )
   ),
   keydownEnd: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 35, bubbles: true }
+      { key: 'End', bubbles: true }
     )
   ),
   keydownHome: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 36, bubbles: true }
+      { key: 'Home', bubbles: true }
     )
   ),
-  keydownLeft: (
+  keydownArrowLeft: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 37, bubbles: true }
+      { key: 'ArrowLeft', bubbles: true }
     )
   ),
-  keydownUp: (
+  keydownArrowUp: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 38, bubbles: true }
+      { key: 'ArrowUp', bubbles: true }
     )
   ),
-  keyUpUp: (
+  keyupArrowUp: (
     new KeyboardEvent(
       'keyup',
-      { keyCode: 38, bubbles: true }
+      { key: 'ArrowUp', bubbles: true }
     )
   ),
-  keydownRight: (
+  keydownArrowRight: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 39, bubbles: true }
+      { key: 'ArrowRight', bubbles: true }
     )
   ),
-  keydownDown: (
+  keydownArrowDown: (
     new KeyboardEvent(
       'keydown',
-      { keyCode: 40, bubbles: true }
+      { key: 'ArrowDown', bubbles: true }
     )
   ),
-  keyUpDown: (
+  keyupArrowDown: (
     new KeyboardEvent(
       'keyup',
-      { keyCode: 40, bubbles: true }
+      { key: 'ArrowDown', bubbles: true }
     )
   ),
 };
@@ -98,7 +98,7 @@ const events = {
 function typeCharacter(character) {
   return new KeyboardEvent(
     'keydown',
-    { keyCode: character.charCodeAt(), bubbles: true }
+    { key: character.charCodeAt(), bubbles: true }
   );
 }
 

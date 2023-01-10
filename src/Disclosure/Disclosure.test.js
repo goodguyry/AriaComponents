@@ -4,9 +4,9 @@ import { events } from '../lib/events';
 
 const {
   click,
-  keydownReturn,
+  keydownEnter,
   keydownSpace,
-  keydownEsc,
+  keydownEscape,
   keydownTab,
   keydownShiftTab,
 } = events;
@@ -116,7 +116,7 @@ describe('Disclosure with default configuration', () => {
       disclosure.close();
 
       // Return to open.
-      controller.dispatchEvent(keydownReturn);
+      controller.dispatchEvent(keydownEnter);
       expect(disclosure.getState().expanded).toBeTruthy();
       expect(controller.getAttribute('aria-expanded')).toEqual('true');
       expect(target.getAttribute('aria-hidden')).toEqual('false');
@@ -227,17 +227,17 @@ describe('Disclosure with autoClose: true', () => {
     });
 
     it(
-      'Should close the Disclosure when the ESC key is pressed',
+      'Should close the Disclosure when the Escape key is pressed',
       () => {
         controller.focus();
-        controller.dispatchEvent(keydownEsc);
+        controller.dispatchEvent(keydownEscape);
         expect(disclosure.getState().expanded).toBeFalsy();
         expect(document.activeElement).toEqual(controller);
       }
     );
 
     it.skip(
-      'Should move focus to the first Disclosure child on TAB from controller',
+      'Should move focus to the first Disclosure child on Tab from controller',
       () => {
         controller.dispatchEvent(keydownTab);
         expect(document.activeElement).toEqual(domFirstChild);
@@ -250,14 +250,14 @@ describe('Disclosure with autoClose: true', () => {
       expect(disclosure.getState().expanded).toBeFalsy();
 
       // Toggle Disclosure
-      controller.dispatchEvent(keydownReturn);
+      controller.dispatchEvent(keydownEnter);
       expect(disclosure.getState().expanded).toBeTruthy();
     });
 
     it(
-      'Should close the Disclosure and focus the controller when the ESC key is pressed',
+      'Should close the Disclosure and focus the controller when the Escape key is pressed',
       () => {
-        target.dispatchEvent(keydownEsc);
+        target.dispatchEvent(keydownEscape);
         expect(disclosure.getState().expanded).toBeFalsy();
         expect(document.activeElement).toEqual(controller);
       }
