@@ -265,7 +265,7 @@ export default class Tablist extends AriaComponent {
         // Move to previous sibling.
         if ('ArrowLeft' === key) {
           // Move to the end if we're moving from the first child.
-          nextIndex = (activeIndex === 0) ? menuLastIndex : (activeIndex - 1);
+          nextIndex = (0 === activeIndex) ? menuLastIndex : (activeIndex - 1);
         }
 
         // Move to the next sibling.
