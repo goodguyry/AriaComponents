@@ -2,7 +2,6 @@ import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class for setting up an interactive popup element that can be triggered by a
@@ -87,7 +86,7 @@ export default class Popup extends AriaComponent {
       const [
         firstInteractiveChild,
         lastInteractiveChild,
-      ] = getFirstAndLastItems(this.interactiveChildElements);
+      ] = this.constructor.getFirstAndLastItems(this.interactiveChildElements);
 
       Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }

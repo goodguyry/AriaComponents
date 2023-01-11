@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
-import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 import toArray from '../lib/toArray';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 
@@ -72,7 +71,7 @@ export default class Dialog extends AriaComponent {
     const [
       firstInteractiveChild,
       lastInteractiveChild,
-    ] = getFirstAndLastItems(this.interactiveChildElements);
+    ] = this.constructor.getFirstAndLastItems(this.interactiveChildElements);
 
     // Save as instance properties.
     this.firstInteractiveChild = firstInteractiveChild;

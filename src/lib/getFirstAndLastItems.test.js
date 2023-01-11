@@ -1,4 +1,4 @@
-import getFirstAndLastItems from './getFirstAndLastItems';
+import AriaComponent from '../AriaComponent';
 
 // Set up our document body
 document.body.innerHTML = `
@@ -16,7 +16,7 @@ describe('Should get the first and last items', () => {
     'From an Array',
     () => {
       const testArray = ['first', 'hello', 'world', 'last'];
-      const firstLast = getFirstAndLastItems(testArray);
+      const firstLast = AriaComponent.getFirstAndLastItems(testArray);
 
       expect(firstLast).toEqual(['first', 'last']);
     }
@@ -26,7 +26,7 @@ describe('Should get the first and last items', () => {
     'From a NodeList',
     () => {
       const nodeList = document.querySelectorAll('div');
-      const firstLast = getFirstAndLastItems(nodeList);
+      const firstLast = AriaComponent.getFirstAndLastItems(nodeList);
       // Expected.
       const domFirst = document.querySelector('.first');
       const domLast = document.querySelector('.last');
@@ -39,7 +39,7 @@ describe('Should get the first and last items', () => {
     'From a single-item Array',
     () => {
       const testArray = ['only'];
-      const firstLast = getFirstAndLastItems(testArray);
+      const firstLast = AriaComponent.getFirstAndLastItems(testArray);
 
       expect(firstLast).toEqual(['only', 'only']);
     }
@@ -49,7 +49,7 @@ describe('Should get the first and last items', () => {
     'From a single-item NodeList',
     () => {
       const nodeList = document.querySelectorAll('.first');
-      const firstLast = getFirstAndLastItems(nodeList);
+      const firstLast = AriaComponent.getFirstAndLastItems(nodeList);
 
       const expected = nodeList[0];
 

@@ -9,7 +9,6 @@ import {
 } from '../src/lib/rovingTabIndex';
 import { getUniqueId, setUniqueId } from '../src/lib/uniqueId';
 import Search from '../src/lib/Search';
-import getFirstAndLastItems from '../src/lib/getFirstAndLastItems';
 import isInstanceOf from '../src/lib/isInstanceOf';
 
 export {
@@ -20,6 +19,5 @@ export {
   getUniqueId,
   setUniqueId,
   Search,
-  getFirstAndLastItems,
   isInstanceOf,
 };

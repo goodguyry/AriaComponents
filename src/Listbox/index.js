@@ -1,7 +1,6 @@
 import Popup from '../Popup';
 import getElementPair from '../lib/getElementPair';
 import Search from '../lib/Search';
-import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up an interactive Listbox element.
@@ -75,7 +74,7 @@ export default class ListBox extends Popup {
     });
 
     // Save first and last option as properties.
-    const [firstOption, lastOption] = getFirstAndLastItems(this.options);
+    const [firstOption, lastOption] = this.constructor.getFirstAndLastItems(this.options);
     Object.assign(this, { firstOption, lastOption });
 
     /**

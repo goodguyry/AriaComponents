@@ -2,7 +2,6 @@ import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up a controller-target relationship for independently revealing
@@ -106,7 +105,7 @@ export default class Disclosure extends AriaComponent {
       const [
         firstInteractiveChild,
         lastInteractiveChild,
-      ] = getFirstAndLastItems(this.interactiveChildElements);
+      ] = this.constructor.getFirstAndLastItems(this.interactiveChildElements);
 
       Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }
