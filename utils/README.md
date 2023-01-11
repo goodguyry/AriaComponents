@@ -17,30 +17,6 @@ const element = document.querySelector('div');
 const interactiveChildElements = interactiveChildren(element);
 ```
 
-## `rovingTabIndex`
-
-```javascript
-import { 
-  rovingTabIndex, 
-  tabIndexAllow, 
-  tabIndexDeny,
-  interactiveChildren,
-} from 'aria-components/utils';
-
-const element = document.querySelector('div');
-const interactiveChildElements = interactiveChildren(element);
-
-// Allow tabbing to interactive child elements.
-tabIndexAllow(interactiveChildElements);
-
-// Deny tabbing to interactive child elements.
-tabIndexDeny(interactiveChildElements);
-
-// Deny tabbing to all but the first interactive child element.
-const [firstChild] = interactiveChildElements;
-rovingTabIndex(interactiveChildElements, firstChild);
-```
-
 ## `uniqueId`
 
 ```javascript

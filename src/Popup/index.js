@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
-import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 
 /**
  * Class for setting up an interactive popup element that can be triggered by a
@@ -76,7 +75,7 @@ export default class Popup extends AriaComponent {
     this.interactiveChildElements = interactiveChildren(this.target);
 
     // Focusable content should initially have tabindex='-1'.
-    tabIndexDeny(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
     /*
      * Collect first and last interactive child elements from target and merge
@@ -153,12 +152,12 @@ export default class Popup extends AriaComponent {
     if (expanded) {
       this.updateAttribute(this.target, 'aria-hidden', 'false');
 
-      tabIndexAllow(this.interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     } else {
       this.updateAttribute(this.target, 'aria-hidden', 'true');
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
-      tabIndexDeny(this.interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
     }
   }
 
@@ -290,7 +289,7 @@ export default class Popup extends AriaComponent {
     this.removeAttributes(this.target);
 
     // Remove tabindex attribute.
-    tabIndexAllow(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggle);

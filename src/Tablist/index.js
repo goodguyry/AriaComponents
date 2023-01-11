@@ -1,6 +1,5 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
-import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -188,7 +187,7 @@ export default class Tablist extends AriaComponent {
 
     // Prevent tabbing to interactive children of the deactivated panel.
     const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
-    tabIndexDeny(deactiveChildren);
+    deactiveChildren.forEach((item) => item.setAttribute('tabindex', '-1'));
 
     // Actvate the newly active tab.
     this.updateAttribute(this.tabLinks[activeIndex], 'tabindex', null);
@@ -200,7 +199,7 @@ export default class Tablist extends AriaComponent {
 
     // Allow tabbing to the newly-active panel.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
-    tabIndexAllow(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
   }
 
   /**
@@ -382,7 +381,7 @@ export default class Tablist extends AriaComponent {
 
       // Make sure to allow tabbing to all children of all panels.
       const interactiveChildElements = interactiveChildren(panel);
-      tabIndexAllow(interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
       panel.removeEventListener(
         'keydown',

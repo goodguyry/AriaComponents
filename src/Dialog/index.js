@@ -2,7 +2,6 @@ import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
 import toArray from '../lib/toArray';
-import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
 
 /**
  * Class to set up an interactive Dialog element.
@@ -111,7 +110,7 @@ export default class Dialog extends AriaComponent {
     this.setInteractiveChildren();
 
     // Focusable content should initially have tabindex='-1'.
-    tabIndexDeny(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
     /**
      * Check if the controller is a button, but only if it doesn't already have
@@ -185,7 +184,7 @@ export default class Dialog extends AriaComponent {
       // Update target element.
       this.updateAttribute(this.target, 'aria-hidden', 'false');
 
-      tabIndexAllow(this.interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
       document.body.addEventListener('keydown', this.handleOutsideKeydown);
 
@@ -199,7 +198,7 @@ export default class Dialog extends AriaComponent {
       this.updateAttribute(this.target, 'aria-hidden', 'true');
 
       // Focusable content should have tabindex='-1' or be removed from the DOM.
-      tabIndexDeny(this.interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
       document.body.removeEventListener('keydown', this.handleOutsideKeydown);
 
@@ -333,7 +332,7 @@ export default class Dialog extends AriaComponent {
     this.removeAttributes(this.target);
 
     // Remove tabindex attribute.
-    tabIndexAllow(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerHandleClick);
