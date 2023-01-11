@@ -161,16 +161,14 @@ export default class AriaComponent {
    */
   addAttribute(element, attribute, value) {
     // Don't overwrite existing attributes.
-    if (element.hasAttribute(attribute) || null == value) {
-      return void 0;
+    if (! element.hasAttribute(attribute) && null != value) {
+      const trackedAttributes = this.getTrackedAttributesFor(element);
+
+      element.setAttribute(attribute, value);
+      trackedAttributes.push(attribute);
+
+      this.__trackedAttributes[element.id] = trackedAttributes;
     }
-
-    const trackedAttributes = this.getTrackedAttributesFor(element);
-
-    element.setAttribute(attribute, value);
-    trackedAttributes.push(attribute);
-
-    this.__trackedAttributes[element.id] = trackedAttributes;
   }
 
   /**
