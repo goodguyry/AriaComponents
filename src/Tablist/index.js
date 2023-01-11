@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
 import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -258,17 +257,30 @@ export default class Tablist extends AriaComponent {
        */
       case 'ArrowLeft':
       case 'ArrowRight': {
-        const newItem = nextPreviousFromLeftRight(
-          key,
-          target,
-          this.tabLinks
-        );
+        const activeIndex = this.tabLinks.indexOf(target);
+        const menuLastIndex = (this.tabLinks.length - 1);
 
-        if (newItem) {
+        let nextIndex = 0;
+
+        // Move to previous sibling.
+        if ('ArrowLeft' === key) {
+          // Move to the end if we're moving from the first child.
+          nextIndex = (activeIndex === 0) ? menuLastIndex : (activeIndex - 1);
+        }
+
+        // Move to the next sibling.
+        if ('ArrowRight' === key) {
+          // Move to first child if we're at the end.
+          nextIndex = (menuLastIndex === activeIndex) ? 0 : (activeIndex + 1);
+        }
+
+        const nextItem = this.tabLinks[nextIndex];
+
+        if (nextItem) {
           event.preventDefault();
 
-          this.switchTo(this.tabLinks.indexOf(newItem));
-          newItem.focus();
+          this.switchTo(this.tabLinks.indexOf(nextItem));
+          nextItem.focus();
         }
 
         break;
