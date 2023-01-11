@@ -1,6 +1,6 @@
 import Popup from '../Popup';
+import Search from './Search';
 import getElementPair from '../lib/getElementPair';
-import Search from '../lib/Search';
 
 /**
  * Class to set up an interactive Listbox element.
