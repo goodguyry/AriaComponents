@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
-import toArray from '../lib/toArray';
 
 /**
  * Class to set up an interactive Dialog element.
@@ -86,7 +85,7 @@ export default class Dialog extends AriaComponent {
       this.content = Array.from(document.body.children)
         .filter((child) => ! child.contains(this.target));
     } else {
-      this.content = toArray(this.content);
+      this.content = Array.from(this.content);
     }
 
     // If no content is found.
