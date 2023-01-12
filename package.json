@@ -34,7 +34,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint src --ext .js",
-    "lint:fix": "eslint src --ext .js",
+    "lint:fix": "npm run lint -- --fix",
     "watch": "jest --watchAll",
     "watch:verbose": "jest --watchAll  --verbose"
   }
