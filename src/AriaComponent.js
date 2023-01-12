@@ -25,6 +25,21 @@ export default class AriaComponent {
   }
 
   /**
+   * Returns the first and last items from an Array or NodeList.
+   *
+   * @param  {array|NodeList} items The Array or NodeList from which to retrieve the items.
+   * @return {array}                The first and last items.
+   */
+  static getFirstAndLastItems(items) {
+    const {
+      0: firstItem,
+      [(items.length - 1)]: lastItem,
+    } = items;
+
+    return [firstItem, lastItem];
+  }
+
+  /**
    * Create an AriaComponent.
    * @constructor
    */
@@ -146,16 +161,14 @@ export default class AriaComponent {
    */
   addAttribute(element, attribute, value) {
     // Don't overwrite existing attributes.
-    if (element.hasAttribute(attribute) || null == value) {
-      return void 0;
+    if (! element.hasAttribute(attribute) && null != value) {
+      const trackedAttributes = this.getTrackedAttributesFor(element);
+
+      element.setAttribute(attribute, value);
+      trackedAttributes.push(attribute);
+
+      this.__trackedAttributes[element.id] = trackedAttributes;
     }
-
-    const trackedAttributes = this.getTrackedAttributesFor(element);
-
-    element.setAttribute(attribute, value);
-    trackedAttributes.push(attribute);
-
-    this.__trackedAttributes[element.id] = trackedAttributes;
   }
 
   /**

@@ -1,8 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../lib/getElementPair';
 import interactiveChildren from '../lib/interactiveChildren';
-import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import getFirstAndLastItems from '../lib/getFirstAndLastItems';
 
 /**
  * Class to set up a controller-target relationship for independently revealing
@@ -106,7 +104,7 @@ export default class Disclosure extends AriaComponent {
       const [
         firstInteractiveChild,
         lastInteractiveChild,
-      ] = getFirstAndLastItems(this.interactiveChildElements);
+      ] = this.constructor.getFirstAndLastItems(this.interactiveChildElements);
 
       Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
     }
@@ -165,7 +163,7 @@ export default class Disclosure extends AriaComponent {
      * `display:none`, but is necessary if the target is hidden by other means,
      * such as minimized height or width.
      */
-    tabIndexDeny(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -197,9 +195,9 @@ export default class Disclosure extends AriaComponent {
 
     // Allow or deny keyboard focus depending on component state.
     if (expanded) {
-      tabIndexAllow(this.interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     } else {
-      tabIndexDeny(this.interactiveChildElements);
+      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
     }
   }
 
@@ -301,7 +299,7 @@ export default class Disclosure extends AriaComponent {
     this.removeAttributes(this.target);
 
     // Remove tabindex attributes.
-    tabIndexAllow(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggleExpandedState);

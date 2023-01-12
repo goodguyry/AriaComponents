@@ -51,6 +51,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - MenuButton component (#75)
 - Remove `collapse` and `itemMatches` Menu options (#75)
 - Components no longer set a reference to their instance on the component's HTML elements (#78)
+- Removes scarcely-used utilities (#80)
+  - `tabIndexAllow`, `tabIndexDeny`, and `rovingTabIndex` from 'lib/rovingTabIndex'
+  - `getUniqueId` and `setUniqueId` from 'lib/uniqueId'
+  - `Search` from 'lib/Search' (Moved to 'src/Listbox')
+  - `getFirstAndLastItems` from 'lib/getFirstAndLastItems'
+- Incorporates widely-used utilities into the component that uses them (#80)
+  - `getFirstAndLastItems` into `AriaComponent` from 'lib/getFirstAndLastItems'
+  - `nextPreviousFromLeftRight` into `Tablist` from 'lib/nextPrevious'
 
 ## 0.3.1
 

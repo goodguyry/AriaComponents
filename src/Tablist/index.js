@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
-import { tabIndexDeny, tabIndexAllow } from '../lib/rovingTabIndex';
-import { nextPreviousFromLeftRight } from '../lib/nextPrevious';
+import getElementPair from '../lib/getElementPair';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -67,17 +66,18 @@ export default class Tablist extends AriaComponent {
      */
     const { tabLinks, panels } = Array.from(this.tabs.children)
       .reduce((acc, child) => {
-        const tabLink = child.querySelector('a[aria-controls]');
+        const tabLink = child.querySelector('[aria-controls]');
 
         if (null === tabLink) {
           return acc;
         }
 
-        const panel = document.getElementById(tabLink.hash.replace('#', ''));
-        if (null !== panel) {
+        const { controller, target } = getElementPair(tabLink);
+
+        if (null !== target) {
           return {
-            tabLinks: [...acc.tabLinks, tabLink],
-            panels: [...acc.panels, panel],
+            tabLinks: [...acc.tabLinks, controller],
+            panels: [...acc.panels, target],
           };
         }
 
@@ -189,7 +189,7 @@ export default class Tablist extends AriaComponent {
 
     // Prevent tabbing to interactive children of the deactivated panel.
     const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
-    tabIndexDeny(deactiveChildren);
+    deactiveChildren.forEach((item) => item.setAttribute('tabindex', '-1'));
 
     // Actvate the newly active tab.
     this.updateAttribute(this.tabLinks[activeIndex], 'tabindex', null);
@@ -201,7 +201,7 @@ export default class Tablist extends AriaComponent {
 
     // Allow tabbing to the newly-active panel.
     this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
-    tabIndexAllow(this.interactiveChildElements);
+    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
   }
 
   /**
@@ -258,17 +258,30 @@ export default class Tablist extends AriaComponent {
        */
       case 'ArrowLeft':
       case 'ArrowRight': {
-        const newItem = nextPreviousFromLeftRight(
-          key,
-          target,
-          this.tabLinks
-        );
+        const activeIndex = this.tabLinks.indexOf(target);
+        const menuLastIndex = (this.tabLinks.length - 1);
 
-        if (newItem) {
+        let nextIndex = 0;
+
+        // Move to previous sibling.
+        if ('ArrowLeft' === key) {
+          // Move to the end if we're moving from the first child.
+          nextIndex = (0 === activeIndex) ? menuLastIndex : (activeIndex - 1);
+        }
+
+        // Move to the next sibling.
+        if ('ArrowRight' === key) {
+          // Move to first child if we're at the end.
+          nextIndex = (menuLastIndex === activeIndex) ? 0 : (activeIndex + 1);
+        }
+
+        const nextItem = this.tabLinks[nextIndex];
+
+        if (nextItem) {
           event.preventDefault();
 
-          this.switchTo(this.tabLinks.indexOf(newItem));
-          newItem.focus();
+          this.switchTo(this.tabLinks.indexOf(nextItem));
+          nextItem.focus();
         }
 
         break;
@@ -369,8 +382,8 @@ export default class Tablist extends AriaComponent {
       this.removeAttributes(panel);
 
       // Make sure to allow tabbing to all children of all panels.
-      const interactiveChildElements = interactiveChildren(panel);
-      tabIndexAllow(interactiveChildElements);
+      this.interactiveChildElements = interactiveChildren(panel);
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
       panel.removeEventListener(
         'keydown',
