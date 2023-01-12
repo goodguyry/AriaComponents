@@ -1,5 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import interactiveChildren from '../lib/interactiveChildren';
+import getElementPair from '../lib/getElementPair';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -65,17 +66,18 @@ export default class Tablist extends AriaComponent {
      */
     const { tabLinks, panels } = Array.from(this.tabs.children)
       .reduce((acc, child) => {
-        const tabLink = child.querySelector('a[aria-controls]');
+        const tabLink = child.querySelector('[aria-controls]');
 
         if (null === tabLink) {
           return acc;
         }
 
-        const panel = document.getElementById(tabLink.hash.replace('#', ''));
-        if (null !== panel) {
+        const { controller, target } = getElementPair(tabLink);
+
+        if (null !== target) {
           return {
-            tabLinks: [...acc.tabLinks, tabLink],
-            panels: [...acc.panels, panel],
+            tabLinks: [...acc.tabLinks, controller],
+            panels: [...acc.panels, target],
           };
         }
 
