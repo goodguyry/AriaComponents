@@ -37,7 +37,7 @@ at a time.
 </div>
 ```
 
-```javascript
+```jsx
 import { Tablist } from 'aria-components';
 
 const tabs = document.querySelector('.tabs');
@@ -46,7 +46,7 @@ const tablist = new Tablist(tabs);
 
 ## Constructor
 
-```javascript
+```jsx
 Tablist(tabsListElement = null);
 ```
 
@@ -60,84 +60,82 @@ _**`tabsListElement`**_ `HTMLUListElement`
 
 See also [`src/README`](../).
 
-_**`Tablist.switchTo(index)`**_
+_**`switchTo(index)`**_
 > Activate a tab based on its index.
 >
 > `index`  
 > Zero-based integer value representing the index of the tab to activate.
 
-_**`Tablist.getState()`**_
+_**`getState()`**_
 > Returns an object representing the current component state.
 >
 > _`state.activeIndex`_ `number`  
 > The active tab's index.
 
-_**`Tablist.destroy()`**_
+_**`destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
-_**`Tablist.toString()`**_  
+_**`toString()`**_  
 > Returns `'[object Tablist]'`.
 
-_**`Tablist.on(event, listener, options)`**_  
+_**`on(event, listener, options)`**_  
 > Registers an event handler for the given event type.  
 >
 > **Note**: It is not possible to respond to the `init` event using the  
 > `on` and `off` methods.
 
-_**`Tablist.off(event, listener, options)`**_  
+_**`off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.
 
 ### Properties
 
-_**`Tablist.element`**_  
+_**`element`**_  
 > Returns the element passed to the constructor.
 
-_**`Tablist.tabs`**_  
-> Returns the list element containing tab links.
+_**`tabs`**_  
+> Returns the list element containing tab links (alias of `element`).
 
-_**`Tablist.panels`**_  
+_**`panels`**_  
 > Returns an array of panel elements.
 
-_**`Tablist.tabLinks`**_  
+_**`tabLinks`**_  
 > Returns an array of anchors collected from inside of each list items.
 
 ### Events
 
-_**`'tablist.init'`**_  
-> Fired after the component is initialized.
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Tablist` instance from which the event originated.  
+#### `'tablist.init'`
 
-_**`'tablist.stateChange'`**_  
-> Fired after component state is updated.
+Fired after the component is initialized.
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Tablist` instance from which the event originated.  
+> `event.detail.instance` {Tablist}  
+> The instance from which the event originated.
+
+#### `'tablist.stateChange'`
+
+Fired after component state is updated.
+
+> `event.detail.instance` {Tablist}  
+> The instance from which the event originated.
 >
-> _**`detail.props`**_  
-> Returns an array of state properties that were updated.  
+> `event.detail.state` {object}  
+> The current component state.
 >
-> _**`detail.state`**_  
-> Returns an object representing the current component state.
+> `event.detail.props` {array}  
+> The state properties that changed.
 
-_**`'tablist.destroy'`**_  
-> Fired after the component is destroyed.
+#### `'tablist.destroy'`
 
-> **Event Properties**
-> 
-> _**`detail.element`**_  
-> Returns the element passed to the `Tablist` instance.  
-> 
-> _**`detail.instance`**_  
-> Returns the `Tablist` instance from which the event originated.  
+Fired after the component is destroyed.
+
+> `event.detail.instance` {Tablist}  
+> The instance from which the event originated.
+>
+> `event.detail.element` {HTMLElement}  
+> the element passed to the constructor
 
 ## References
 
 - https://www.w3.org/TR/wai-aria-1.1/#tablist
-- https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
-- https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html
+- https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/

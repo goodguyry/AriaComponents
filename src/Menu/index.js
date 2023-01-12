@@ -4,7 +4,7 @@ import Disclosure from '../Disclosure';
 /**
  * Class to set up an vertically oriented interactive Menu element.
  *
- * https://www.w3.org/TR/wai-aria-practices-1.1/#menu
+ * https://www.w3.org/WAI/ARIA/apg/example-index/disclosure/disclosure-navigation.html
  */
 export default class Menu extends AriaComponent {
   /**
@@ -17,26 +17,12 @@ export default class Menu extends AriaComponent {
   constructor(list, options = {}) {
     super(list);
 
-    // Make sure the component element is an unordered list.
-    if ('UL' !== list.nodeName) {
-      AriaComponent.configurationError(
-        'Expected component element nodeName to be `UL`'
-      );
-    }
-
     /**
      * The string description for this object.
      *
      * @type {string}
      */
     this[Symbol.toStringTag] = 'Menu';
-
-    /**
-     * The menu list element.
-     *
-     * @type {HTMLUListElement}
-     */
-    this.list = list;
 
     /**
      * Submenu Disclosures.
@@ -65,7 +51,14 @@ export default class Menu extends AriaComponent {
     this.handleAutoClose = this.handleAutoClose.bind(this);
     this.destroy = this.destroy.bind(this);
 
-    this.init();
+    // Make sure the component element is a list.
+    if (['UL', 'OL'].includes(list.nodeName)) {
+      this.init();
+    } else {
+      AriaComponent.configurationError(
+        'Expected component element nodeName to be `UL` or `OL`'
+      );
+    }
   }
 
   /**
@@ -73,7 +66,7 @@ export default class Menu extends AriaComponent {
    */
   init() {
     // Set and collect submenu Disclosures.
-    Array.from(this.list.children).forEach((item) => {
+    Array.from(this.element.children).forEach((item) => {
       const [firstChild, ...theRest] = Array.from(item.children);
 
       // Try to use the first child of the menu item.
@@ -136,7 +129,7 @@ export default class Menu extends AriaComponent {
     this.disclosures.forEach((disclosure) => disclosure.destroy());
 
     // Remove the list attritbutes.
-    this.removeAttributes(this.list);
+    this.removeAttributes(this.element);
 
     this.off('stateChange', this.handleAutoClose);
 

@@ -13,6 +13,7 @@ const {
 
 const popupMarkup = `
   <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
+  <span>Break up DOM hierarchy</span>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -64,7 +65,6 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
     // Link controller should get button role.
     expect(controller.getAttribute('role')).toEqual('button');
-    expect(controller.getAttribute('tabindex')).toEqual('0');
 
     // The test markup isn't detatched, so this doesn't apply.
     expect(controller.getAttribute('aria-own')).toBeFalsy();
@@ -223,7 +223,6 @@ describe('Popup destroy', () => {
 
     if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {
       expect(controller.getAttribute('role')).toBeNull();
-      expect(controller.getAttribute('tabindex')).toBeNull();
     }
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();

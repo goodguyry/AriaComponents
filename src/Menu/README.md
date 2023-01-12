@@ -28,7 +28,7 @@ Class to set up a Menu with collapsible submenus.
 </ul>
 ```
 
-```javascript
+```jsx
 import { Menu } from 'aria-components';
 
 const menu = document.querySelector('.menu');
@@ -37,7 +37,7 @@ const menu = new Menu(menu);
 
 ## Constructor
 
-```javascript
+```jsx
 Menu(menuListElement = null, options = {});
 ```
 
@@ -58,67 +58,63 @@ _**`autoClose`**_`= false`
 
 See also [`src/README`](../).
 
-_**`Menu.destroy()`**_
+_**`destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
-_**`Menu.toString()`**_  
+_**`toString()`**_  
 > Returns `'[object Menu]'`.
 
-_**`Menu.on(event, listener, options)`**_  
+_**`on(event, listener, options)`**_  
 > Registers an event handler for the given event type.  
 >
 > **Note**: It is not possible to respond to the `init` event using the  
 > `on` and `off` methods.
 
-_**`Menu.off(event, listener, options)`**_  
+_**`off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.
 
 ### Properties
 
-_**`Menu.element`**_  
-> Returns the element passed to the constructor.
+_**`element`**_  
+> Returns the list element passed to the constructor.
 
-_**`Menu.list`**_  
-> Returns the list element containing menu items.
-
-_**`Menu.disclosures`**_  
+_**`disclosures`**_  
 > Returns an array of submenu Disclosures.
 
 ### Events
 
-_**`'menu.init'`**_  
-> Fired after the component is initialized.
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Menu` instance from which the event originated.  
+#### `'menu.init'`
 
-_**`'menu.stateChange'`**_  
-> Fired after any `Disclosure` state is updated.
+Fired after the component is initialized.
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Disclosure` instance from which the event originated.  
+> `event.detail.instance` {Menu}  
+> The instance from which the event originated.
+
+#### `'menu.stateChange'`
+
+Fired after component state is updated.
+
+> `event.detail.instance` {Menu}  
+> The instance from which the event originated.
 >
-> _**`detail.props`**_  
-> Returns an array of state properties that were updated.  
+> `event.detail.state` {object}  
+> The current component state.
 >
-> _**`detail.state`**_  
-> Returns an object representing the current component state.
+> `event.detail.props` {array}  
+> The state properties that changed.
 
-_**`'menu.destroy'`**_  
-> Fired after the component is destroyed.
+#### `'menu.destroy'`
 
-> **Event Properties**
-> 
-> _**`detail.element`**_  
-> Returns the element passed to the `Menu` instance.  
-> 
-> _**`detail.instance`**_  
-> Returns the `Menu` instance from which the event originated.  
+Fired after the component is destroyed.
+
+> `event.detail.instance` {Menu}  
+> The instance from which the event originated.
+>
+> `event.detail.element` {HTMLElement}  
+> the element passed to the constructor
 
 ## References
 
-- https://www.w3.org/TR/wai-aria-practices-1.1/#menu
+- https://www.w3.org/WAI/ARIA/apg/example-index/disclosure/disclosure-navigation.html

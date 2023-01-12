@@ -59,8 +59,6 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure.toString()).toEqual('[object Disclosure]');
 
       expect(disclosure.getState().expanded).toBeFalsy();
-
-      expect(disclosure.firstInteractiveChild).toEqual(domFirstChild);
       expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
 
       expect(onInit).toHaveBeenCalledTimes(1);

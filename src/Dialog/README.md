@@ -37,22 +37,24 @@ Class for setting up an interactive Dialog element.
 </body>
 ```
 
-```javascript
+```jsx
 import { Dialog } from 'aria-components';
 
-const target = document.getElementById('dialog');
-const dialog = new Dialog(target);
+const controller = document.querySelector('[aria-controls="dialog"]');
+const dialog = new Dialog(controller);
 ```
 
 ## Constructor
 
-```javascript
-Dialog(target = null, options = {});
+```jsx
+Dialog(element = null, options = {});
 ```
-
-_**`target`**_ `HTMLElement`  
-> The element used as the Dialog; required to have an `id` attribute with a value  
-> matching the `aria-controls` attribute value of the controlling element.
+_**`element`**_ `HTMLElement`  
+> Either the element used to activate the Dialog target, or the Dialog target element.
+> 
+> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
+>
+> **Note** The component's events will dispatch from this element.
 
 _**`options`**_ `object`  
 > Configuration options.
@@ -68,87 +70,86 @@ _**`content`**_`= null`
 
 See also [`src/README`](../).
 
-_**`Dialog.setCloseButton(closeButton)`**_
+_**`setCloseButton(closeButton)`**_
 > Helper for setting up the close button.  
 > 
 > _**`closeButton`**_ `HTMLButtonElement`  
 > The button used to close the Dialog.
 
-_**`Dialog.show()`**_
+_**`show()`**_
 > Updates component state to show the target element.
 
-_**`Dialog.hide()`**_
+_**`hide()`**_
 > Updates component state to hide the target element.
 
-_**`Dialog.getState()`**_
+_**`getState()`**_
 > Returns an object representing the current component state.
 >
 > _`state.expanded`_ `boolean`  
 > Whether or not the Dialog target is visible.
 
-_**`Dialog.destroy()`**_
+_**`destroy()`**_
 > Removes all attributes and event listeners added by this class.
 
-_**`Dialog.toString()`**_  
+_**`toString()`**_  
 > Returns `'[object Dialog]'`.
 
-_**`Dialog.on(event, listener, options)`**_  
+_**`on(event, listener, options)`**_  
 > Registers an event handler for the given event type.  
 >
 > **Note**: It is not possible to respond to the `init` event using the  
 > `on` and `off` methods.
 
-_**`Dialog.off(event, listener, options)`**_  
+_**`off(event, listener, options)`**_  
 > Unregisters an event handler for the given event type.
 
 ### Properties
 
-_**`Dialog.element`**_  
+_**`element`**_  
 > Returns the element passed to the constructor.
 
-_**`Dialog.controller`**_  
+_**`controller`**_  
 > Returns the Dialog's activating element.
 
-_**`Dialog.target`**_  
+_**`target`**_  
 > Returns the Dialog's target element.
 
-_**`Dialog.content`**_
+_**`content`**_
 > An array of elements to be hidden while the Dialog is visible.
 
 ### Events
 
-_**`'dialog.init'`**_  
-> Fired after the component is initialized.
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Dialog` instance from which the event originated.  
+#### `'dialog.init'`
 
-_**`'dialog.stateChange'`**_  
-> Fired after component state is updated.
+Fired after the component is initialized.
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Dialog` instance from which the event originated.  
+> `event.detail.instance` {Dialog}  
+> The instance from which the event originated.
+
+#### `'dialog.stateChange'`
+
+Fired after component state is updated.
+
+> `event.detail.instance` {Dialog}  
+> The instance from which the event originated.
 >
-> _**`detail.props`**_  
-> Returns an array of state properties that were updated.  
+> `event.detail.state` {object}  
+> The current component state.
 >
-> _**`detail.state`**_  
-> Returns an object representing the current component state.
+> `event.detail.props` {array}  
+> The state properties that changed.
 
-_**`'dialog.destroy'`**_  
-> Fired after the component is destroyed.
+#### `'dialog.destroy'`
 
-> **Event Properties**
-> 
-> _**`detail.element`**_  
-> Returns the element passed to the `Dialog` instance.  
-> 
-> _**`detail.instance`**_  
-> Returns the `Dialog` instance from which the event originated.  
+Fired after the component is destroyed.
+
+> `event.detail.instance` {Dialog}  
+> The instance from which the event originated.
+>
+> `event.detail.element` {HTMLElement}  
+> the element passed to the constructor
 
 ## References
 

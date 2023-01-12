@@ -36,6 +36,7 @@ export default class AriaComponent {
       [(items.length - 1)]: lastItem,
     } = items;
 
+    // @todo return [items.at(0), items.at(-1)];
     return [firstItem, lastItem];
   }
 

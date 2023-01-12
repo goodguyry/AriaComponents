@@ -4,14 +4,14 @@ import Search from './Search';
 /**
  * Class to set up an interactive Listbox element.
  *
- * https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
+ * https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
  */
 export default class ListBox extends Popup {
   /**
    * Create a ListBox.
    * @constructor
    *
-   * @param {HTMLElement} lement  The activating element.
+   * @param {HTMLElement} lement  The component element.
    * @param {object}      options The options object.
    */
   constructor(element, options = {}) {
@@ -24,9 +24,6 @@ export default class ListBox extends Popup {
      * @type {string}
      */
     this[Symbol.toStringTag] = 'Listbox';
-
-    // Merge options as instance properties.
-    Object.assign(this, options);
 
     // Bind class methods.
     this.preventWindowScroll = this.preventWindowScroll.bind(this);
@@ -59,20 +56,16 @@ export default class ListBox extends Popup {
      */
     this.search = new Search(this.options);
 
-    /*
-     * Set the `option` role for each list item and ensure each has a unique ID.
-     * The ID here is what will be used to track the active descendant.
-     */
-    this.options.forEach((listItem) => {
-      this.addAttribute(listItem, 'role', 'option');
-    });
+    // Set the `option` role for each list item and ensure each has a unique ID.
+    this.options.forEach((listItem) => this.addAttribute(listItem, 'role', 'option'));
 
-    // Save first and last option as properties.
+    // Save the first and last options.
     const [firstOption, lastOption] = this.constructor.getFirstAndLastItems(this.options);
-    Object.assign(this, { firstOption, lastOption });
+    this.firstOption = firstOption;
+    this.lastOption = lastOption;
 
     /**
-     * The initial default state.
+     * The initial state.
      *
      * The element is saved, rather than just its ID attribute, to remove the
      * need to query the DOM for it each time we need to act on it.
@@ -90,8 +83,6 @@ export default class ListBox extends Popup {
     /*
      * Set up the target element to allow programatically setting focus to it
      * when the Listbox opens.
-     *
-     * @see this.stateWasUpdated()
      */
     this.addAttribute(this.target, 'tabindex', '-1');
 
@@ -110,7 +101,7 @@ export default class ListBox extends Popup {
 
   /**
    * Track the selected Listbox option.
-   * https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant
+   * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant
    *
    * @param {string[]} updatedProps The newly-updated state properties.
    */
@@ -213,13 +204,13 @@ export default class ListBox extends Popup {
     const { activeDescendant } = this.state;
     const { key } = event;
 
+    // 'Escape' is handled via Popup.
     switch (key) {
       /*
        * Close the Listbox when the Return, Escape, or Spacebar are pressed. No
        * need to update state here; if the Listbox is open rest assured an
        * option is selected.
        */
-      // 'Escape' is handled via Popup.
       case 'Enter':
       case ' ': {
         event.preventDefault();
@@ -236,11 +227,9 @@ export default class ListBox extends Popup {
        */
       case 'ArrowUp':
       case 'ArrowDown': {
-        let moveTo = activeDescendant;
-
-        moveTo = ('ArrowUp' === key)
-          ? moveTo.previousElementSibling
-          : moveTo.nextElementSibling;
+        const moveTo = ('ArrowUp' === key)
+          ? activeDescendant.previousElementSibling
+          : activeDescendant.nextElementSibling;
 
         if (moveTo) {
           event.preventDefault();
@@ -276,7 +265,7 @@ export default class ListBox extends Popup {
        */
       default: {
         const itemToFocus = this.search.getItem(key);
-        if (null !== itemToFocus) {
+        if (null != itemToFocus) {
           this.setState({ activeDescendant: itemToFocus });
         }
 
@@ -317,11 +306,11 @@ export default class ListBox extends Popup {
     const { offsetTop, offsetHeight } = moveTo;
 
     if (scrollHeight > clientHeight) {
-      const scrollBottom = clientHeight + scrollTop;
-      const elementBottom = offsetTop + offsetHeight;
+      const scrollBottom = (clientHeight + scrollTop);
+      const elementBottom = (offsetTop + offsetHeight);
 
       if (elementBottom > scrollBottom) {
-        this.target.scrollTop = elementBottom - clientHeight;
+        this.target.scrollTop = (elementBottom - clientHeight);
       } else if (offsetTop < scrollTop) {
         this.target.scrollTop = offsetTop;
       }

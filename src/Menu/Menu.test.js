@@ -70,7 +70,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
     it('Should remove attributes on destroy', () => {
       menu.destroy();
 
-      expect(list.list).toBeUndefined();
+      expect(list.element).toBeUndefined();
       expect(onDestroy).toHaveBeenCalledTimes(1);
 
       expect(sublistOne.getAttribute('aria-hidden')).toBeNull();

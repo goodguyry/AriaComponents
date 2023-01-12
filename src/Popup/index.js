@@ -29,12 +29,8 @@ export default class Popup extends AriaComponent {
     this.controller = controller;
     this.target = target;
 
-    /**
-     * Component configuration options.
-     *
-     * @type {object}
-     */
-    const defaultOptions = {
+    // Merge options with default values.
+    const { type } = {
       /**
        * The value of `aria-haspopup` must match the role of the Popup container.
        * Options: menu, listbox, tree, grid, or dialog,
@@ -42,10 +38,12 @@ export default class Popup extends AriaComponent {
        * @type {string}
        */
       type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+
+      ...options,
     };
 
-    // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options);
+    // Set options.
+    this.type = type;
 
     // Intial component state.
     this.state = { expanded: false };
@@ -58,6 +56,9 @@ export default class Popup extends AriaComponent {
     this.toggle = this.toggle.bind(this);
     this.popupControllerKeydown = this.popupControllerKeydown.bind(this);
     this.popupTargetKeydown = this.popupTargetKeydown.bind(this);
+    this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
+    this.tabBackToController = this.tabBackToController.bind(this);
+    this.tabtoTarget = this.tabtoTarget.bind(this);
     this.hideOnTabOut = this.hideOnTabOut.bind(this);
     this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -87,31 +88,27 @@ export default class Popup extends AriaComponent {
         lastInteractiveChild,
       ] = this.constructor.getFirstAndLastItems(this.interactiveChildElements);
 
-      Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
+      this.lastInteractiveChild = lastInteractiveChild;
+      this.firstInteractiveChild = firstInteractiveChild;
     }
 
     // Add controller attributes
     this.addAttribute(this.controller, 'aria-haspopup', this.type);
     this.addAttribute(this.controller, 'aria-expanded', 'false');
 
-    /**
-     * Check if the controller is a button, but only if it doesn't already have
-     * a role attribute, since we'll be adding the role and allowing focus.
-     *
-     * @type {bool}
-     */
-    this.controllerIsNotAButton = (
-      'BUTTON' !== this.controller.nodeName
-      && null === this.controller.getAttribute('role')
-    );
-
-    /*
-     * Use the button role on non-button elements.
-     */
-    if (this.controllerIsNotAButton) {
-      // https://www.w3.org/TR/wai-aria-1.1/#button
+    // Patch button role and behavior for non-button controller.
+    if ('BUTTON' !== this.controller.nodeName) {
+      /*
+       * Some elements semantics conflict with the button role. You really
+       * should just use a button.
+       */
       this.addAttribute(this.controller, 'role', 'button');
-      this.addAttribute(this.controller, 'tabindex', '0');
+      this.controller.addEventListener('keydown', this.patchButtonKeydown);
+
+      // Ensure we can Tab to the controller even if it's not a button nor anchor.
+      if ('A' !== this.controller.nodeName) {
+        this.addAttribute(this.controller, 'tabindex', '0');
+      }
     }
 
     /*
@@ -120,6 +117,9 @@ export default class Popup extends AriaComponent {
      */
     if (this.target !== this.controller.nextElementSibling) {
       this.addAttribute(this.controller, 'aria-owns', this.target.id);
+
+      this.controller.addEventListener('keydown', this.tabtoTarget);
+      this.target.addEventListener('keydown', this.tabBackToController);
     }
 
     /*
@@ -145,17 +145,14 @@ export default class Popup extends AriaComponent {
     const { expanded } = this.state;
 
     this.updateAttribute(this.controller, 'aria-expanded', expanded);
+    this.updateAttribute(this.target, 'aria-hidden', (! expanded));
 
     /*
      * Update Popup and interactive children's attributes.
      */
     if (expanded) {
-      this.updateAttribute(this.target, 'aria-hidden', 'false');
-
       this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     } else {
-      this.updateAttribute(this.target, 'aria-hidden', 'true');
-
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
     }
@@ -168,7 +165,22 @@ export default class Popup extends AriaComponent {
    */
   popupControllerKeydown(event) {
     const { expanded } = this.state;
-    const { key, shiftKey } = event;
+    const { key } = event;
+
+    if (expanded && 'Escape' === key) {
+      event.preventDefault();
+
+      /*
+       * Close the Popup when the Escape key is pressed. Because focus is not
+       * inside the target (based on the fact that the event was fired on the
+       * controller), there's no need to move focus.
+       */
+      this.hide();
+    }
+  }
+
+  patchButtonKeydown(event) {
+    const { key } = event;
 
     if ([' ', 'Enter'].includes(key)) {
       event.preventDefault();
@@ -178,27 +190,6 @@ export default class Popup extends AriaComponent {
        * not a <button>.
        */
       this.toggle();
-    } else if (expanded) {
-      if ('Escape' === key) {
-        event.preventDefault();
-
-        /*
-         * Close the Popup when the Escape key is pressed. Because focus is not
-         * inside the target (based on the fact that the event was fired on the
-         * controller), there's no need to move focus.
-         */
-        this.hide();
-      } else if ('Tab' === key && ! shiftKey) {
-        event.preventDefault();
-
-        /*
-         * When the Popup is open, pressing the Tab key should move focus to the
-         * first interctive child of the target element. This would likely be
-         * the default behavior in most cases, but this patches the behavior in
-         * cases where the markup is disconnected or out-of-order.
-         */
-        this.firstInteractiveChild.focus();
-      }
     }
   }
 
@@ -212,7 +203,7 @@ export default class Popup extends AriaComponent {
     const { expanded } = this.state;
     const { activeElement } = document;
 
-    if ('Escape' === key && expanded) {
+    if (expanded && 'Escape' === key) {
       event.preventDefault();
 
       /*
@@ -226,23 +217,17 @@ export default class Popup extends AriaComponent {
        * element.
        */
       this.controller.focus();
-    } else if ('Tab' === key) {
-      if (shiftKey) {
-        if ([this.firstInteractiveChild, this.target].includes(activeElement)) {
-          event.preventDefault();
-          /*
-           * Move focus back to the controller if the Shift key is pressed with
-           * the Tab key, but only if the Event target is the Popup's first
-           * interactive child or the Popup itself.
-           */
-          this.controller.focus();
-        }
-      } else if (this.lastInteractiveChild === activeElement) {
-        /*
-         * Close the Popup when tabbing from the last child.
-         */
-        this.hide();
-      }
+    }
+
+    if (
+      this.lastInteractiveChild === activeElement
+      && ! shiftKey
+      && 'Tab' === key
+    ) {
+      /*
+       * Close the Popup when tabbing from the last child.
+       */
+      this.hide();
     }
   }
 
@@ -256,7 +241,11 @@ export default class Popup extends AriaComponent {
     const { expanded } = this.state;
     const { key, shiftKey } = event;
 
-    if ('Tab' === key && ! shiftKey && expanded) {
+    if (
+      expanded
+      && ! shiftKey
+      && 'Tab' === key
+    ) {
       this.hide();
     }
   }
@@ -269,14 +258,56 @@ export default class Popup extends AriaComponent {
    */
   hideOnOutsideClick(event) {
     const { expanded } = this.state;
-    const { target: clicked } = event;
+    const { target: eventTarget } = event;
 
     if (
       expanded
-      && clicked !== this.controller
-      && ! this.target.contains(clicked)
+      && eventTarget !== this.controller
+      && ! this.target.contains(eventTarget)
     ) {
       this.hide();
+    }
+  }
+
+  /**
+   * Move focus to the target's first interactive child in cases where the
+   * markup is disconnected or out-of-order.
+   *
+   * @param {Event} event The Event object.
+   */
+  tabtoTarget(event) {
+    const { expanded } = this.state;
+    const { key, shiftKey } = event;
+
+    if (
+      expanded
+      && ! shiftKey
+      && 'Tab' === key
+    ) {
+      event.preventDefault();
+
+      this.firstInteractiveChild.focus();
+    }
+  }
+
+  /**
+   * Move focus back to the controller from the target's first interactive child
+   * in cases where the markup is disconnected or out-of-order.
+   *
+   * @param {Event} event The Event object.
+   */
+  tabBackToController(event) {
+    const { key, shiftKey } = event;
+    const { activeElement } = document;
+
+    if (
+      this.firstInteractiveChild === activeElement
+      && shiftKey
+      && 'Tab' === key
+    ) {
+      event.preventDefault();
+
+      this.controller.focus();
     }
   }
 
@@ -297,6 +328,9 @@ export default class Popup extends AriaComponent {
       'keydown',
       this.popupControllerKeydown
     );
+    this.controller.removeEventListener('keydown', this.patchButtonKeydown);
+    this.controller.removeEventListener('keydown', this.tabtoTarget);
+    this.target.removeEventListener('keydown', this.tabBackToController);
     this.target.removeEventListener('keydown', this.popupTargetKeydown);
     document.body.removeEventListener('click', this.hideOnOutsideClick);
 
