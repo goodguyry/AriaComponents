@@ -1,5 +1,5 @@
 import Search from './Search';
-import { typeCharacter } from '../lib/events';
+import { typeCharacter } from '../../.jest/events';
 
 // Set up our document body
 document.body.innerHTML = `
