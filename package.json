@@ -36,6 +36,13 @@
     "lint": "eslint src --ext .js",
     "lint:fix": "npm run lint -- --fix",
     "dev": "jest --watchAll",
-    "dev:verbose": "npm run dev -- --verbose"
+    "dev:verbose": "npm run dev -- --verbose",
+    "dev:only": "npm run dev -- src/$npm_config_component/$npm_config_component.test.js",
+    "dev:dialog": "npm run dev:only --component=Dialog",
+    "dev:disclosure": "npm run dev:only --component=Disclosure",
+    "dev:listbox": "npm run dev:only --component=Listbox",
+    "dev:menu": "npm run dev:only --component=Menu",
+    "dev:popup": "npm run dev:only --component=Popup",
+    "dev:tablist": "npm run dev:only --component=Tablist"
   }
 }
