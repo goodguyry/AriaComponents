@@ -26,11 +26,6 @@ export default class ListBox extends Popup {
      */
     this[Symbol.toStringTag] = 'Listbox';
 
-    // Get the component elements.
-    const { controller, target } = getElementPair(element);
-    this.controller = controller;
-    this.target = target;
-
     // Merge options as instance properties.
     Object.assign(this, options);
 
