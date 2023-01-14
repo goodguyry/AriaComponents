@@ -10,6 +10,14 @@ import interactiveChildren from '../lib/interactiveChildren';
  */
 export default class Disclosure extends AriaComponent {
   /**
+   * Initial loadOpen option value.
+   * @private
+   *
+   * @type {Boolean}
+   */
+  #optionLoadOpen = false;
+
+  /**
    * Create a Disclosure.
    * @constructor
    *
@@ -42,7 +50,7 @@ export default class Disclosure extends AriaComponent {
        *
        * @type {boolean}
        */
-      loadOpen: false,
+      loadOpen: this.#optionLoadOpen,
 
       /**
        * Keep the Disclosure open when the user interacts with external content.
@@ -61,13 +69,12 @@ export default class Disclosure extends AriaComponent {
       ...options,
     };
 
-    // Set options.
-    this.loadOpen = loadOpen;
+    // Save static options.
+    this.#optionLoadOpen = loadOpen;
+
+    // Set initial dynamic options.
     this.allowOutsideClick = allowOutsideClick;
     this.autoClose = autoClose;
-
-    // Initial component state.
-    this.state = { expanded: this.loadOpen };
 
     // Bind class methods.
     this.init = this.init.bind(this);
@@ -76,12 +83,44 @@ export default class Disclosure extends AriaComponent {
     this.closeOnEscKey = this.closeOnEscKey.bind(this);
     this.closeOnTabOut = this.closeOnTabOut.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
+    this.tabBackToController = this.tabBackToController.bind(this);
+    this.tabtoTarget = this.tabtoTarget.bind(this);
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
     this.toggle = this.toggle.bind(this);
 
+    // Initial component state.
+    this.state = { expanded: this.#optionLoadOpen };
+
     this.init();
+  }
+
+  /**
+   * Enables the autoClose option.
+   *
+   * @param {bool} shouldAutoClose Whether the Disclosure should close automatically.
+   */
+  set autoClose(shouldAutoClose) {
+    if (shouldAutoClose) {
+      this.target.addEventListener('keydown', this.closeOnTabOut);
+    } else {
+      this.target.removeEventListener('keydown', this.closeOnTabOut);
+    }
+  }
+
+  /**
+   * Manages the allowOutsideClick option.
+   *
+   * @param {bool} shouldAllowOutsideClick Whether the Disclosure remain open
+   *                                        when the user interacts with external content
+   */
+  set allowOutsideClick(shouldAllowOutsideClick) {
+    if (! shouldAllowOutsideClick) {
+      document.body.addEventListener('click', this.closeOnOutsideClick);
+    } else {
+      document.body.removeEventListener('click', this.closeOnOutsideClick);
+    }
   }
 
   /**
@@ -100,10 +139,12 @@ export default class Disclosure extends AriaComponent {
 
     // Collect first and last interactive child elements from target.
     if (0 < this.interactiveChildElements.length) {
-      const [, lastInteractiveChild] = AriaComponent.getFirstAndLastItems(
-        this.interactiveChildElements
-      );
+      const [
+        firstInteractiveChild,
+        lastInteractiveChild,
+      ] = AriaComponent.getFirstAndLastItems(this.interactiveChildElements);
 
+      this.firstInteractiveChild = firstInteractiveChild;
       this.lastInteractiveChild = lastInteractiveChild;
     }
 
@@ -131,6 +172,9 @@ export default class Disclosure extends AriaComponent {
      */
     if (this.target !== this.controller.nextElementSibling) {
       this.addAttribute(this.controller, 'aria-owns', this.target.id);
+
+      this.controller.addEventListener('keydown', this.tabtoTarget);
+      this.target.addEventListener('keydown', this.tabBackToController);
     }
 
     /*
@@ -146,14 +190,6 @@ export default class Disclosure extends AriaComponent {
     this.controller.addEventListener('click', this.toggle);
     this.controller.addEventListener('keydown', this.closeOnEscKey);
     this.target.addEventListener('keydown', this.closeOnEscKey);
-
-    if (this.autoClose) {
-      this.target.addEventListener('keydown', this.closeOnTabOut);
-    }
-
-    if (! this.allowOutsideClick) {
-      document.body.addEventListener('click', this.closeOnOutsideClick);
-    }
 
     /*
      * Prevent focus on interactive elements in the target when the target is
@@ -250,6 +286,48 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
+   * Move focus to the target's first interactive child in cases where the
+   * markup is disconnected or out-of-order.
+   *
+   * @param {Event} event The Event object.
+   */
+  tabtoTarget(event) {
+    const { expanded } = this.state;
+    const { key, shiftKey } = event;
+
+    if (
+      expanded
+      && ! shiftKey
+      && 'Tab' === key
+    ) {
+      event.preventDefault();
+
+      this.firstInteractiveChild.focus();
+    }
+  }
+
+  /**
+   * Move focus back to the controller from the target's first interactive child
+   * in cases where the markup is disconnected or out-of-order.
+   *
+   * @param {Event} event The Event object.
+   */
+  tabBackToController(event) {
+    const { key, shiftKey } = event;
+    const { activeElement } = document;
+
+    if (
+      this.firstInteractiveChild === activeElement
+      && shiftKey
+      && 'Tab' === key
+    ) {
+      event.preventDefault();
+
+      this.controller.focus();
+    }
+  }
+
+  /**
    * Remove all ARIA attributes and event listeners added by this class.
    */
   destroy() {
@@ -268,7 +346,7 @@ export default class Disclosure extends AriaComponent {
     this.target.removeEventListener('keydown', this.closeOnEscKey);
 
     // Reset initial state.
-    this.state = { expanded: this.loadOpen };
+    this.state = { expanded: this.#optionLoadOpen };
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
