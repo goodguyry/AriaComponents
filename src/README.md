@@ -9,68 +9,55 @@ Extend the `AriaComponent` class to get access to the methods below.
 
 ### Instance Methods
 
-_**`setState(newState)`**_
-> Set component state.
->
-> `newState`  
-> The new state object to merge with existing state.
-
 _**`getState()`**_
 > Returns an object representing the current component state.
 
 _**`toString()`**_  
-> Returns `'[object AriaComponent]'`.
+> `'[object AriaComponent]'`
 
-_**`getTrackedAttributesFor(element)`**_  
-> Returns tracked attributes for the given element after ensuring it  
-> has the required ID attribute.
->
-> `element`  
-> The element for which attributes are being retrieved.
-
-_**`addAttribute(element, attribute, value)`**_  
-> Adds an attribute for the given element and tracks it for later removal.
->
-> `element`  
-> The element to which attributes should be added.
->
-> `attribute`  
-> The attribute name.
->
-> `value`  
-> The attribute value.
-
-_**`updateAttribute(element, attribute, value)`**_  
-> Updates an attribute for the given element and tracks it for later removal.
->
-> `element`  
-> The element to which attributes should be updated.
->
-> `attribute`  
-> The attribute name.
->
-> `value`  
-> The attribute value. A `null` value will result in the attribute being removed.
-
-_**`removeAttributes(element)`**_  
-> Removes tracked attributes added to the given element.
->
-> `element`  
-> The elemen on which attributes were added.
-
-_**`on(event, listener, options)`**_  
+_**`on(event: string, listener: function, options: object)`**_  
 > Registers an event handler for the given event type.  
 >
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
+> **Note**: It is not possible to respond to the `init` event using the `on` and `off` methods.
 
-_**`off(event, listener, options)`**_  
+_**`off(event: string, listener: function, options: object)`**_  
 > Unregisters an event handler for the given event type.
 
 ### Properties
 
-_**`element`**_  
+_**`element`**_ `HTMLElement`  
 > Returns the element passed to the constructor.
+
+### Events
+
+Events are namespaced by their component to avoid clashes with nested components.
+
+_**`'_namespace_.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'_namespace_.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.state` | The current component state. | `object` |
+> | `event.detail.props` | The state properties that changed. | `array` |
+
+_**`'_namespace_.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 ## lib/ Modules
 

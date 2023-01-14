@@ -47,10 +47,10 @@ const tablist = new Tablist(tabs);
 ## Constructor
 
 ```jsx
-Tablist(tabsListElement = null);
+Tablist(tabsListElement: HTMLUListElement);
 ```
 
-_**`tabsListElement`**_ `HTMLUListElement`  
+_**`tabsListElement`**_  
 > The list element containing tab links; each link must contain an \`aria-controls\`  
 > attribute referencing the ID of the associated tabPanel.
 
@@ -60,59 +60,32 @@ _**`tabsListElement`**_ `HTMLUListElement`
 
 See also [`src/README`](../).
 
-_**`switchTo(index)`**_
-> Activate a tab based on its index.
->
-> `index`  
-> Zero-based integer value representing the index of the tab to activate.
+_**`switchTo(index: Number)`**_
+> Activate the tab at the given zero-based index.
 
 _**`toString()`**_  
-> Returns `'[object Tablist]'`.
+> `'[object Tablist]'`
 
 ### Properties
 
-_**`tabs`**_  
-> Returns the list element containing tab links (alias of `element`).
+_**`tabs`**_ `HTMLUListElement`  
+> The list element containing tab links (alias of `element`).
 
-_**`panels`**_  
-> Returns an array of panel elements.
+_**`panels`**_ `array`  
+> The tab panel elements.
 
-_**`tabLinks`**_  
-> Returns an array of anchors collected from inside of each list items.
+_**`tabLinks`**_ `array`  
+> The anchors collected from inside of each list items.
 
 ### Events
 
-Events are namespaced by their component to avoid clashes with nested components.
+| Event | Description |
+|:-----|:----|
+| `'tablist.init'` | Fired after the component is initialized. |
+| `'tablist.stateChange'` | Fired after component state is updated. |
+| `'tablist.destroy'` | Fired after the component is destroyed. |
 
-#### `'tablist.init'`
-
-Fired after the component is initialized.
-
-> `event.detail.instance` {Tablist}  
-> The instance from which the event originated.
-
-#### `'tablist.stateChange'`
-
-Fired after component state is updated.
-
-> `event.detail.instance` {Tablist}  
-> The instance from which the event originated.
->
-> `event.detail.state` {object}  
-> The current component state.
->
-> `event.detail.props` {array}  
-> The state properties that changed.
-
-#### `'tablist.destroy'`
-
-Fired after the component is destroyed.
-
-> `event.detail.instance` {Tablist}  
-> The instance from which the event originated.
->
-> `event.detail.element` {HTMLElement}  
-> the element passed to the constructor
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 

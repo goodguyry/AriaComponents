@@ -47,16 +47,16 @@ const dialog = new Dialog(controller);
 ## Constructor
 
 ```jsx
-Dialog(element = null, options = {});
+Dialog(element: HTMLElement, options: object);
 ```
-_**`element`**_ `HTMLElement`  
+_**`element`**_  
 > Either the element used to activate the Dialog target, or the Dialog target element.
 > 
 > The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
 >
 > **Note** The component's events will dispatch from this element.
 
-_**`options`**_ `object`  
+_**`options`**_  
 > Configuration options.
 
 ### Available Options
@@ -70,12 +70,6 @@ _**`content`**_`= null`
 
 Global methods and properties documented at [`src/README`](../).
 
-_**`setCloseButton(closeButton)`**_
-> Helper for setting up the close button.  
-> 
-> _**`closeButton`**_ `HTMLButtonElement`  
-> The button used to close the Dialog.
-
 _**`show()`**_
 > Updates component state to show the target element.
 
@@ -83,52 +77,28 @@ _**`hide()`**_
 > Updates component state to hide the target element.
 
 _**`toString()`**_  
-> Returns `'[object Dialog]'`.
+> `'[object Dialog]'`
+
+_**`setCloseButton(closeButton: HTMLButtonElement)`**_
+> Sets the given button element as the Dialog close button.  
 
 ### Properties
 
-_**`controller`**_  
-> Returns the Dialog's activating element.
+_**`controller`**_ `HTMLButtonElement`  
+> The Dialog's activating element.
 
-_**`target`**_  
-> Returns the Dialog's target element.
-
-_**`content`**_
-> An array of elements to be hidden while the Dialog is visible.
+_**`target`**_ `HTMLElement`  
+> The Dialog's target element.
 
 ### Events
 
-Events are namespaced by their component to avoid clashes with nested components.
+| Event | Description |
+|:-----|:----|
+| `'dialog.init'` | Fired after the component is initialized. |
+| `'dialog.stateChange'` | Fired after component state is updated. |
+| `'dialog.destroy'` | Fired after the component is destroyed. |
 
-#### `'dialog.init'`
-
-Fired after the component is initialized.
-
-> `event.detail.instance` {Dialog}  
-> The instance from which the event originated.
-
-#### `'dialog.stateChange'`
-
-Fired after component state is updated.
-
-> `event.detail.instance` {Dialog}  
-> The instance from which the event originated.
->
-> `event.detail.state` {object}  
-> The current component state.
->
-> `event.detail.props` {array}  
-> The state properties that changed.
-
-#### `'dialog.destroy'`
-
-Fired after the component is destroyed.
-
-> `event.detail.instance` {Dialog}  
-> The instance from which the event originated.
->
-> `event.detail.element` {HTMLElement}  
-> the element passed to the constructor
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 

@@ -27,17 +27,17 @@ const popup = new Popup(controller);
 ## Constructor
 
 ```jsx
-Popup(element = null, options = {});
+Popup(element: HTMLElement, options: object);
 ```
 
-_**`element`**_ `HTMLElement`  
+_**`element`**_  
 > Either the element used to activate the Popup target, or the Popup target element.
 > 
 > The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
 >
 > **Note** The component's events will dispatch from this element.
 
-_**`options`**_ `object`  
+_**`options`**_  
 > Configuration options.
 
 ### Available Options
@@ -59,55 +59,25 @@ _**`hide()`**_
 > Updates component state to hide the target element.
 
 _**`toString()`**_  
-> Returns `'[object Popup]'`.
+> `'[object Popup]'`
 
 ### Properties
 
-_**`controller`**_  
-> Returns the Popup's activating element.
+_**`controller`**_ `HTMLButtonElement`  
+> The Popup's activating element.
 
-_**`target`**_  
-> Returns the Popup's target element.
-
-_**`firstInteractiveChild`**_  
-> Returns the target's first interactive child element.
-
-_**`lastInteractiveChild`**_  
-> Returns the target's last interactive child element.
+_**`target`**_ `HTMLElement`  
+> The Popup's target element.
 
 ### Events
 
-Events are namespaced by their component to avoid clashes with nested components.
+| Event | Description |
+|:-----|:----|
+| `'popup.init'` | Fired after the component is initialized. |
+| `'popup.stateChange'` | Fired after component state is updated. |
+| `'popup.destroy'` | Fired after the component is destroyed. |
 
-#### `'popup.init'`
-
-Fired after the component is initialized.
-
-> `event.detail.instance` {Popup}  
-> The instance from which the event originated.
-
-#### `'popup.stateChange'`
-
-Fired after component state is updated.
-
-> `event.detail.instance` {Popup}  
-> The instance from which the event originated.
->
-> `event.detail.state` {object}  
-> The current component state.
->
-> `event.detail.props` {array}  
-> The state properties that changed.
-
-#### `'popup.destroy'`
-
-Fired after the component is destroyed.
-
-> `event.detail.instance` {Popup}  
-> The instance from which the event originated.
->
-> `event.detail.element` {HTMLElement}  
-> the element passed to the constructor
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 

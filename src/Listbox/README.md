@@ -30,10 +30,10 @@ const listbox = new Listbox(controller);
 ## Constructor
 
 ```jsx
-Listbox(element = null, options = {});
+Listbox(element: HTMLElement, options: object);
 ```
 
-_**`element`**_ `HTMLElement`  
+_**`element`**_  
 > Either the element used to activate the Listbox target, or the Listbox target element.
 > 
 > The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
@@ -58,58 +58,28 @@ _**`hide()`**_
 > Updates component state to hide the target element.
 
 _**`toString()`**_  
-> Returns `'[object Listbox]'`.
+> `'[object Listbox]'`
 
 ### Properties
 
-_**`controller`**_  
-> Returns the Listbox's activating element.
+_**`controller`**_ `HTMLButtonElement`  
+> The Listbox's activating element.
 
-_**`target`**_  
-> Returns the Listbox's target element.
+_**`target`**_ `HTMLElement`  
+> The Listbox's target element.
 
-_**`options`**_  
-> Returns an array of the target element's list items.
-
-_**`firstOption`**_  
-> Returns the first Listbox option element.
-
-_**`lastOption`**_  
-> Returns the last Listbox option element.
+_**`options`**_ `array`  
+> The target element's list items.
 
 ### Events
 
-Events are namespaced by their component to avoid clashes with nested components.
+| Event | Description |
+|:-----|:----|
+| `'listbox.init'` | Fired after the component is initialized. |
+| `'listbox.stateChange'` | Fired after component state is updated. |
+| `'listbox.destroy'` | Fired after the component is destroyed. |
 
-#### `'listbox.init'`
-
-Fired after the component is initialized.
-
-> `event.detail.instance` {Listbox}  
-> The instance from which the event originated.
-
-#### `'listbox.stateChange'`
-
-Fired after component state is updated.
-
-> `event.detail.instance` {Listbox}  
-> The instance from which the event originated.
->
-> `event.detail.state` {object}  
-> The current component state.
->
-> `event.detail.props` {array}  
-> The state properties that changed.
-
-#### `'listbox.destroy'`
-
-Fired after the component is destroyed.
-
-> `event.detail.instance` {Listbox}  
-> The instance from which the event originated.
->
-> `event.detail.element` {HTMLElement}  
-> the element passed to the constructor
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 

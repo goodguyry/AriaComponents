@@ -38,13 +38,13 @@ const menu = new Menu(menu);
 ## Constructor
 
 ```jsx
-Menu(menuListElement = null, options = {});
+Menu(menuListElement: HTMLUListElement, options: object);
 ```
 
-_**`menuListElement`**_ `HTMLUListElement`  
+_**`menuListElement`**_  
 > The list element containing menu items.
 
-_**`options`**_ `object`  
+_**`options`**_  
 > Configuration options.
 
 ### Available Options
@@ -59,46 +59,22 @@ _**`autoClose`**_`= false`
 Global methods and properties documented at [`src/README`](../).
 
 _**`toString()`**_  
-> Returns `'[object Menu]'`.
+> `'[object Menu]'`
 
 ### Properties
 
-_**`disclosures`**_  
-> Returns an array of submenu Disclosures.
+_**`disclosures`**_ `array`  
+> The submenu Disclosures, if any.
 
 ### Events
 
-Events are namespaced by their component to avoid clashes with nested components.
+| Event | Description |
+|:-----|:----|
+| `'menu.init'` | Fired after the component is initialized. |
+| `'menu.stateChange'` | Fired after component state is updated. |
+| `'menu.destroy'` | Fired after the component is destroyed. |
 
-#### `'menu.init'`
-
-Fired after the component is initialized.
-
-> `event.detail.instance` {Menu}  
-> The instance from which the event originated.
-
-#### `'menu.stateChange'`
-
-Fired after component state is updated.
-
-> `event.detail.instance` {Menu}  
-> The instance from which the event originated.
->
-> `event.detail.state` {object}  
-> The current component state.
->
-> `event.detail.props` {array}  
-> The state properties that changed.
-
-#### `'menu.destroy'`
-
-Fired after the component is destroyed.
-
-> `event.detail.instance` {Menu}  
-> The instance from which the event originated.
->
-> `event.detail.element` {HTMLElement}  
-> the element passed to the constructor
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 
