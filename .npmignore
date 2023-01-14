@@ -7,5 +7,9 @@ src/**/*.test.js
 # Files
 .eslintrc.js
 .nvmrc
-.babel.config.json
+babel.config.json
 jest.config.js
+
+# Misc.
+*.sublime-project
+*.sublime-workspace
