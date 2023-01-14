@@ -59,7 +59,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Incorporates widely-used utilities into the component that uses them (#80)
   - `getFirstAndLastItems` into `AriaComponent` from 'lib/getFirstAndLastItems'
   - `nextPreviousFromLeftRight` into `Tablist` from 'lib/nextPrevious'
-- Removes util exports
+- Removes util exports (#81)
 
 ## 0.3.1
 
