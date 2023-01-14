@@ -1,7 +1,11 @@
+# Directories
+.github/
+.jest/
 docs/
 src/**/*.test.js
-utils/events.js
-.babelrc
-.eslintrc
-*.sublime-project
-*.sublime-workspace
+
+# Files
+.eslintrc.js
+.nvmrc
+.babel.config.json
+jest.config.js
