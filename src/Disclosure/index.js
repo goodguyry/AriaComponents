@@ -6,14 +6,14 @@ import interactiveChildren from '../lib/interactiveChildren';
  * Class to set up a controller-target relationship for independently revealing
  * and hiding inline content.
  *
- * https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure
+ * https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
  */
 export default class Disclosure extends AriaComponent {
   /**
    * Create a Disclosure.
    * @constructor
    *
-   * @param {HTMLElement} element The activating element.
+   * @param {HTMLElement} element The component element.
    * @param {object}      options The options object.
    */
   constructor(element, options = {}) {
@@ -31,38 +31,39 @@ export default class Disclosure extends AriaComponent {
     this.controller = controller;
     this.target = target;
 
-    // Merge options.
+    // Merge options with default values.
     const {
       loadOpen,
       allowOutsideClick,
       autoClose,
     } = {
+      /**
+       * Set the Disclosure open on load.
+       *
+       * @type {boolean}
+       */
       loadOpen: false,
+
+      /**
+       * Keep the Disclosure open when the user interacts with external content.
+       *
+       * @type {boolean}
+       */
       allowOutsideClick: true,
+
+      /**
+       * Automatically close the Disclosure after tabbing from its last child.
+       *
+       * @type {boolean}
+       */
       autoClose: false,
 
       ...options,
     };
 
-    /**
-     * Load the Disclosure open by default.
-     *
-     * @type {boolean}
-     */
+    // Set options.
     this.loadOpen = loadOpen;
-
-    /**
-     * Keep the Disclosure open when the user clicks outside of it.
-     *
-     * @type {boolean}
-     */
     this.allowOutsideClick = allowOutsideClick;
-
-    /**
-     * Automatically close the Disclosure when its contents lose focus.
-     *
-     * @type {boolean}
-     */
     this.autoClose = autoClose;
 
     // Initial component state.
@@ -70,21 +71,21 @@ export default class Disclosure extends AriaComponent {
 
     // Bind class methods.
     this.init = this.init.bind(this);
+    this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
+    this.closeOnEscKey = this.closeOnEscKey.bind(this);
+    this.closeOnTabOut = this.closeOnTabOut.bind(this);
+    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
-    this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
-    this.closeOnEscKey = this.closeOnEscKey.bind(this);
-    this.handleTargetKeydown = this.handleTargetKeydown.bind(this);
-    this.toggleExpandedState = this.toggleExpandedState.bind(this);
-    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
+    this.toggle = this.toggle.bind(this);
 
     this.init();
   }
 
   /**
-   * Add initial attributes, establish relationships, and listen for events
+   * Add initial attributes and listen for events
    */
   init() {
     // Component state is initially set in the constructor.
@@ -92,21 +93,18 @@ export default class Disclosure extends AriaComponent {
 
     /**
      * Collect the target element's interactive child elements.
+     *
      * @type {array}
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    /*
-     * Collect first and last interactive child elements from target and merge
-     * them in as instance properties.
-     */
+    // Collect first and last interactive child elements from target.
     if (0 < this.interactiveChildElements.length) {
-      const [
-        firstInteractiveChild,
-        lastInteractiveChild,
-      ] = this.constructor.getFirstAndLastItems(this.interactiveChildElements);
+      const [, lastInteractiveChild] = AriaComponent.getFirstAndLastItems(
+        this.interactiveChildElements
+      );
 
-      Object.assign(this, { firstInteractiveChild, lastInteractiveChild });
+      this.lastInteractiveChild = lastInteractiveChild;
     }
 
     // Add controller attributes
@@ -121,14 +119,14 @@ export default class Disclosure extends AriaComponent {
       this.addAttribute(this.controller, 'role', 'button');
       this.controller.addEventListener('keydown', this.patchButtonKeydown);
 
-      // Ensure we can Tab to the controller if it's not a button nor anchor.
+      // Ensure we can Tab to the controller even if it's not a button nor anchor.
       if ('A' !== this.controller.nodeName) {
         this.addAttribute(this.controller, 'tabindex', '0');
       }
     }
 
     /*
-     * Establishes a relationship when the DOM heirarchy doesn't represent that
+     * Establishe a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
      */
     if (this.target !== this.controller.nextElementSibling) {
@@ -145,12 +143,12 @@ export default class Disclosure extends AriaComponent {
     }
 
     // Add event listeners
-    this.controller.addEventListener('click', this.toggleExpandedState);
+    this.controller.addEventListener('click', this.toggle);
     this.controller.addEventListener('keydown', this.closeOnEscKey);
     this.target.addEventListener('keydown', this.closeOnEscKey);
 
     if (this.autoClose) {
-      this.target.addEventListener('keydown', this.handleTargetKeydown);
+      this.target.addEventListener('keydown', this.closeOnTabOut);
     }
 
     if (! this.allowOutsideClick) {
@@ -179,19 +177,7 @@ export default class Disclosure extends AriaComponent {
     const { expanded } = this.state;
 
     this.updateAttribute(this.controller, 'aria-expanded', expanded);
-
-    /*
-     * https://developer.paciellogroup.com/blog/2016/01/the-state-of-hidden-content-support-in-2016/
-     *
-     * > In some browser and screen reader combinations aria-hidden=false on an
-     *   element that is hidden using the hidden attribute or CSS display:none
-     *   results in the content being unhidden.
-     */
-    if (expanded) {
-      this.updateAttribute(this.target, 'aria-hidden', 'false');
-    } else {
-      this.updateAttribute(this.target, 'aria-hidden', 'true');
-    }
+    this.updateAttribute(this.target, 'aria-hidden', (! expanded));
 
     // Allow or deny keyboard focus depending on component state.
     if (expanded) {
@@ -202,15 +188,24 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
+   * Treat the Spacebar and Return keys as clicks if the controller is not a <button>.
+   *
+   * @param {Event} event The event object.
+   */
+  patchButtonKeydown(event) {
+    if ([' ', 'Enter'].includes(event.key)) {
+      event.preventDefault();
+      this.toggle();
+    }
+  }
+
+  /**
    * Close the Disclosure when the Escape key is pressed.
    *
    * @param {Event} event The Event object.
    */
   closeOnEscKey(event) {
-    const { key, target } = event;
-    const { expanded } = this.state;
-
-    if ('Escape' === key && expanded) {
+    if ('Escape' === event.key && this.state.expanded) {
       event.preventDefault();
 
       this.close();
@@ -219,64 +214,28 @@ export default class Disclosure extends AriaComponent {
        * Move focus to the Disclosure controller to avoid the confusion of focus
        * being within a hidden element.
        */
-      if (target === this.target) {
+      if (event.target === this.target) {
         this.controller.focus();
       }
     }
   }
 
   /**
-   * Handle keydown events on the Disclosure controller.
+   * Close the Disclosure when tabbing forward from the last interactve child.
    *
    * @param {Event} event The event object.
    */
-  patchButtonKeydown(event) {
-    if ([' ', 'Enter'].includes(event.key)) {
-      /*
-       * Treat the Spacebar and Return keys as clicks if the controller is not a <button>.
-       */
-      this.toggleExpandedState(event);
-    }
-  }
-
-  /**
-   * Handle keydown events on the Disclosure target.
-   *
-   * @param {Event} event The event object.
-   */
-  handleTargetKeydown(event) {
-    const { key, shiftKey } = event;
-    const { activeElement } = document;
-
+  closeOnTabOut(event) {
     if (
-      'Tab' === key
-      && ! shiftKey
-      && this.lastInteractiveChild === activeElement
+      'Tab' === event.key && ! event.shiftKey
+      && this.lastInteractiveChild === document.activeElement
     ) {
-      /*
-       * Close the Disclosure when tabbing forward from the last interactve child.
-       */
       this.close();
     }
   }
 
   /**
-   * Toggle the expanded state.
-   *
-   * @param {Event} event The Event object.
-   */
-  toggleExpandedState(event) {
-    event.preventDefault();
-
-    if (this.state.expanded) {
-      this.close();
-    } else {
-      this.open();
-    }
-  }
-
-  /**
-   * Close the disclosure when the user clicks outside of the target.
+   * Close the Disclosure when the user clicks outside of the target.
    *
    * @param {Event} event The Event object.
    */
@@ -291,7 +250,7 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
-   * Remove all ARIA attributes added by this class.
+   * Remove all ARIA attributes and event listeners added by this class.
    */
   destroy() {
     // Remove attributes.
@@ -302,7 +261,7 @@ export default class Disclosure extends AriaComponent {
     this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.toggleExpandedState);
+    this.controller.removeEventListener('click', this.toggle);
     this.controller.removeEventListener('keydown', this.patchButtonKeydown);
     document.body.removeEventListener('click', this.closeOnOutsideClick);
     this.controller.removeEventListener('keydown', this.closeOnEscKey);
@@ -327,5 +286,12 @@ export default class Disclosure extends AriaComponent {
    */
   close() {
     this.setState({ expanded: false });
+  }
+
+  /**
+   * Toggle the Disclosure expanded state.
+   */
+  toggle() {
+    this.setState({ expanded: ! this.state.expanded });
   }
 }

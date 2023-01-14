@@ -6,8 +6,7 @@ import getElementPair from '../lib/getElementPair';
  * Class for implimenting a tabs widget for sectioning content and displaying
  * one at a time.
  *
- * https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
- * https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html
+ * https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/
  */
 export default class Tablist extends AriaComponent {
   /**
@@ -18,13 +17,6 @@ export default class Tablist extends AriaComponent {
    */
   constructor(tabs, options) {
     super(tabs);
-
-    // Make sure the component element is an unordered list.
-    if ('UL' !== tabs.nodeName) {
-      AriaComponent.configurationError(
-        'Expected component element nodeName to be `UL`'
-      );
-    }
 
     /**
      * The string description for this object.
@@ -46,7 +38,14 @@ export default class Tablist extends AriaComponent {
     this.destroy = this.destroy.bind(this);
     this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
-    this.init();
+    // Make sure the component element is a list.
+    if (['UL', 'OL'].includes(tabs.nodeName)) {
+      this.init();
+    } else {
+      AriaComponent.configurationError(
+        'Expected component element nodeName to be `UL`'
+      );
+    }
   }
 
   /**
@@ -57,48 +56,41 @@ export default class Tablist extends AriaComponent {
     this.state = { activeIndex: 0 };
 
     /**
-     * Collect the anchor inside of each list item, and the panel referenced by
-     * the anchor's HREF value.
-     *
-     * Required tab markup: `<li><a href="PANEL_ID_REF"></a></li>`
+     * Tablist anchor elements.
      *
      * @type {array}
      */
-    const { tabLinks, panels } = Array.from(this.tabs.children)
-      .reduce((acc, child) => {
-        const tabLink = child.querySelector('[aria-controls]');
+    this.tabLinks = [];
 
-        if (null === tabLink) {
-          return acc;
-        }
+    /**
+     * Tablist panels.
+     *
+     * @type {array}
+     */
+    this.panels = [];
 
+    const listItems = Array.from(this.tabs.children);
+    const listItemsLength = listItems.length;
+
+    /**
+     * Collect the anchor inside of each list item, and the panel referenced by
+     * the anchor's `aria-controls` value.
+     *
+     * Required tab markup: `<li><a aria-controls="PANEL_ID_REF"></a></li>`
+     *
+     * @type {array}
+     */
+    for (let i = 0; i < listItemsLength; i += 1) {
+      const child = listItems[i];
+      const tabLink = child.querySelector('[aria-controls]');
+
+      if (null !== tabLink) {
         const { controller, target } = getElementPair(tabLink);
 
-        if (null !== target) {
-          return {
-            tabLinks: [...acc.tabLinks, controller],
-            panels: [...acc.panels, target],
-          };
-        }
-
-        return acc;
-      }, { tabLinks: [], panels: [] });
-
-    // Save the tab links and panels.
-    Object.assign(this, {
-      /**
-       * Tablist anchor elements.
-       *
-       * @type {array}
-       */
-      tabLinks,
-      /**
-       * Tablist panels.
-       *
-       * @type {array}
-       */
-      panels,
-    });
+        this.tabLinks.push(controller);
+        this.panels.push(target);
+      }
+    }
 
     // Component state is initially set in the constructor.
     const { activeIndex } = this.state;
@@ -111,7 +103,7 @@ export default class Tablist extends AriaComponent {
     this.addAttribute(this.tabs, 'role', 'tablist');
 
     /*
-     * Prevent the Tablist LI element from being announced as list-items as
+     * Prevent the Tablist LI element from being announced as list-item, as
      * that information is neither useful nor applicable.
      */
     Array.from(this.tabs.children).forEach((listChild) => {
@@ -174,7 +166,7 @@ export default class Tablist extends AriaComponent {
     const { activeIndex } = this.state;
 
     // Get the tab currently designated as `aria-selected`.
-    const deactivate = this.tabLinks.find((tab) => 'true' === tab.getAttribute('aria-selected'));
+    const deactivate = this.tabLinks.find((tab) => ('true' === tab.getAttribute('aria-selected')));
 
     // Get the index; this is essentially the previous `activeIndex` state.
     const deactiveIndex = this.tabLinks.indexOf(deactivate);
@@ -188,8 +180,9 @@ export default class Tablist extends AriaComponent {
     this.updateAttribute(this.panels[deactiveIndex], 'tabindex', null);
 
     // Prevent tabbing to interactive children of the deactivated panel.
-    const deactiveChildren = interactiveChildren(this.panels[deactiveIndex]);
-    deactiveChildren.forEach((item) => item.setAttribute('tabindex', '-1'));
+    interactiveChildren(this.panels[deactiveIndex]).forEach((item) => (
+      item.setAttribute('tabindex', '-1')
+    ));
 
     // Actvate the newly active tab.
     this.updateAttribute(this.tabLinks[activeIndex], 'tabindex', null);
@@ -200,8 +193,9 @@ export default class Tablist extends AriaComponent {
     this.updateAttribute(this.panels[activeIndex], 'tabindex', '0');
 
     // Allow tabbing to the newly-active panel.
-    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
-    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+    interactiveChildren(this.panels[activeIndex]).forEach((item) => (
+      item.removeAttribute('tabindex')
+    ));
   }
 
   /**
@@ -304,6 +298,7 @@ export default class Tablist extends AriaComponent {
        */
       case 'Home': {
         event.preventDefault();
+
         this.switchTo(0);
         this.tabLinks[0].focus();
 
@@ -316,6 +311,7 @@ export default class Tablist extends AriaComponent {
       case 'End': {
         event.preventDefault();
         const lastIndex = this.tabLinks.length - 1;
+
         this.switchTo(lastIndex);
         this.tabLinks[lastIndex].focus();
 

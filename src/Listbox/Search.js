@@ -57,12 +57,11 @@ export default class Search {
       }, 500);
 
       // Find the item by matching the search string to the item text.
-      const match = this.items.filter((item) => {
-        const itemText = item.textContent.toLowerCase();
-        return 0 === itemText.indexOf(this.searchString.toLowerCase());
-      });
+      const match = this.items.find((item) => item.textContent
+        .toLowerCase()
+        .startsWith(this.searchString.toLowerCase()));
 
-      return match.length ? match[0] : null;
+      return match;
     }
 
     return null;

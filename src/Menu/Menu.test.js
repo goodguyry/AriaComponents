@@ -57,6 +57,8 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(menu.disclosures[0].getState().expanded).toBe(false);
     expect(menu.disclosures[0]).toBeInstanceOf(Disclosure);
 
+    expect(list.id).toEqual(menu.id);
+
     expect(onInit).toHaveBeenCalledTimes(1);
 
     return Promise.resolve().then(() => {
@@ -70,7 +72,7 @@ describe('Menu instatiates submenus as Disclosures', () => {
     it('Should remove attributes on destroy', () => {
       menu.destroy();
 
-      expect(list.list).toBeUndefined();
+      expect(list.element).toBeUndefined();
       expect(onDestroy).toHaveBeenCalledTimes(1);
 
       expect(sublistOne.getAttribute('aria-hidden')).toBeNull();

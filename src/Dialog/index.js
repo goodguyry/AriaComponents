@@ -175,27 +175,20 @@ export default class Dialog extends AriaComponent {
 
     this.setInteractiveChildren();
 
+    for (let i = 0; i < contentLength; i += 1) {
+      this.updateAttribute(this.content[i], 'aria-hidden', (expanded || null));
+    }
+
+    // Update target element.
+    this.updateAttribute(this.target, 'aria-hidden', (! expanded));
+
     if (expanded) {
-      for (let i = 0; i < contentLength; i += 1) {
-        this.updateAttribute(this.content[i], 'aria-hidden', 'true');
-      }
-
-      // Update target element.
-      this.updateAttribute(this.target, 'aria-hidden', 'false');
-
       this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
       document.body.addEventListener('keydown', this.handleOutsideKeydown);
 
       this.target.focus();
     } else {
-      for (let i = 0; i < contentLength; i += 1) {
-        this.updateAttribute(this.content[i], 'aria-hidden', null);
-      }
-
-      // Update target element.
-      this.updateAttribute(this.target, 'aria-hidden', 'true');
-
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
@@ -305,14 +298,23 @@ export default class Dialog extends AriaComponent {
   handleOutsideKeydown(event) {
     const { key, target: eventTarget } = event;
 
-    if ('Escape' === key) {
-      this.hide();
-    } else if ('Tab' === key && ! this.target.contains(eventTarget)) {
-      /*
-       * Move focus to the first interactive child element. This is a stopgap
-       * for instances where clicking outside of the Dialog moves focus out.
-       */
-      this.firstInteractiveChild.focus();
+    switch (key) {
+      case 'Escape':
+        this.hide();
+        break;
+
+      case 'Tab':
+        if (! this.target.contains(eventTarget)) {
+          /*
+           * Move focus to the first interactive child element. This is a stopgap
+           * for instances where clicking outside of the Dialog moves focus out.
+           */
+          this.firstInteractiveChild.focus();
+        }
+        break;
+
+      default:
+        break;
     }
   }
 

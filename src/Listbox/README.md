@@ -20,22 +20,25 @@ Class for setting up an interactive Listbox element.
 </ul>
 ```
 
-```javascript
+```jsx
 import { Listbox } from 'aria-components';
 
-const controller = document.querySelector('button[target]');
+const controller = document.querySelector('button[aria-controls]');
 const listbox = new Listbox(controller);
 ```
 
 ## Constructor
 
-```javascript
-Listbox(controller = null, options = {});
+```jsx
+Listbox(element: HTMLElement, options: object);
 ```
 
-_**`controller`**_ `HTMLElement`  
-> The element used to activate the Listbox target; required to have a `aria-controls`  
-attribute with a value matching the `id` attribute value of the target element.
+_**`element`**_  
+> Either the element used to activate the Listbox target, or the Listbox target element.
+> 
+> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
+>
+> **Note** The component's events will dispatch from this element.
 
 ### Available Options
 
@@ -46,95 +49,39 @@ overriden. All other [`Popup` options](../Popup/README.md) are available for `Li
 
 ### Instance Methods
 
-See also [`src/README`](../).
+Global methods and properties documented at [`src/README`](../).
 
-_**`Listbox.show()`**_  
+_**`show()`**_  
 > Updates component state to show the target element.
 
-_**`Listbox.hide()`**_  
+_**`hide()`**_  
 > Updates component state to hide the target element.
 
-_**`Listbox.getState()`**_  
-> Returns an object representing the current component state.
->
-> _`state.activeDescendant`_ `HTMLElement`  
-> The active Listbox option.
-
-_**`Listbox.destroy()`**_  
-> Removes all attributes and event listeners added by this class.
-
-_**`Listbox.toString()`**_  
-> Returns `'[object Listbox]'`.
-
-_**`Listbox.on(event, listener, options)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
-
-_**`Listbox.off(event, listener, options)`**_  
-> Unregisters an event handler for the given event type.
+_**`toString()`**_  
+> `'[object Listbox]'`
 
 ### Properties
 
-_**`Listbox.element`**_  
-> Returns the element passed to the constructor.
+_**`controller`**_ `HTMLButtonElement`  
+> The Listbox's activating element.
 
-_**`Listbox.controller`**_  
-> Returns the Listbox's activating element.
+_**`target`**_ `HTMLElement`  
+> The Listbox's target element.
 
-_**`Listbox.target`**_  
-> Returns the Listbox's target element.
-
-_**`Listbox.options`**_  
-> Returns an array of the target element's list items.
-
-_**`Listbox.firstOption`**_  
-> Returns the first Listbox option element.
-
-_**`Listbox.lastOption`**_  
-> Returns the last Listbox option element.
-
-_**`Listbox.popup`**_  
-> Returns the [Popup](https://github.com/goodguyry/AriaComponents/blob/master/src/Popup) instance controlling the Listbox.
+_**`options`**_ `array`  
+> The target element's list items.
 
 ### Events
 
-_**`'listbox.init'`**_  
-> Fired after the component is initialized.
+| Event | Description |
+|:-----|:----|
+| `'listbox.init'` | Fired after the component is initialized. |
+| `'listbox.stateChange'` | Fired after component state is updated. |
+| `'listbox.destroy'` | Fired after the component is destroyed. |
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Listbox` instance from which the event originated.  
-
-_**`'listbox.stateChange'`**_  
-> Fired after component state is updated.
-
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Listbox` instance from which the event originated.  
->
-> _**`detail.props`**_  
-> Returns an array of state properties that were updated.  
->
-> _**`detail.state`**_  
-> Returns an object representing the current component state.
-
-_**`'listbox.destroy'`**_  
-> Fired after the component is destroyed.
-
-> **Event Properties**
-> 
-> _**`detail.element`**_  
-> Returns the element passed to the `Listbox` instance.  
-> 
-> _**`detail.inlistance`**_  
-> Returns the `Listbox` instance from which the event originated.  
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 
-- https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html
-- https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
-- https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant
+- https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
+- https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant

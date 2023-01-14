@@ -37,24 +37,26 @@ Class for setting up an interactive Dialog element.
 </body>
 ```
 
-```javascript
+```jsx
 import { Dialog } from 'aria-components';
 
-const target = document.getElementById('dialog');
-const dialog = new Dialog(target);
+const controller = document.querySelector('[aria-controls="dialog"]');
+const dialog = new Dialog(controller);
 ```
 
 ## Constructor
 
-```javascript
-Dialog(target = null, options = {});
+```jsx
+Dialog(element: HTMLElement, options: object);
 ```
+_**`element`**_  
+> Either the element used to activate the Dialog target, or the Dialog target element.
+> 
+> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
+>
+> **Note** The component's events will dispatch from this element.
 
-_**`target`**_ `HTMLElement`  
-> The element used as the Dialog; required to have an `id` attribute with a value  
-> matching the `aria-controls` attribute value of the controlling element.
-
-_**`options`**_ `object`  
+_**`options`**_  
 > Configuration options.
 
 ### Available Options
@@ -66,89 +68,37 @@ _**`content`**_`= null`
 
 ### Instance Methods
 
-See also [`src/README`](../).
+Global methods and properties documented at [`src/README`](../).
 
-_**`Dialog.setCloseButton(closeButton)`**_
-> Helper for setting up the close button.  
-> 
-> _**`closeButton`**_ `HTMLButtonElement`  
-> The button used to close the Dialog.
-
-_**`Dialog.show()`**_
+_**`show()`**_
 > Updates component state to show the target element.
 
-_**`Dialog.hide()`**_
+_**`hide()`**_
 > Updates component state to hide the target element.
 
-_**`Dialog.getState()`**_
-> Returns an object representing the current component state.
->
-> _`state.expanded`_ `boolean`  
-> Whether or not the Dialog target is visible.
+_**`toString()`**_  
+> `'[object Dialog]'`
 
-_**`Dialog.destroy()`**_
-> Removes all attributes and event listeners added by this class.
-
-_**`Dialog.toString()`**_  
-> Returns `'[object Dialog]'`.
-
-_**`Dialog.on(event, listener, options)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
-
-_**`Dialog.off(event, listener, options)`**_  
-> Unregisters an event handler for the given event type.
+_**`setCloseButton(closeButton: HTMLButtonElement)`**_
+> Sets the given button element as the Dialog close button.  
 
 ### Properties
 
-_**`Dialog.element`**_  
-> Returns the element passed to the constructor.
+_**`controller`**_ `HTMLButtonElement`  
+> The Dialog's activating element.
 
-_**`Dialog.controller`**_  
-> Returns the Dialog's activating element.
-
-_**`Dialog.target`**_  
-> Returns the Dialog's target element.
-
-_**`Dialog.content`**_
-> An array of elements to be hidden while the Dialog is visible.
+_**`target`**_ `HTMLElement`  
+> The Dialog's target element.
 
 ### Events
 
-_**`'dialog.init'`**_  
-> Fired after the component is initialized.
+| Event | Description |
+|:-----|:----|
+| `'dialog.init'` | Fired after the component is initialized. |
+| `'dialog.stateChange'` | Fired after component state is updated. |
+| `'dialog.destroy'` | Fired after the component is destroyed. |
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Dialog` instance from which the event originated.  
-
-_**`'dialog.stateChange'`**_  
-> Fired after component state is updated.
-
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Dialog` instance from which the event originated.  
->
-> _**`detail.props`**_  
-> Returns an array of state properties that were updated.  
->
-> _**`detail.state`**_  
-> Returns an object representing the current component state.
-
-_**`'dialog.destroy'`**_  
-> Fired after the component is destroyed.
-
-> **Event Properties**
-> 
-> _**`detail.element`**_  
-> Returns the element passed to the `Dialog` instance.  
-> 
-> _**`detail.instance`**_  
-> Returns the `Dialog` instance from which the event originated.  
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 

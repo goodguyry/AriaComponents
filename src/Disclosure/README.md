@@ -3,130 +3,66 @@ Disclosure
 
 Class for independently revealing and hiding inline content.
 
-## Example
-
-```html
-<button aria-controls="disclosure">Open</button>
-<div id="disclosure">
-  <ul>
-    <li><a href="example.com"></a></li>
-    <li><a href="example.com"></a></li>
-    <li><a href="example.com"></a></li>
-    <li><a href="example.com"></a></li>
-  </ul>
-</div>
-```
-
-```javascript
-import { Disclosure } from 'aria-components';
-
-const controller = document.querySelector('button[target]');
-const disclosure = new Disclosure(controller);
-```
-
 ## Constructor
 
-```javascript
-Disclosure(controller = null, options = {});
+```jsx
+new Disclosure(element: HTMLElement, options: object);
 ```
 
-_**`controller`**_ `HTMLElement`  
-> The element used to activate the Disclosure target; required to have a `aria-controls`  
-attribute with a value matching the `id` attribute value of the target element.
+_**`element`**_  
+> Either the element used to activate the Disclosure target, or the Disclosure target element.
+> 
+> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
+>
+> **Note** The component's events will dispatch from this element.
 
-_**`options`**_ `object`  
+_**`options`**_  
 > Configuration options.
 
 ### Available Options
 
 _**`loadOpen`**_`= false`  
-> Whether to load the Disclosure open.
+> Set the Disclosure open on load.
 
 _**`allowOutsideClick`**_`= true`  
-> Whether to keep the Disclosure open when clicking outside of it.
+> Keep the Disclosure open when the user interacts with external content.
 
 _**`autoClose`**_`= false`  
-> Automatically close the Disclosure when its contents lose focus.
+> Automatically close the Disclosure after tabbing from its last child.
 
 ## API
 
 ### Instance Methods
 
-See also [`src/README`](../).
+Global methods and properties documented at [`src/README`](../).
 
-_**`Disclosure.show()`**_
+_**`show()`**_
 > Updates component state to show the target element.
 
-_**`Disclosure.hide()`**_
+_**`hide()`**_
 > Updates component state to hide the target element.
 
-_**`Disclosure.getState()`**_
-> Returns an object representing the current component state.
->
-> _`state.expanded`_ `boolean`  
-> Whether or not the Disclosure target is visible.
-
-_**`Disclosure.destroy()`**_
-> Removes all attributes and event listeners added by this class.
-
-_**`Disclosure.toString()`**_  
-> Returns `'[object Disclosure]'`.
-
-_**`Disclosure.on(event, listener, options)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
-
-_**`Disclosure.off(event, listener, options)`**_  
-> Unregisters an event handler for the given event type.
+_**`toString()`**_  
+> `'[object Disclosure]'`.
 
 ### Properties
 
-_**`Disclosure.element`**_  
-> Returns the element passed to the constructor.
+_**`controller`**_ `HTMLButtonElement`  
+> The Disclosure's activating element.
 
-_**`Disclosure.controller`**_  
-> Returns the Disclosure's activating element.
-
-_**`Disclosure.target`**_  
-> Returns the Disclosure's target element.
+_**`target`**_ `HTMLElement`  
+> The Disclosure's target element.
 
 ### Events
 
-_**`'disclosure.init'`**_  
-> Fired after the component is initialized.
+| Event | Description |
+|:-----|:----|
+| `'disclosure.init'` | Fired after the component is initialized. |
+| `'disclosure.stateChange'` | Fired after component state is updated. |
+| `'disclosure.destroy'` | Fired after the component is destroyed. |
 
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Disclosure` instance from which the event originated.  
-
-_**`'disclosure.stateChange'`**_  
-> Fired after component state is updated.
-
-> **Event Properties**
-> 
-> _**`detail.instance`**_  
-> Returns the `Disclosure` instance from which the event originated.  
->
-> _**`detail.props`**_  
-> Returns an array of state properties that were updated.  
->
-> _**`detail.state`**_  
-> Returns an object representing the current component state.
-
-_**`'disclosure.destroy'`**_  
-> Fired after the component is destroyed.
-
-> **Event Properties**
-> 
-> _**`detail.element`**_  
-> Returns the element passed to the `Disclosure` instance.  
-> 
-> _**`detail.instance`**_  
-> Returns the `Disclosure` instance from which the event originated.  
+> **Note** Full event details documented at [`src/README`](../).
 
 ## References
 
-- https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure
+- https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/

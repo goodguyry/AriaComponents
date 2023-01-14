@@ -36,6 +36,7 @@ export default class AriaComponent {
       [(items.length - 1)]: lastItem,
     } = items;
 
+    // @todo return [items.at(0), items.at(-1)];
     return [firstItem, lastItem];
   }
 
@@ -64,13 +65,6 @@ export default class AriaComponent {
      * @type {string}
      */
     this.stringDescription = 'AriaComponent';
-
-    /**
-     * The instance ID.
-     *
-     * @type {string}
-     */
-    this.id = this.constructor.getUniqueId();
 
     /**
      * Component state.
@@ -112,6 +106,20 @@ export default class AriaComponent {
     this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
     this.on = this.on.bind(this);
     this.off = this.off.bind(this);
+
+    /**
+     * The instance ID.
+     *
+     * @type {string}
+     */
+    if ('' === element.id) {
+      const sharedId = this.constructor.getUniqueId();
+
+      this.addAttribute(element, 'id', sharedId);
+      this.id = sharedId;
+    } else {
+      this.id = element.id;
+    }
   }
 
   /**
