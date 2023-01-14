@@ -56,27 +56,12 @@ _**`autoClose`**_`= false`
 
 ### Instance Methods
 
-See also [`src/README`](../).
-
-_**`destroy()`**_
-> Removes all attributes and event listeners added by this class.
+Global methods and properties documented at [`src/README`](../).
 
 _**`toString()`**_  
 > Returns `'[object Menu]'`.
 
-_**`on(event, listener, options)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
-
-_**`off(event, listener, options)`**_  
-> Unregisters an event handler for the given event type.
-
 ### Properties
-
-_**`element`**_  
-> Returns the list element passed to the constructor.
 
 _**`disclosures`**_  
 > Returns an array of submenu Disclosures.

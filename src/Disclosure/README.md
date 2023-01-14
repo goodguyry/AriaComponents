@@ -34,7 +34,7 @@ _**`autoClose`**_`= false`
 
 ### Instance Methods
 
-See also [`src/README`](../).
+Global methods and properties documented at [`src/README`](../).
 
 _**`show()`**_
 > Updates component state to show the target element.
@@ -42,31 +42,10 @@ _**`show()`**_
 _**`hide()`**_
 > Updates component state to hide the target element.
 
-_**`getState()`**_
-> Returns an object representing the current component state.
->
-> _`state.expanded`_ `boolean`  
-> Whether or not the Disclosure target is shown.
-
-_**`destroy()`**_
-> Removes all attributes and event listeners added by this class.
-
 _**`toString()`**_  
 > Returns `'[object Disclosure]'`.
 
-_**`on(event, listener, options)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
-
-_**`off(event, listener, options)`**_  
-> Unregisters an event handler for the given event type.
-
 ### Properties
-
-_**`element`**_  
-> Returns the element passed to the constructor.
 
 _**`controller`**_  
 > Returns the Disclosure's activating element.

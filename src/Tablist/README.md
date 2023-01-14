@@ -66,31 +66,10 @@ _**`switchTo(index)`**_
 > `index`  
 > Zero-based integer value representing the index of the tab to activate.
 
-_**`getState()`**_
-> Returns an object representing the current component state.
->
-> _`state.activeIndex`_ `number`  
-> The active tab's index.
-
-_**`destroy()`**_
-> Removes all attributes and event listeners added by this class.
-
 _**`toString()`**_  
 > Returns `'[object Tablist]'`.
 
-_**`on(event, listener, options)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the  
-> `on` and `off` methods.
-
-_**`off(event, listener, options)`**_  
-> Unregisters an event handler for the given event type.
-
 ### Properties
-
-_**`element`**_  
-> Returns the element passed to the constructor.
 
 _**`tabs`**_  
 > Returns the list element containing tab links (alias of `element`).
