@@ -311,6 +311,7 @@ export default class Dialog extends AriaComponent {
            */
           this.firstInteractiveChild.focus();
         }
+        break;
 
       default:
         break;
