@@ -126,7 +126,7 @@ export default class Disclosure extends AriaComponent {
     }
 
     /*
-     * Establishe a relationship when the DOM heirarchy doesn't represent that
+     * Establish a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
      */
     if (this.target !== this.controller.nextElementSibling) {
