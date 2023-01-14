@@ -48,6 +48,8 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(popup).toBeInstanceOf(Popup);
     expect(popup.toString()).toEqual('[object Popup]');
 
+    expect(controller.id).toEqual(popup.id);
+
     expect(popup.firstInteractiveChild).toEqual(domFirstChild);
     expect(popup.lastInteractiveChild).toEqual(domLastChild);
 

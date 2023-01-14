@@ -57,6 +57,8 @@ describe('Menu instatiates submenus as Disclosures', () => {
     expect(menu.disclosures[0].getState().expanded).toBe(false);
     expect(menu.disclosures[0]).toBeInstanceOf(Disclosure);
 
+    expect(list.id).toEqual(menu.id);
+
     expect(onInit).toHaveBeenCalledTimes(1);
 
     return Promise.resolve().then(() => {

@@ -58,6 +58,8 @@ describe('Disclosure with default configuration', () => {
       expect(disclosure).toBeInstanceOf(Disclosure);
       expect(disclosure.toString()).toEqual('[object Disclosure]');
 
+      expect(controller.id).toEqual(disclosure.id);
+
       expect(disclosure.getState().expanded).toBeFalsy();
       expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
 

@@ -58,6 +58,8 @@ describe('Listbox with default configuration', () => {
       expect(listbox).toBeInstanceOf(Listbox);
       expect(listbox.toString()).toEqual('[object Listbox]');
 
+      expect(controller.id).toEqual(listbox.id);
+
       expect(listbox.getState().expanded).toBeFalsy();
       const [firstListItem] = listItems;
       expect(listbox.getState().activeDescendant).toEqual(firstListItem);

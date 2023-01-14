@@ -89,6 +89,8 @@ describe('Tablist with default configuration', () => {
       expect(tablist).toBeInstanceOf(Tablist);
       expect(tablist.toString()).toEqual('[object Tablist]');
 
+      expect(tabs.id).toEqual(tablist.id);
+
       expect(tablist.getState().activeIndex).toEqual(0);
 
       expect(onInit).toHaveBeenCalledTimes(1);
