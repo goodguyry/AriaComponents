@@ -71,6 +71,9 @@ _**`target`**_ `HTMLElement`
 _**`options`**_ `array`  
 > The target element's list items.
 
+_**`activeDescendant`**_ `HTMLElement`  
+> Set and get selected option.
+
 ### Events
 
 | Event | Description |
