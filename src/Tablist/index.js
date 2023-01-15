@@ -25,6 +25,11 @@ export default class Tablist extends AriaComponent {
      */
     this[Symbol.toStringTag] = 'Tablist';
 
+    /**
+     * The list element containing tab links
+     *
+     * @type {HTMLULElement|HTMLOLElement}
+     */
     this.tabs = tabs;
 
     // Merge options as instance properties.
