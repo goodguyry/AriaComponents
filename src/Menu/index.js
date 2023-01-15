@@ -8,6 +8,14 @@ import Disclosure from '../Disclosure';
  */
 export default class Menu extends AriaComponent {
   /**
+   * Initial `autoClose` option value.
+   * @private
+   *
+   * @type {Boolean}
+   */
+  #optionAutoClose = false;
+
+  /**
    * Create a Menu.
    * @constructor
    *
@@ -35,7 +43,7 @@ export default class Menu extends AriaComponent {
     const {
       autoClose,
     } = {
-      autoClose: false,
+      autoClose: this.#optionAutoClose,
 
       ...options,
     };
@@ -62,6 +70,19 @@ export default class Menu extends AriaComponent {
   }
 
   /**
+   * Enables the Disclosures' `autoClose` option.
+   *
+   * @param {bool} shouldAutoClose Whether the Disclosure should close automatically.
+   */
+  set autoClose(shouldAutoClose) {
+    if (shouldAutoClose) {
+      this.on('disclosure.stateChange', this.handleAutoClose);
+    } else {
+      this.off('disclosure.stateChange', this.handleAutoClose);
+    }
+  }
+
+  /**
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init() {
@@ -81,8 +102,8 @@ export default class Menu extends AriaComponent {
         const disclosure = new Disclosure(
           itemLink,
           {
-            autoClose: this.autoClose,
-            allowOutsideClick: ! this.autoClose,
+            autoClose: this.#optionAutoClose,
+            allowOutsideClick: ! this.#optionAutoClose,
           }
         );
 

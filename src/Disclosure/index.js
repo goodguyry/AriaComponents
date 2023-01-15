@@ -10,7 +10,7 @@ import interactiveChildren from '../lib/interactiveChildren';
  */
 export default class Disclosure extends AriaComponent {
   /**
-   * Initial loadOpen option value.
+   * Initial `loadOpen` option value.
    * @private
    *
    * @type {Boolean}

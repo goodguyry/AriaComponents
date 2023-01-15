@@ -79,7 +79,7 @@ describe('The Disclosure should initialize as expected', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  test('Click events on the Diusclosure controller updates atttributes as expected', () => {
+  test('Click events on the Disclosure controller updates atttributes as expected', () => {
     // Click to open.
     controller.dispatchEvent(click);
     expect(onStateChange).toHaveBeenCalledTimes(1);
@@ -172,7 +172,7 @@ describe('The Disclosure should initialize as expected', () => {
       disclosure.allowOutsideClick = false;
     });
 
-    test('The Disclosure closes when an external element it clicked', () => {
+    test('The Disclosure closes when an external element is clicked', () => {
       document.body.dispatchEvent(click);
 
       expect(disclosure.getState().expanded).toBe(false);
