@@ -10,6 +10,14 @@ import interactiveChildren from '../lib/interactiveChildren';
  */
 export default class Disclosure extends AriaComponent {
   /**
+   * Initial expanded state.
+   * @private
+   *
+   * @type {Boolean}
+   */
+  #expanded = false;
+
+  /**
    * Initial `loadOpen` option value.
    * @private
    *
@@ -78,7 +86,6 @@ export default class Disclosure extends AriaComponent {
 
     // Bind class methods.
     this.init = this.init.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
     this.closeOnEscKey = this.closeOnEscKey.bind(this);
     this.closeOnTabOut = this.closeOnTabOut.bind(this);
@@ -90,8 +97,8 @@ export default class Disclosure extends AriaComponent {
     this.close = this.close.bind(this);
     this.toggle = this.toggle.bind(this);
 
-    // Initial component state.
-    this.state = { expanded: this.#optionLoadOpen };
+    // Update component state directly.
+    this.#expanded = this.#optionLoadOpen;
 
     this.init();
   }
@@ -124,12 +131,46 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
+   * Set expanded state and update attributes.
+   *
+   * @param {Object} state The component state.
+   */
+  set expanded(newState) {
+    // Update state.
+    this.#expanded = newState;
+
+    this.updateAttribute(this.controller, 'aria-expanded', this.expanded);
+    this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
+
+    // Allow or deny keyboard focus depending on component state.
+    if (this.expanded) {
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+    } else {
+      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+    }
+
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        expanded: this.expanded,
+      }
+    );
+  }
+
+  /**
+   * Get expanded state.
+   *
+   * @return {bool}
+   */
+  get expanded() {
+    return this.#expanded;
+  }
+
+  /**
    * Add initial attributes and listen for events
    */
   init() {
-    // Component state is initially set in the constructor.
-    const { expanded } = this.state;
-
     /**
      * Collect the target element's interactive child elements.
      *
@@ -149,7 +190,7 @@ export default class Disclosure extends AriaComponent {
     }
 
     // Add controller attributes
-    this.addAttribute(this.controller, 'aria-expanded', expanded);
+    this.addAttribute(this.controller, 'aria-expanded', this.expanded);
 
     // Patch button role and behavior for non-button controller.
     if ('BUTTON' !== this.controller.nodeName) {
@@ -182,7 +223,7 @@ export default class Disclosure extends AriaComponent {
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
      */
-    if (! expanded) {
+    if (! this.expanded) {
       this.addAttribute(this.target, 'aria-hidden', 'true');
     }
 
@@ -204,26 +245,6 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
-   * Update the component attributes based on updated state.
-   *
-   * @param {object} state The component state.
-   * @param {boolean} state.expanded The expected `expanded` state.
-   */
-  stateWasUpdated() {
-    const { expanded } = this.state;
-
-    this.updateAttribute(this.controller, 'aria-expanded', expanded);
-    this.updateAttribute(this.target, 'aria-hidden', (! expanded));
-
-    // Allow or deny keyboard focus depending on component state.
-    if (expanded) {
-      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-    } else {
-      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
-    }
-  }
-
-  /**
    * Treat the Spacebar and Return keys as clicks if the controller is not a <button>.
    *
    * @param {Event} event The event object.
@@ -241,7 +262,7 @@ export default class Disclosure extends AriaComponent {
    * @param {Event} event The Event object.
    */
   closeOnEscKey(event) {
-    if ('Escape' === event.key && this.state.expanded) {
+    if ('Escape' === event.key && this.expanded) {
       event.preventDefault();
 
       this.close();
@@ -277,7 +298,7 @@ export default class Disclosure extends AriaComponent {
    */
   closeOnOutsideClick(event) {
     if (
-      this.state.expanded
+      this.expanded
       && event.target !== this.controller
       && ! this.target.contains(event.target)
     ) {
@@ -292,11 +313,10 @@ export default class Disclosure extends AriaComponent {
    * @param {Event} event The Event object.
    */
   tabtoTarget(event) {
-    const { expanded } = this.state;
     const { key, shiftKey } = event;
 
     if (
-      expanded
+      this.expanded
       && ! shiftKey
       && 'Tab' === key
     ) {
@@ -346,7 +366,7 @@ export default class Disclosure extends AriaComponent {
     this.target.removeEventListener('keydown', this.closeOnEscKey);
 
     // Reset initial state.
-    this.state = { expanded: this.#optionLoadOpen };
+    this.#expanded = this.#optionLoadOpen;
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
@@ -356,20 +376,20 @@ export default class Disclosure extends AriaComponent {
    * Update component state to open the Disclosure.
    */
   open() {
-    this.setState({ expanded: true });
+    this.expanded = true;
   }
 
   /**
    * Update component state to close the Disclosure.
    */
   close() {
-    this.setState({ expanded: false });
+    this.expanded = false;
   }
 
   /**
    * Toggle the Disclosure expanded state.
    */
   toggle() {
-    this.setState({ expanded: ! this.state.expanded });
+    this.expanded = (! this.expanded);
   }
 }
