@@ -8,6 +8,13 @@ import Search from './Search';
  */
 export default class ListBox extends Popup {
   /**
+   * The initial selected option.
+   *
+   * @type {HTMLElement|null}
+   */
+  #selectedOption = null;
+
+  /**
    * Create a ListBox.
    * @constructor
    *
@@ -35,6 +42,48 @@ export default class ListBox extends Popup {
     this.destroy = this.destroy.bind(this);
 
     this.init();
+  }
+
+  /**
+   * Set the active descendant and update attributes accordingly.
+   *
+   * @param {HTMLElement} newSelection The option to set as selected.
+   */
+  set activeDescendant(newSelection) {
+    this.#selectedOption = newSelection;
+
+    /*
+     * Remove the `aria-selected` attribute from the previously-selected option
+     * and add it to the newly-selected option.
+     */
+    const selected = this.target.querySelector('[aria-selected="true"]');
+    if (null !== selected) {
+      this.updateAttribute(selected, 'aria-selected', null);
+    }
+
+    this.updateAttribute(this.activeDescendant, 'aria-selected', 'true');
+
+    /*
+     * If the selected option is beyond the bounds of the list, scroll it into
+     * view. Check this every time state is updated to ensure the selected
+     * option is always visible.
+     */
+    this.scrollOptionIntoView(this.activeDescendant);
+
+    /*
+     * Track the newly selected option via the `aria-activedescendant`
+     * attribute on the target.
+     */
+    this.updateAttribute(this.target, 'aria-activedescendant', this.activeDescendant.id);
+  }
+
+  /**
+   * Get the selected option.
+   *
+   * @return {HTMLElement} The selected option.
+   */
+  get activeDescendant() {
+    return this.#selectedOption;
   }
 
   /**
@@ -72,7 +121,7 @@ export default class ListBox extends Popup {
      *
      * @type {HTMLElement}
      */
-    this.state.activeDescendant = this.firstOption;
+    this.#selectedOption = this.firstOption;
 
     /*
      * Add the 'listbox' role to signify a component that presents a listbox of
@@ -102,52 +151,25 @@ export default class ListBox extends Popup {
   /**
    * Track the selected Listbox option.
    * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant
-   *
-   * @param {string[]} updatedProps The newly-updated state properties.
    */
-  stateWasUpdated(updatedProps) {
-    const { activeDescendant, expanded } = this.state;
+  stateWasUpdated() {
+    const { expanded } = this.state;
 
-    if (updatedProps.includes('expanded')) {
-      super.stateWasUpdated();
+    super.stateWasUpdated();
 
-      // The Popup is newly opened.
-      if (expanded) {
-        /*
-         * Focus the target (list) element when the Listbox is shown. Focus
-         * remains on the target element, with option selection coming through a
-         * combination of the `aria-selected` attribute on the option and the
-         * `aria-activedescendant` attribute on the target tracking the active
-         * option.
-         */
-        this.target.focus();
-      }
-    }
-
+    // The Popup is newly opened.
     if (expanded) {
       /*
-       * Remove the `aria-selected` attribute from the previously-selected option
-       * and add it to the newly-selected option.
+       * Focus the target (list) element when the Listbox is shown. Focus
+       * remains on the target element, with option selection coming through a
+       * combination of the `aria-selected` attribute on the option and the
+       * `aria-activedescendant` attribute on the target tracking the active
+       * option.
        */
-      const selected = this.target.querySelector('[aria-selected="true"]');
-      if (null !== selected) {
-        this.updateAttribute(selected, 'aria-selected', null);
-      }
+      this.target.focus();
 
-      this.updateAttribute(activeDescendant, 'aria-selected', 'true');
-
-      /*
-       * If the selected option is beyond the bounds of the list, scroll it into
-       * view. Check this every time state is updated to ensure the selected
-       * option is always visible.
-       */
-      this.scrollOptionIntoView(activeDescendant);
-
-      /*
-       * Track the newly selected option via the `aria-activedescendant`
-       * attribute on the target.
-       */
-      this.updateAttribute(this.target, 'aria-activedescendant', activeDescendant.id);
+      // Run the setter.
+      this.activeDescendant = this.#selectedOption;
     } else {
       /*
        * When the Popup is hidden, the `aria-activedescendant` attribute should
@@ -155,7 +177,7 @@ export default class ListBox extends Popup {
        * button text.
        */
       this.updateAttribute(this.target, 'aria-activedescendant', null);
-      this.controller.textContent = activeDescendant.textContent;
+      this.controller.textContent = this.activeDescendant.textContent;
 
       /*
        * If focus is within the Listbox, move focus to the controller. This
@@ -201,7 +223,6 @@ export default class ListBox extends Popup {
    * @param {Event} event The event object.
    */
   targetHandleKeydown(event) {
-    const { activeDescendant } = this.state;
     const { key } = event;
 
     // 'Escape' is handled via Popup.
@@ -228,12 +249,13 @@ export default class ListBox extends Popup {
       case 'ArrowUp':
       case 'ArrowDown': {
         const moveTo = ('ArrowUp' === key)
-          ? activeDescendant.previousElementSibling
-          : activeDescendant.nextElementSibling;
+          ? this.activeDescendant.previousElementSibling
+          : this.activeDescendant.nextElementSibling;
 
         if (moveTo) {
           event.preventDefault();
-          this.setState({ activeDescendant: moveTo });
+
+          this.activeDescendant = moveTo;
         }
 
         break;
@@ -244,7 +266,8 @@ export default class ListBox extends Popup {
        */
       case 'Home': {
         event.preventDefault();
-        this.setState({ activeDescendant: this.firstOption });
+
+        this.activeDescendant = this.firstOption;
 
         break;
       }
@@ -254,7 +277,8 @@ export default class ListBox extends Popup {
        */
       case 'End': {
         event.preventDefault();
-        this.setState({ activeDescendant: this.lastOption });
+
+        this.activeDescendant = this.lastOption;
 
         break;
       }
@@ -266,7 +290,7 @@ export default class ListBox extends Popup {
       default: {
         const itemToFocus = this.search.getItem(key);
         if (null != itemToFocus) {
-          this.setState({ activeDescendant: itemToFocus });
+          this.activeDescendant = itemToFocus;
         }
 
         break;
@@ -281,7 +305,7 @@ export default class ListBox extends Popup {
    * @param {Event} event The event object.
    */
   targetHandleClick(event) {
-    this.setState({ activeDescendant: event.target });
+    this.activeDescendant = event.target;
     this.hide();
   }
 

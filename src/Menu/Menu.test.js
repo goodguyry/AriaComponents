@@ -45,20 +45,26 @@ const onDestroy = jest.fn();
 // The `init` event is not trackable via on/off.
 list.addEventListener('menu.init', onInit);
 
-let menu = new Menu(list);
+let menu = null;
 
-menu.on('menu.stateChange', onStateChange);
-menu.on('menu.destroy', onDestroy);
+beforeAll(() => {
+  menu = new Menu(list);
 
-describe('Menu instatiates submenus as Disclosures', () => {
-  it('Should instantiate the Menu class with correct instance values', () => {
+  menu.on('menu.stateChange', onStateChange);
+  menu.on('menu.destroy', onDestroy);
+});
+
+describe('The Menu should initialize as expected', () => {
+  test('The Disclosure includes the expected property values', () => {
     expect(menu).toBeInstanceOf(Menu);
 
     expect(menu.disclosures[0].getState().expanded).toBe(false);
     expect(menu.disclosures[0]).toBeInstanceOf(Disclosure);
 
     expect(list.id).toEqual(menu.id);
+  });
 
+  test('The `init` event fires once', () => {
     expect(onInit).toHaveBeenCalledTimes(1);
 
     return Promise.resolve().then(() => {
@@ -68,35 +74,21 @@ describe('Menu instatiates submenus as Disclosures', () => {
     });
   });
 
-  describe('Destroying the Menu removes attributes', () => {
-    it('Should remove attributes on destroy', () => {
-      menu.destroy();
+  test('Submenu Disclosures stay open when another opens', () => {
+    menu.disclosures[0].open();
+    menu.disclosures[1].open();
 
-      expect(list.element).toBeUndefined();
-      expect(onDestroy).toHaveBeenCalledTimes(1);
+    expect(menu.disclosures[0].getState().expanded).toBeTruthy();
+    expect(menu.disclosures[1].getState().expanded).toBeTruthy();
 
-      expect(sublistOne.getAttribute('aria-hidden')).toBeNull();
-
-      // Quick and dirty verification that the original markup is restored.
-      expect(document.body.innerHTML).toEqual(menuMarkup);
-
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-      return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onDestroy);
-
-        expect(detail.element).toStrictEqual(list);
-        expect(detail.instance).toStrictEqual(menu);
-      });
-    });
-  });
-});
-
-describe('Menu the respects `autoClose` option', () => {
-  beforeAll(() => {
-    menu = new Menu(list, { autoClose: true });
+    menu.disclosures[0].open();
+    expect(menu.disclosures[0].getState().expanded).toBeTruthy();
+    expect(menu.disclosures[1].getState().expanded).toBeTruthy();
   });
 
-  it('Should close other Disclosures when one opens', () => {
+  test('With `autoClose` enabled, submenu Disclosures close when another opens', () => {
+    menu.autoClose = true;
+
     menu.disclosures[0].open();
     menu.disclosures[1].open();
 
@@ -106,5 +98,25 @@ describe('Menu the respects `autoClose` option', () => {
     menu.disclosures[0].open();
     expect(menu.disclosures[0].getState().expanded).toBeTruthy();
     expect(menu.disclosures[1].getState().expanded).toBeFalsy();
+  });
+
+  test('All attributes are removed from elements managed by the Menu', () => {
+    menu.destroy();
+
+    expect(list.element).toBeUndefined();
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+
+    expect(sublistOne.getAttribute('aria-hidden')).toBeNull();
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(menuMarkup);
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(list);
+      expect(detail.instance).toStrictEqual(menu);
+    });
   });
 });

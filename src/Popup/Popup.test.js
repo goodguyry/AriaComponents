@@ -43,8 +43,8 @@ popup.on('popup.stateChange', onStateChange);
 // Popup has to be instanitated.
 popup.init();
 
-describe('Popup adds and manipulates DOM element attributes', () => {
-  it('Should be instantiated as expected', () => {
+describe('The Popup should initialize as expected', () => {
+  test('The Popup includes the expected property values', () => {
     expect(popup).toBeInstanceOf(Popup);
     expect(popup.toString()).toEqual('[object Popup]');
 
@@ -52,7 +52,9 @@ describe('Popup adds and manipulates DOM element attributes', () => {
 
     expect(popup.firstInteractiveChild).toEqual(domFirstChild);
     expect(popup.lastInteractiveChild).toEqual(domLastChild);
+  });
 
+  test('The `init` event fires once', () => {
     expect(popup.getState().expanded).toBeFalsy();
 
     // All interactive children should initially have a negative tabindex.
@@ -61,7 +63,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     });
   });
 
-  it('Should add the correct attributes to the popup controller', () => {
+  test('The Popup controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
 
@@ -72,11 +74,11 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     expect(controller.getAttribute('aria-own')).toBeFalsy();
   });
 
-  it('Should add the correct attributes to the popup target', () => {
+  test('The Popup target includes the expected attribute values', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  it('Should fire `stateChange` event on state change: open', () => {
+  test('Expanded state changes update properties and attributes as expected', () => {
     popup.show();
     expect(popup.getState().expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(1);
@@ -90,7 +92,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     });
   });
 
-  it('Should fire `stateChange` event on state change: hidden', () => {
+  test('Hidden state changes update properties and attributes as expected', () => {
     popup.hide();
     expect(popup.getState().expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(2);
@@ -104,7 +106,7 @@ describe('Popup adds and manipulates DOM element attributes', () => {
     });
   });
 
-  it('Should update attributes when the controller is clicked', () => {
+  test('Click events on the Popup controller updates atttributes as expected', () => {
     // Click to open.
     controller.dispatchEvent(click);
     expect(popup.getState().expanded).toBeTruthy();
@@ -129,41 +131,25 @@ describe('Popup adds and manipulates DOM element attributes', () => {
       expect(link.getAttribute('tabindex')).toEqual('-1');
     });
   });
-
-  it('Should run class methods and subscriber functions', () => {
-    popup.show();
-    expect(onStateChange).toHaveBeenCalledTimes(5);
-
-    popup.hide();
-    expect(onStateChange).toHaveBeenCalledTimes(6);
-  });
 });
 
 describe('Popup correctly responds to events', () => {
   // Ensure the popup is open before all tests.
-  beforeEach(() => {
-    popup.show();
+  beforeEach(() => popup.show());
+
+  test('The Disclosure closes when the Escape key is pressed', () => {
+    controller.focus();
+    controller.dispatchEvent(keydownEscape);
+    expect(popup.getState().expanded).toBeFalsy();
+    expect(document.activeElement).toEqual(controller);
   });
 
-  it(
-    'Should close the popup when the Escape key is pressed',
-    () => {
-      controller.focus();
-      controller.dispatchEvent(keydownEscape);
-      expect(popup.getState().expanded).toBeFalsy();
-      expect(document.activeElement).toEqual(controller);
-    }
-  );
+  test('Should move focus to the first popup child on Tab from controller', () => {
+    controller.dispatchEvent(keydownTab);
+    expect(document.activeElement).toEqual(domFirstChild);
+  });
 
-  it(
-    'Should move focus to the first popup child on Tab from controller',
-    () => {
-      controller.dispatchEvent(keydownTab);
-      expect(document.activeElement).toEqual(domFirstChild);
-    }
-  );
-
-  it('Should update Popup state with keyboard', () => {
+  test('Should update Popup state with keyboard', () => {
     // Toggle popup
     controller.dispatchEvent(keydownSpace);
     expect(popup.getState().expanded).toBeFalsy();
@@ -174,8 +160,8 @@ describe('Popup correctly responds to events', () => {
   });
 
   // eslint-disable-next-line max-len
-  it(
-    'Should close the popup and focus the controller when the Escape key is pressed',
+  test(
+    'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
     () => {
       target.dispatchEvent(keydownEscape);
       expect(popup.getState().expanded).toBeFalsy();
@@ -183,44 +169,31 @@ describe('Popup correctly responds to events', () => {
     }
   );
 
-  it(
-    'Should close the popup when tabbing from the last child',
-    () => {
-      domLastChild.focus();
-      target.dispatchEvent(keydownTab);
-      expect(popup.getState().expanded).toBeFalsy();
-    }
-  );
+  test('The Disclosure closes when Tabbing from the last child', () => {
+    domLastChild.focus();
+    target.dispatchEvent(keydownTab);
+    expect(popup.getState().expanded).toBeFalsy();
+  });
 
-  it(
-    'Should not close the popup when tabbing back from the last child',
-    () => {
-      domLastChild.focus();
-      target.dispatchEvent(keydownShiftTab);
-      expect(popup.getState().expanded).toBeTruthy();
-    }
-  );
+  test('The Disclosure remains open when tabbing back from the last child', () => {
+    domLastChild.focus();
+    target.dispatchEvent(keydownShiftTab);
+    expect(popup.getState().expanded).toBeTruthy();
+  });
 
-  it(
-    'Should focus the controller when tabbing back from the first child',
-    () => {
-      domFirstChild.focus();
-      target.dispatchEvent(keydownShiftTab);
-      expect(document.activeElement).toEqual(controller);
-    }
-  );
+  test('Focus moves to the controller when tabbing back from the first child', () => {
+    domFirstChild.focus();
+    target.dispatchEvent(keydownShiftTab);
+    expect(document.activeElement).toEqual(controller);
+  });
 
-  it(
-    'Should close the popup when an outside element it clicked',
-    () => {
-      document.body.dispatchEvent(click);
-      expect(popup.getState().expanded).toBeFalsy();
-    }
-  );
-});
+  test('The Disclosure closes when an external element is clicked', () => {
+    document.body.dispatchEvent(click);
 
-describe('Popup destroy', () => {
-  it('Should destroy the popup as expected', () => {
+    expect(popup.getState().expanded).toBeFalsy();
+  });
+
+  test('All attributes are removed from elements managed by the Disclosure', () => {
     popup.destroy();
 
     if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {

@@ -60,113 +60,44 @@ const modal = new Dialog(target);
 modal.on('dialog.stateChange', onStateChange);
 modal.on('dialog.destroy', onDestroy);
 
-describe('Dialog with default configuration', () => {
-  beforeEach(() => {
-    modal.hide();
+describe('The Dialog should initialize as expected', () => {
+  test('The Dialog includes the expected property values', () => {
+    expect(modal).toBeInstanceOf(Dialog);
+    expect(modal.toString()).toEqual('[object Dialog]');
+
+    expect(modal.getState().expanded).toBe(false);
   });
 
-  describe('Dialog adds and manipulates DOM element attributes', () => {
-    it('Should be instantiated as expected', () => {
-      expect(modal).toBeInstanceOf(Dialog);
-      expect(modal.toString()).toEqual('[object Dialog]');
+  test('The `init` event fires once', () => {
+    expect(onInit).toHaveBeenCalledTimes(1);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
 
-      expect(modal.getState().expanded).toBeFalsy();
-
-      expect(onInit).toHaveBeenCalledTimes(1);
-      return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onInit);
-
-        expect(detail.instance).toStrictEqual(modal);
-      });
-    });
-
-    it('Should add the correct attributes', () => {
-      expect(target.getAttribute('tabindex')).toEqual('0');
-
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-
-      expect(target.getAttribute('role')).toEqual('dialog');
-      expect(target.getAttribute('aria-modal')).toEqual('true');
+      expect(detail.instance).toStrictEqual(modal);
     });
   });
 
-  describe('Dialog class methods', () => {
-    it('Should reflect the accurate state', () => {
-      modal.show();
-      expect(modal.getState().expanded).toBeTruthy();
-      expect(document.activeElement).toEqual(target);
-      // beforeEach * 3 + 1 from modal.show().
-      expect(onStateChange).toHaveBeenCalledTimes(4);
+  test('The Dialog controller includes the expected attribute values', () => {
+    expect(target.getAttribute('tabindex')).toEqual('0');
 
-      modal.hide();
-      expect(modal.getState().expanded).toBeFalsy();
-      expect(document.activeElement).toEqual(controller);
-      expect(onStateChange).toHaveBeenCalledTimes(5);
-    });
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+
+    expect(target.getAttribute('role')).toEqual('dialog');
+    expect(target.getAttribute('aria-modal')).toEqual('true');
   });
 
-  describe('Dialog correctly responds to events', () => {
-    beforeEach(() => {
-      modal.show();
-    });
-
-    it('Should update attributes when the controller is clicked', () => {
-      modal.hide();
-      expect(modal.getState().expanded).toBeFalsy();
-      expect(footer.getAttribute('aria-hidden')).toBeNull();
-      expect(content.getAttribute('aria-hidden')).toBeNull();
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-
-      // Click to re-open.
-      controller.dispatchEvent(click);
-      expect(modal.getState().expanded).toBeTruthy();
-      expect(footer.getAttribute('aria-hidden')).toEqual('true');
-      expect(content.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
-    });
-
-    it('Should set the close button', () => {
-      modal.setCloseButton(firstItem);
-      firstItem.dispatchEvent(click);
-
-      expect(modal.getState().expanded).toBeFalsy();
-      expect(footer.getAttribute('aria-hidden')).toBeNull();
-      expect(content.getAttribute('aria-hidden')).toBeNull();
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-    });
-
-    it('Should trap keyboard tabs within the modal', () => {
-      firstItem.focus();
-      firstItem.dispatchEvent(keydownShiftTab);
-      expect(document.activeElement).toEqual(lastItem);
-
-      lastItem.focus();
-      lastItem.dispatchEvent(keydownTab);
-      expect(document.activeElement).toEqual(firstItem);
-    });
-
-    it('Should close when the Escape key is pressed', () => {
-      lastItem.focus();
-      lastItem.dispatchEvent(keydownEscape);
-      expect(modal.getState().expanded).toBeFalsy();
-    });
-
-    it('Should move focus back from outside', () => {
-      outsideLink.focus();
-      outsideLink.dispatchEvent(keydownTab);
-      expect(document.activeElement).toEqual(firstItem);
-    });
-
-    it('Should not close on outside click', () => {
-      document.body.dispatchEvent(click);
-      expect(modal.getState().expanded).toBeTruthy();
-    });
-  });
-
-  it('Should fire `stateChange` event on state change: open', () => {
+  test('The Dialog state and attributes are accurate when opened', () => {
     modal.show();
     expect(modal.getState().expanded).toBe(true);
-    expect(onStateChange).toHaveBeenCalled();
+    expect(document.activeElement).toEqual(target);
+
+    expect(footer.getAttribute('aria-hidden')).toEqual('true');
+    expect(content.getAttribute('aria-hidden')).toEqual('true');
+    expect(target.getAttribute('aria-hidden')).toEqual('false');
+  });
+
+  test('The `stateChange` event fires when the Dialog is opened', () => {
+    expect(onStateChange).toHaveBeenCalledTimes(1);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
@@ -177,22 +108,73 @@ describe('Dialog with default configuration', () => {
     });
   });
 
-  describe('Destroying the Dialog removes attributes', () => {
-    it('Should remove properties and attributes on destroy', () => {
-      modal.destroy();
+  test('The Dialog state and attributes are accurate when closed', () => {
+    modal.hide();
+    expect(modal.getState().expanded).toBe(false);
+    expect(document.activeElement).toEqual(controller);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
 
-      expect(target.getAttribute('aria-hidden')).toBeNull();
+    expect(footer.getAttribute('aria-hidden')).toBeNull();
+    expect(content.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+  });
+});
 
-      // Quick and dirty verification that the original markup is restored.
-      expect(document.body.innerHTML).toEqual(dialogMarkup);
+describe('The Dialog correctly responds to events', () => {
+  beforeEach(() => modal.show());
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-      return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onDestroy);
+  test('The Dialog traps keyboard tabs', () => {
+    firstItem.focus();
+    firstItem.dispatchEvent(keydownShiftTab);
+    expect(document.activeElement).toEqual(lastItem);
 
-        expect(detail.element).toStrictEqual(target);
-        expect(detail.instance).toStrictEqual(modal);
-      });
-    });
+    lastItem.focus();
+    lastItem.dispatchEvent(keydownTab);
+    expect(document.activeElement).toEqual(firstItem);
+  });
+
+  test('The `setCloseButton` method connects the close button', () => {
+    modal.setCloseButton(firstItem);
+    firstItem.dispatchEvent(click);
+
+    expect(modal.getState().expanded).toBe(false);
+    expect(footer.getAttribute('aria-hidden')).toBeNull();
+    expect(content.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+  });
+
+  // What was this in response to?
+  test('Focus moves back to the Dialog from outside', () => {
+    outsideLink.focus();
+    outsideLink.dispatchEvent(keydownTab);
+    expect(document.activeElement).toEqual(firstItem);
+  });
+
+  test('The Dialog closes when the Escape key is pressed', () => {
+    lastItem.focus();
+    lastItem.dispatchEvent(keydownEscape);
+    expect(modal.getState().expanded).toBe(false);
+  });
+
+  test('The Dialog remains open when external content is clicked', () => {
+    document.body.dispatchEvent(click);
+    expect(modal.getState().expanded).toBe(true);
+  });
+});
+
+test('All attributes are removed from elements managed by the Disclosure', () => {
+  modal.destroy();
+
+  expect(target.getAttribute('aria-hidden')).toBeNull();
+
+  // Quick and dirty verification that the original markup is restored.
+  expect(document.body.innerHTML).toEqual(dialogMarkup);
+
+  expect(onDestroy).toHaveBeenCalledTimes(1);
+  return Promise.resolve().then(() => {
+    const { detail } = getEventDetails(onDestroy);
+
+    expect(detail.element).toStrictEqual(target);
+    expect(detail.instance).toStrictEqual(modal);
   });
 });

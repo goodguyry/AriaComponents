@@ -8,6 +8,14 @@ import interactiveChildren from '../lib/interactiveChildren';
  */
 export default class Popup extends AriaComponent {
   /**
+   * Initial `type` option value.
+   * @private
+   *
+   * @type {Boolean}
+   */
+  #optionType = 'true'; // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+
+  /**
    * Create a MenuBar.
    * @constructor
    *
@@ -37,13 +45,13 @@ export default class Popup extends AriaComponent {
        *
        * @type {string}
        */
-      type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
+      type: this.#optionType,
 
       ...options,
     };
 
     // Set options.
-    this.type = type;
+    this.#optionType = type;
 
     // Intial component state.
     this.state = { expanded: false };
@@ -93,7 +101,7 @@ export default class Popup extends AriaComponent {
     }
 
     // Add controller attributes
-    this.addAttribute(this.controller, 'aria-haspopup', this.type);
+    this.addAttribute(this.controller, 'aria-haspopup', this.#optionType);
     this.addAttribute(this.controller, 'aria-expanded', 'false');
 
     // Patch button role and behavior for non-button controller.
