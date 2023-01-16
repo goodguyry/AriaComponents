@@ -7,6 +7,14 @@ import interactiveChildren from '../lib/interactiveChildren';
  */
 export default class Dialog extends AriaComponent {
   /**
+   * Initial state.
+   * @private
+   *
+   * @type {Boolean}
+   */
+  #expanded = false;
+
+  /**
    * Create a Dialog.
    * @constructor
    *
@@ -58,6 +66,59 @@ export default class Dialog extends AriaComponent {
     this.destroy = this.destroy.bind(this);
 
     this.init();
+  }
+
+  /**
+   * Set expanded state and update attributes.
+   *
+   * @param {Object} state The component state.
+   */
+  set expanded(newState) {
+    // Update state.
+    this.#expanded = newState;
+
+    const contentLength = this.content.length;
+
+    this.setInteractiveChildren();
+
+    for (let i = 0; i < contentLength; i += 1) {
+      this.updateAttribute(this.content[i], 'aria-hidden', (this.expanded || null));
+    }
+
+    // Update target element.
+    this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
+
+    if (this.expanded) {
+      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+
+      document.body.addEventListener('keydown', this.handleOutsideKeydown);
+
+      this.target.focus();
+    } else {
+      // Focusable content should have tabindex='-1' or be removed from the DOM.
+      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+
+      document.body.removeEventListener('keydown', this.handleOutsideKeydown);
+
+      this.controller.focus();
+    }
+
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        expanded: this.expanded,
+      }
+    );
+  }
+
+  /**
+   * Get expanded state.
+   *
+   * @return {bool}
+   */
+  get expanded() {
+    return this.#expanded;
   }
 
   /**
@@ -153,49 +214,8 @@ export default class Dialog extends AriaComponent {
       this.controller.addEventListener('keydown', this.controllerHandleKeydown);
     }
 
-    /**
-     * Set initial state.
-     *
-     * @type {object}
-     */
-    this.state = { expanded: false };
-
     // Fire the init event.
     this.dispatchEventInit();
-  }
-
-  /**
-   * Update element attributes and event listeners when the Popup's state changes.
-   *
-   * @param {Object} state The component state.
-   */
-  stateWasUpdated() {
-    const { expanded } = this.state;
-    const contentLength = this.content.length;
-
-    this.setInteractiveChildren();
-
-    for (let i = 0; i < contentLength; i += 1) {
-      this.updateAttribute(this.content[i], 'aria-hidden', (expanded || null));
-    }
-
-    // Update target element.
-    this.updateAttribute(this.target, 'aria-hidden', (! expanded));
-
-    if (expanded) {
-      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-
-      document.body.addEventListener('keydown', this.handleOutsideKeydown);
-
-      this.target.focus();
-    } else {
-      // Focusable content should have tabindex='-1' or be removed from the DOM.
-      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
-
-      document.body.removeEventListener('keydown', this.handleOutsideKeydown);
-
-      this.controller.focus();
-    }
   }
 
   /**
@@ -217,9 +237,7 @@ export default class Dialog extends AriaComponent {
    * @param {Event} event The Event object.
    */
   outsideClick(event) {
-    const { expanded } = this.state;
-
-    if (expanded && ! this.target.contains(event.target)) {
+    if (this.expanded && ! this.target.contains(event.target)) {
       this.hide();
     }
   }
@@ -259,9 +277,8 @@ export default class Dialog extends AriaComponent {
    */
   targetHandleKeydown(event) {
     const { key, shiftKey } = event;
-    const { expanded } = this.state;
 
-    if (expanded && 'Tab' === key) {
+    if (this.expanded && 'Tab' === key) {
       const { activeElement } = document;
 
       if (
@@ -352,7 +369,7 @@ export default class Dialog extends AriaComponent {
     }
 
     // Reset initial state.
-    this.state = { expanded: false };
+    this.#expanded = false;
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
@@ -362,13 +379,13 @@ export default class Dialog extends AriaComponent {
    * Show the Dialog.
    */
   show() {
-    this.setState({ expanded: true });
+    this.expanded = true;
   }
 
   /**
    * Hide the Dialog.
    */
   hide() {
-    this.setState({ expanded: false });
+    this.expanded = false;
   }
 }
