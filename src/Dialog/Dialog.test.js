@@ -65,7 +65,7 @@ describe('The Dialog should initialize as expected', () => {
     expect(modal).toBeInstanceOf(Dialog);
     expect(modal.toString()).toEqual('[object Dialog]');
 
-    expect(modal.getState().expanded).toBe(false);
+    expect(modal.expanded).toBe(false);
   });
 
   test('The `init` event fires once', () => {
@@ -87,8 +87,8 @@ describe('The Dialog should initialize as expected', () => {
   });
 
   test('The Dialog state and attributes are accurate when opened', () => {
-    modal.show();
-    expect(modal.getState().expanded).toBe(true);
+    modal.expanded = true;
+    expect(modal.expanded).toBe(true);
     expect(document.activeElement).toEqual(target);
 
     expect(footer.getAttribute('aria-hidden')).toEqual('true');
@@ -102,15 +102,14 @@ describe('The Dialog should initialize as expected', () => {
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.props).toMatchObject(['expanded']);
-      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.expanded).toBe(true);
       expect(detail.instance).toStrictEqual(modal);
     });
   });
 
   test('The Dialog state and attributes are accurate when closed', () => {
-    modal.hide();
-    expect(modal.getState().expanded).toBe(false);
+    modal.expanded = false;
+    expect(modal.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
@@ -121,7 +120,9 @@ describe('The Dialog should initialize as expected', () => {
 });
 
 describe('The Dialog correctly responds to events', () => {
-  beforeEach(() => modal.show());
+  beforeEach(() => {
+    modal.expanded = true;
+  });
 
   test('The Dialog traps keyboard tabs', () => {
     firstItem.focus();
@@ -137,7 +138,7 @@ describe('The Dialog correctly responds to events', () => {
     modal.setCloseButton(firstItem);
     firstItem.dispatchEvent(click);
 
-    expect(modal.getState().expanded).toBe(false);
+    expect(modal.expanded).toBe(false);
     expect(footer.getAttribute('aria-hidden')).toBeNull();
     expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
@@ -153,12 +154,12 @@ describe('The Dialog correctly responds to events', () => {
   test('The Dialog closes when the Escape key is pressed', () => {
     lastItem.focus();
     lastItem.dispatchEvent(keydownEscape);
-    expect(modal.getState().expanded).toBe(false);
+    expect(modal.expanded).toBe(false);
   });
 
   test('The Dialog remains open when external content is clicked', () => {
     document.body.dispatchEvent(click);
-    expect(modal.getState().expanded).toBe(true);
+    expect(modal.expanded).toBe(true);
   });
 });
 
