@@ -32,6 +32,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Components track attributes they add and will only overwrite existing attribute values where required (#73)
 - Adds an autoClose option to Disclosure and Menu (#75, #76)
 - Adds event namespaces: `'<componentName>.<eventName>'` (#77)
+- Some options can be set after the component initializes (#82)
 
 **Fixed**
 
