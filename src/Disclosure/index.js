@@ -116,10 +116,10 @@ export default class Disclosure extends AriaComponent {
    *                                        when the user interacts with external content
    */
   set allowOutsideClick(shouldAllowOutsideClick) {
-    if (! shouldAllowOutsideClick) {
-      document.body.addEventListener('click', this.closeOnOutsideClick);
-    } else {
+    if (shouldAllowOutsideClick) {
       document.body.removeEventListener('click', this.closeOnOutsideClick);
+    } else {
+      document.body.addEventListener('click', this.closeOnOutsideClick);
     }
   }
 
