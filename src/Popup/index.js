@@ -8,6 +8,14 @@ import interactiveChildren from '../lib/interactiveChildren';
  */
 export default class Popup extends AriaComponent {
   /**
+   * Initial expanded state.
+   * @private
+   *
+   * @type {Boolean}
+   */
+  #expanded = false;
+
+  /**
    * Initial `type` option value.
    * @private
    *
@@ -54,11 +62,10 @@ export default class Popup extends AriaComponent {
     this.#optionType = type;
 
     // Intial component state.
-    this.state = { expanded: false };
+    this.expanded = this.#expanded;
 
     // Bind class methods.
     this.init = this.init.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -145,25 +152,39 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Update the component attributes based on updated state.
-   *
-   * @param {object} state The component state.
+   * Update the component attributes based on new state.
    */
-  stateWasUpdated() {
-    const { expanded } = this.state;
+  set expanded(newState) {
+    // Update state.
+    this.#expanded = newState;
 
-    this.updateAttribute(this.controller, 'aria-expanded', expanded);
-    this.updateAttribute(this.target, 'aria-hidden', (! expanded));
+    this.updateAttribute(this.controller, 'aria-expanded', this.expanded);
+    this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
 
-    /*
-     * Update Popup and interactive children's attributes.
-     */
-    if (expanded) {
+    // Allow or deny keyboard focus depending on component state.
+    if (this.expanded) {
       this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     } else {
       // Focusable content should have tabindex='-1' or be removed from the DOM.
-      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+      (this.interactiveChildElements || []).forEach((item) => item.setAttribute('tabindex', '-1'));
     }
+
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        expanded: this.expanded,
+      }
+    );
+  }
+
+  /**
+   * Get expanded state.
+   *
+   * @return {bool}
+   */
+  get expanded() {
+    return this.#expanded;
   }
 
   /**
@@ -172,10 +193,9 @@ export default class Popup extends AriaComponent {
    * @param {Event} event The event object.
    */
   popupControllerKeydown(event) {
-    const { expanded } = this.state;
     const { key } = event;
 
-    if (expanded && 'Escape' === key) {
+    if (this.expanded && 'Escape' === key) {
       event.preventDefault();
 
       /*
@@ -208,10 +228,9 @@ export default class Popup extends AriaComponent {
    */
   popupTargetKeydown(event) {
     const { key, shiftKey } = event;
-    const { expanded } = this.state;
     const { activeElement } = document;
 
-    if (expanded && 'Escape' === key) {
+    if (this.expanded && 'Escape' === key) {
       event.preventDefault();
 
       /*
@@ -246,11 +265,10 @@ export default class Popup extends AriaComponent {
    * @param {Event} event The event object.
    */
   hideOnTabOut(event) {
-    const { expanded } = this.state;
     const { key, shiftKey } = event;
 
     if (
-      expanded
+      this.expanded
       && ! shiftKey
       && 'Tab' === key
     ) {
@@ -265,11 +283,10 @@ export default class Popup extends AriaComponent {
    * @param {Event} event The event object.
    */
   hideOnOutsideClick(event) {
-    const { expanded } = this.state;
     const { target: eventTarget } = event;
 
     if (
-      expanded
+      this.expanded
       && eventTarget !== this.controller
       && ! this.target.contains(eventTarget)
     ) {
@@ -284,11 +301,10 @@ export default class Popup extends AriaComponent {
    * @param {Event} event The Event object.
    */
   tabtoTarget(event) {
-    const { expanded } = this.state;
     const { key, shiftKey } = event;
 
     if (
-      expanded
+      this.expanded
       && ! shiftKey
       && 'Tab' === key
     ) {
@@ -343,21 +359,21 @@ export default class Popup extends AriaComponent {
     document.body.removeEventListener('click', this.hideOnOutsideClick);
 
     // Reset initial state.
-    this.state = { expanded: false };
+    this.#expanded = false;
   }
 
   /**
    * Update component state to show the target element.
    */
   show() {
-    this.setState({ expanded: true });
+    this.expanded = true;
   }
 
   /**
    * Update component state to hide the target element.
    */
   hide() {
-    this.setState({ expanded: false });
+    this.expanded = false;
   }
 
   /**
@@ -367,8 +383,7 @@ export default class Popup extends AriaComponent {
     if (null != event) {
       event.preventDefault();
     }
-    const { expanded } = this.state;
 
-    this.setState({ expanded: ! expanded });
+    this.expanded = (! this.expanded);
   }
 }
