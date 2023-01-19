@@ -67,13 +67,6 @@ export default class AriaComponent {
     this.stringDescription = 'AriaComponent';
 
     /**
-     * Component state.
-     *
-     * @type {object}
-     */
-    this.state = {};
-
-    /**
      * Save search characters
      *
      * @type {string}

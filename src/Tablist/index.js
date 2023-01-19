@@ -121,9 +121,6 @@ export default class Tablist extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init() {
-    // Intial component state.
-    this.state = { activeIndex: 0 };
-
     /**
      * Tablist anchor elements.
      *
@@ -161,9 +158,6 @@ export default class Tablist extends AriaComponent {
       }
     }
 
-    // Component state is initially set in the constructor.
-    const { activeIndex } = this.state;
-
     /*
      * The`tablist` role indicates that the list is a container for a set of tabs.
      *
@@ -186,7 +180,7 @@ export default class Tablist extends AriaComponent {
       // Add the `tab` role to indicate its relationship to the Tablist.
       this.addAttribute(tab, 'role', 'tab');
 
-      if (activeIndex !== index) {
+      if (this.activeIndex !== index) {
         // Don't allow focus on inactive tabs.
         this.addAttribute(tab, 'tabindex', '-1');
       } else {
@@ -207,7 +201,7 @@ export default class Tablist extends AriaComponent {
       this.addAttribute(panel, 'aria-labelledby', this.tabLinks[index].id);
 
       // All but the first tab should be hidden by default.
-      if (activeIndex === index) {
+      if (this.activeIndex === index) {
         this.addAttribute(panel, 'tabindex', '0');
         this.addAttribute(panel, 'aria-hidden', 'false');
       } else {
@@ -219,7 +213,7 @@ export default class Tablist extends AriaComponent {
     });
 
     // Save the active panel's interactive children.
-    this.interactiveChildElements = interactiveChildren(this.panels[activeIndex]); // eslint-disable-line max-len
+    this.interactiveChildElements = interactiveChildren(this.panels[this.activeIndex]); // eslint-disable-line max-len
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -231,7 +225,6 @@ export default class Tablist extends AriaComponent {
    * @param {Event} event The event object.
    */
   panelHandleKeydown(event) {
-    const { activeIndex } = this.state;
     const { key, shiftKey } = event;
     const { activeElement } = document;
     const [firstInteractiveChild] = this.interactiveChildElements;

@@ -314,7 +314,7 @@ export default class ListBox extends Popup {
    */
   targetHandleBlur() {
     // Use Popup state here, since the Popup drives the Listbox state.
-    if (this.state.expanded) {
+    if (this.expanded) {
       this.hide();
     }
   }

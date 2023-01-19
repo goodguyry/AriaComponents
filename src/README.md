@@ -9,9 +9,6 @@ Extend the `AriaComponent` class to get access to the methods below.
 
 ### Instance Methods
 
-_**`getState()`**_
-> Returns an object representing the current component state.
-
 _**`toString()`**_  
 > `'[object AriaComponent]'`
 
