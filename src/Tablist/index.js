@@ -10,6 +10,13 @@ import getElementPair from '../lib/getElementPair';
  */
 export default class Tablist extends AriaComponent {
   /**
+   * The initial active index.
+   *
+   * @type {Number}
+   */
+  #activeIndex = 0;
+
+  /**
    * Create a Tablist.
    * @constructor
    *
@@ -41,7 +48,6 @@ export default class Tablist extends AriaComponent {
     this.tabsHandleClick = this.tabsHandleClick.bind(this);
     this.switchTo = this.switchTo.bind(this);
     this.destroy = this.destroy.bind(this);
-    this.stateWasUpdated = this.stateWasUpdated.bind(this);
 
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(tabs.nodeName)) {
@@ -51,6 +57,64 @@ export default class Tablist extends AriaComponent {
         'Expected component element nodeName to be `UL`'
       );
     }
+  }
+
+  /**
+   * Set the active index and update attributes accordingly.
+   *
+   * @param {Number} newIndex The index to set as active.
+   */
+  set activeIndex(newIndex) {
+    this.#activeIndex = newIndex;
+
+    // Get the tab currently designated as `aria-selected`.
+    const deactivate = this.tabLinks.find((tab) => ('true' === tab.getAttribute('aria-selected')));
+
+    // Get the index; this is essentially the previous `activeIndex` state.
+    const deactiveIndex = this.tabLinks.indexOf(deactivate);
+
+    // Deactivate the previously-selected tab.
+    this.updateAttribute(deactivate, 'tabindex', '-1');
+    this.updateAttribute(deactivate, 'aria-selected', null);
+
+    // Deactivate the previously-active panel.
+    this.updateAttribute(this.panels[deactiveIndex], 'aria-hidden', 'true');
+    this.updateAttribute(this.panels[deactiveIndex], 'tabindex', null);
+
+    // Prevent tabbing to interactive children of the deactivated panel.
+    interactiveChildren(this.panels[deactiveIndex]).forEach((item) => (
+      item.setAttribute('tabindex', '-1')
+    ));
+
+    // Actvate the newly active tab.
+    this.updateAttribute(this.tabLinks[this.activeIndex], 'tabindex', null);
+    this.updateAttribute(this.tabLinks[this.activeIndex], 'aria-selected', 'true');
+
+    // Actvate the newly active panel.
+    this.updateAttribute(this.panels[this.activeIndex], 'aria-hidden', 'false');
+    this.updateAttribute(this.panels[this.activeIndex], 'tabindex', '0');
+
+    // Allow tabbing to the newly-active panel.
+    interactiveChildren(this.panels[this.activeIndex]).forEach((item) => (
+      item.removeAttribute('tabindex')
+    ));
+
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        activeIndex: this.activeIndex,
+      }
+    );
+  }
+
+  /**
+   * Get the active index.
+   *
+   * @return {Number}
+   */
+  get activeIndex() {
+    return this.#activeIndex;
   }
 
   /**
@@ -162,48 +226,6 @@ export default class Tablist extends AriaComponent {
   }
 
   /**
-   * Update tab and panel attributes based on component state.
-   *
-   * @param {object} state The component state.
-   * @param {number} state.activeIndex The active index of both tabs and panels.
-   */
-  stateWasUpdated() {
-    const { activeIndex } = this.state;
-
-    // Get the tab currently designated as `aria-selected`.
-    const deactivate = this.tabLinks.find((tab) => ('true' === tab.getAttribute('aria-selected')));
-
-    // Get the index; this is essentially the previous `activeIndex` state.
-    const deactiveIndex = this.tabLinks.indexOf(deactivate);
-
-    // Deactivate the previously-selected tab.
-    this.updateAttribute(deactivate, 'tabindex', '-1');
-    this.updateAttribute(deactivate, 'aria-selected', null);
-
-    // Deactivate the previously-active panel.
-    this.updateAttribute(this.panels[deactiveIndex], 'aria-hidden', 'true');
-    this.updateAttribute(this.panels[deactiveIndex], 'tabindex', null);
-
-    // Prevent tabbing to interactive children of the deactivated panel.
-    interactiveChildren(this.panels[deactiveIndex]).forEach((item) => (
-      item.setAttribute('tabindex', '-1')
-    ));
-
-    // Actvate the newly active tab.
-    this.updateAttribute(this.tabLinks[activeIndex], 'tabindex', null);
-    this.updateAttribute(this.tabLinks[activeIndex], 'aria-selected', 'true');
-
-    // Actvate the newly active panel.
-    this.updateAttribute(this.panels[activeIndex], 'aria-hidden', 'false');
-    this.updateAttribute(this.panels[activeIndex], 'tabindex', '0');
-
-    // Allow tabbing to the newly-active panel.
-    interactiveChildren(this.panels[activeIndex]).forEach((item) => (
-      item.removeAttribute('tabindex')
-    ));
-  }
-
-  /**
    * Handle keydown events on the tabpanels.
    *
    * @param {Event} event The event object.
@@ -215,16 +237,16 @@ export default class Tablist extends AriaComponent {
     const [firstInteractiveChild] = this.interactiveChildElements;
 
     if ('Tab' === key && shiftKey) {
-      if (activeElement === this.panels[activeIndex]) {
+      if (activeElement === this.panels[this.activeIndex]) {
         event.preventDefault();
-        this.tabLinks[activeIndex].focus();
+        this.tabLinks[this.activeIndex].focus();
       } else if (activeElement === firstInteractiveChild) {
         /*
          * Ensure navigating with Shift-Tab from the first interactive child of
          * the active panel returns focus to the active panel.
          */
         event.preventDefault();
-        this.panels[activeIndex].focus();
+        this.panels[this.activeIndex].focus();
       }
     }
   }
@@ -353,7 +375,7 @@ export default class Tablist extends AriaComponent {
    * @param {number} index The zero-based tab index to activate.
    */
   switchTo(index) {
-    this.setState({ activeIndex: index });
+    this.activeIndex = index;
   }
 
   /**

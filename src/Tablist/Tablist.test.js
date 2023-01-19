@@ -88,7 +88,7 @@ describe('The Tablist should initialize as expected', () => {
 
     expect(tabs.id).toEqual(tablist.id);
 
-    expect(tablist.getState().activeIndex).toEqual(0);
+    expect(tablist.activeIndex).toEqual(0);
   });
 
   test('The `init` event fires once', () => {
@@ -173,14 +173,13 @@ describe('The Tablist should initialize as expected', () => {
     test('The `stateChange` event is dispatched when a tab is actiuvated', () => {
       tablist.switchTo(1);
 
-      expect(tablist.getState().activeIndex).toBe(1);
+      expect(tablist.activeIndex).toBe(1);
       expect(onStateChange).toHaveBeenCalled();
 
       return Promise.resolve().then(() => {
         const { detail } = getEventDetails(onStateChange);
 
-        expect(detail.props).toMatchObject(['activeIndex']);
-        expect(detail.state).toStrictEqual({ activeIndex: 1 });
+        expect(detail.activeIndex).toBe(1);
         expect(detail.instance).toStrictEqual(tablist);
       });
     });
@@ -225,7 +224,7 @@ describe('The Tablist should initialize as expected', () => {
 
     test('Keyboard events navigate to and from tabs', () => {
       tablist.switchTo(0);
-      expect(tablist.getState().activeIndex).toEqual(0);
+      expect(tablist.activeIndex).toEqual(0);
 
       firstTab.dispatchEvent(keydownTab);
       expect(document.activeElement).toEqual(firstPanel);
@@ -281,7 +280,7 @@ describe('The Tablist should initialize as expected', () => {
       secondTab.focus();
       secondTab.dispatchEvent(keydownHome);
       expect(document.activeElement).toEqual(firstTab);
-      expect(tablist.getState().activeIndex).toEqual(0);
+      expect(tablist.activeIndex).toEqual(0);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
     });
 
@@ -291,7 +290,7 @@ describe('The Tablist should initialize as expected', () => {
       secondTab.focus();
       secondTab.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(thirdTab);
-      expect(tablist.getState().activeIndex).toEqual(2);
+      expect(tablist.activeIndex).toEqual(2);
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
     });
 
