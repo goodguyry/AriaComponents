@@ -39,6 +39,7 @@ export default class ListBox extends Popup {
     this.targetHandleClick = this.targetHandleClick.bind(this);
     this.targetHandleBlur = this.targetHandleBlur.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
+    this.afterPopupStateChange = this.afterPopupStateChange.bind(this);
     this.destroy = this.destroy.bind(this);
 
     this.init();
@@ -144,6 +145,9 @@ export default class ListBox extends Popup {
     // Prevent scrolling when using arrow up/down on the button.
     window.addEventListener('keydown', this.preventWindowScroll);
 
+    // Listen for Popup state changes; prefix due to override in constructor.
+    this.on('listbox.stateChange', this.afterPopupStateChange);
+
     // Fire the init event.
     this.dispatchEventInit();
   }
@@ -152,13 +156,9 @@ export default class ListBox extends Popup {
    * Track the selected Listbox option.
    * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_activedescendant
    */
-  stateWasUpdated() {
-    const { expanded } = this.state;
-
-    super.stateWasUpdated();
-
+  afterPopupStateChange() {
     // The Popup is newly opened.
-    if (expanded) {
+    if (this.expanded) {
       /*
        * Focus the target (list) element when the Listbox is shown. Focus
        * remains on the target element, with option selection coming through a
