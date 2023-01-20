@@ -60,7 +60,7 @@ export default class Dialog extends AriaComponent {
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
-    this.handleOutsideKeydown = this.handleOutsideKeydown.bind(this);
+    this.handleBodyKeydown = this.handleBodyKeydown.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
     this.destroy = this.destroy.bind(this);
@@ -91,14 +91,14 @@ export default class Dialog extends AriaComponent {
     if (this.expanded) {
       this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
-      document.body.addEventListener('keydown', this.handleOutsideKeydown);
+      document.body.addEventListener('keydown', this.handleBodyKeydown);
 
       this.target.focus();
     } else {
       // Focusable content should have tabindex='-1' or be removed from the DOM.
       this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
-      document.body.removeEventListener('keydown', this.handleOutsideKeydown);
+      document.body.removeEventListener('keydown', this.handleBodyKeydown);
 
       this.controller.focus();
     }
@@ -312,7 +312,7 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  handleOutsideKeydown(event) {
+  handleBodyKeydown(event) {
     const { key, target: eventTarget } = event;
 
     switch (key) {
@@ -355,7 +355,7 @@ export default class Dialog extends AriaComponent {
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerHandleClick);
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
-    document.body.removeEventListener('keydown', this.handleOutsideKeydown);
+    document.body.removeEventListener('keydown', this.handleBodyKeydown);
 
     if (this.controllerIsNotAButton) {
       this.controller.removeEventListener(
