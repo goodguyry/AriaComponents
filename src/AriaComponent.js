@@ -303,7 +303,7 @@ export default class AriaComponent {
     if (Array.isArray(extensions)) {
       extensions.forEach((extension) => this.initExtension(extension));
     } else {
-      this.initExtension(extensions)
+      this.initExtension(extensions);
     }
   }
 }
