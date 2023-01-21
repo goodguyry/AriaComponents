@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import { Disclosure } from '../..';
+import { ManageTabIndex } from './extensions';
 import { events } from '../../.jest/events';
 
 const {
@@ -45,7 +46,7 @@ controller.addEventListener('disclosure.destroy', onDestroy);
 let disclosure = null;
 
 beforeAll(() => {
-  disclosure = new Disclosure(controller);
+  disclosure = new Disclosure(controller, { extensions: [ManageTabIndex] });
 });
 
 describe('The Disclosure should initialize as expected', () => {
@@ -57,6 +58,10 @@ describe('The Disclosure should initialize as expected', () => {
 
     expect(disclosure.expanded).toBe(false);
     expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
+
+    disclosure.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toEqual('-1');
+    });
   });
 
   test('The `init` event fires once', () => {
@@ -80,6 +85,10 @@ describe('The Disclosure should initialize as expected', () => {
   });
 
   test('Click events on the Disclosure controller updates atttributes as expected', () => {
+    disclosure.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toEqual('-1');
+    });
+
     // Click to open.
     controller.dispatchEvent(click);
     expect(onStateChange).toHaveBeenCalledTimes(1);
@@ -87,6 +96,10 @@ describe('The Disclosure should initialize as expected', () => {
     expect(disclosure.expanded).toBe(true);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
+
+    disclosure.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toBeNull();
+    });
 
     // Should allow outside click.
     document.body.dispatchEvent(click);
@@ -103,6 +116,10 @@ describe('The Disclosure should initialize as expected', () => {
     expect(disclosure.expanded).toBe(false);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
+
+    disclosure.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toEqual('-1');
+    });
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
@@ -156,6 +173,10 @@ describe('The Disclosure should initialize as expected', () => {
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
+
+    disclosure.interactiveChildElements.forEach((link) => {
+      expect(link.getAttribute('tabindex')).toBeNull();
+    });
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onDestroy);

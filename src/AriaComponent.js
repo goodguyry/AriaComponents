@@ -87,7 +87,16 @@ export default class AriaComponent {
      */
     this.__trackedAttributes = {};
 
+    /**
+     * Track installed plugins.
+     *
+     * @type {Array}
+     */
+    this.__includedExtensions = [];
+
     // Bind class methods.
+    this.include = this.include.bind(this);
+    this.initExtension = this.initExtension.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
     this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
@@ -270,5 +279,31 @@ export default class AriaComponent {
     this.element.removeEventListener(type, listener, options);
 
     return this;
+  }
+
+  /**
+   * Initialize an extension.
+   *
+   * @param {function} extension The extension to install.
+   */
+  initExtension(extension) {
+    if (! this.__includedExtensions.includes(extension.name)) {
+      this.__includedExtensions.push(extension.name);
+
+      extension({ instance: this });
+    }
+  }
+
+  /**
+   * Install extensions.
+   *
+   * @param {array} extensions An array of extensions to install.
+   */
+  include(extensions = []) {
+    if (Array.isArray(extensions)) {
+      extensions.forEach((extension) => this.initExtension(extension));
+    } else {
+      this.initExtension(extensions)
+    }
   }
 }

@@ -80,6 +80,9 @@ export default class Disclosure extends AriaComponent {
     // Save static options.
     this.#optionLoadOpen = loadOpen;
 
+    // Save extensions.
+    this.extensions = options.extensions || [];
+
     // Set initial dynamic options.
     this.allowOutsideClick = allowOutsideClick;
     this.autoClose = autoClose;
@@ -141,13 +144,6 @@ export default class Disclosure extends AriaComponent {
 
     this.updateAttribute(this.controller, 'aria-expanded', this.expanded);
     this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
-
-    // Allow or deny keyboard focus depending on component state.
-    if (this.expanded) {
-      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-    } else {
-      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
-    }
 
     this.dispatch(
       'stateChange',
@@ -232,13 +228,8 @@ export default class Disclosure extends AriaComponent {
     this.controller.addEventListener('keydown', this.closeOnEscKey);
     this.target.addEventListener('keydown', this.closeOnEscKey);
 
-    /*
-     * Prevent focus on interactive elements in the target when the target is
-     * hidden. This isn't such an issue when the target is hidden with
-     * `display:none`, but is necessary if the target is hidden by other means,
-     * such as minimized height or width.
-     */
-    this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+    // Install extensions.
+    this.include(this.extensions);
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -354,9 +345,6 @@ export default class Disclosure extends AriaComponent {
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);
-
-    // Remove tabindex attributes.
-    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggle);

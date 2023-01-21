@@ -66,6 +66,14 @@ _**`target`**_ `HTMLElement`
 
 > **Note** Full event details documented at [`src/README`](../).
 
+## Extensions
+
+```jsx
+import Disclosure, { ManageTabIndex } from 'aria-components/disclosure';
+
+const disclosure = new Disclosure(element, { extensions: [ManageTabIndex] });
+```
+
 ## References
 
 - https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
