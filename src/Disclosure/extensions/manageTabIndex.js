@@ -31,4 +31,4 @@ export default function ManageTabIndex({ instance }) {
     instance.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     instance.off('disclosure.stateChange', stateChangeHandler);
   });
-};
+}
