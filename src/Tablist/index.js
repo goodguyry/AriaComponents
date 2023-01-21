@@ -46,6 +46,7 @@ export default class Tablist extends AriaComponent {
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
     this.tabsHandleKeydown = this.tabsHandleKeydown.bind(this);
     this.tabsHandleClick = this.tabsHandleClick.bind(this);
+    this.getNextIndex = this.getNextIndex.bind(this);
     this.switchTo = this.switchTo.bind(this);
     this.destroy = this.destroy.bind(this);
 
@@ -158,6 +159,13 @@ export default class Tablist extends AriaComponent {
       }
     }
 
+    /**
+     * The final tab link index.
+     *
+     * @type {number}
+     */
+    this.tabLinksLastIndex = (this.tabLinks.length - 1);
+
     /*
      * The`tablist` role indicates that the list is a container for a set of tabs.
      *
@@ -220,6 +228,41 @@ export default class Tablist extends AriaComponent {
   }
 
   /**
+   * Returns the next index based on the key pressed.
+   *
+   * @param  {string} key          The key name.
+   * @param  {number} currentIndex The currently event target.
+   * @return {number}              The index to which focus should move.
+   */
+  getNextIndex(key, currentIndex) {
+    switch (key) {
+      // Move to the first item.
+      case 'Home': {
+        return 0;
+      }
+
+      // Move to previous sibling, or the end if we're moving from the first child.
+      case 'ArrowLeft': {
+        return (0 === currentIndex) ? this.tabLinksLastIndex : (currentIndex - 1);
+      }
+
+      // Move to the next sibling, or the first child if we're at the end.
+      case 'ArrowRight': {
+        return (this.tabLinksLastIndex === currentIndex) ? 0 : (currentIndex + 1);
+      }
+
+      // Move to the last item.
+      case 'End': {
+        return this.tabLinksLastIndex;
+      }
+
+      default:
+        // Do nothing.
+        return undefined;
+    }
+  }
+
+  /**
    * Handle keydown events on the tabpanels.
    *
    * @param {Event} event The event object.
@@ -252,6 +295,7 @@ export default class Tablist extends AriaComponent {
   tabsHandleKeydown(event) {
     const { key, shiftKey, target } = event;
     const currentIndex = this.tabLinks.indexOf(target);
+    const nextIndex = this.getNextIndex(key, currentIndex);
 
     switch (key) {
       /*
@@ -272,31 +316,10 @@ export default class Tablist extends AriaComponent {
        */
       case 'ArrowLeft':
       case 'ArrowRight': {
-        const activeIndex = this.tabLinks.indexOf(target);
-        const menuLastIndex = (this.tabLinks.length - 1);
+        event.preventDefault();
 
-        let nextIndex = 0;
-
-        // Move to previous sibling.
-        if ('ArrowLeft' === key) {
-          // Move to the end if we're moving from the first child.
-          nextIndex = (0 === activeIndex) ? menuLastIndex : (activeIndex - 1);
-        }
-
-        // Move to the next sibling.
-        if ('ArrowRight' === key) {
-          // Move to first child if we're at the end.
-          nextIndex = (menuLastIndex === activeIndex) ? 0 : (activeIndex + 1);
-        }
-
-        const nextItem = this.tabLinks[nextIndex];
-
-        if (nextItem) {
-          event.preventDefault();
-
-          this.switchTo(this.tabLinks.indexOf(nextItem));
-          nextItem.focus();
-        }
+        this.switchTo(nextIndex);
+        this.tabLinks[nextIndex].focus();
 
         break;
       }
@@ -319,8 +342,8 @@ export default class Tablist extends AriaComponent {
       case 'Home': {
         event.preventDefault();
 
-        this.switchTo(0);
-        this.tabLinks[0].focus();
+        this.switchTo(nextIndex);
+        this.tabLinks[nextIndex].focus();
 
         break;
       }
@@ -330,10 +353,9 @@ export default class Tablist extends AriaComponent {
        */
       case 'End': {
         event.preventDefault();
-        const lastIndex = this.tabLinks.length - 1;
 
-        this.switchTo(lastIndex);
-        this.tabLinks[lastIndex].focus();
+        this.switchTo(nextIndex);
+        this.tabLinks[nextIndex].focus();
 
         break;
       }
