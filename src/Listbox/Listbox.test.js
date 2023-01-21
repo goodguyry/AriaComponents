@@ -55,7 +55,7 @@ describe('The Disclosure should initialize as expected', () => {
 
     expect(controller.id).toEqual(listbox.id);
 
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
     const [firstListItem] = listItems;
     expect(listbox.activeDescendant).toEqual(firstListItem);
   });
@@ -92,8 +92,8 @@ describe('The Disclosure should initialize as expected', () => {
 
 describe('The Listbox controller should respond to state changes', () => {
   test('State change update atttributes as expected', () => {
-    listbox.show();
-    expect(listbox.getState().expanded).toBeTruthy();
+    listbox.expanded = true;
+    expect(listbox.expanded).toBe(true);
 
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
 
@@ -108,43 +108,44 @@ describe('The Listbox controller should respond to state changes', () => {
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.props).toMatchObject(['expanded']);
-      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.expanded).toBe(true);
       expect(detail.instance).toStrictEqual(listbox);
     });
   });
 });
 
 describe('The Listbox target responds to events as expected', () => {
-  beforeEach(() => listbox.show());
+  beforeEach(() => {
+    listbox.expanded = true;
+  });
 
   test('Should open the popup on controller arrow down key', () => {
     controller.dispatchEvent(keyupArrowDown);
     expect(document.activeElement).toEqual(target);
-    expect(listbox.getState().expanded).toBeTruthy();
+    expect(listbox.expanded).toBe(true);
   });
 
   test('The Listbox closes and focus moves to the controller on Enter key', () => {
     target.dispatchEvent(keydownEnter);
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
   test('The Listbox closes on controller arrow up key', () => {
     controller.dispatchEvent(keyupArrowUp);
     expect(document.activeElement).toEqual(target);
-    expect(listbox.getState().expanded).toBeTruthy();
+    expect(listbox.expanded).toBe(true);
   });
 
   test('The Listbox closes and focus moes to the controller on Escape key', () => {
     target.dispatchEvent(keydownEscape);
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
   test('The Listbox closes and focus moves to the controller on Space key', () => {
     target.dispatchEvent(keydownSpace);
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
@@ -193,7 +194,7 @@ describe('The Listbox target responds to events as expected', () => {
   test('When an option is clicked it is selected and the Listbox closes', () => {
     target.children[3].dispatchEvent(click);
 
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
     expect(listbox.activeDescendant).toEqual(target.children[3]);
     expect(document.activeElement).toEqual(controller);
 
@@ -206,7 +207,7 @@ describe('The Listbox target responds to events as expected', () => {
 
     document.body.dispatchEvent(click);
 
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
     expect(listbox.activeDescendant).toEqual(target.children[5]);
     expect(document.activeElement).not.toEqual(target);
 
@@ -231,7 +232,7 @@ describe('Listbox destroy', () => {
     });
 
     controller.dispatchEvent(click);
-    expect(listbox.getState().expanded).toBeFalsy();
+    expect(listbox.expanded).toBe(false);
 
     // Quick and dirty verification that the original markup is restored.
     // But first, restore the button's original text label.

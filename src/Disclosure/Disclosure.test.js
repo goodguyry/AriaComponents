@@ -55,7 +55,7 @@ describe('The Disclosure should initialize as expected', () => {
 
     expect(controller.id).toEqual(disclosure.id);
 
-    expect(disclosure.getState().expanded).toBe(false);
+    expect(disclosure.expanded).toBe(false);
     expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
   });
 
@@ -84,7 +84,7 @@ describe('The Disclosure should initialize as expected', () => {
     controller.dispatchEvent(click);
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
-    expect(disclosure.getState().expanded).toBe(true);
+    expect(disclosure.expanded).toBe(true);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
@@ -92,7 +92,7 @@ describe('The Disclosure should initialize as expected', () => {
     document.body.dispatchEvent(click);
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
-    expect(disclosure.getState().expanded).toBe(true);
+    expect(disclosure.expanded).toBe(true);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
@@ -100,29 +100,28 @@ describe('The Disclosure should initialize as expected', () => {
     controller.dispatchEvent(click);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
-    expect(disclosure.getState().expanded).toBe(false);
+    expect(disclosure.expanded).toBe(false);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.props).toMatchObject(['expanded']);
-      expect(detail.state).toStrictEqual({ expanded: false });
+      expect(detail.expanded).toBe(false);
       expect(detail.instance).toStrictEqual(disclosure);
     });
   });
 
   test('The Return key and Spacebar activate the Disclosure target', () => {
     // Ensure the disclosure is closed.
-    disclosure.close();
+    disclosure.expanded = false;
     expect(onStateChange).toHaveBeenCalledTimes(3);
 
     // Return to open.
     controller.dispatchEvent(keydownEnter);
     expect(onStateChange).toHaveBeenCalledTimes(4);
 
-    expect(disclosure.getState().expanded).toBe(true);
+    expect(disclosure.expanded).toBe(true);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
@@ -130,13 +129,13 @@ describe('The Disclosure should initialize as expected', () => {
     controller.dispatchEvent(keydownSpace);
     expect(onStateChange).toHaveBeenCalledTimes(5);
 
-    expect(disclosure.getState().expanded).toBe(false);
+    expect(disclosure.expanded).toBe(false);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
   test('Focus moves to the first Disclosure child on Tab key from the controller', () => {
-    disclosure.open();
+    disclosure.expanded = true;
     controller.dispatchEvent(keydownTab);
 
     expect(document.activeElement).toEqual(domFirstChild);
@@ -175,7 +174,7 @@ describe('The Disclosure should initialize as expected', () => {
     test('The Disclosure closes when an external element is clicked', () => {
       document.body.dispatchEvent(click);
 
-      expect(disclosure.getState().expanded).toBe(false);
+      expect(disclosure.expanded).toBe(false);
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
       expect(target.getAttribute('aria-hidden')).toEqual('true');
     });
@@ -188,13 +187,15 @@ describe('The Disclosure should initialize as expected', () => {
     });
 
     // Open the disclosure prior to each test.
-    beforeEach(() => disclosure.open());
+    beforeEach(() => {
+      disclosure.expanded = true;
+    });
 
     test('The Disclosure closes when the Escape key is pressed', () => {
       controller.focus();
       controller.dispatchEvent(keydownEscape);
 
-      expect(disclosure.getState().expanded).toBe(false);
+      expect(disclosure.expanded).toBe(false);
       expect(document.activeElement).toEqual(controller);
     });
 
@@ -203,7 +204,7 @@ describe('The Disclosure should initialize as expected', () => {
       () => {
         target.dispatchEvent(keydownEscape);
 
-        expect(disclosure.getState().expanded).toBe(false);
+        expect(disclosure.expanded).toBe(false);
         expect(document.activeElement).toEqual(controller);
       }
     );
@@ -212,14 +213,14 @@ describe('The Disclosure should initialize as expected', () => {
       domLastChild.focus();
       target.dispatchEvent(keydownTab);
 
-      expect(disclosure.getState().expanded).toBe(false);
+      expect(disclosure.expanded).toBe(false);
     });
 
     test('The Disclosure remains open when tabbing back from the last child', () => {
       domLastChild.focus();
       target.dispatchEvent(keydownShiftTab);
 
-      expect(disclosure.getState().expanded).toBe(true);
+      expect(disclosure.expanded).toBe(true);
     });
 
     test('Focus moves to the controller when tabbing back from the first child', () => {
@@ -236,5 +237,5 @@ describe('Should accept static options', () => {
     disclosure = new Disclosure(controller, { loadOpen: true });
   });
 
-  it('Should load open', () => expect(disclosure.getState().expanded).toBe(true));
+  it('Should load open', () => expect(disclosure.expanded).toBe(true));
 });

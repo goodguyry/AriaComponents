@@ -55,7 +55,7 @@ describe('The Popup should initialize as expected', () => {
   });
 
   test('The `init` event fires once', () => {
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
 
     // All interactive children should initially have a negative tabindex.
     popup.interactiveChildElements.forEach((link) => {
@@ -71,6 +71,7 @@ describe('The Popup should initialize as expected', () => {
     expect(controller.getAttribute('role')).toEqual('button');
 
     // The test markup isn't detatched, so this doesn't apply.
+    // @todo Not so sure about that, bud.
     expect(controller.getAttribute('aria-own')).toBeFalsy();
   });
 
@@ -79,29 +80,27 @@ describe('The Popup should initialize as expected', () => {
   });
 
   test('Expanded state changes update properties and attributes as expected', () => {
-    popup.show();
-    expect(popup.getState().expanded).toBe(true);
+    popup.expanded = true;
+    expect(popup.expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.props).toMatchObject(['expanded']);
-      expect(detail.state).toStrictEqual({ expanded: true });
+      expect(detail.expanded).toBe(true);
       expect(detail.instance).toStrictEqual(popup);
     });
   });
 
   test('Hidden state changes update properties and attributes as expected', () => {
-    popup.hide();
-    expect(popup.getState().expanded).toBe(false);
+    popup.expanded = false;
+    expect(popup.expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.props).toMatchObject(['expanded']);
-      expect(detail.state).toStrictEqual({ expanded: false });
+      expect(detail.expanded).toBe(false);
       expect(detail.instance).toStrictEqual(popup);
     });
   });
@@ -109,7 +108,7 @@ describe('The Popup should initialize as expected', () => {
   test('Click events on the Popup controller updates atttributes as expected', () => {
     // Click to open.
     controller.dispatchEvent(click);
-    expect(popup.getState().expanded).toBeTruthy();
+    expect(popup.expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(3);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
@@ -121,7 +120,7 @@ describe('The Popup should initialize as expected', () => {
 
     // Click again to close.
     controller.dispatchEvent(click);
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
@@ -135,12 +134,14 @@ describe('The Popup should initialize as expected', () => {
 
 describe('Popup correctly responds to events', () => {
   // Ensure the popup is open before all tests.
-  beforeEach(() => popup.show());
+  beforeEach(() => {
+    popup.expanded = true;
+  });
 
   test('The Disclosure closes when the Escape key is pressed', () => {
     controller.focus();
     controller.dispatchEvent(keydownEscape);
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
@@ -152,11 +153,11 @@ describe('Popup correctly responds to events', () => {
   test('Should update Popup state with keyboard', () => {
     // Toggle popup
     controller.dispatchEvent(keydownSpace);
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
 
     // Toggle popup
     controller.dispatchEvent(keydownEnter);
-    expect(popup.getState().expanded).toBeTruthy();
+    expect(popup.expanded).toBe(true);
   });
 
   // eslint-disable-next-line max-len
@@ -164,7 +165,7 @@ describe('Popup correctly responds to events', () => {
     'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
     () => {
       target.dispatchEvent(keydownEscape);
-      expect(popup.getState().expanded).toBeFalsy();
+      expect(popup.expanded).toBe(false);
       expect(document.activeElement).toEqual(controller);
     }
   );
@@ -172,13 +173,13 @@ describe('Popup correctly responds to events', () => {
   test('The Disclosure closes when Tabbing from the last child', () => {
     domLastChild.focus();
     target.dispatchEvent(keydownTab);
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
   });
 
   test('The Disclosure remains open when tabbing back from the last child', () => {
     domLastChild.focus();
     target.dispatchEvent(keydownShiftTab);
-    expect(popup.getState().expanded).toBeTruthy();
+    expect(popup.expanded).toBe(true);
   });
 
   test('Focus moves to the controller when tabbing back from the first child', () => {
@@ -190,7 +191,7 @@ describe('Popup correctly responds to events', () => {
   test('The Disclosure closes when an external element is clicked', () => {
     document.body.dispatchEvent(click);
 
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
   });
 
   test('All attributes are removed from elements managed by the Disclosure', () => {
@@ -209,7 +210,7 @@ describe('Popup correctly responds to events', () => {
     expect(target.popup).toBeUndefined();
 
     controller.dispatchEvent(click);
-    expect(popup.getState().expanded).toBeFalsy();
+    expect(popup.expanded).toBe(false);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(popupMarkup);

@@ -33,6 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Adds an autoClose option to Disclosure and Menu (#75, #76)
 - Adds event namespaces: `'<componentName>.<eventName>'` (#77)
 - Some options can be set after the component initializes (#82)
+- Component state now uses setter/getter pattern (#83)
 
 **Fixed**
 

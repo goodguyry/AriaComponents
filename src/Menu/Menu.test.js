@@ -58,7 +58,7 @@ describe('The Menu should initialize as expected', () => {
   test('The Disclosure includes the expected property values', () => {
     expect(menu).toBeInstanceOf(Menu);
 
-    expect(menu.disclosures[0].getState().expanded).toBe(false);
+    expect(menu.disclosures[0].expanded).toBe(false);
     expect(menu.disclosures[0]).toBeInstanceOf(Disclosure);
 
     expect(list.id).toEqual(menu.id);
@@ -78,12 +78,12 @@ describe('The Menu should initialize as expected', () => {
     menu.disclosures[0].open();
     menu.disclosures[1].open();
 
-    expect(menu.disclosures[0].getState().expanded).toBeTruthy();
-    expect(menu.disclosures[1].getState().expanded).toBeTruthy();
+    expect(menu.disclosures[0].expanded).toBe(true);
+    expect(menu.disclosures[1].expanded).toBe(true);
 
     menu.disclosures[0].open();
-    expect(menu.disclosures[0].getState().expanded).toBeTruthy();
-    expect(menu.disclosures[1].getState().expanded).toBeTruthy();
+    expect(menu.disclosures[0].expanded).toBe(true);
+    expect(menu.disclosures[1].expanded).toBe(true);
   });
 
   test('With `autoClose` enabled, submenu Disclosures close when another opens', () => {
@@ -92,12 +92,12 @@ describe('The Menu should initialize as expected', () => {
     menu.disclosures[0].open();
     menu.disclosures[1].open();
 
-    expect(menu.disclosures[0].getState().expanded).toBeFalsy();
-    expect(menu.disclosures[1].getState().expanded).toBeTruthy();
+    expect(menu.disclosures[0].expanded).toBe(false);
+    expect(menu.disclosures[1].expanded).toBe(true);
 
     menu.disclosures[0].open();
-    expect(menu.disclosures[0].getState().expanded).toBeTruthy();
-    expect(menu.disclosures[1].getState().expanded).toBeFalsy();
+    expect(menu.disclosures[0].expanded).toBe(true);
+    expect(menu.disclosures[1].expanded).toBe(false);
   });
 
   test('All attributes are removed from elements managed by the Menu', () => {

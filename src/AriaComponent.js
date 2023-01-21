@@ -67,13 +67,6 @@ export default class AriaComponent {
     this.stringDescription = 'AriaComponent';
 
     /**
-     * Component state.
-     *
-     * @type {object}
-     */
-    this.state = {};
-
-    /**
      * Save search characters
      *
      * @type {string}
@@ -95,8 +88,6 @@ export default class AriaComponent {
     this.__trackedAttributes = {};
 
     // Bind class methods.
-    this.setState = this.setState.bind(this);
-    this.getState = this.getState.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
     this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
@@ -279,40 +270,5 @@ export default class AriaComponent {
     this.element.removeEventListener(type, listener, options);
 
     return this;
-  }
-
-  /**
-   * Set component state.
-   *
-   * @param {object} newState The new state to merge with existing state.
-   */
-  setState(newState) {
-    const updatedProps = Object.keys(newState);
-
-    const updatedState = { ...this.state, ...newState };
-    this.state = updatedState;
-
-    if ('function' === typeof this.stateWasUpdated) {
-      this.stateWasUpdated(updatedProps);
-    }
-
-    // Fire the `stateChange` event.
-    this.dispatch(
-      'stateChange',
-      {
-        instance: this,
-        props: updatedProps,
-        state: this.state,
-      }
-    );
-  }
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState() {
-    return this.state;
   }
 }

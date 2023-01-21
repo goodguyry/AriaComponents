@@ -84,6 +84,9 @@ _**`setCloseButton(closeButton: HTMLButtonElement)`**_
 
 ### Properties
 
+_**`expanded`**_ `boolean`  
+> Set and get the component state.
+
 _**`controller`**_ `HTMLButtonElement`  
 > The Dialog's activating element.
 
