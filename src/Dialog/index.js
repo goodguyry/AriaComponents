@@ -22,7 +22,7 @@ export default class Dialog extends AriaComponent {
    * @param {object}      options The options object.
    */
   constructor(element, options = {}) {
-    super(element);
+    super(element, options);
 
     /**
      * The string description for this object.
@@ -89,15 +89,10 @@ export default class Dialog extends AriaComponent {
     this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
 
     if (this.expanded) {
-      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-
       document.body.addEventListener('keydown', this.handleBodyKeydown);
 
       this.target.focus();
     } else {
-      // Focusable content should have tabindex='-1' or be removed from the DOM.
-      this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
-
       document.body.removeEventListener('keydown', this.handleBodyKeydown);
 
       this.controller.focus();
@@ -169,9 +164,6 @@ export default class Dialog extends AriaComponent {
      */
     this.setInteractiveChildren();
 
-    // Focusable content should initially have tabindex='-1'.
-    this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
-
     /**
      * Check if the controller is a button, but only if it doesn't already have
      * a role attribute, since we'll be adding the role and allowing focus.
@@ -213,6 +205,9 @@ export default class Dialog extends AriaComponent {
     if (this.controllerIsNotAButton) {
       this.controller.addEventListener('keydown', this.controllerHandleKeydown);
     }
+
+    // Install extensions.
+    this.include(this.extensions);
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -348,9 +343,6 @@ export default class Dialog extends AriaComponent {
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);
-
-    // Remove tabindex attribute.
-    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerHandleClick);

@@ -44,7 +44,7 @@ export default class AriaComponent {
    * Create an AriaComponent.
    * @constructor
    */
-  constructor(element) {
+  constructor(element, options = {}) {
     // Validate the component element.
     if (null == element || ! (element instanceof HTMLElement)) {
       AriaComponent.configurationError(
@@ -74,11 +74,11 @@ export default class AriaComponent {
     this.searchString = '';
 
     /**
-     * Saved reference elements.
+     * Component extensions to include.
      *
-     * @type {Array}
+     * @type {array}
      */
-    this.referenceElements = [];
+    this.extensions = options.extensions || [];
 
     /**
      * Track attributes added by this script.

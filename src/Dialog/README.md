@@ -93,6 +93,14 @@ _**`controller`**_ `HTMLButtonElement`
 _**`target`**_ `HTMLElement`  
 > The Dialog's target element.
 
+## Extensions
+
+```jsx
+import Dialog, { ManageTabIndex } from 'aria-components/dialog';
+
+const dialog = new Dialog(element, { extensions: [ManageTabIndex] });
+```
+
 ### Events
 
 | Event | Description |

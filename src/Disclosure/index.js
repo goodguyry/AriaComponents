@@ -33,7 +33,7 @@ export default class Disclosure extends AriaComponent {
    * @param {object}      options The options object.
    */
   constructor(element, options = {}) {
-    super(element);
+    super(element, options);
 
     /**
      * The string description for this object.
@@ -79,9 +79,6 @@ export default class Disclosure extends AriaComponent {
 
     // Save static options.
     this.#optionLoadOpen = loadOpen;
-
-    // Save extensions.
-    this.extensions = options.extensions || [];
 
     // Set initial dynamic options.
     this.allowOutsideClick = allowOutsideClick;
