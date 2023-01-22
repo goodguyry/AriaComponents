@@ -22,8 +22,8 @@ export default class Tablist extends AriaComponent {
    *
    * @param {object} options The options object.
    */
-  constructor(tabs, options) {
-    super(tabs);
+  constructor(tabs, options = {}) {
+    super(tabs, options);
 
     /**
      * The string description for this object.
@@ -80,7 +80,6 @@ export default class Tablist extends AriaComponent {
 
     // Deactivate the previously-active panel.
     this.updateAttribute(this.panels[deactiveIndex], 'aria-hidden', 'true');
-    this.updateAttribute(this.panels[deactiveIndex], 'tabindex', null);
 
     // Prevent tabbing to interactive children of the deactivated panel.
     interactiveChildren(this.panels[deactiveIndex]).forEach((item) => (
@@ -93,7 +92,6 @@ export default class Tablist extends AriaComponent {
 
     // Actvate the newly active panel.
     this.updateAttribute(this.panels[this.activeIndex], 'aria-hidden', 'false');
-    this.updateAttribute(this.panels[this.activeIndex], 'tabindex', '0');
 
     // Allow tabbing to the newly-active panel.
     interactiveChildren(this.panels[this.activeIndex]).forEach((item) => (
@@ -205,16 +203,12 @@ export default class Tablist extends AriaComponent {
     this.panels.forEach((panel, index) => {
       // Add the `tabpanel` role to indicate its relationship to the tablist.
       this.addAttribute(panel, 'role', 'tabpanel');
+
       // Create a relationship between the tab and its panel.
       this.addAttribute(panel, 'aria-labelledby', this.tabLinks[index].id);
 
       // All but the first tab should be hidden by default.
-      if (this.activeIndex === index) {
-        this.addAttribute(panel, 'tabindex', '0');
-        this.addAttribute(panel, 'aria-hidden', 'false');
-      } else {
-        this.addAttribute(panel, 'aria-hidden', 'true');
-      }
+      this.addAttribute(panel, 'aria-hidden', (this.activeIndex !== index));
 
       // Listen for panel keydown events.
       panel.addEventListener('keydown', this.panelHandleKeydown);
@@ -222,6 +216,9 @@ export default class Tablist extends AriaComponent {
 
     // Save the active panel's interactive children.
     this.interactiveChildElements = interactiveChildren(this.panels[this.activeIndex]); // eslint-disable-line max-len
+
+    // Install extensions.
+    this.include(this.extensions);
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -299,40 +296,13 @@ export default class Tablist extends AriaComponent {
 
     switch (key) {
       /*
-       * Move focus from the active tab to the active panel.
-       */
-      case 'Tab': {
-        if (! shiftKey) {
-          event.preventDefault();
-
-          this.panels[currentIndex].focus();
-        }
-
-        break;
-      }
-
-      /*
        * Move to and activate the previous or next tab.
        */
       case 'ArrowLeft':
       case 'ArrowRight': {
         event.preventDefault();
 
-        this.switchTo(nextIndex);
         this.tabLinks[nextIndex].focus();
-
-        break;
-      }
-
-      /*
-       * Focus the active panel itself with the down arrow.
-       */
-      case 'ArrowDown': {
-        event.preventDefault();
-
-        this.updateAttribute(this.panels[currentIndex], 'tabindex', '0');
-        this.panels[currentIndex].focus();
-
         break;
       }
 
@@ -342,9 +312,7 @@ export default class Tablist extends AriaComponent {
       case 'Home': {
         event.preventDefault();
 
-        this.switchTo(nextIndex);
         this.tabLinks[nextIndex].focus();
-
         break;
       }
 
@@ -354,9 +322,7 @@ export default class Tablist extends AriaComponent {
       case 'End': {
         event.preventDefault();
 
-        this.switchTo(nextIndex);
         this.tabLinks[nextIndex].focus();
-
         break;
       }
 

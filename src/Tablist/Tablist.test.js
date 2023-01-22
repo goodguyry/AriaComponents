@@ -144,10 +144,6 @@ describe('The Tablist should initialize as expected', () => {
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
-      expect(firstPanel.getAttribute('tabindex')).toEqual('0');
-      expect(secondPanel.getAttribute('tabindex')).toBeNull();
-      expect(thirdPanel.getAttribute('tabindex')).toBeNull();
-
       expect(onStateChange).toHaveBeenCalledTimes(1);
 
       tablist.switchTo(2);
@@ -162,10 +158,6 @@ describe('The Tablist should initialize as expected', () => {
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
-
-      expect(firstPanel.getAttribute('tabindex')).toBeNull();
-      expect(secondPanel.getAttribute('tabindex')).toBeNull();
-      expect(thirdPanel.getAttribute('tabindex')).toEqual('0');
 
       expect(onStateChange).toHaveBeenCalledTimes(2);
     });
@@ -200,10 +192,6 @@ describe('The Tablist should initialize as expected', () => {
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
-      expect(firstPanel.getAttribute('tabindex')).toEqual('0');
-      expect(secondPanel.getAttribute('tabindex')).toBeNull();
-      expect(thirdPanel.getAttribute('tabindex')).toBeNull();
-
       thirdTab.dispatchEvent(click);
       expect(firstTab.getAttribute('aria-selected')).toBeNull();
       expect(secondTab.getAttribute('aria-selected')).toBeNull();
@@ -216,62 +204,27 @@ describe('The Tablist should initialize as expected', () => {
       expect(firstPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
-
-      expect(firstPanel.getAttribute('tabindex')).toBeNull();
-      expect(secondPanel.getAttribute('tabindex')).toBeNull();
-      expect(thirdPanel.getAttribute('tabindex')).toEqual('0');
-    });
-
-    test('Keyboard events navigate to and from tabs', () => {
-      tablist.switchTo(0);
-      expect(tablist.activeIndex).toEqual(0);
-
-      firstTab.dispatchEvent(keydownTab);
-      expect(document.activeElement).toEqual(firstPanel);
-
-      /**
-       * Increment the counter to track time spent trying to get these tests to
-       * pass, even though they work as expected when tested in a browser.
-       *
-       * Hours Lost: 4.5
-       */
-      // const firstPanelChild = firstPanel.querySelector('a[href]');
-
-      // firstPanel.dispatchEvent(keydownTab);
-      // expect(document.activeElement).toEqual(firstPanelChild);
-
-      // firstPanelChild.dispatchEvent(keydownShiftTab);
-      // expect(document.activeElement).toEqual(firstPanel);
-
-      // firstPanel.dispatchEvent(keydownShiftTab);
-      // expect(document.activeElement).toEqual(firstTab);
     });
 
     test('Arrow keys navigate and activate tabs', () => {
       firstTab.focus();
       firstTab.dispatchEvent(keydownArrowRight);
       expect(document.activeElement).toEqual(secondTab);
-      expect(secondTab.getAttribute('aria-selected')).toEqual('true');
 
       secondTab.dispatchEvent(keydownArrowRight);
       expect(document.activeElement).toEqual(thirdTab);
-      expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
       thirdTab.dispatchEvent(keydownArrowRight);
       expect(document.activeElement).toEqual(firstTab); // cycle
-      expect(firstTab.getAttribute('aria-selected')).toEqual('true');
 
       thirdTab.dispatchEvent(keydownArrowLeft);
       expect(document.activeElement).toEqual(secondTab);
-      expect(secondTab.getAttribute('aria-selected')).toEqual('true');
 
       secondTab.dispatchEvent(keydownArrowLeft);
       expect(document.activeElement).toEqual(firstTab);
-      expect(firstTab.getAttribute('aria-selected')).toEqual('true');
 
       firstTab.dispatchEvent(keydownArrowLeft);
       expect(document.activeElement).toEqual(thirdTab); // cycle
-      expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
     });
 
     test('The Home key moves selection to the first tab', () => {
@@ -280,8 +233,6 @@ describe('The Tablist should initialize as expected', () => {
       secondTab.focus();
       secondTab.dispatchEvent(keydownHome);
       expect(document.activeElement).toEqual(firstTab);
-      expect(tablist.activeIndex).toEqual(0);
-      expect(firstTab.getAttribute('aria-selected')).toEqual('true');
     });
 
     test('The End key moves selection to the last tab', () => {
@@ -290,15 +241,6 @@ describe('The Tablist should initialize as expected', () => {
       secondTab.focus();
       secondTab.dispatchEvent(keydownEnd);
       expect(document.activeElement).toEqual(thirdTab);
-      expect(tablist.activeIndex).toEqual(2);
-      expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
-    });
-
-    test('The down arrow pressed moves focus to the tab panel', () => {
-      secondTab.focus();
-      secondTab.dispatchEvent(keydownArrowDown);
-      expect(document.activeElement).toEqual(secondPanel);
-      expect(secondPanel.getAttribute('tabindex')).toEqual('0');
     });
 
     test('All DOM attributes are removed from elements managed by this component', () => {
@@ -322,7 +264,6 @@ describe('The Tablist should initialize as expected', () => {
         expect(panel.getAttribute('role')).toBeNull();
         expect(panel.getAttribute('aria-hidden')).toBeNull();
         expect(panel.getAttribute('aria-labelledby')).toBeNull();
-        expect(panel.getAttribute('tabindex')).toBeNull();
 
         const firstChild = panel.querySelector('a[href]');
         expect(firstChild.getAttribute('tabindex')).toBeNull();
