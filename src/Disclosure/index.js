@@ -86,7 +86,6 @@ export default class Disclosure extends AriaComponent {
 
     // Bind class methods.
     this.init = this.init.bind(this);
-    this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
     this.closeOnEscKey = this.closeOnEscKey.bind(this);
     this.closeOnTabOut = this.closeOnTabOut.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
@@ -185,21 +184,6 @@ export default class Disclosure extends AriaComponent {
     // Add controller attributes
     this.addAttribute(this.controller, 'aria-expanded', this.expanded);
 
-    // Patch button role and behavior for non-button controller.
-    if ('BUTTON' !== this.controller.nodeName) {
-      /*
-       * Some elements semantics conflict with the button role. You really
-       * should just use a button.
-       */
-      this.addAttribute(this.controller, 'role', 'button');
-      this.controller.addEventListener('keydown', this.patchButtonKeydown);
-
-      // Ensure we can Tab to the controller even if it's not a button nor anchor.
-      if ('A' !== this.controller.nodeName) {
-        this.addAttribute(this.controller, 'tabindex', '0');
-      }
-    }
-
     /*
      * Establish a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
@@ -230,18 +214,6 @@ export default class Disclosure extends AriaComponent {
 
     // Fire the init event.
     this.dispatchEventInit();
-  }
-
-  /**
-   * Treat the Spacebar and Return keys as clicks if the controller is not a <button>.
-   *
-   * @param {Event} event The event object.
-   */
-  patchButtonKeydown(event) {
-    if ([' ', 'Enter'].includes(event.key)) {
-      event.preventDefault();
-      this.toggle();
-    }
   }
 
   /**
@@ -345,7 +317,6 @@ export default class Disclosure extends AriaComponent {
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggle);
-    this.controller.removeEventListener('keydown', this.patchButtonKeydown);
     document.body.removeEventListener('click', this.closeOnOutsideClick);
     this.controller.removeEventListener('keydown', this.closeOnEscKey);
     this.target.removeEventListener('keydown', this.closeOnEscKey);

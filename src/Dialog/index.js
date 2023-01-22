@@ -58,7 +58,6 @@ export default class Dialog extends AriaComponent {
     this.setCloseButton = this.setCloseButton.bind(this);
     this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
-    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.handleBodyKeydown = this.handleBodyKeydown.bind(this);
     this.show = this.show.bind(this);
@@ -164,26 +163,6 @@ export default class Dialog extends AriaComponent {
      */
     this.setInteractiveChildren();
 
-    /**
-     * Check if the controller is a button, but only if it doesn't already have
-     * a role attribute, since we'll be adding the role and allowing focus.
-     *
-     * @type {bool}
-     */
-    this.controllerIsNotAButton = (
-      'BUTTON' !== this.controller.nodeName
-      && null === this.controller.getAttribute('role')
-    );
-
-    /*
-     * Use the button role on non-button elements.
-     */
-    if (this.controllerIsNotAButton) {
-      // https://www.w3.org/TR/wai-aria-1.1/#button
-      this.addAttribute(this.controller, 'role', 'button');
-      this.addAttribute(this.controller, 'tabindex', '0');
-    }
-
     // Allow focus on the target element.
     this.addAttribute(this.target, 'tabindex', '0');
 
@@ -201,10 +180,6 @@ export default class Dialog extends AriaComponent {
     // Add event listeners.
     this.controller.addEventListener('click', this.controllerHandleClick);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
-
-    if (this.controllerIsNotAButton) {
-      this.controller.addEventListener('keydown', this.controllerHandleKeydown);
-    }
 
     // Install extensions.
     this.include(this.extensions);
@@ -246,23 +221,6 @@ export default class Dialog extends AriaComponent {
     event.preventDefault();
 
     this.show();
-  }
-
-  /**
-   * Handle keydown events on the Dialog controller.
-   *
-   * @param {Event} event The event object.
-   */
-  controllerHandleKeydown(event) {
-    if ([' ', 'Return'].includes(event.key)) {
-      event.preventDefault();
-
-      /*
-       * Treat the Spacebar and Return keys as clicks in case the controller is
-       * not a <button>.
-       */
-      this.show();
-    }
   }
 
   /**
@@ -348,13 +306,6 @@ export default class Dialog extends AriaComponent {
     this.controller.removeEventListener('click', this.controllerHandleClick);
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.handleBodyKeydown);
-
-    if (this.controllerIsNotAButton) {
-      this.controller.removeEventListener(
-        'keydown',
-        this.controllerHandleKeydown
-      );
-    }
 
     if (null != this.closeButton) {
       this.closeButton.removeEventListener('click', this.hide);

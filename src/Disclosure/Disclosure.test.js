@@ -112,28 +112,6 @@ describe('The Disclosure should initialize as expected', () => {
     });
   });
 
-  test('The Return key and Spacebar activate the Disclosure target', () => {
-    // Ensure the disclosure is closed.
-    disclosure.expanded = false;
-    expect(onStateChange).toHaveBeenCalledTimes(3);
-
-    // Return to open.
-    controller.dispatchEvent(keydownEnter);
-    expect(onStateChange).toHaveBeenCalledTimes(4);
-
-    expect(disclosure.expanded).toBe(true);
-    expect(controller.getAttribute('aria-expanded')).toEqual('true');
-    expect(target.getAttribute('aria-hidden')).toEqual('false');
-
-    // Spacebar to close.
-    controller.dispatchEvent(keydownSpace);
-    expect(onStateChange).toHaveBeenCalledTimes(5);
-
-    expect(disclosure.expanded).toBe(false);
-    expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(target.getAttribute('aria-hidden')).toEqual('true');
-  });
-
   test('Focus moves to the first Disclosure child on Tab key from the controller', () => {
     disclosure.expanded = true;
     controller.dispatchEvent(keydownTab);

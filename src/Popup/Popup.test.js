@@ -7,8 +7,6 @@ const {
   keydownEscape,
   keydownTab,
   keydownShiftTab,
-  keydownSpace,
-  keydownEnter,
 } = events;
 
 const popupMarkup = `
@@ -66,9 +64,6 @@ describe('The Popup should initialize as expected', () => {
   test('The Popup controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-
-    // Link controller should get button role.
-    expect(controller.getAttribute('role')).toEqual('button');
 
     // The test markup isn't detatched, so this doesn't apply.
     // @todo Not so sure about that, bud.
@@ -150,16 +145,6 @@ describe('Popup correctly responds to events', () => {
     expect(document.activeElement).toEqual(domFirstChild);
   });
 
-  test('Should update Popup state with keyboard', () => {
-    // Toggle popup
-    controller.dispatchEvent(keydownSpace);
-    expect(popup.expanded).toBe(false);
-
-    // Toggle popup
-    controller.dispatchEvent(keydownEnter);
-    expect(popup.expanded).toBe(true);
-  });
-
   // eslint-disable-next-line max-len
   test(
     'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
@@ -197,9 +182,7 @@ describe('Popup correctly responds to events', () => {
   test('All attributes are removed from elements managed by the Disclosure', () => {
     popup.destroy();
 
-    if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {
-      expect(controller.getAttribute('role')).toBeNull();
-    }
+    expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');

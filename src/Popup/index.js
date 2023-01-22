@@ -31,7 +31,7 @@ export default class Popup extends AriaComponent {
    * @param {object}      options The options object.
    */
   constructor(element, options = {}) {
-    super(element);
+    super(element, options);
 
     /**
      * The string description for this object.
@@ -71,7 +71,6 @@ export default class Popup extends AriaComponent {
     this.toggle = this.toggle.bind(this);
     this.popupControllerKeydown = this.popupControllerKeydown.bind(this);
     this.popupTargetKeydown = this.popupTargetKeydown.bind(this);
-    this.patchButtonKeydown = this.patchButtonKeydown.bind(this);
     this.tabBackToController = this.tabBackToController.bind(this);
     this.tabtoTarget = this.tabtoTarget.bind(this);
     this.hideOnTabOut = this.hideOnTabOut.bind(this);
@@ -111,21 +110,6 @@ export default class Popup extends AriaComponent {
     this.addAttribute(this.controller, 'aria-haspopup', this.#optionType);
     this.addAttribute(this.controller, 'aria-expanded', 'false');
 
-    // Patch button role and behavior for non-button controller.
-    if ('BUTTON' !== this.controller.nodeName) {
-      /*
-       * Some elements semantics conflict with the button role. You really
-       * should just use a button.
-       */
-      this.addAttribute(this.controller, 'role', 'button');
-      this.controller.addEventListener('keydown', this.patchButtonKeydown);
-
-      // Ensure we can Tab to the controller even if it's not a button nor anchor.
-      if ('A' !== this.controller.nodeName) {
-        this.addAttribute(this.controller, 'tabindex', '0');
-      }
-    }
-
     /*
      * Establishes a relationship when the DOM heirarchy doesn't represent that
      * a relationship exists.
@@ -149,6 +133,9 @@ export default class Popup extends AriaComponent {
     this.controller.addEventListener('keydown', this.popupControllerKeydown);
     this.target.addEventListener('keydown', this.popupTargetKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
+
+    // Install extensions.
+    this.include(this.extensions);
   }
 
   /**
@@ -204,20 +191,6 @@ export default class Popup extends AriaComponent {
        * controller), there's no need to move focus.
        */
       this.hide();
-    }
-  }
-
-  patchButtonKeydown(event) {
-    const { key } = event;
-
-    if ([' ', 'Enter'].includes(key)) {
-      event.preventDefault();
-
-      /*
-       * Treat the Spacebar and Return keys as clicks in case the controller is
-       * not a <button>.
-       */
-      this.toggle();
     }
   }
 
@@ -348,11 +321,7 @@ export default class Popup extends AriaComponent {
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggle);
-    this.controller.removeEventListener(
-      'keydown',
-      this.popupControllerKeydown
-    );
-    this.controller.removeEventListener('keydown', this.patchButtonKeydown);
+    this.controller.removeEventListener('keydown', this.popupControllerKeydown);
     this.controller.removeEventListener('keydown', this.tabtoTarget);
     this.target.removeEventListener('keydown', this.tabBackToController);
     this.target.removeEventListener('keydown', this.popupTargetKeydown);
