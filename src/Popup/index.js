@@ -89,9 +89,6 @@ export default class Popup extends AriaComponent {
      */
     this.interactiveChildElements = interactiveChildren(this.target);
 
-    // Focusable content should initially have tabindex='-1'.
-    this.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
-
     /*
      * Collect first and last interactive child elements from target and merge
      * them in as instance properties.
@@ -147,14 +144,6 @@ export default class Popup extends AriaComponent {
 
     this.updateAttribute(this.controller, 'aria-expanded', this.expanded);
     this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
-
-    // Allow or deny keyboard focus depending on component state.
-    if (this.expanded) {
-      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-    } else {
-      // Focusable content should have tabindex='-1' or be removed from the DOM.
-      (this.interactiveChildElements || []).forEach((item) => item.setAttribute('tabindex', '-1'));
-    }
 
     this.dispatch(
       'stateChange',
@@ -316,9 +305,6 @@ export default class Popup extends AriaComponent {
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);
 
-    // Remove tabindex attribute.
-    this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-
     // Remove event listeners.
     this.controller.removeEventListener('click', this.toggle);
     this.controller.removeEventListener('keydown', this.popupControllerKeydown);
@@ -329,6 +315,9 @@ export default class Popup extends AriaComponent {
 
     // Reset initial state.
     this.#expanded = false;
+
+    // Fire the destroy event.
+    this.dispatchEventDestroy();
   }
 
   /**

@@ -54,11 +54,6 @@ describe('The Popup should initialize as expected', () => {
 
   test('The `init` event fires once', () => {
     expect(popup.expanded).toBe(false);
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toEqual('-1');
-    });
   });
 
   test('The Popup controller includes the expected attribute values', () => {
@@ -108,22 +103,12 @@ describe('The Popup should initialize as expected', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toBeNull();
-    });
-
     // Click again to close.
     controller.dispatchEvent(click);
     expect(popup.expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toEqual('-1');
-    });
   });
 });
 
