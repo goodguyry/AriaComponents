@@ -36,7 +36,6 @@ export default function UseButtonRole({ instance }) {
     }
   }
 
-  instance.on('disclosure.destroy', () => {
-    instance.controller.removeEventListener('keydown', patchButtonKeydown);
-  });
+  // Clean up.
+  return () => instance.controller.removeEventListener('keydown', patchButtonKeydown);
 }

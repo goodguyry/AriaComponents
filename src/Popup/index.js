@@ -132,7 +132,7 @@ export default class Popup extends AriaComponent {
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
     // Install extensions.
-    this.include(this.extensions);
+    this.initExtensions();
   }
 
   /**
@@ -315,6 +315,9 @@ export default class Popup extends AriaComponent {
 
     // Reset initial state.
     this.#expanded = false;
+
+    // Cleanup after extensions.
+    this.cleanupExtensions();
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

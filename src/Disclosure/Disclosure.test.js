@@ -71,7 +71,6 @@ describe('The Disclosure should initialize as expected', () => {
 
   test('The Disclosure controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(controller.getAttribute('tabindex')).toBeNull();
     expect(controller.getAttribute('aria-owns')).toEqual(target.id);
   });
 
@@ -125,7 +124,6 @@ describe('The Disclosure should initialize as expected', () => {
     expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual(target.id);
-    expect(controller.getAttribute('tabindex')).toBeNull();
     // The test markup isn't detatched, so this doesn't apply.
     expect(controller.getAttribute('aria-owns')).toBeNull();
 

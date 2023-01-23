@@ -95,8 +95,9 @@ export default class AriaComponent {
     this.__includedExtensions = [];
 
     // Bind class methods.
-    this.include = this.include.bind(this);
-    this.initExtension = this.initExtension.bind(this);
+    this.initExtensions = this.initExtensions.bind(this);
+    this.start = this.start.bind(this);
+    this.cleanupExtensions = this.cleanupExtensions.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
     this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
@@ -282,28 +283,39 @@ export default class AriaComponent {
   }
 
   /**
-   * Initialize an extension.
-   *
-   * @param {function} extension The extension to install.
+   * Initialize extension(s).
    */
-  initExtension(extension) {
+  initExtensions() {
+    const afterDestroy = this.cleanupFunctions || [];
+    let cleanup = [];
+
+    if (Array.isArray(this.extensions)) {
+      cleanup = this.extensions.map((extension) => this.start(extension));
+    } else {
+      cleanup.push(this.start(this.extensions));
+    }
+
+    this.cleanupFunctions = [...afterDestroy, ...cleanup];
+  }
+
+  /**
+   * Run the extension function, which returns a cleanup function.
+   *
+   * @param  {Funciton} extension The extension initializing function.
+   * @return {Functions}           The extension's cleanup function.
+   */
+  start(extension) {
     if (! this.__includedExtensions.includes(extension.name)) {
       this.__includedExtensions.push(extension.name);
 
-      extension({ instance: this });
+      return extension({ instance: this });
     }
   }
 
   /**
-   * Install extensions.
-   *
-   * @param {array} extensions An array of extensions to install.
+   * Run extension cleanup function.
    */
-  include(extensions = []) {
-    if (Array.isArray(extensions)) {
-      extensions.forEach((extension) => this.initExtension(extension));
-    } else {
-      this.initExtension(extensions);
-    }
+  cleanupExtensions() {
+    this.cleanupFunctions.forEach((cleanup) => cleanup && cleanup());
   }
 }

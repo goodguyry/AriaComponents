@@ -56,9 +56,9 @@ export default function AutomaticActivation({ instance }) {
   // Handle state changes.
   instance.on('tablist.stateChange', rovingTabIndex);
 
-  // Handle destroy.
-  instance.on('tablist.destroy', () => {
+  // Clean up.
+  return () => {
     instance.tabs.removeEventListener('keydown', activateTab);
     instance.off('tablist.stateChange', rovingTabIndex);
-  });
+  };
 }

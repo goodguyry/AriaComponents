@@ -38,7 +38,6 @@ export default function UseButtonRole({ instance }) {
     }
   }
 
-  instance.on('popup.destroy', () => {
-    instance.controller.removeEventListener('keydown', patchButtonKeydown);
-  });
+  // Clean up.
+  () => instance.controller.removeEventListener('keydown', patchButtonKeydown);
 }

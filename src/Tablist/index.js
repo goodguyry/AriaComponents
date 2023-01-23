@@ -233,7 +233,7 @@ export default class Tablist extends AriaComponent {
     });
 
     // Install extensions.
-    this.include(this.extensions);
+    this.initExtensions();
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -405,6 +405,9 @@ export default class Tablist extends AriaComponent {
         this.panelHandleKeydown
       );
     });
+
+    // Cleanup after extensions.
+    this.cleanupExtensions();
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

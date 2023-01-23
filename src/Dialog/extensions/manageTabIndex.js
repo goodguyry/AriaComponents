@@ -28,8 +28,8 @@ export default function ManageTabIndex({ instance }) {
   instance.on('dialog.stateChange', stateChangeHandler);
 
   // Handle destroy.
-  instance.on('dialog.destroy', () => {
+  return () => {
     instance.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     instance.off('dialog.stateChange', stateChangeHandler);
-  });
+  };
 }

@@ -36,7 +36,7 @@ export default function UseButtonRole({ instance }) {
     }
   }
 
-  instance.on('dialog.destroy', () => {
-    instance.controller.removeEventListener('keydown', patchButtonKeydown);
-  });
+  // Clean up.
+  // Note: Attributes automatically removed via `AriaComponent.removeAttributes(element)`.
+  return () => instance.controller.removeEventListener('keydown', patchButtonKeydown);
 }

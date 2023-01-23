@@ -44,12 +44,12 @@ export default function ManageTabIndex({ instance }) {
   // Handle state changes.
   instance.on('tablist.stateChange', rovingTabIndex);
 
-  // Handle destroy.
-  instance.on('tablist.destroy', () => {
+  // Clean up.
+  return () => {
     Object.values(interactiveChildMap)
       .flat()
       .forEach((child) => instance.removeAttributes(child));
 
     instance.off('tablist.stateChange', rovingTabIndex);
-  });
+  };
 }

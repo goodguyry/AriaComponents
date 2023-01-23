@@ -24,9 +24,9 @@ export default function ManageTabIndex({ instance }) {
   // Handle state changes.
   instance.on('popup.stateChange', stateChangeHandler);
 
-  // Handle destroy.
-  instance.on('popup.destroy', () => {
+  // Clean up.
+  return () => {
     instance.off('popup.stateChange', stateChangeHandler);
     instance.interactiveChildElements.forEach((item) => instance.removeAttributes(item, 'tabindex'));
-  });
+  };
 }
