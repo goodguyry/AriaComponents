@@ -68,6 +68,12 @@ _**`toString()`**_
 
 ### Properties
 
+_**`activeIndex`**_ `Number`  
+> Set and get the index of the active tab-panel pair.
+
+_**`previousIndex`**_ `Number`  
+> Get the index of the previously-active tab-panel pair.
+
 _**`tabs`**_ `HTMLUListElement`  
 > The list element containing tab links (alias of `element`).
 
