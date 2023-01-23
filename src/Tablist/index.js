@@ -1,5 +1,4 @@
 import AriaComponent from '../AriaComponent';
-import interactiveChildren from '../lib/interactiveChildren';
 import getElementPair from '../lib/getElementPair';
 
 /**
@@ -85,11 +84,6 @@ export default class Tablist extends AriaComponent {
 
     // Deactivate the previously-active panel.
     this.updateAttribute(deactivatedPanel, 'aria-hidden', 'true');
-
-    // Prevent tabbing to interactive children of the deactivated panel.
-    interactiveChildren(deactivatedPanel).forEach((item) => (
-      item.setAttribute('tabindex', '-1')
-    ));
   }
 
   /**
@@ -121,11 +115,6 @@ export default class Tablist extends AriaComponent {
 
     // Actvate the newly active panel.
     this.updateAttribute(activePanel, 'aria-hidden', 'false');
-
-    // Allow tabbing to the newly-active panel.
-    interactiveChildren(activePanel).forEach((item) => (
-      item.removeAttribute('tabindex')
-    ));
 
     this.dispatch(
       'stateChange',
@@ -242,9 +231,6 @@ export default class Tablist extends AriaComponent {
       // Listen for panel keydown events.
       panel.addEventListener('keydown', this.panelHandleKeydown);
     });
-
-    // Save the active panel's interactive children.
-    this.interactiveChildElements = interactiveChildren(this.panels[this.activeIndex]); // eslint-disable-line max-len
 
     // Install extensions.
     this.include(this.extensions);
@@ -413,10 +399,6 @@ export default class Tablist extends AriaComponent {
     // Remove panel attributes and event listeners.
     this.panels.forEach((panel) => {
       this.removeAttributes(panel);
-
-      // Make sure to allow tabbing to all children of all panels.
-      this.interactiveChildElements = interactiveChildren(panel);
-      this.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
 
       panel.removeEventListener(
         'keydown',
