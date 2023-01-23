@@ -47,10 +47,8 @@ export default function AutomaticActivation({ instance }) {
     }
   };
 
-  // All but the first tab should be hidden by default.
-  instance.panels.forEach((panel, index) => {
-    instance.addAttribute(panel, 'tabindex', (instance.activeIndex === index) ? '0' : null);
-  });
+  // Initial setup.
+  rovingTabIndex();
 
   // Activate tabs on keydown.
   instance.tabs.addEventListener('keydown', activateTab);
