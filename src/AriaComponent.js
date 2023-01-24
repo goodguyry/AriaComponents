@@ -308,7 +308,7 @@ export default class AriaComponent {
     if (! this.__includedExtensions.includes(extension.name)) {
       this.__includedExtensions.push(extension.name);
 
-      return extension({ instance: this });
+      return extension({ component: this });
     }
   }
 

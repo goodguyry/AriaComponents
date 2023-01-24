@@ -1,9 +1,9 @@
 /**
  * Popup extension for managing tabIndex for target interactive children.
  *
- * @param {Popup} options.instance The instance of Popup.
+ * @param {Popup} options.component The instance of Popup.
  */
-export default function ManageTabIndex({ instance }) {
+export default function ManageTabIndex({ component }) {
   /**
    * Prevent focus on interactive elements in the target when the target is
    * hidden.
@@ -13,20 +13,20 @@ export default function ManageTabIndex({ instance }) {
    * or width.
    */
   const stateChangeHandler = () => {
-    instance.interactiveChildElements.forEach((item) => (
-      instance.updateAttribute(item, 'tabindex', (instance.expanded ? null : '-1')))
+    component.interactiveChildElements.forEach((item) => (
+      component.updateAttribute(item, 'tabindex', (component.expanded ? null : '-1')))
     );
   };
 
   // Initial setup.
-  instance.interactiveChildElements.forEach((item) => instance.updateAttribute(item, 'tabindex', '-1'));
+  component.interactiveChildElements.forEach((item) => component.updateAttribute(item, 'tabindex', '-1'));
 
   // Handle state changes.
-  instance.on('popup.stateChange', stateChangeHandler);
+  component.on('popup.stateChange', stateChangeHandler);
 
   // Clean up.
   return () => {
-    instance.off('popup.stateChange', stateChangeHandler);
-    instance.interactiveChildElements.forEach((item) => instance.removeAttributes(item, 'tabindex'));
+    component.off('popup.stateChange', stateChangeHandler);
+    component.interactiveChildElements.forEach((item) => component.removeAttributes(item, 'tabindex'));
   };
 }

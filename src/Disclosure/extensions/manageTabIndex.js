@@ -1,9 +1,9 @@
 /**
  * Disclosure extension for managing tabIndex for target interactive children.
  *
- * @param {Disclosure} options.instance The instance of Disclosure.
+ * @param {Disclosure} options.component The instance of Disclosure.
  */
-export default function ManageTabIndex({ instance }) {
+export default function ManageTabIndex({ component }) {
   /**
    * Prevent focus on interactive elements in the target when the target is
    * hidden.
@@ -13,22 +13,22 @@ export default function ManageTabIndex({ instance }) {
    * or width.
    */
   const stateChangeHandler = () => {
-    if (instance.expanded) {
-      instance.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+    if (component.expanded) {
+      component.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     } else {
-      instance.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+      component.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
     }
   };
 
   // Initial setup.
-  instance.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+  component.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
   // Handle state changes.
-  instance.on('disclosure.stateChange', stateChangeHandler);
+  component.on('disclosure.stateChange', stateChangeHandler);
 
   // Clean up.
   return () => {
-    instance.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-    instance.off('disclosure.stateChange', stateChangeHandler);
+    component.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+    component.off('disclosure.stateChange', stateChangeHandler);
   };
 }

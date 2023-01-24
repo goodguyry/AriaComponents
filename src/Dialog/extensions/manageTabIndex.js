@@ -1,9 +1,9 @@
 /**
  * Dialog extension for managing tabIndex for target interactive children.
  *
- * @param {Dialog} options.instance The instance of Dialog.
+ * @param {Dialog} options.component The instance of Dialog.
  */
-export default function ManageTabIndex({ instance }) {
+export default function ManageTabIndex({ component }) {
   /**
    * Prevent focus on interactive elements in the target when the target is
    * hidden.
@@ -13,23 +13,23 @@ export default function ManageTabIndex({ instance }) {
    * or width.
    */
   const stateChangeHandler = () => {
-    if (instance.expanded) {
-      instance.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+    if (component.expanded) {
+      component.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
     } else {
-      instance.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+      component.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
     }
   };
 
   // Initial setup.
   // Focusable content should initially have tabindex='-1'.
-  instance.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
+  component.interactiveChildElements.forEach((item) => item.setAttribute('tabindex', '-1'));
 
   // Handle state changes.
-  instance.on('dialog.stateChange', stateChangeHandler);
+  component.on('dialog.stateChange', stateChangeHandler);
 
   // Handle destroy.
   return () => {
-    instance.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
-    instance.off('dialog.stateChange', stateChangeHandler);
+    component.interactiveChildElements.forEach((item) => item.removeAttribute('tabindex'));
+    component.off('dialog.stateChange', stateChangeHandler);
   };
 }

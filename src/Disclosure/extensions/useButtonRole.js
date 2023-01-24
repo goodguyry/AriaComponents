@@ -1,9 +1,9 @@
 /**
  * Mimic button element for a non-button controller.
  *
- * @param {Disclosure} options.instance The Disclosure component.
+ * @param {Disclosure} options.component The Disclosure component.
  */
-export default function UseButtonRole({ instance }) {
+export default function UseButtonRole({ component }) {
   /**
    * Mimic button keyboard support.
    *
@@ -17,25 +17,25 @@ export default function UseButtonRole({ instance }) {
     if ([' ', 'Enter'].includes(event.key)) {
       event.preventDefault();
 
-      instance.expanded = true;
+      component.expanded = true;
     }
   }
 
   // Patch button role and behavior for non-button controller.
-  if ('BUTTON' !== instance.controller.nodeName) {
+  if ('BUTTON' !== component.controller.nodeName) {
     /*
      * Some elements semantics conflict with the button role. You really
      * should just use a button.
      */
-    instance.addAttribute(instance.controller, 'role', 'button');
-    instance.controller.addEventListener('keydown', patchButtonKeydown);
+    component.addAttribute(component.controller, 'role', 'button');
+    component.controller.addEventListener('keydown', patchButtonKeydown);
 
     // Ensure we can Tab to the controller even if it's not a button nor anchor.
-    if ('A' !== instance.controller.nodeName) {
-      instance.addAttribute(instance.controller, 'tabindex', '0');
+    if ('A' !== component.controller.nodeName) {
+      component.addAttribute(component.controller, 'tabindex', '0');
     }
   }
 
   // Clean up.
-  return () => instance.controller.removeEventListener('keydown', patchButtonKeydown);
+  return () => component.controller.removeEventListener('keydown', patchButtonKeydown);
 }

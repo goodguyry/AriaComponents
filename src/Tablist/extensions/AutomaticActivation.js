@@ -1,15 +1,15 @@
 /**
  * Auotmatically activate tabs when moving focus.
  *
- * @param {Tablist} options.instance The Tablist instance.
+ * @param {Tablist} options.component The Tablist instance.
  */
-export default function AutomaticActivation({ instance }) {
+export default function AutomaticActivation({ component }) {
   /**
    * Allow the active tab panel to have focus.
    */
   const rovingTabIndex = () => {
-    instance.panels.forEach((panel, index) => {
-      instance.updateAttribute(panel, 'tabindex', (instance.activeIndex === index ? '0' : null))
+    component.panels.forEach((panel, index) => {
+      component.updateAttribute(panel, 'tabindex', (component.activeIndex === index ? '0' : null))
     });
   };
 
@@ -20,7 +20,7 @@ export default function AutomaticActivation({ instance }) {
    */
   const activateTab = (event) => {
     const { key, shiftKey, target } = event;
-    const currentIndex = instance.tabLinks.indexOf(target);
+    const currentIndex = component.tabLinks.indexOf(target);
 
     switch(key) {
       /*
@@ -30,7 +30,7 @@ export default function AutomaticActivation({ instance }) {
         if (! shiftKey) {
           event.preventDefault();
 
-          instance.panels[instance.activeIndex].focus();
+          component.panels[component.activeIndex].focus();
         }
 
         break;
@@ -38,10 +38,10 @@ export default function AutomaticActivation({ instance }) {
 
       // Conditionally activate another tab.
       default: {
-        const nextIndex = instance.getNextIndex(key, currentIndex);
+        const nextIndex = component.getNextIndex(key, currentIndex);
 
         if (undefined != nextIndex) {
-          instance.switchTo(nextIndex);
+          component.switchTo(nextIndex);
         }
       }
     }
@@ -51,14 +51,14 @@ export default function AutomaticActivation({ instance }) {
   rovingTabIndex();
 
   // Activate tabs on keydown.
-  instance.tabs.addEventListener('keydown', activateTab);
+  component.tabs.addEventListener('keydown', activateTab);
 
   // Handle state changes.
-  instance.on('tablist.stateChange', rovingTabIndex);
+  component.on('tablist.stateChange', rovingTabIndex);
 
   // Clean up.
   return () => {
-    instance.tabs.removeEventListener('keydown', activateTab);
-    instance.off('tablist.stateChange', rovingTabIndex);
+    component.tabs.removeEventListener('keydown', activateTab);
+    component.off('tablist.stateChange', rovingTabIndex);
   };
 }
