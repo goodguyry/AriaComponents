@@ -89,8 +89,6 @@ export default class Disclosure extends AriaComponent {
     this.closeOnEscKey = this.closeOnEscKey.bind(this);
     this.closeOnTabOut = this.closeOnTabOut.bind(this);
     this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
-    this.tabBackToController = this.tabBackToController.bind(this);
-    this.tabtoTarget = this.tabtoTarget.bind(this);
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
@@ -185,17 +183,6 @@ export default class Disclosure extends AriaComponent {
     this.addAttribute(this.controller, 'aria-expanded', this.expanded);
 
     /*
-     * Establish a relationship when the DOM heirarchy doesn't represent that
-     * a relationship exists.
-     */
-    if (this.target !== this.controller.nextElementSibling) {
-      this.addAttribute(this.controller, 'aria-owns', this.target.id);
-
-      this.controller.addEventListener('keydown', this.tabtoTarget);
-      this.target.addEventListener('keydown', this.tabBackToController);
-    }
-
-    /*
      * Set the taget as hidden by default. Using the `aria-hidden` attribute,
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
@@ -263,47 +250,6 @@ export default class Disclosure extends AriaComponent {
       && ! this.target.contains(event.target)
     ) {
       this.close();
-    }
-  }
-
-  /**
-   * Move focus to the target's first interactive child in cases where the
-   * markup is disconnected or out-of-order.
-   *
-   * @param {Event} event The Event object.
-   */
-  tabtoTarget(event) {
-    const { key, shiftKey } = event;
-
-    if (
-      this.expanded
-      && ! shiftKey
-      && 'Tab' === key
-    ) {
-      event.preventDefault();
-
-      this.firstInteractiveChild.focus();
-    }
-  }
-
-  /**
-   * Move focus back to the controller from the target's first interactive child
-   * in cases where the markup is disconnected or out-of-order.
-   *
-   * @param {Event} event The Event object.
-   */
-  tabBackToController(event) {
-    const { key, shiftKey } = event;
-    const { activeElement } = document;
-
-    if (
-      this.firstInteractiveChild === activeElement
-      && shiftKey
-      && 'Tab' === key
-    ) {
-      event.preventDefault();
-
-      this.controller.focus();
     }
   }
 

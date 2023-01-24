@@ -11,7 +11,6 @@ const {
 
 const popupMarkup = `
   <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
-  <span>Break up DOM hierarchy</span>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -59,10 +58,6 @@ describe('The Popup should initialize as expected', () => {
   test('The Popup controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-
-    // The test markup isn't detatched, so this doesn't apply.
-    // @todo Not so sure about that, bud.
-    expect(controller.getAttribute('aria-own')).toBeFalsy();
   });
 
   test('The Popup target includes the expected attribute values', () => {
@@ -125,12 +120,6 @@ describe('Popup correctly responds to events', () => {
     expect(document.activeElement).toEqual(controller);
   });
 
-  test('Should move focus to the first popup child on Tab from controller', () => {
-    controller.dispatchEvent(keydownTab);
-    expect(document.activeElement).toEqual(domFirstChild);
-  });
-
-  // eslint-disable-next-line max-len
   test(
     'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
     () => {
@@ -152,12 +141,6 @@ describe('Popup correctly responds to events', () => {
     expect(popup.expanded).toBe(true);
   });
 
-  test('Focus moves to the controller when tabbing back from the first child', () => {
-    domFirstChild.focus();
-    target.dispatchEvent(keydownShiftTab);
-    expect(document.activeElement).toEqual(controller);
-  });
-
   test('The Disclosure closes when an external element is clicked', () => {
     document.body.dispatchEvent(click);
 
@@ -171,7 +154,6 @@ describe('Popup correctly responds to events', () => {
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
-    expect(controller.getAttribute('aria-owns')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toBeNull();
 
     expect(controller.popup).toBeUndefined();

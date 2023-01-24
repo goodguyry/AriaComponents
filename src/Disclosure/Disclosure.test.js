@@ -71,7 +71,6 @@ describe('The Disclosure should initialize as expected', () => {
 
   test('The Disclosure controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(controller.getAttribute('aria-owns')).toEqual(target.id);
   });
 
   test('The Disclosure target includes the expected attribute values', () => {
@@ -111,21 +110,12 @@ describe('The Disclosure should initialize as expected', () => {
     });
   });
 
-  test('Focus moves to the first Disclosure child on Tab key from the controller', () => {
-    disclosure.expanded = true;
-    controller.dispatchEvent(keydownTab);
-
-    expect(document.activeElement).toEqual(domFirstChild);
-  });
-
   test('All attributes are removed from elements managed by the Disclosure', () => {
     disclosure.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual(target.id);
-    // The test markup isn't detatched, so this doesn't apply.
-    expect(controller.getAttribute('aria-owns')).toBeNull();
 
     expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(onDestroy).toHaveBeenCalledTimes(1);
@@ -197,13 +187,6 @@ describe('The Disclosure should initialize as expected', () => {
       target.dispatchEvent(keydownShiftTab);
 
       expect(disclosure.expanded).toBe(true);
-    });
-
-    test('Focus moves to the controller when tabbing back from the first child', () => {
-      domFirstChild.focus();
-      target.dispatchEvent(keydownShiftTab);
-
-      expect(document.activeElement).toEqual(controller);
     });
   });
 });
