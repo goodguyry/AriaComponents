@@ -14,7 +14,7 @@ export default function AutomaticActivation({ component }) {
   };
 
   /**
-   * Activate the tab on keydown.
+   * Activate the tabpanel on keydown.
    *
    * @param {Event} event The Event object.
    */
@@ -47,18 +47,19 @@ export default function AutomaticActivation({ component }) {
     }
   };
 
-  // Initial setup.
+  /*
+   * Initial setup.
+   *
+   * Set initial tabpanel tabindex based on activeIndex.
+   */
   rovingTabIndex();
 
-  // Activate tabs on keydown.
-  component.tabs.addEventListener('keydown', activateTab);
-
-  // Handle state changes.
   component.on('tablist.stateChange', rovingTabIndex);
+  component.on('keydown', activateTab);
 
   // Clean up.
   return () => {
-    component.tabs.removeEventListener('keydown', activateTab);
+    component.off('keydown', activateTab);
     component.off('tablist.stateChange', rovingTabIndex);
   };
 }
