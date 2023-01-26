@@ -130,6 +130,13 @@ export default class AriaComponent {
    */
   set [Symbol.toStringTag](name) {
     this.stringDescription = name;
+
+    /**
+     * The event namespace.
+     *
+     * @type {string}
+     */
+    this.namespace = `${name.toLowerCase()}`;
   }
 
   /**
@@ -220,7 +227,7 @@ export default class AriaComponent {
    */
   dispatch(name, detail) {
     const event = new CustomEvent(
-      `${this.stringDescription.toLowerCase()}.${name}`,
+      `${this.namespace}.${name}`,
       {
         bubbles: true,
         composed: true,
@@ -308,7 +315,7 @@ export default class AriaComponent {
     if (! this.__includedExtensions.includes(extension.name)) {
       this.__includedExtensions.push(extension.name);
 
-      return extension({ component: this });
+      return extension({ component: this, namespace: this.namespace });
     }
   }
 
