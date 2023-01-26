@@ -6,39 +6,39 @@ import interactiveChildren from '../../lib/interactiveChildren';
  * @param {Tablist} options.component The instance of Tablist.
  */
 export default function ManageTabIndex({ component }) {
-  const interactiveChildMap = {};
-
   /**
-   * Allow the active tab panel's active elements to have focus.
+   * Allow the active tabpanel's active elements to have focus.
    */
   const rovingTabIndex = () => {
+    const { previousIndex, activeIndex } = component;
     const {
-      [component.previousIndex]: previousChildren,
-      [component.activeIndex]: activeChildren,
+      [previousIndex]: previousChildren = [],
+      [activeIndex]: activeChildren = [],
     } = interactiveChildMap;
 
-    if (undefined !== component.panels[component.previousIndex]) {
-      if (undefined === previousChildren) {
-        interactiveChildMap[component.previousIndex] = (
-          interactiveChildren(component.panels[component.previousIndex])
-        );
-      }
-
-      interactiveChildMap[component.previousIndex].forEach((item) => component.updateAttribute(item, 'tabindex', '-1'));
+    if (previousChildren.length > 0) {
+      previousChildren.forEach((item) => (
+        component.updateAttribute(item, 'tabindex', '-1'))
+      );
     }
 
-    if (undefined !== component.panels[component.activeIndex]) {
-      if (undefined === activeChildren) {
-        interactiveChildMap[component.activeIndex] = (
-          interactiveChildren(component.panels[component.activeIndex])
-        );
-      }
-
-      interactiveChildMap[component.activeIndex].forEach((item) => component.updateAttribute(item, 'tabindex', null));
+    if (activeChildren.length > 0) {
+      activeChildren.forEach((item) => (
+        component.updateAttribute(item, 'tabindex', null))
+      );
     }
   };
 
-  // Initial setup.
+  /*
+   * Initial setup.
+   *
+   * Cache panels' interactive elements, then set initial tabindex.
+   */
+  const interactiveChildMap = component.panels
+    .reduce((acc, panel, index) => (
+      { ...acc, [index]: interactiveChildren(panel) }
+    ), {});
+
   rovingTabIndex();
 
   // Handle state changes.
@@ -46,6 +46,7 @@ export default function ManageTabIndex({ component }) {
 
   // Clean up.
   return () => {
+    // Combine all interactive child arrays and rip through them in one go.
     Object.values(interactiveChildMap)
       .flat()
       .forEach((child) => component.removeAttributes(child));

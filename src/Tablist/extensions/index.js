@@ -1,6 +1,8 @@
 import AutomaticActivation from './AutomaticActivation';
-import ManageTabIndex from './manageTabIndex';
 import UseHiddenAttribute from './useHiddenAttribute';
+
+// Modules only compatible with Tablist.
+import ManageTabIndex from './manageTabIndex';
 
 export {
   AutomaticActivation,
