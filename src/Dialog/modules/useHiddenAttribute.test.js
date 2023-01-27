@@ -36,7 +36,7 @@ document.body.innerHTML = `
 const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
 
-const dialog = new Dialog(controller, { extensions: [UseHiddenAttribute] });
+const dialog = new Dialog(controller, { modules: [UseHiddenAttribute] });
 
 test('The hidden attribute is added and removed after state changes', () => {
   expect(dialog.expanded).toBe(false);

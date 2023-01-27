@@ -1,9 +1,6 @@
 /* eslint-disable max-len */
 import Disclosure from '..';
-import { ComponentConnector } from '.';
-import { events } from '../../../.jest/events';
-
-const { keydownTab, keydownShiftTab } = events;
+import { ManageTabIndex } from '.';
 
 // Set up our document body
 document.body.innerHTML = `
@@ -20,25 +17,28 @@ document.body.innerHTML = `
 `;
 
 const controller = document.querySelector('[aria-controls="answer"]');
-const target = document.querySelector('#answer');
 
-const targetFirstChild = document.querySelector('.first-child');
+const disclosure = new Disclosure(controller, { modules: [ManageTabIndex] });
 
-const disclosure = new Disclosure(controller, { extensions: [ComponentConnector] });
-
-test('Keyboard support for disconnected markup', () => {
-  expect(controller.getAttribute('aria-owns')).toEqual(target.id);
+test('The Disclosure target\'s interactive children are out of tab index when hidden', () => {
+  disclosure.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toEqual('-1');
+  });
 
   disclosure.expanded = true;
   expect(disclosure.expanded).toBe(true);
+  disclosure.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toBeNull();
+  });
 
-  controller.focus();
-  controller.dispatchEvent(keydownTab);
-  expect(document.activeElement).toEqual(targetFirstChild);
-
-  target.dispatchEvent(keydownShiftTab);
-  expect(document.activeElement).toEqual(controller);
+  disclosure.expanded = false;
+  expect(disclosure.expanded).toBe(false);
+  disclosure.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toEqual('-1');
+  });
 
   disclosure.destroy();
-  expect(controller.getAttribute('aria-owns')).toBeNull();
+  disclosure.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toBeNull();
+  });
 });

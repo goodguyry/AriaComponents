@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import Popup from '..';
-import { ManageTabIndex } from '.';
+import { UseButtonRole } from '.';
 import { events } from '../../../.jest/events';
 
 const { keydownEnter, keydownSpace } = events;
@@ -19,21 +19,23 @@ document.body.innerHTML = `
 `;
 
 const controller = document.querySelector('.link');
-const popup = new Popup(controller, { extensions: ManageTabIndex });
+const popup = new Popup(controller, { modules: UseButtonRole });
 popup.init();
 
-test('The Popup target\'s interactive children are out of tab index when hidden', () => {
-  // Initial state.
-  popup.interactiveChildElements.forEach((link) => expect(link.getAttribute('tabindex')).toEqual('-1'));
+test('Should use the button role on the controller', () => {
+  expect(controller.getAttribute('role')).toBe('button');
+  expect(controller.getAttribute('tabindex')).not.toBe('0');
+});
 
-  popup.expanded = true;
-  expect(popup.expanded).toBe(true);
-  popup.interactiveChildElements.forEach((link) => expect(link.getAttribute('tabindex')).toBeNull());
-
-  popup.expanded = false;
+test('The Return key and Spacebar activate the Popup target', () => {
+  // Ensure the Popup is closed.
   expect(popup.expanded).toBe(false);
-  popup.interactiveChildElements.forEach((link) => expect(link.getAttribute('tabindex')).toEqual('-1'));
 
-  popup.destroy();
-  popup.interactiveChildElements.forEach((link) => expect(link.getAttribute('tabindex')).toBeNull());
+  // Enter.
+  controller.dispatchEvent(keydownEnter);
+  expect(popup.expanded).toBe(true);
+
+  // Spacebar.
+  controller.dispatchEvent(keydownSpace);
+  expect(popup.expanded).toBe(false);
 });

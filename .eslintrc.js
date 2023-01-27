@@ -81,7 +81,7 @@ module.exports = {
       {
         allow: [
           '__trackedAttributes',
-          '__includedExtensions',
+          '__includedModules',
         ],
       },
     ],

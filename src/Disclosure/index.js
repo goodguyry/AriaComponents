@@ -196,8 +196,8 @@ export default class Disclosure extends AriaComponent {
     this.controller.addEventListener('keydown', this.closeOnEscKey);
     this.target.addEventListener('keydown', this.closeOnEscKey);
 
-    // Install extensions.
-    this.initExtensions();
+    // Install modules.
+    this.initModules();
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -270,8 +270,8 @@ export default class Disclosure extends AriaComponent {
     // Reset initial state.
     this.#expanded = this.#optionLoadOpen;
 
-    // Cleanup after extensions.
-    this.cleanupExtensions();
+    // Cleanup after modules.
+    this.cleanupModules();
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

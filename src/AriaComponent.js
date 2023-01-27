@@ -74,11 +74,11 @@ export default class AriaComponent {
     this.searchString = '';
 
     /**
-     * Component extensions to include.
+     * Component modules to include.
      *
      * @type {array}
      */
-    this.extensions = options.extensions || [];
+    this.modules = options.modules || [];
 
     /**
      * Track attributes added by this script.
@@ -88,16 +88,16 @@ export default class AriaComponent {
     this.__trackedAttributes = {};
 
     /**
-     * Track installed plugins.
+     * Track installed modules.
      *
      * @type {Array}
      */
-    this.__includedExtensions = [];
+    this.__includedModules = [];
 
     // Bind class methods.
-    this.initExtensions = this.initExtensions.bind(this);
+    this.initModules = this.initModules.bind(this);
     this.start = this.start.bind(this);
-    this.cleanupExtensions = this.cleanupExtensions.bind(this);
+    this.cleanupModules = this.cleanupModules.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
     this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
@@ -290,39 +290,39 @@ export default class AriaComponent {
   }
 
   /**
-   * Initialize extension(s).
+   * Initialize modules.
    */
-  initExtensions() {
+  initModules() {
     const afterDestroy = this.cleanupFunctions || [];
     let cleanup = [];
 
-    if (Array.isArray(this.extensions)) {
-      cleanup = this.extensions.map((extension) => this.start(extension));
+    if (Array.isArray(this.modules)) {
+      cleanup = this.modules.map((mod) => this.start(mod));
     } else {
-      cleanup.push(this.start(this.extensions));
+      cleanup.push(this.start(this.modules));
     }
 
     this.cleanupFunctions = [...afterDestroy, ...cleanup];
   }
 
   /**
-   * Run the extension function, which returns a cleanup function.
+   * Run the module function, which returns a cleanup function.
    *
-   * @param  {Funciton} extension The extension initializing function.
-   * @return {Functions}           The extension's cleanup function.
+   * @param  {Funciton} mod The module initializing function.
+   * @return {Functions} The cleanup function.
    */
-  start(extension) {
-    if (! this.__includedExtensions.includes(extension.name)) {
-      this.__includedExtensions.push(extension.name);
+  start(mod) {
+    if (! this.__includedModules.includes(mod.name)) {
+      this.__includedModules.push(mod.name);
 
-      return extension({ component: this, namespace: this.namespace });
+      return mod({ component: this, namespace: this.namespace });
     }
   }
 
   /**
-   * Run extension cleanup function.
+   * Run module cleanup function.
    */
-  cleanupExtensions() {
+  cleanupModules() {
     this.cleanupFunctions.forEach((cleanup) => cleanup && cleanup());
   }
 }

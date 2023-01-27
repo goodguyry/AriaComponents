@@ -118,8 +118,8 @@ export default class Popup extends AriaComponent {
     this.target.addEventListener('keydown', this.popupTargetKeydown);
     document.body.addEventListener('click', this.hideOnOutsideClick);
 
-    // Install extensions.
-    this.initExtensions();
+    // Install modules.
+    this.initModules();
   }
 
   /**
@@ -260,8 +260,8 @@ export default class Popup extends AriaComponent {
     // Reset initial state.
     this.#expanded = false;
 
-    // Cleanup after extensions.
-    this.cleanupExtensions();
+    // Cleanup after modules.
+    this.cleanupModules();
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

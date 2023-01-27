@@ -20,7 +20,7 @@ const controller = document.querySelector('[aria-controls="answer"]');
 const target = document.querySelector('#answer');
 
 // With `loadOpen` enabled.
-const disclosure = new Disclosure(controller, { loadOpen: true, extensions: [UseHiddenAttribute] });
+const disclosure = new Disclosure(controller, { loadOpen: true, modules: [UseHiddenAttribute] });
 
 test('The hidden attribute is added and removed after state changes', () => {
   expect(disclosure.expanded).toBe(true);

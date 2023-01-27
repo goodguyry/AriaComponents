@@ -20,7 +20,7 @@ document.body.innerHTML = `
 `;
 
 const controller = document.querySelector('[aria-controls="answer"]');
-const disclosure = new Disclosure(controller, { extensions: [UseButtonRole] });
+const disclosure = new Disclosure(controller, { modules: [UseButtonRole] });
 
 beforeEach(() => {
   disclosure.expanded = false;

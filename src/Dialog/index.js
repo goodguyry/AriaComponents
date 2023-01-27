@@ -181,8 +181,8 @@ export default class Dialog extends AriaComponent {
     this.controller.addEventListener('click', this.controllerHandleClick);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
 
-    // Install extensions.
-    this.initExtensions();
+    // Install modules.
+    this.initModules();
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -314,8 +314,8 @@ export default class Dialog extends AriaComponent {
     // Reset initial state.
     this.#expanded = false;
 
-    // Cleanup after extensions.
-    this.cleanupExtensions();
+    // Cleanup after modules.
+    this.cleanupModules();
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

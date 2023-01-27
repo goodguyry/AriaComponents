@@ -1,9 +1,6 @@
 /* eslint-disable max-len */
 import Dialog from '..';
-import { UseButtonRole } from '.';
-import { events } from '../../../.jest/events';
-
-const { keydownEnter, keydownSpace } = events;
+import { ManageTabIndex } from '.';
 
 // Set up our document body
 document.body.innerHTML = `
@@ -35,26 +32,27 @@ document.body.innerHTML = `
 
 const controller = document.querySelector('[aria-controls="dialog"]');
 
-const dialog = new Dialog(controller, { extensions: [UseButtonRole] });
+const dialog = new Dialog(controller, { modules: [ManageTabIndex] });
 
-beforeEach(() => {
+test('The Dialog target\'s interactive children are out of tab index when hidden', () => {
+  dialog.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toEqual('-1');
+  });
+
+  dialog.expanded = true;
+  expect(dialog.expanded).toBe(true);
+  dialog.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toBeNull();
+  });
+
   dialog.expanded = false;
-});
-
-test('Should use the button role on the controller', () => {
-  expect(controller.getAttribute('role')).toBe('button');
-  expect(controller.getAttribute('tabindex')).not.toBe('0');
-});
-
-test('The Return key and Spacebar activate the Dialog target', () => {
-  // Ensure the Dialog is closed.
   expect(dialog.expanded).toBe(false);
+  dialog.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toEqual('-1');
+  });
 
-  // Enter.
-  controller.dispatchEvent(keydownEnter);
-  expect(dialog.expanded).toBe(true);
-
-  // Spacebar.
-  controller.dispatchEvent(keydownSpace);
-  expect(dialog.expanded).toBe(true);
+  dialog.destroy();
+  dialog.interactiveChildElements.forEach((link) => {
+    expect(link.getAttribute('tabindex')).toBeNull();
+  });
 });

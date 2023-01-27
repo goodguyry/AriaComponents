@@ -21,7 +21,7 @@ document.body.innerHTML = `
 const controller = document.querySelector('.link');
 const target = document.querySelector('.wrapper');
 
-const popup = new Popup(controller, { extensions: UseHiddenAttribute });
+const popup = new Popup(controller, { modules: UseHiddenAttribute });
 popup.init();
 
 test('The hidden attribute is added and removed after state changes', () => {

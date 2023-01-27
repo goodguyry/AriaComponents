@@ -22,7 +22,7 @@ document.body.innerHTML = `
 const controller = document.querySelector('.link');
 const target = document.querySelector('.wrapper');
 
-const popup = new Popup(controller, { extensions: ComponentConnector });
+const popup = new Popup(controller, { modules: ComponentConnector });
 popup.init();
 
 const targetFirstChild = document.querySelector('.first-child');

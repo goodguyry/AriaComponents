@@ -93,12 +93,12 @@ _**`controller`**_ `HTMLButtonElement`
 _**`target`**_ `HTMLElement`  
 > The Dialog's target element.
 
-## Extensions
+## Modules
 
 ```jsx
 import Dialog, { ManageTabIndex } from 'aria-components/dialog';
 
-const dialog = new Dialog(element, { extensions: [ManageTabIndex] });
+const dialog = new Dialog(element, { modules: [ManageTabIndex] });
 ```
 
 ### Events

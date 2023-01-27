@@ -63,7 +63,7 @@ const firstPanel = document.querySelector('#first-panel');
 const secondPanel = document.querySelector('#second-panel');
 const thirdPanel = document.querySelector('#third-panel');
 
-const tablist = new Tablist(tabs, { extensions: [AutomaticActivation] });
+const tablist = new Tablist(tabs, { modules: [AutomaticActivation] });
 
 test('Panels initialize with expected tabindex', () => {
   expect(firstPanel.getAttribute('tabindex')).toEqual('0');

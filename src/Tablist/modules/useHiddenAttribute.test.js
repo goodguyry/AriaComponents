@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import Tablist from '..';
-import { ManageTabIndex } from '.';
+import { UseHiddenAttribute } from '.';
 import { events } from '../../../.jest/events';
 
 const {
@@ -63,60 +63,25 @@ const firstPanel = document.querySelector('#first-panel');
 const secondPanel = document.querySelector('#second-panel');
 const thirdPanel = document.querySelector('#third-panel');
 
-const tablist = new Tablist(tabs, { extensions: [ManageTabIndex] });
+const tablist = new Tablist(tabs, { modules: [UseHiddenAttribute] });
 
+test('Panels initialize with expected tabindex', () => {
+  expect(firstPanel.getAttribute('hidden')).toBeNull();
+  expect(secondPanel.getAttribute('hidden')).toEqual('');
+  expect(thirdPanel.getAttribute('hidden')).toEqual('');
 
-test('The Tablist target\'s interactive children are out of tab index when hidden', () => {
-  expect(tablist.previousIndex).toBeNull();
-  expect(tablist.activeIndex).toBe(0);
-
-  Array.from(panels).forEach((panel, index) => {
-    const firstChild = panel.querySelector('a[href]');
-
-    if (tablist.activeIndex === index) {
-      expect(firstChild.getAttribute('tabindex')).toBeNull();
-    }
-
-    if (tablist.previousIndex === index) {
-      expect(firstChild.getAttribute('tabindex')).toBe('-1');
-    }
-  });
-
-  tablist.activeIndex = 1;
   tablist.switchTo(2);
-  expect(tablist.previousIndex).toBe(1);
+  expect(firstPanel.getAttribute('hidden')).toEqual('');
+  expect(secondPanel.getAttribute('hidden')).toEqual('');
+  expect(thirdPanel.getAttribute('hidden')).toBeNull();
 
-  Array.from(panels).forEach((panel, index) => {
-    const firstChild = panel.querySelector('a[href]');
-
-    if (tablist.activeIndex === index) {
-      expect(firstChild.getAttribute('tabindex')).toBeNull();
-    }
-
-    if (tablist.previousIndex === index) {
-      expect(firstChild.getAttribute('tabindex')).toBe('-1');
-    }
-  });
-
-  tablist.switchTo(0);
-  expect(tablist.previousIndex).toBe(2);
-
-  Array.from(panels).forEach((panel, index) => {
-    const firstChild = panel.querySelector('a[href]');
-
-    if (tablist.activeIndex === index) {
-      expect(firstChild.getAttribute('tabindex')).toBeNull();
-    }
-
-    if (tablist.previousIndex === index) {
-      expect(firstChild.getAttribute('tabindex')).toBe('-1');
-    }
-  });
+  tablist.switchTo(1);
+  expect(firstPanel.getAttribute('hidden')).toEqual('');
+  expect(secondPanel.getAttribute('hidden')).toBeNull();
+  expect(thirdPanel.getAttribute('hidden')).toEqual('');
 
   tablist.destroy();
-
-  Array.from(panels).forEach((panel, index) => {
-    const firstChild = panel.querySelector('a[href]');
-    expect(firstChild.getAttribute('tabindex')).toBeNull();
-  });
+  expect(firstPanel.getAttribute('hidden')).toBeNull();
+  expect(secondPanel.getAttribute('hidden')).toBeNull();
+  expect(thirdPanel.getAttribute('hidden')).toBeNull();
 });
