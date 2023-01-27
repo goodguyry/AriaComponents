@@ -1,3 +1,9 @@
+/**
+ * Connect a controller and target pair when they are not adjacent siblings.
+ *
+ * @param {Popup|Disclosure} args.component The component instance.
+ * @return {Function} The cleanup function.
+ */
 export default function ComponentConnector({ component }) {
   /**
    * Move focus to the target's first interactive child in cases where the
@@ -9,7 +15,8 @@ export default function ComponentConnector({ component }) {
     const { key, shiftKey } = event;
 
     if (
-      component.expanded
+      null != component.firstInteractiveChild
+      && component.expanded
       && ! shiftKey
       && 'Tab' === key
     ) {
