@@ -41,5 +41,5 @@ test('The Return key and Spacebar activate the Disclosure target', () => {
 
   // Spacebar.
   controller.dispatchEvent(keydownSpace);
-  expect(disclosure.expanded).toBe(true);
+  expect(disclosure.expanded).toBe(false);
 });
