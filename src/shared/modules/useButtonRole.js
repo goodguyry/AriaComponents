@@ -22,7 +22,7 @@ export default function UseButtonRole({ component }) {
         component.show();
       }
     }
-  }
+  };
 
   // Patch button role and behavior for non-button controller.
   if ('BUTTON' !== component.controller.nodeName) {
@@ -40,5 +40,5 @@ export default function UseButtonRole({ component }) {
   }
 
   // Clean up.
-  () => component.controller.removeEventListener('keydown', patchButtonKeydown);
+  return () => component.controller.removeEventListener('keydown', patchButtonKeydown);
 }

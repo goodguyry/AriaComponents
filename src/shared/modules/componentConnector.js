@@ -24,7 +24,7 @@ export default function ComponentConnector({ component }) {
 
       component.firstInteractiveChild.focus();
     }
-  }
+  };
 
   /**
    * Move focus back to the controller from the target's first interactive child
@@ -45,7 +45,7 @@ export default function ComponentConnector({ component }) {
 
       component.controller.focus();
     }
-  }
+  };
 
   /*
    * Establish a relationship when the DOM heirarchy doesn't represent that

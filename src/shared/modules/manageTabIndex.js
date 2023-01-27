@@ -14,8 +14,7 @@ export default function ManageTabIndex({ component, namespace }) {
    */
   const stateChangeHandler = () => {
     component.interactiveChildElements.forEach((item) => (
-      component.updateAttribute(item, 'tabindex', (component.expanded ? null : '-1')))
-    );
+      component.updateAttribute(item, 'tabindex', (component.expanded ? null : '-1'))));
   };
 
   /*
@@ -23,7 +22,9 @@ export default function ManageTabIndex({ component, namespace }) {
    *
    * Focusable content should initially have tabindex='-1'.
    */
-  component.interactiveChildElements.forEach((item) => component.addAttribute(item, 'tabindex', '-1'));
+  component.interactiveChildElements.forEach((item) => {
+    component.addAttribute(item, 'tabindex', '-1');
+  });
   component.on(`${namespace}.stateChange`, stateChangeHandler);
 
   // Clean up.

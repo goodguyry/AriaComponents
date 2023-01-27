@@ -317,6 +317,8 @@ export default class AriaComponent {
 
       return mod({ component: this, namespace: this.namespace });
     }
+
+    return null;
   }
 
   /**

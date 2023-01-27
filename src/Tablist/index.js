@@ -102,7 +102,7 @@ export default class Tablist extends AriaComponent {
    */
   set activeIndex(newIndex) {
     // Deactivate the previous tab-panel pair.
-    this.#previousIndex = this.#activeIndex
+    this.#previousIndex = this.#activeIndex;
     // Activate the current tab-panel pair.
     this.#activeIndex = newIndex;
 
@@ -305,7 +305,7 @@ export default class Tablist extends AriaComponent {
    * @param {Event} event The event object.
    */
   tabsHandleKeydown(event) {
-    const { key, shiftKey, target } = event;
+    const { key, target } = event;
     const currentIndex = this.tabLinks.indexOf(target);
     const nextIndex = this.getNextIndex(key, currentIndex);
 

@@ -10,4 +10,4 @@ export {
   ManageTabIndex,
   ComponentConnector,
   UseHiddenAttribute,
-}
+};

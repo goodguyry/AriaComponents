@@ -4,11 +4,8 @@ import { events } from '../../.jest/events';
 
 const {
   click,
-  keydownTab,
-  keydownShiftTab,
   keydownArrowLeft,
   keydownArrowRight,
-  keydownArrowDown,
   keydownHome,
   keydownEnd,
 } = events;

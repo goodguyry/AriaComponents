@@ -10,7 +10,7 @@ export default function AutomaticActivation({ component }) {
    */
   const rovingTabIndex = () => {
     component.panels.forEach((panel, index) => {
-      component.updateAttribute(panel, 'tabindex', (component.activeIndex === index ? '0' : null))
+      component.updateAttribute(panel, 'tabindex', (component.activeIndex === index ? '0' : null));
     });
   };
 
@@ -23,7 +23,7 @@ export default function AutomaticActivation({ component }) {
     const { key, shiftKey, target } = event;
     const currentIndex = component.tabLinks.indexOf(target);
 
-    switch(key) {
+    switch (key) {
       /*
        * Move focus from the active tab to the active panel.
        */
@@ -41,7 +41,7 @@ export default function AutomaticActivation({ component }) {
       default: {
         const nextIndex = component.getNextIndex(key, currentIndex);
 
-        if (undefined != nextIndex) {
+        if (undefined !== nextIndex) {
           component.switchTo(nextIndex);
         }
       }

@@ -7,6 +7,16 @@ import interactiveChildren from '../../lib/interactiveChildren';
  * @return {Function} The cleanup function.
  */
 export default function ManageTabIndex({ component }) {
+  /*
+   * Initial setup.
+   *
+   * Cache panels' interactive elements, then set initial tabindex.
+   */
+  const interactiveChildMap = component.panels
+    .reduce((acc, panel, index) => (
+      { ...acc, [index]: interactiveChildren(panel) }
+    ), {});
+
   /**
    * Allow the selected tabpanel's active elements to have focus.
    */
@@ -17,28 +27,14 @@ export default function ManageTabIndex({ component }) {
       [activeIndex]: activeChildren = [],
     } = interactiveChildMap;
 
-    if (previousChildren.length > 0) {
-      previousChildren.forEach((item) => (
-        component.updateAttribute(item, 'tabindex', '-1'))
-      );
+    if (0 < previousChildren.length) {
+      previousChildren.forEach((item) => component.updateAttribute(item, 'tabindex', '-1'));
     }
 
-    if (activeChildren.length > 0) {
-      activeChildren.forEach((item) => (
-        component.updateAttribute(item, 'tabindex', null))
-      );
+    if (0 < activeChildren.length) {
+      activeChildren.forEach((item) => component.updateAttribute(item, 'tabindex', null));
     }
   };
-
-  /*
-   * Initial setup.
-   *
-   * Cache panels' interactive elements, then set initial tabindex.
-   */
-  const interactiveChildMap = component.panels
-    .reduce((acc, panel, index) => (
-      { ...acc, [index]: interactiveChildren(panel) }
-    ), {});
 
   rovingTabIndex();
 

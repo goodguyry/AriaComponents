@@ -4,8 +4,6 @@ import { events } from '../../.jest/events';
 
 const {
   click,
-  keydownEnter,
-  keydownSpace,
   keydownEscape,
   keydownTab,
   keydownShiftTab,
@@ -30,7 +28,6 @@ document.body.innerHTML = disclosureMarkup;
 const controller = document.querySelector('[aria-controls="answer"]');
 const target = document.querySelector('#answer');
 
-const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
 
 // Mock functions.
