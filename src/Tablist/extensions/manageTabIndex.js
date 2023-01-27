@@ -1,13 +1,14 @@
 import interactiveChildren from '../../lib/interactiveChildren';
 
 /**
- * Tablist extension for managing tabIndex for target interactive children.
+ * Tablist module for managing tabIndex for target interactive children.
  *
- * @param {Tablist} options.component The instance of Tablist.
+ * @param  {Tablist} arg.component An instance of Tablist.
+ * @return {Function} The cleanup function.
  */
 export default function ManageTabIndex({ component }) {
   /**
-   * Allow the active tabpanel's active elements to have focus.
+   * Allow the selected tabpanel's active elements to have focus.
    */
   const rovingTabIndex = () => {
     const { previousIndex, activeIndex } = component;

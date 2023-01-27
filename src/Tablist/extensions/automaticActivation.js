@@ -1,7 +1,8 @@
 /**
- * Auotmatically activate tabs when moving focus.
+ * Tablist module for automatically activating tabs when moving focus.
  *
- * @param {Tablist} options.component The Tablist instance.
+ * @param  {Tablist} arg.component An instance of Tablist.
+ * @return {Function} The cleanup function.
  */
 export default function AutomaticActivation({ component }) {
   /**

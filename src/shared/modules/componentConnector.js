@@ -1,7 +1,7 @@
 /**
  * Connect a controller and target pair when they are not adjacent siblings.
  *
- * @param {Popup|Disclosure} args.component The component instance.
+ * @param  {Popup|Disclosure} arg.component The component instance.
  * @return {Function} The cleanup function.
  */
 export default function ComponentConnector({ component }) {
