@@ -1,5 +1,4 @@
-import ManageTabIndex from '../../shared/modules';
-import UseButtonRole from './useButtonRole';
+import { ManageTabIndex, UseButtonRole } from '../../shared/modules';
 import ComponentConnector from './componentConnector';
 import UseHiddenAttribute from './useHiddenAttribute';
 

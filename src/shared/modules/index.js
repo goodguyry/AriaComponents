@@ -1,3 +1,7 @@
 import ManageTabIndex from './manageTabIndex';
+import UseButtonRole from './useButtonRole';
 
-export default ManageTabIndex;
+export {
+  ManageTabIndex,
+  UseButtonRole,
+};

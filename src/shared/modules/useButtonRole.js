@@ -1,7 +1,7 @@
 /**
  * Mimic button element for a non-button controller.
  *
- * @param {Popup} options.component The Popup component.
+ * @param {Dialog|Disclosure|Popup} options.component The component instance.
  */
 export default function UseButtonRole({ component }) {
   /**
@@ -14,7 +14,7 @@ export default function UseButtonRole({ component }) {
     if ([' ', 'Enter'].includes(event.key)) {
       event.preventDefault();
 
-      // @todo Use the same extension for all components.
+      // Toggle, if it's available.
       if (Object.prototype.hasOwnProperty.call(component, 'toggle')) {
         component.toggle();
       } else {

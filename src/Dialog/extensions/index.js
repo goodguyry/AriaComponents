@@ -1,5 +1,4 @@
-import ManageTabIndex from '../../shared/modules';
-import UseButtonRole from './useButtonRole';
+import { ManageTabIndex, UseButtonRole } from '../../shared/modules';
 import UseHiddenAttribute from './useHiddenAttribute';
 
 export {
