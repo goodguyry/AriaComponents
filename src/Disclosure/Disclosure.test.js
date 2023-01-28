@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { Disclosure } from '../..';
-import { events } from '../../.jest/events';
+import Disclosure from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,

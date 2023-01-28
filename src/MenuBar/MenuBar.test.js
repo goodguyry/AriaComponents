@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { MenuBar, Menu } from '../..';
+import MenuBar from '.';
+import Menu from '../Menu';
 
 document.body.innerHTML = `
   <nav class="nav" aria-label="Menu Class Example">

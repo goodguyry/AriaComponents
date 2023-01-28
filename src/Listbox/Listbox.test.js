@@ -1,6 +1,6 @@
 /* eslint-disable max-len, prefer-destructuring */
-import { Listbox } from '../..';
-import { events } from '../../.jest/events';
+import Listbox from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,

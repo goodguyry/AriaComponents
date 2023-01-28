@@ -1,11 +1,12 @@
 /* eslint-disable max-len */
-import Dialog from '.';
-import {
-  ManageTabIndex,
-  UseButtonRole,
-  UseHiddenAttribute,
-} from './modules';
-import { events } from '../../.jest/events';
+import
+  Dialog,
+  {
+    ManageTabIndex,
+    UseButtonRole,
+    UseHiddenAttribute,
+  } from '.';
+import { events } from '@/.jest/events';
 
 const { keydownEnter, keydownSpace } = events;
 

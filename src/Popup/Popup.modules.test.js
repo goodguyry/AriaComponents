@@ -1,12 +1,13 @@
 /* eslint-disable max-len */
-import Popup from '.';
-import {
-  ComponentConnector,
-  ManageTabIndex,
-  UseButtonRole,
-  UseHiddenAttribute,
-} from './modules';
-import { events } from '../../.jest/events';
+import
+  Popup,
+  {
+    ComponentConnector,
+    ManageTabIndex,
+    UseButtonRole,
+    UseHiddenAttribute,
+  } from '.';
+import { events } from '@/.jest/events';
 
 const {
   keydownEnter,

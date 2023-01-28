@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { Popup } from '../..';
-import { events } from '../../.jest/events';
+import Popup from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,
