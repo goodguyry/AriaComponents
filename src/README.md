@@ -1,9 +1,7 @@
-src/
+AriaComponent
 =============
 
-## AriaComponent.js
-
-Extend the `AriaComponent` class to get access to the methods below.
+The base class from which all components are extended.
 
 ## API
 
@@ -55,9 +53,3 @@ _**`'_namespace_.destroy'`**_
 > |:--|:--|:--|
 > | `event.detail.instance` | The class instance from which the event originated. | Component class |
 > | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
-
-## lib/ Modules
-
-The `src/lib/` directory contains modules available for use in creating 
-additional classes extended from AriaComponent, or for general use outside of 
-this package. See the source files for details.

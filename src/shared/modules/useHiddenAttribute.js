@@ -2,7 +2,7 @@
  * Use the hidden attribute to hide hidden content :)
  *
  * @param  {Dialog|Disclosure|Popup} arg.component The Dialog component.
- * @param  {String}                  arg.namespace The component's namespace.
+ * @param  {String}                  arg.namespace The component's event namespace.
  * @return {Function} The cleanup function.
  */
 export default function UseHiddenAttribute({ component, namespace }) {

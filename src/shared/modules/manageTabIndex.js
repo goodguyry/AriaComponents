@@ -5,7 +5,7 @@
  * may be necessary if the target is hidden by other means.
  *
  * @param  {Dialog|Disclosure|Popup} arg.component The component instance.
- * @param  {String}                  arg.namespace The component's namespace.
+ * @param  {String}                  arg.namespace The component's event namespace.
  * @return {Function} The cleanup function.
  */
 export default function ManageTabIndex({ component, namespace }) {
