@@ -34,6 +34,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Adds event namespaces: `'<componentName>.<eventName>'` (#77)
 - Some options can be set after the component initializes (#82)
 - Component state now uses setter/getter pattern (#83)
+- Adds support for modules (#84)
 
 **Fixed**
 
