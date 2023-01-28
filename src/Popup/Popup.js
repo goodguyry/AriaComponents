@@ -1,6 +1,6 @@
 import AriaComponent from '../AriaComponent';
-import getElementPair from '../lib/getElementPair';
-import interactiveChildren from '../lib/interactiveChildren';
+import getElementPair from '../shared/getElementPair';
+import interactiveChildren from '../shared/interactiveChildren';
 
 /**
  * Class for setting up an interactive popup element that can be triggered by a

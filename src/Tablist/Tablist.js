@@ -1,5 +1,5 @@
 import AriaComponent from '../AriaComponent';
-import getElementPair from '../lib/getElementPair';
+import getElementPair from '../shared/getElementPair';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
