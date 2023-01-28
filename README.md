@@ -41,18 +41,14 @@ Each component exports modules that add optional features and functionality that
 depending on the context, may simplify and/or improve UX.
 
 General module documentation is at [`src/shared/modules/`](src/shared/modules/). 
-Some compoennts have additional documentation within their local modules directory.
+Some components have additional documentation within their local modules directory.
 
 ## Contributing
 
-`npm run watch`  
+`npm run dev`  
 Run Jest and watch files for changes.
 
-`npm run dev`  
-Run Webpack in `development` mode and Jekyll serve the example page at http://127.0.0.1:8080/AriaComponents/
-
-`npm run build`  
-Run Webpack in `production` mode. This is required prior to merging to ensure assets are ready for GitHub Pages.
+Check `npm run` for more.
 
 [npmjs-img]: https://badge.fury.io/js/aria-components.svg
 [npmjs]: https://badge.fury.io/js/aria-components
