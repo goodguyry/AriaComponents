@@ -18,7 +18,7 @@ Class for setting up an interactive popup button to activate a target element.
 ```
 
 ```jsx
-import { Popup } from 'aria-components';
+import Popup from 'aria-components/popup';
 
 const controller = document.querySelector('button[target]');
 const popup = new Popup(controller);
@@ -81,6 +81,33 @@ _**`target`**_ `HTMLElement`
 | `'popup.destroy'` | Fired after the component is destroyed. |
 
 > **Note** Full event details documented at [`src/README`](../).
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Popup, { ManageTabIndex } from 'aria-components/popup'
+```
+
+### ComponentConnector
+
+Forces tab focus between a controller and target pair when they are not adjacent siblings.
+
+### ManageTabIndex
+
+Removes the target element's interactive children from the tab index when the 
+target is hidden.
+
+### UseButtonRole
+
+Mimics a button for non-button controllers by using `role=button` and mapping the 
+Space and Enter keys to `click` events
+
+### UseHiddenAttribute
+
+Hides the target element with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

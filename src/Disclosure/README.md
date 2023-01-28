@@ -68,11 +68,30 @@ _**`target`**_ `HTMLElement`
 
 ## Modules
 
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
 ```jsx
 import Disclosure, { ManageTabIndex } from 'aria-components/disclosure';
-
-const disclosure = new Disclosure(element, { modules: [ManageTabIndex] });
 ```
+
+### ComponentConnector
+
+Forces tab focus between a controller and target pair when they are not adjacent siblings.
+
+### ManageTabIndex
+
+Removes the target element's interactive children from the tab index when the 
+target is hidden.
+
+### UseButtonRole
+
+Mimics a button for non-button controllers by using `role=button` and mapping the 
+Space and Enter keys to `click` events
+
+### UseHiddenAttribute
+
+Hides the target element with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

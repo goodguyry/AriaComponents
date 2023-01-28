@@ -21,7 +21,7 @@ Class for setting up an interactive Listbox element.
 ```
 
 ```jsx
-import { Listbox } from 'aria-components';
+import Listbox from 'aria-components/listbox';
 
 const controller = document.querySelector('button[aria-controls]');
 const listbox = new Listbox(controller);

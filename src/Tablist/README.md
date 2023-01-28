@@ -38,7 +38,7 @@ at a time.
 ```
 
 ```jsx
-import { Tablist } from 'aria-components';
+import Tablist from 'aria-components/tablist';
 
 const tabs = document.querySelector('.tabs');
 const tablist = new Tablist(tabs);
@@ -92,6 +92,28 @@ _**`tabLinks`**_ `array`
 | `'tablist.destroy'` | Fired after the component is destroyed. |
 
 > **Note** Full event details documented at [`src/README`](../).
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Tablist, { AutomaticActivation } from 'aria-components/tablist';
+```
+
+### AutomaticActivation
+
+Automatically activate tabpanels as their tab is selected
+
+### ManageTabIndex
+
+Removes inactive tabpanels' interactive children from the tab index.
+
+### UseHiddenAttribute
+
+Hides inactive tabels with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
+
 
 ## References
 

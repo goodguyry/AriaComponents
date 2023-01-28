@@ -68,13 +68,13 @@ a cleanup function.
 export default function DoSomethingHelpful({ instance }) {
   // Do things with `instance` ...
 
-  return () {
+  return () => {
     // Remove attributes and event listeners.
   }
 }
 ```
 
-At present, the following properties are passed to modules:
+The following properties are passed to modules:
 
 | Property    | Type     | Description                     |
 |:------------|:--------:|:--------------------------------|

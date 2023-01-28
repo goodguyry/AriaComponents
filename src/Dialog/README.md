@@ -38,7 +38,7 @@ Class for setting up an interactive Dialog element.
 ```
 
 ```jsx
-import { Dialog } from 'aria-components';
+import Dialog from 'aria-components/dialog';
 
 const controller = document.querySelector('[aria-controls="dialog"]');
 const dialog = new Dialog(controller);
@@ -93,14 +93,6 @@ _**`controller`**_ `HTMLButtonElement`
 _**`target`**_ `HTMLElement`  
 > The Dialog's target element.
 
-## Modules
-
-```jsx
-import Dialog, { ManageTabIndex } from 'aria-components/dialog';
-
-const dialog = new Dialog(element, { modules: [ManageTabIndex] });
-```
-
 ### Events
 
 | Event | Description |
@@ -110,6 +102,29 @@ const dialog = new Dialog(element, { modules: [ManageTabIndex] });
 | `'dialog.destroy'` | Fired after the component is destroyed. |
 
 > **Note** Full event details documented at [`src/README`](../).
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Dialog, { UseHiddenAttribute } from 'aria-components/dialog';
+```
+
+### ManageTabIndex
+
+Removes the target element's interactive children from the tab index when the 
+target is hidden.
+
+### UseButtonRole
+
+Mimics a button for non-button controllers by using `role=button` and mapping the 
+Space and Enter keys to `click` events
+
+### UseHiddenAttribute
+
+Hides the target element with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

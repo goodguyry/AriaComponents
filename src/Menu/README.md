@@ -29,7 +29,7 @@ Class to set up a Menu with collapsible submenus.
 ```
 
 ```jsx
-import { Menu } from 'aria-components';
+import Menu from 'aria-components/menu';
 
 const menu = document.querySelector('.menu');
 const menu = new Menu(menu);
