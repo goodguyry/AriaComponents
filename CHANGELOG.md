@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecates MenuBar component; use Menu instead (#75)
 - Removes antipatterns from Menu component (#75)
 - Replaces `KeyboardEvent.keyCode` with `KeyboardEvent.key`; removes keyCodes helper (#79)
+- Components are now exported from their own endpoint (#84)
 
 **Added**
 
