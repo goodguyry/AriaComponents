@@ -68,11 +68,24 @@ _**`disclosures`**_ `array`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'menu.init'` | Fired after the component is initialized. |
-| `'menu.stateChange'` | Fired after component state is updated. |
-| `'menu.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
+
+_**`'menu.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'menu.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 > **Note** Full event details documented at [`src/README`](../).
 

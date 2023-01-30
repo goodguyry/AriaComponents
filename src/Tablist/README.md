@@ -85,11 +85,33 @@ _**`tabLinks`**_ `array`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'tablist.init'` | Fired after the component is initialized. |
-| `'tablist.stateChange'` | Fired after component state is updated. |
-| `'tablist.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
+
+_**`'tablist.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'tablist.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.activeIndex` | The index of the currently active tab/panel. | `boolean` |
+
+_**`'tablist.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 > **Note** Full event details documented at [`src/README`](../).
 

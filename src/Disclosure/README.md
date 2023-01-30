@@ -58,13 +58,33 @@ _**`target`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'disclosure.init'` | Fired after the component is initialized. |
-| `'disclosure.stateChange'` | Fired after component state is updated. |
-| `'disclosure.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'disclosure.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'disclosure.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'disclosure.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 ## Modules
 

@@ -74,13 +74,33 @@ _**`target`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'popup.init'` | Fired after the component is initialized. |
-| `'popup.stateChange'` | Fired after component state is updated. |
-| `'popup.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'popup.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'popup.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'popup.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 ## Modules
 

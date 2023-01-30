@@ -95,13 +95,33 @@ _**`target`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'dialog.init'` | Fired after the component is initialized. |
-| `'dialog.stateChange'` | Fired after component state is updated. |
-| `'dialog.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'dialog.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'dialog.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'dialog.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 ## Modules
 
