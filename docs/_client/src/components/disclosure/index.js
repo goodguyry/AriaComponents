@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { Disclosure } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
+import Disclosure from 'plugin/src/Disclosure'; // eslint-disable-line import/no-extraneous-dependencies
 import './disclosure.scss';
 
 // Get the components hashed classnames.
