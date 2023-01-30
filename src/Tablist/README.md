@@ -103,7 +103,7 @@ import Tablist, { AutomaticActivation } from 'aria-components/tablist';
 
 ### AutomaticActivation
 
-Automatically activate tabpanels as their tab is selected
+Automatically activate the associated tabpanel when its tab is selected
 
 ### ManageTabIndex
 

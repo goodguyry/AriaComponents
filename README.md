@@ -5,10 +5,6 @@ AriaComponents
 
 Quickly create accessible interactive components based on the W3C spec and examples
 
-- https://www.w3.org/WAI/ARIA/apg/patterns/
-- https://www.w3.org/WAI/ARIA/apg/example-index/
-- https://www.w3.org/TR/wai-aria/
-
 ## Installation
 
 ```shell
@@ -37,11 +33,17 @@ Each component's supplemental documentation can be found in its directory:
 
 ## Modules
 
-Each component exports modules that add optional features and functionality that, 
+Each component exports modules to add optional features and functionality that, 
 depending on the context, may simplify and/or improve UX.
 
 General module documentation is at [`src/shared/modules/`](src/shared/modules/). 
 Some components have additional documentation within their local modules directory.
+
+## References
+
+- https://www.w3.org/WAI/ARIA/apg/patterns/
+- https://www.w3.org/WAI/ARIA/apg/example-index/
+- https://www.w3.org/TR/wai-aria/
 
 ## Contributing
 
