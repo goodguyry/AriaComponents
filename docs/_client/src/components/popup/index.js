@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import Popup from 'plugin/src/Popup'; // eslint-disable-line import/no-extraneous-dependencies
+import Popup, { UseButtonRole } from 'plugin/src/Popup'; // eslint-disable-line import/no-extraneous-dependencies
 import './popup.scss';
 
 // Get the components hashed classnames.
@@ -16,5 +16,5 @@ controller.addEventListener('stateChange', logEventDetail);
 controller.addEventListener('destroy', logEventDetail);
 
 // Create the Popup.
-const popup = new Popup(controller);
+const popup = new Popup(controller, { modules: UseButtonRole });
 popup.init();
