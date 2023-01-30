@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { Menu, Disclosure } from '../..';
+import Menu from '.';
+import Disclosure from '../Disclosure';
 
 const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">

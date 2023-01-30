@@ -21,7 +21,7 @@ Class for setting up an interactive Listbox element.
 ```
 
 ```jsx
-import { Listbox } from 'aria-components';
+import Listbox from 'aria-components/listbox';
 
 const controller = document.querySelector('button[aria-controls]');
 const listbox = new Listbox(controller);
@@ -79,13 +79,33 @@ _**`activeDescendant`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'listbox.init'` | Fired after the component is initialized. |
-| `'listbox.stateChange'` | Fired after component state is updated. |
-| `'listbox.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'listbox.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'listbox.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'listbox.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 ## References
 

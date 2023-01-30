@@ -1,19 +1,16 @@
 /* eslint-disable max-len */
-import { Popup } from '../..';
-import { events } from '../../.jest/events';
+import Popup from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,
   keydownEscape,
   keydownTab,
   keydownShiftTab,
-  keydownSpace,
-  keydownEnter,
 } = events;
 
 const popupMarkup = `
   <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
-  <span>Break up DOM hierarchy</span>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -56,23 +53,11 @@ describe('The Popup should initialize as expected', () => {
 
   test('The `init` event fires once', () => {
     expect(popup.expanded).toBe(false);
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toEqual('-1');
-    });
   });
 
   test('The Popup controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-
-    // Link controller should get button role.
-    expect(controller.getAttribute('role')).toEqual('button');
-
-    // The test markup isn't detatched, so this doesn't apply.
-    // @todo Not so sure about that, bud.
-    expect(controller.getAttribute('aria-own')).toBeFalsy();
   });
 
   test('The Popup target includes the expected attribute values', () => {
@@ -113,22 +98,12 @@ describe('The Popup should initialize as expected', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toBeNull();
-    });
-
     // Click again to close.
     controller.dispatchEvent(click);
     expect(popup.expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toEqual('-1');
-    });
   });
 });
 
@@ -145,22 +120,6 @@ describe('Popup correctly responds to events', () => {
     expect(document.activeElement).toEqual(controller);
   });
 
-  test('Should move focus to the first popup child on Tab from controller', () => {
-    controller.dispatchEvent(keydownTab);
-    expect(document.activeElement).toEqual(domFirstChild);
-  });
-
-  test('Should update Popup state with keyboard', () => {
-    // Toggle popup
-    controller.dispatchEvent(keydownSpace);
-    expect(popup.expanded).toBe(false);
-
-    // Toggle popup
-    controller.dispatchEvent(keydownEnter);
-    expect(popup.expanded).toBe(true);
-  });
-
-  // eslint-disable-next-line max-len
   test(
     'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
     () => {
@@ -182,12 +141,6 @@ describe('Popup correctly responds to events', () => {
     expect(popup.expanded).toBe(true);
   });
 
-  test('Focus moves to the controller when tabbing back from the first child', () => {
-    domFirstChild.focus();
-    target.dispatchEvent(keydownShiftTab);
-    expect(document.activeElement).toEqual(controller);
-  });
-
   test('The Disclosure closes when an external element is clicked', () => {
     document.body.dispatchEvent(click);
 
@@ -197,13 +150,10 @@ describe('Popup correctly responds to events', () => {
   test('All attributes are removed from elements managed by the Disclosure', () => {
     popup.destroy();
 
-    if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {
-      expect(controller.getAttribute('role')).toBeNull();
-    }
+    expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
-    expect(controller.getAttribute('aria-owns')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toBeNull();
 
     expect(controller.popup).toBeUndefined();

@@ -18,7 +18,7 @@ Class for setting up an interactive popup button to activate a target element.
 ```
 
 ```jsx
-import { Popup } from 'aria-components';
+import Popup from 'aria-components/popup';
 
 const controller = document.querySelector('button[target]');
 const popup = new Popup(controller);
@@ -74,13 +74,60 @@ _**`target`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'popup.init'` | Fired after the component is initialized. |
-| `'popup.stateChange'` | Fired after component state is updated. |
-| `'popup.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'popup.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'popup.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'popup.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Popup, { ManageTabIndex } from 'aria-components/popup'
+```
+
+### ComponentConnector
+
+Forces tab focus between a controller and target pair when they are not adjacent siblings.
+
+### ManageTabIndex
+
+Removes the target element's interactive children from the tab index when the 
+target is hidden.
+
+### UseButtonRole
+
+Mimics a button for non-button controllers by using `role=button` and mapping the 
+Space and Enter keys to `click` events
+
+### UseHiddenAttribute
+
+Hides the target element with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

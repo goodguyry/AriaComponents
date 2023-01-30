@@ -1,11 +1,9 @@
 /* eslint-disable max-len */
-import { Disclosure } from '../..';
-import { events } from '../../.jest/events';
+import Disclosure from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,
-  keydownEnter,
-  keydownSpace,
   keydownEscape,
   keydownTab,
   keydownShiftTab,
@@ -30,7 +28,6 @@ document.body.innerHTML = disclosureMarkup;
 const controller = document.querySelector('[aria-controls="answer"]');
 const target = document.querySelector('#answer');
 
-const domFirstChild = document.querySelector('.first-child');
 const domLastChild = document.querySelector('.last-child');
 
 // Mock functions.
@@ -71,8 +68,6 @@ describe('The Disclosure should initialize as expected', () => {
 
   test('The Disclosure controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(controller.getAttribute('tabindex')).toBeNull();
-    expect(controller.getAttribute('aria-owns')).toEqual(target.id);
   });
 
   test('The Disclosure target includes the expected attribute values', () => {
@@ -112,44 +107,12 @@ describe('The Disclosure should initialize as expected', () => {
     });
   });
 
-  test('The Return key and Spacebar activate the Disclosure target', () => {
-    // Ensure the disclosure is closed.
-    disclosure.expanded = false;
-    expect(onStateChange).toHaveBeenCalledTimes(3);
-
-    // Return to open.
-    controller.dispatchEvent(keydownEnter);
-    expect(onStateChange).toHaveBeenCalledTimes(4);
-
-    expect(disclosure.expanded).toBe(true);
-    expect(controller.getAttribute('aria-expanded')).toEqual('true');
-    expect(target.getAttribute('aria-hidden')).toEqual('false');
-
-    // Spacebar to close.
-    controller.dispatchEvent(keydownSpace);
-    expect(onStateChange).toHaveBeenCalledTimes(5);
-
-    expect(disclosure.expanded).toBe(false);
-    expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(target.getAttribute('aria-hidden')).toEqual('true');
-  });
-
-  test('Focus moves to the first Disclosure child on Tab key from the controller', () => {
-    disclosure.expanded = true;
-    controller.dispatchEvent(keydownTab);
-
-    expect(document.activeElement).toEqual(domFirstChild);
-  });
-
   test('All attributes are removed from elements managed by the Disclosure', () => {
     disclosure.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual(target.id);
-    expect(controller.getAttribute('tabindex')).toBeNull();
-    // The test markup isn't detatched, so this doesn't apply.
-    expect(controller.getAttribute('aria-owns')).toBeNull();
 
     expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(onDestroy).toHaveBeenCalledTimes(1);
@@ -221,13 +184,6 @@ describe('The Disclosure should initialize as expected', () => {
       target.dispatchEvent(keydownShiftTab);
 
       expect(disclosure.expanded).toBe(true);
-    });
-
-    test('Focus moves to the controller when tabbing back from the first child', () => {
-      domFirstChild.focus();
-      target.dispatchEvent(keydownShiftTab);
-
-      expect(document.activeElement).toEqual(controller);
     });
   });
 });

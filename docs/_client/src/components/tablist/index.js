@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import getClassnames from 'js/getClassnames';
 import logEventDetail from 'js/logEventDetail';
-import { Tablist } from 'plugin'; // eslint-disable-line import/no-extraneous-dependencies
+import Tablist, { AutomaticActivation } from 'plugin/src/Tablist'; // eslint-disable-line import/no-extraneous-dependencies
 import './tablist.scss';
 
 // Get the components hashed classnames.
@@ -11,7 +11,7 @@ const { list } = getClassnames(siteClassNames.tablist);
 const tabs = document.querySelector(list);
 
 // Create the Tablist.
-const tablist = new Tablist(tabs);
+const tablist = new Tablist(tabs, { modules: AutomaticActivation });
 
 // Report event details.
 tabs.addEventListener('init', logEventDetail);

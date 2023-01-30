@@ -44,7 +44,7 @@ export default class AriaComponent {
    * Create an AriaComponent.
    * @constructor
    */
-  constructor(element) {
+  constructor(element, options = {}) {
     // Validate the component element.
     if (null == element || ! (element instanceof HTMLElement)) {
       AriaComponent.configurationError(
@@ -74,11 +74,11 @@ export default class AriaComponent {
     this.searchString = '';
 
     /**
-     * Saved reference elements.
+     * Component modules to include.
      *
-     * @type {Array}
+     * @type {array}
      */
-    this.referenceElements = [];
+    this.modules = options.modules || [];
 
     /**
      * Track attributes added by this script.
@@ -87,7 +87,17 @@ export default class AriaComponent {
      */
     this.__trackedAttributes = {};
 
+    /**
+     * Track installed modules.
+     *
+     * @type {Array}
+     */
+    this.__includedModules = [];
+
     // Bind class methods.
+    this.initModules = this.initModules.bind(this);
+    this.start = this.start.bind(this);
+    this.cleanupModules = this.cleanupModules.bind(this);
     this.addAttribute = this.addAttribute.bind(this);
     this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
     this.updateAttribute = this.updateAttribute.bind(this);
@@ -120,6 +130,13 @@ export default class AriaComponent {
    */
   set [Symbol.toStringTag](name) {
     this.stringDescription = name;
+
+    /**
+     * The event namespace.
+     *
+     * @type {string}
+     */
+    this.namespace = `${name.toLowerCase()}`;
   }
 
   /**
@@ -210,7 +227,7 @@ export default class AriaComponent {
    */
   dispatch(name, detail) {
     const event = new CustomEvent(
-      `${this.stringDescription.toLowerCase()}.${name}`,
+      `${this.namespace}.${name}`,
       {
         bubbles: true,
         composed: true,
@@ -270,5 +287,40 @@ export default class AriaComponent {
     this.element.removeEventListener(type, listener, options);
 
     return this;
+  }
+
+  /**
+   * Initialize modules.
+   */
+  initModules() {
+    const afterDestroy = this.cleanupFunctions || [];
+
+    const modules = Array.isArray(this.modules) ? this.modules : [this.modules];
+    const cleanup = modules.map((mod) => this.start(mod));
+
+    this.cleanupFunctions = [...afterDestroy, ...cleanup];
+  }
+
+  /**
+   * Run the module function, which returns a cleanup function.
+   *
+   * @param  {Funciton} mod The module initializing function.
+   * @return {Functions} The cleanup function.
+   */
+  start(mod) {
+    if (! this.__includedModules.includes(mod.name)) {
+      this.__includedModules.push(mod.name);
+
+      return mod({ component: this, namespace: this.namespace });
+    }
+
+    return null;
+  }
+
+  /**
+   * Run module cleanup function.
+   */
+  cleanupModules() {
+    this.cleanupFunctions.forEach((cleanup) => cleanup && cleanup());
   }
 }

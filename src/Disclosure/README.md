@@ -58,13 +58,60 @@ _**`target`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'disclosure.init'` | Fired after the component is initialized. |
-| `'disclosure.stateChange'` | Fired after component state is updated. |
-| `'disclosure.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'disclosure.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'disclosure.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'disclosure.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Disclosure, { ManageTabIndex } from 'aria-components/disclosure';
+```
+
+### ComponentConnector
+
+Forces tab focus between a controller and target pair when they are not adjacent siblings.
+
+### ManageTabIndex
+
+Removes the target element's interactive children from the tab index when the 
+target is hidden.
+
+### UseButtonRole
+
+Mimics a button for non-button controllers by using `role=button` and mapping the 
+Space and Enter keys to `click` events
+
+### UseHiddenAttribute
+
+Hides the target element with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

@@ -38,7 +38,7 @@ Class for setting up an interactive Dialog element.
 ```
 
 ```jsx
-import { Dialog } from 'aria-components';
+import Dialog from 'aria-components/dialog';
 
 const controller = document.querySelector('[aria-controls="dialog"]');
 const dialog = new Dialog(controller);
@@ -95,13 +95,56 @@ _**`target`**_ `HTMLElement`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'dialog.init'` | Fired after the component is initialized. |
-| `'dialog.stateChange'` | Fired after component state is updated. |
-| `'dialog.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
 
-> **Note** Full event details documented at [`src/README`](../).
+_**`'dialog.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'dialog.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+
+_**`'dialog.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Dialog, { UseHiddenAttribute } from 'aria-components/dialog';
+```
+
+### ManageTabIndex
+
+Removes the target element's interactive children from the tab index when the 
+target is hidden.
+
+### UseButtonRole
+
+Mimics a button for non-button controllers by using `role=button` and mapping the 
+Space and Enter keys to `click` events
+
+### UseHiddenAttribute
+
+Hides the target element with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

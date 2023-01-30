@@ -1,6 +1,6 @@
 /* eslint-disable max-len, prefer-destructuring */
-import { Listbox } from '../..';
-import { events } from '../../.jest/events';
+import Listbox from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,
@@ -239,7 +239,7 @@ describe('Listbox destroy', () => {
     controller.textContent = 'Choose';
     expect(document.body.innerHTML).toEqual(listboxMarkup);
 
-    expect(onDestroy).toHaveBeenCalledTimes(1);
+    expect(onDestroy).toHaveBeenCalledTimes(2); // Popup + Listbox
     return Promise.resolve().then(() => {
       const { detail } = getEventDetails(onDestroy);
 

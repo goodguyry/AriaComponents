@@ -1,5 +1,5 @@
-import { Dialog } from '../..';
-import { events } from '../../.jest/events';
+import Dialog from '.';
+import { events } from '@/.jest/events';
 
 const {
   click,

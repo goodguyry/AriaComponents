@@ -38,7 +38,7 @@ at a time.
 ```
 
 ```jsx
-import { Tablist } from 'aria-components';
+import Tablist from 'aria-components/tablist';
 
 const tabs = document.querySelector('.tabs');
 const tablist = new Tablist(tabs);
@@ -68,6 +68,12 @@ _**`toString()`**_
 
 ### Properties
 
+_**`activeIndex`**_ `Number`  
+> Set and get the index of the active tab-panel pair.
+
+_**`previousIndex`**_ `Number`  
+> Get the index of the previously-active tab-panel pair.
+
 _**`tabs`**_ `HTMLUListElement`  
 > The list element containing tab links (alias of `element`).
 
@@ -79,13 +85,57 @@ _**`tabLinks`**_ `array`
 
 ### Events
 
-| Event | Description |
-|:-----|:----|
-| `'tablist.init'` | Fired after the component is initialized. |
-| `'tablist.stateChange'` | Fired after component state is updated. |
-| `'tablist.destroy'` | Fired after the component is destroyed. |
+Events are namespaced by their component to avoid clashes with nested components.
+
+_**`'tablist.init'`**_
+
+> Fired after the component is initialized.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+
+_**`'tablist.stateChange'`**_
+
+> Fired after component state is updated.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.activeIndex` | The index of the currently active tab/panel. | `boolean` |
+
+_**`'tablist.destroy'`**_
+
+> Fired after the component is destroyed.
+> 
+> | Detail Property | Description | Type |
+> |:--|:--|:--|
+> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
 > **Note** Full event details documented at [`src/README`](../).
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Tablist, { AutomaticActivation } from 'aria-components/tablist';
+```
+
+### AutomaticActivation
+
+Automatically activate the associated tabpanel when its tab is selected
+
+### ManageTabIndex
+
+Removes inactive tabpanels' interactive children from the tab index.
+
+### UseHiddenAttribute
+
+Hides inactive tabels with the `hidden` attribute, removing the need to do it 
+with CSS. Note that the use of the hidden attribute can hinder animations.
+
 
 ## References
 
