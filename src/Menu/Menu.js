@@ -1,5 +1,5 @@
 import AriaComponent from '../AriaComponent';
-import Disclosure from '../Disclosure';
+import Disclosure, { UseButtonRole } from '../Disclosure';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -104,6 +104,7 @@ export default class Menu extends AriaComponent {
           {
             autoClose: this.#optionAutoClose,
             allowOutsideClick: ! this.#optionAutoClose,
+            modules: UseButtonRole,
           }
         );
 
