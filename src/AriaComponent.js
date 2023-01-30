@@ -294,13 +294,9 @@ export default class AriaComponent {
    */
   initModules() {
     const afterDestroy = this.cleanupFunctions || [];
-    let cleanup = [];
 
-    if (Array.isArray(this.modules)) {
-      cleanup = this.modules.map((mod) => this.start(mod));
-    } else {
-      cleanup.push(this.start(this.modules));
-    }
+    const modules = Array.isArray(this.modules) ? this.modules : [this.modules];
+    const cleanup = modules.map((mod) => this.start(mod));
 
     this.cleanupFunctions = [...afterDestroy, ...cleanup];
   }
