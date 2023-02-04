@@ -40,10 +40,8 @@ export default class Search {
    */
   getItem(key) {
     if (null !== this.items) {
-      const character = String.fromCharCode(key);
-
       // Append the new character to the searchString
-      this.searchString += character;
+      this.searchString += key;
 
       if (null !== this.clearSearch) {
         clearTimeout(this.clearSearch);

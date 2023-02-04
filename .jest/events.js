@@ -98,7 +98,7 @@ const events = {
 function typeCharacter(character) {
   return new KeyboardEvent(
     'keydown',
-    { key: character.charCodeAt(), bubbles: true }
+    { key: character, bubbles: true }
   );
 }
 
