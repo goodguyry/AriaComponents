@@ -113,7 +113,7 @@ describe('Popup correctly responds to events', () => {
     popup.expanded = true;
   });
 
-  test('The Disclosure closes when the Escape key is pressed', () => {
+  test('The Popup closes when the Escape key is pressed', () => {
     controller.focus();
     controller.dispatchEvent(keydownEscape);
     expect(popup.expanded).toBe(false);
@@ -121,7 +121,7 @@ describe('Popup correctly responds to events', () => {
   });
 
   test(
-    'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
+    'The Popup closes and focus is moved to the controller when the Escape key is pressed',
     () => {
       target.dispatchEvent(keydownEscape);
       expect(popup.expanded).toBe(false);
@@ -129,25 +129,25 @@ describe('Popup correctly responds to events', () => {
     }
   );
 
-  test('The Disclosure closes when Tabbing from the last child', () => {
+  test('The Popup closes when Tabbing from the last child', () => {
     domLastChild.focus();
     target.dispatchEvent(keydownTab);
     expect(popup.expanded).toBe(false);
   });
 
-  test('The Disclosure remains open when tabbing back from the last child', () => {
+  test('The Popup remains open when tabbing back from the last child', () => {
     domLastChild.focus();
     target.dispatchEvent(keydownShiftTab);
     expect(popup.expanded).toBe(true);
   });
 
-  test('The Disclosure closes when an external element is clicked', () => {
+  test('The Popup closes when an external element is clicked', () => {
     document.body.dispatchEvent(click);
 
     expect(popup.expanded).toBe(false);
   });
 
-  test('All attributes are removed from elements managed by the Disclosure', () => {
+  test('All attributes are removed from elements managed by the Popup', () => {
     popup.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
