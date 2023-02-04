@@ -1,6 +1,6 @@
 /* eslint-disable max-len, prefer-destructuring */
-import Listbox from '.';
 import { events } from '@/.jest/events';
+import Listbox from '.';
 
 const {
   click,
@@ -10,7 +10,6 @@ const {
   keydownEnter,
   keydownEscape,
   keydownHome,
-  keydownShiftTab,
   keydownSpace,
   keydownTab,
   keyupArrowDown,
@@ -171,7 +170,7 @@ describe('The Listbox target responds to events as expected', () => {
     expect(listbox.expanded).toBe(true);
   });
 
-  test('The Listbox closes and focus moes to the controller on Escape key', () => {
+  test('The Listbox closes and focus moves to the controller on Escape key', () => {
     target.dispatchEvent(keydownEscape);
     expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
@@ -252,7 +251,7 @@ describe('The Listbox target responds to events as expected', () => {
 });
 
 describe('Listbox destroy', () => {
-    test('All attributes are removed from elements managed by the Listbox', () => {
+  test('All attributes are removed from elements managed by the Listbox', () => {
     listbox.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();

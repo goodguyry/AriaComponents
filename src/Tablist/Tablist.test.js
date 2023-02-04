@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import Tablist from '.';
 import { events } from '@/.jest/events';
+import Tablist from '.';
 
 const {
   click,

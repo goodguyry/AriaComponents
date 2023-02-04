@@ -24,6 +24,13 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    'import/resolver': {
+      alias: {
+        map: [
+          [ '@', '.' ],
+        ],
+      },
+    },
   },
   rules: {
     indent: [

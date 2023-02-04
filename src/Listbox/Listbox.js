@@ -1,7 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import Search from './Search';
 import getElementPair from '../shared/getElementPair';
-import interactiveChildren from '../shared/interactiveChildren';
 
 /**
  * Class to set up an interactive Listbox element.
@@ -47,6 +46,11 @@ export default class ListBox extends AriaComponent {
     this.controller = controller;
     this.target = target;
 
+    /**
+     * Saves the initial button label.
+     *
+     * @type {String}
+     */
     this.buttonLabel = this.controller.textContent;
 
     // Bind class methods.
@@ -317,6 +321,8 @@ export default class ListBox extends AriaComponent {
            */
           this.controller.focus();
         }
+
+        break;
       }
 
       /*
@@ -335,14 +341,16 @@ export default class ListBox extends AriaComponent {
         break;
       }
 
-    case 'Tab': {
+      case 'Tab': {
         if (! shiftKey && this.target === activeElement) {
           /*
            * Close the Listbox when tabbing from the target.
            */
           this.hide();
         }
-    }
+
+        break;
+      }
 
       /*
        * Select the next or previous Listbox option.

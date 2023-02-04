@@ -1,12 +1,10 @@
 /* eslint-disable max-len */
-import
-  Tablist,
-  {
-    AutomaticActivation,
-    ManageTabIndex,
-    UseHiddenAttribute,
-  } from '.';
 import { events } from '@/.jest/events';
+import Tablist, {
+  AutomaticActivation,
+  ManageTabIndex,
+  UseHiddenAttribute,
+} from '.';
 
 const {
   keydownArrowLeft,
