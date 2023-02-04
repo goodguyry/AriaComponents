@@ -63,16 +63,13 @@ describe('The Listbox should initialize as expected', () => {
   });
 
   test('The Listbox controller includes the expected attribute values', () => {
-    // expect(controller.getAttribute('aria-haspopup')).toEqual('listbox');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    // expect(controller.getAttribute('aria-labelledby')).toEqual('location-label location-listbox-button');
     expect(controller.getAttribute('aria-activedescendant')).toBeNull();
   });
 
   test('The Listbox target includes the expected attribute values', () => {
     expect(target.getAttribute('role')).toEqual('listbox');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    // expect(target.getAttribute('aria-labelledby')).toEqual('label');
     expect(target.getAttribute('tabindex')).toEqual('-1');
 
     listItems.forEach((listItem) => {
@@ -138,17 +135,11 @@ describe('Listbox correctly responds to events', () => {
     }
   );
 
-  test('The Listbox closes when Tabbing from the last child', () => {
+  test('The Listbox closes when Tabbing from the target', () => {
     target.focus();
     target.dispatchEvent(keydownTab);
     expect(listbox.expanded).toBe(false);
   });
-
-  // test('The Listbox remains open when tabbing back from the last child', () => {
-  //   domLastChild.focus();
-  //   target.dispatchEvent(keydownShiftTab);
-  //   expect(listbox.expanded).toBe(true);
-  // });
 
   test('The Listbox closes when an external element is clicked', () => {
     document.body.dispatchEvent(click);
@@ -256,7 +247,7 @@ describe('The Listbox target responds to events as expected', () => {
     expect(document.activeElement).not.toEqual(target);
 
     expect(controller.getAttribute('aria-activedescendant')).toBeNull();
-    // expect(controller.textContent).toEqual(target.children[5].textContent);
+    expect(controller.textContent).toEqual(target.children[5].textContent);
   });
 });
 
@@ -265,38 +256,22 @@ describe('Listbox destroy', () => {
     listbox.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
-    // expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
-    // expect(controller.getAttribute('aria-controls')).toEqual('options');
-    expect(target.getAttribute('aria-hidden')).toBeNull();
-
-    // expect(controller.popup).toBeUndefined();
-    // expect(target.popup).toBeUndefined();
-
-    controller.dispatchEvent(click);
-    expect(listbox.expanded).toBe(false);
-
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(listboxMarkup);
-
-    // expect(controller.getAttribute('aria-haspopup')).toBeNull();
-    // expect(controller.getAttribute('aria-expanded')).toBeNull();
     expect(controller.getAttribute('aria-controls')).toEqual(target.id);
+
+    expect(target.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-activedescendant')).toBeNull();
-    // expect(target.getAttribute('aria-hidden')).toBeNull();
 
     listItems.forEach((item) => {
       expect(item.getAttribute('role')).toBeNull();
       expect(item.getAttribute('aria-selected')).toBeNull();
     });
 
-    // controller.dispatchEvent(click);
-    // expect(listbox.expanded).toBe(false);
+    controller.dispatchEvent(click);
+    expect(listbox.expanded).toBe(false);
 
     // Quick and dirty verification that the original markup is restored.
-    // But first, restore the button's original text label.
-    // controller.textContent = 'Choose';
-    // expect(document.body.innerHTML).toEqual(listboxMarkup);
+    expect(document.body.innerHTML).toEqual(listboxMarkup);
 
     expect(onDestroy).toHaveBeenCalledTimes(1); // Listbox
     return Promise.resolve().then(() => {
@@ -306,35 +281,4 @@ describe('Listbox destroy', () => {
       expect(detail.instance).toStrictEqual(listbox);
     });
   });
-
-  // test.skip('All attributes are removed from elements managed by the Listbox', () => {
-  //   listbox.destroy();
-
-  //   // expect(controller.getAttribute('aria-haspopup')).toBeNull();
-  //   expect(controller.getAttribute('aria-expanded')).toBeNull();
-  //   expect(controller.getAttribute('aria-controls')).toEqual(target.id);
-  //   expect(target.getAttribute('aria-activedescendant')).toBeNull();
-  //   expect(target.getAttribute('aria-hidden')).toBeNull();
-
-  //   listItems.forEach((item) => {
-  //     expect(item.getAttribute('role')).toBeNull();
-  //     expect(item.getAttribute('aria-selected')).toBeNull();
-  //   });
-
-  //   controller.dispatchEvent(click);
-  //   expect(listbox.expanded).toBe(false);
-
-  //   // Quick and dirty verification that the original markup is restored.
-  //   // But first, restore the button's original text label.
-  //   controller.textContent = 'Choose';
-  //   expect(document.body.innerHTML).toEqual(listboxMarkup);
-
-  //   expect(onDestroy).toHaveBeenCalledTimes(2); // Listbox
-  //   return Promise.resolve().then(() => {
-  //     const { detail } = getEventDetails(onDestroy);
-
-  //     expect(detail.element).toStrictEqual(controller);
-  //     expect(detail.instance).toStrictEqual(listbox);
-  //   });
-  // });
 });
