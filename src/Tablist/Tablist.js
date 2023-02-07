@@ -26,7 +26,8 @@ export default class Tablist extends AriaComponent {
    * Create a Tablist.
    * @constructor
    *
-   * @param {object} options The options object.
+   * @param {HTMLUListElement} tabs    The tabs list.
+   * @param {object}           options The options object.
    */
   constructor(tabs, options = {}) {
     super(tabs, options);
@@ -44,9 +45,6 @@ export default class Tablist extends AriaComponent {
      * @type {HTMLULElement|HTMLOLElement}
      */
     this.tabs = tabs;
-
-    // Merge options as instance properties.
-    Object.assign(this, options);
 
     // Bind class methods.
     this.panelHandleKeydown = this.panelHandleKeydown.bind(this);

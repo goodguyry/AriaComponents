@@ -41,7 +41,7 @@ export default class Dialog extends AriaComponent {
      *
      * @type {object}
      */
-    const defaultOptions = {
+    const { content } = {
       /**
        * The element(s) to be hidden when the Dialog is visible. The elements
        * wrapping all site content with the sole exception of the dialog element.
@@ -49,10 +49,12 @@ export default class Dialog extends AriaComponent {
        * @type {HTMLElement|NodeList|Array}
        */
       content: [],
+
+      ...options,
     };
 
-    // Merge remaining options with defaults and save all as instance properties.
-    Object.assign(this, defaultOptions, options);
+    // Save static options.
+    this.content = content;
 
     // Bind class methods
     this.setCloseButton = this.setCloseButton.bind(this);

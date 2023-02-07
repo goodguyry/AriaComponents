@@ -19,7 +19,7 @@ export default class Menu extends AriaComponent {
    * Create a Menu.
    * @constructor
    *
-   * @param {HTMLUListElement} element The menu list element.
+   * @param {HTMLUListElement} list    The menu list element.
    * @param {object}           options The options object.
    */
   constructor(list, options = {}) {
