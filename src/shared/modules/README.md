@@ -76,7 +76,9 @@ export default function DoSomethingHelpful({ instance }) {
 
 The following properties are passed to modules:
 
-| Property    | Type     | Description                     |
-|:------------|:--------:|:--------------------------------|
-| `instance`  | `object` | The component instance          |
-| `namespace` | `string` | The component's event namespace |
+| Property    | Type          | Description                           |
+|:------------|:-------------:|:--------------------------------------|
+| `instance`  | `object`      | The component instance                |
+| `namespace` | `string`      | The component's event namespace       |
+| `element`   | `HTMLElement` | The component element                 |
+| `options`   | `object`      | The options passed into the component |
