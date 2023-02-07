@@ -30,6 +30,9 @@ _**`allowOutsideClick`**_`= true`
 _**`autoClose`**_`= false`  
 > Automatically close the Disclosure after tabbing from its last child.
 
+_**`modules`**_`= []`  
+> A single module, or array of modules, to initialize.
+
 ## API
 
 ### Instance Methods

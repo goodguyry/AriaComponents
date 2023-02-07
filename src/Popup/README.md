@@ -46,6 +46,9 @@ _**`type`**_`= 'true'`
 > The string value of the Popup's `aria-haspopup` attribute, required to  
 match the `role` attribute of the Popup container.
 
+_**`modules`**_`= []`  
+> A single module, or array of modules, to initialize.
+
 ## API
 
 ### Instance Methods

@@ -64,6 +64,9 @@ _**`options`**_
 _**`content`**_`= null`  
 > The element or NodeList of elements that should be inaccessible when the Dialog element is open.
 
+_**`modules`**_`= []`  
+> A single module, or array of modules, to initialize.
+
 ## API
 
 ### Instance Methods
