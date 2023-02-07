@@ -56,7 +56,7 @@ export default class Menu extends AriaComponent {
     this.autoClose = autoClose;
 
     // Bind class methods
-    this.handleAutoClose = this.handleAutoClose.bind(this);
+    this.handleDisclosureStateChange = this.handleDisclosureStateChange.bind(this);
     this.destroy = this.destroy.bind(this);
 
     // Make sure the component element is a list.
@@ -76,9 +76,9 @@ export default class Menu extends AriaComponent {
    */
   set autoClose(shouldAutoClose) {
     if (shouldAutoClose) {
-      this.on('disclosure.stateChange', this.handleAutoClose);
+      this.on('disclosure.stateChange', this.handleDisclosureStateChange);
     } else {
-      this.off('disclosure.stateChange', this.handleAutoClose);
+      this.off('disclosure.stateChange', this.handleDisclosureStateChange);
     }
   }
 
@@ -113,7 +113,7 @@ export default class Menu extends AriaComponent {
     });
 
     if (this.autoClose) {
-      this.on('disclosure.stateChange', this.handleAutoClose);
+      this.on('disclosure.stateChange', this.handleDisclosureStateChange);
     }
 
     // Fire the init event.
@@ -125,7 +125,7 @@ export default class Menu extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  handleAutoClose(event) {
+  handleDisclosureStateChange(event) {
     const { detail: { instance } } = event;
 
     if (instance.expanded) {
@@ -153,7 +153,7 @@ export default class Menu extends AriaComponent {
     // Remove the list attritbutes.
     this.removeAttributes(this.element);
 
-    this.off('stateChange', this.handleAutoClose);
+    this.off('stateChange', this.handleDisclosureStateChange);
 
     // Fire the destroy event.
     this.dispatchEventDestroy();

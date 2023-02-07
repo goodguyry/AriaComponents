@@ -69,10 +69,10 @@ export default class Popup extends AriaComponent {
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.popupControllerKeydown = this.popupControllerKeydown.bind(this);
-    this.popupTargetKeydown = this.popupTargetKeydown.bind(this);
-    this.hideOnTabOut = this.hideOnTabOut.bind(this);
-    this.hideOnOutsideClick = this.hideOnOutsideClick.bind(this);
+    this.controllerHandleClick = this.controllerHandleClick.bind(this);
+    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
+    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
+    this.bodyHandleClick = this.bodyHandleClick.bind(this);
     this.destroy = this.destroy.bind(this);
   }
 
@@ -113,10 +113,10 @@ export default class Popup extends AriaComponent {
     this.addAttribute(this.target, 'aria-hidden', 'true');
 
     // Add event listeners
-    this.controller.addEventListener('click', this.toggle);
-    this.controller.addEventListener('keydown', this.popupControllerKeydown);
-    this.target.addEventListener('keydown', this.popupTargetKeydown);
-    document.body.addEventListener('click', this.hideOnOutsideClick);
+    this.controller.addEventListener('click', this.controllerHandleClick);
+    this.controller.addEventListener('keydown', this.controllerHandleKeydown);
+    this.target.addEventListener('keydown', this.targetHandleKeydown);
+    document.body.addEventListener('click', this.bodyHandleClick);
 
     // Install modules.
     this.initModules();
@@ -151,11 +151,22 @@ export default class Popup extends AriaComponent {
   }
 
   /**
+   * Show the Popup when the controller is clicked.
+   *
+   * @param {Event} event The event object.
+   */
+  controllerHandleClick(event) {
+    event.preventDefault();
+
+    this.toggle();
+  }
+
+  /**
    * Handle keydown events on the Popup controller.
    *
    * @param {Event} event The event object.
    */
-  popupControllerKeydown(event) {
+  controllerHandleKeydown(event) {
     const { key } = event;
 
     if (this.expanded && 'Escape' === key) {
@@ -175,7 +186,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  popupTargetKeydown(event) {
+  targetHandleKeydown(event) {
     const { key, shiftKey } = event;
     const { activeElement } = document;
 
@@ -208,30 +219,12 @@ export default class Popup extends AriaComponent {
   }
 
   /**
-   * Close the Popup if the Tab key is pressed and the last interactive child of
-   * the Popup is the event target.
-   *
-   * @param {Event} event The event object.
-   */
-  hideOnTabOut(event) {
-    const { key, shiftKey } = event;
-
-    if (
-      this.expanded
-      && ! shiftKey
-      && 'Tab' === key
-    ) {
-      this.hide();
-    }
-  }
-
-  /**
    * Close the Popup when clicking anywhere outside of the target or controller
    * elements.
    *
    * @param {Event} event The event object.
    */
-  hideOnOutsideClick(event) {
+  bodyHandleClick(event) {
     const { target: eventTarget } = event;
 
     if (
@@ -252,10 +245,10 @@ export default class Popup extends AriaComponent {
     this.removeAttributes(this.target);
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.toggle);
-    this.controller.removeEventListener('keydown', this.popupControllerKeydown);
-    this.target.removeEventListener('keydown', this.popupTargetKeydown);
-    document.body.removeEventListener('click', this.hideOnOutsideClick);
+    this.controller.removeEventListener('click', this.controllerHandleClick);
+    this.controller.removeEventListener('keydown', this.controllerHandleKeydown);
+    this.target.removeEventListener('keydown', this.targetHandleKeydown);
+    document.body.removeEventListener('click', this.bodyHandleClick);
 
     // Reset initial state.
     this.#expanded = false;
@@ -284,11 +277,7 @@ export default class Popup extends AriaComponent {
   /**
    * Toggle the popup state.
    */
-  toggle(event) {
-    if (null != event) {
-      event.preventDefault();
-    }
-
+  toggle() {
     this.expanded = (! this.expanded);
   }
 }
