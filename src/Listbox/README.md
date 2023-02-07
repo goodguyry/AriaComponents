@@ -30,7 +30,7 @@ const listbox = new Listbox(controller);
 ## Constructor
 
 ```jsx
-Listbox(element: HTMLElement, options: object);
+Listbox(element: HTMLElement);
 ```
 
 _**`element`**_  
@@ -39,11 +39,6 @@ _**`element`**_
 > The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
 >
 > **Note** The component's events will dispatch from this element.
-
-### Available Options
-
-`Listbox` extends `Popup` and passes its own `type` option, which can't be 
-overriden. All other [`Popup` options](../Popup/README.md) are available for `Listbox`.
 
 ## API
 
