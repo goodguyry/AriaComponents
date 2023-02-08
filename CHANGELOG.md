@@ -19,6 +19,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Replaces `KeyboardEvent.keyCode` with `KeyboardEvent.key`; removes keyCodes helper (#79)
 - Components are now exported from their own endpoint (#84)
 - Listbox no longer extends Popup (#85)
+- Components now pass the original parameters to modules (#86)
+- `Dialog.closeButton` setter replaces `Dialog.setCloseButton` method (#86)
+- No longer throws configuration errors, but logs errors instead (#86)
 
 **Added**
 
