@@ -38,7 +38,7 @@ const dialogMarkup = `
 // Set up our document body
 document.body.innerHTML = dialogMarkup;
 
-const controller = document.querySelector('.link');
+const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
 const content = document.querySelector('main');
 const footer = document.querySelector('footer');

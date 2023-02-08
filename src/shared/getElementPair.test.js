@@ -39,17 +39,17 @@ describe('Collects interactive child elements', () => {
   });
 
   it('Error: Controller has no target', () => {
-    expect(getElementPair(hasNoTarget)).toBeUndefined();
+    expect(getElementPair(hasNoTarget)).toStrictEqual({ target: null, controller: hasNoTarget });
     expect(console.error).toBeCalledTimes(1);
   });
 
   it('Error: Target has no controller', () => {
-    expect(getElementPair(hasNoController)).toBeUndefined();
+    expect(getElementPair(hasNoController)).toStrictEqual({ target: hasNoController, controller: null });
     expect(console.error).toBeCalledTimes(2);
   });
 
   it('Error: Element has no required attributes', () => {
-    expect(getElementPair(hasNoAttributes)).toBeUndefined();
+    expect(getElementPair(hasNoAttributes)).toStrictEqual({ target: null, controller: null });
     expect(console.error).toBeCalledTimes(3);
   });
 });

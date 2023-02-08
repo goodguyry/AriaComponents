@@ -18,7 +18,6 @@ const getElementPair = (element) => {
     if (null === target) {
       // eslint-disable-next-line max-len
       console.error(`Configuration error: A target element with \`id="${elementControls}"\` is not found`);
-      return undefined;
     }
 
     return {
@@ -35,7 +34,6 @@ const getElementPair = (element) => {
     if (null === controller) {
       // eslint-disable-next-line max-len
       console.error(`Configuration error: A controlling element with \`aria-controls="${elementId}"\` is not found`);
-      return undefined;
     }
 
     return {
@@ -45,7 +43,7 @@ const getElementPair = (element) => {
   }
 
   console.error('Configuration error: The element is missing the required attributes');
-  return undefined;
+  return { controller: null, target: null };
 };
 
 export default getElementPair;
