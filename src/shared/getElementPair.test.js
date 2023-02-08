@@ -1,5 +1,7 @@
 import getElementPair from './getElementPair';
 
+jest.spyOn(global.console, 'error').mockImplementation();
+
 describe('Collects interactive child elements', () => {
   // Set up our document body
   document.body.innerHTML = `
@@ -36,14 +38,17 @@ describe('Collects interactive child elements', () => {
   });
 
   it('Error: Controller has no target', () => {
-    expect(() => getElementPair(hasNoTarget)).toThrow();
+    expect(getElementPair(hasNoTarget)).toBeUndefined();
+    expect(console.error).toBeCalledTimes(1)
   });
 
   it('Error: Target has no controller', () => {
-    expect(() => getElementPair(hasNoController)).toThrow();
+    expect(getElementPair(hasNoController)).toBeUndefined();
+    expect(console.error).toBeCalledTimes(2)
   });
 
   it('Error: Element has no required attributes', () => {
-    expect(() => getElementPair(hasNoAttributes)).toThrow();
+    expect(getElementPair(hasNoAttributes)).toBeUndefined();
+    expect(console.error).toBeCalledTimes(3)
   });
 });

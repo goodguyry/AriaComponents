@@ -14,8 +14,9 @@ const getElementPair = (element) => {
     target = document.getElementById(elementControls);
 
     if (null === target) {
-      // eslint-disable-next-line max-len
-      throw new Error(`Configuration error: A target element with \`id="${elementControls}"\` is not found`);
+      // eslint-disable-next-line max-len, no-console
+      console.error(`Configuration error: A target element with \`id="${elementControls}"\` is not found`);
+      return undefined;
     } else {
       return {
         controller: element,
@@ -30,8 +31,9 @@ const getElementPair = (element) => {
     controller = document.querySelector(`[aria-controls="${elementId}"]`);
 
     if (null === controller) {
-      // eslint-disable-next-line max-len
-      throw new Error(`Configuration error: A controlling element with \`aria-controls="${elementId}"\` is not found`);
+      // eslint-disable-next-line max-len, no-console
+      console.error(`Configuration error: A controlling element with \`aria-controls="${elementId}"\` is not found`);
+      return undefined;
     } else {
       return {
         controller,
@@ -40,7 +42,8 @@ const getElementPair = (element) => {
     }
   }
 
-  throw new Error('Configuration error: The element is missing the required attributes');
+  console.error('Configuration error: The element is missing the required attributes');
+  return undefined;
 };
 
 export default getElementPair;
