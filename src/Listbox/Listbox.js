@@ -181,19 +181,19 @@ export default class ListBox extends AriaComponent {
      *
      * @type {array}
      */
-    this.options = Array.from(this.target.children);
+    this.targetChildren = Array.from(this.target.children);
 
     /**
      * Initialize search.
      * @type {Search}
      */
-    this.search = new Search(this.options);
+    this.search = new Search(this.targetChildren);
 
     // Set the `option` role for each list item and ensure each has a unique ID.
-    this.options.forEach((listItem) => this.addAttribute(listItem, 'role', 'option'));
+    this.targetChildren.forEach((listItem) => this.addAttribute(listItem, 'role', 'option'));
 
     // Save the first and last options.
-    const [firstOption, lastOption] = this.constructor.getFirstAndLastItems(this.options);
+    const [firstOption, lastOption] = this.constructor.getFirstAndLastItems(this.targetChildren);
     this.firstOption = firstOption;
     this.lastOption = lastOption;
 
@@ -512,7 +512,7 @@ export default class ListBox extends AriaComponent {
     this.#selectedOption = null;
 
     // Remove list item attributes.
-    this.options.forEach((listItem) => this.removeAttributes(listItem));
+    this.targetChildren.forEach((listItem) => this.removeAttributes(listItem));
 
     // Remove target attributes.
     this.removeAttributes(this.target);

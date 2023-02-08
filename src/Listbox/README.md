@@ -66,9 +66,6 @@ _**`controller`**_ `HTMLButtonElement`
 _**`target`**_ `HTMLElement`  
 > The Listbox's target element.
 
-_**`options`**_ `array`  
-> The target element's list items.
-
 _**`activeDescendant`**_ `HTMLElement`  
 > Set and get selected option.
 
