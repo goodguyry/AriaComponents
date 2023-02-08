@@ -6,5 +6,4 @@ module.exports = {
   moduleNameMapper: {
     '^@/(\.jest)/(.*)$': '<rootDir>/$1/$2',
   },
-  clearMocks: true,
 };
