@@ -1,3 +1,4 @@
+/* eslint-disable max-len, no-console */
 import getElementPair from './getElementPair';
 
 jest.spyOn(global.console, 'error').mockImplementation();
@@ -39,16 +40,16 @@ describe('Collects interactive child elements', () => {
 
   it('Error: Controller has no target', () => {
     expect(getElementPair(hasNoTarget)).toBeUndefined();
-    expect(console.error).toBeCalledTimes(1)
+    expect(console.error).toBeCalledTimes(1);
   });
 
   it('Error: Target has no controller', () => {
     expect(getElementPair(hasNoController)).toBeUndefined();
-    expect(console.error).toBeCalledTimes(2)
+    expect(console.error).toBeCalledTimes(2);
   });
 
   it('Error: Element has no required attributes', () => {
     expect(getElementPair(hasNoAttributes)).toBeUndefined();
-    expect(console.error).toBeCalledTimes(3)
+    expect(console.error).toBeCalledTimes(3);
   });
 });
