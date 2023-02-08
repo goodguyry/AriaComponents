@@ -82,9 +82,6 @@ _**`hide()`**_
 _**`toString()`**_  
 > `'[object Dialog]'`
 
-_**`setCloseButton(closeButton: HTMLButtonElement)`**_
-> Sets the given button element as the Dialog close button.  
-
 ### Properties
 
 _**`expanded`**_ `boolean`  
@@ -95,6 +92,9 @@ _**`controller`**_ `HTMLButtonElement`
 
 _**`target`**_ `HTMLElement`  
 > The Dialog's target element.
+
+_**`closeButton`**_ `HTMLButtonElement`. 
+> Set a button element as the Dialog close button.  
 
 ### Events
 

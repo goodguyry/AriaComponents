@@ -15,6 +15,13 @@ export default class Dialog extends AriaComponent {
   #expanded = false;
 
   /**
+   * The close button.
+   *
+   * @type {HTMLButtonElement}
+   */
+  #closeButton = null;
+
+  /**
    * Create a Dialog.
    * @constructor
    *
@@ -57,7 +64,6 @@ export default class Dialog extends AriaComponent {
     this.content = content;
 
     // Bind class methods
-    this.setCloseButton = this.setCloseButton.bind(this);
     this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
     this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
@@ -195,11 +201,15 @@ export default class Dialog extends AriaComponent {
    *
    * @param {HTMLButtonElement} button The Dialog's close element.
    */
-  setCloseButton(button) {
-    if (null != button) {
-      this.closeButton = button;
+  set closeButton(button) {
+    if (null != this.#closeButton) {
+      this.#closeButton.removeEventListener('click', this.hide);
+    }
 
-      this.closeButton.addEventListener('click', this.hide);
+    this.#closeButton = button;
+
+    if (null != button) {
+      this.#closeButton.addEventListener('click', this.hide);
     }
   }
 
@@ -309,8 +319,8 @@ export default class Dialog extends AriaComponent {
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);
 
-    if (null != this.closeButton) {
-      this.closeButton.removeEventListener('click', this.hide);
+    if (null != this.#closeButton) {
+      this.#closeButton.removeEventListener('click', this.hide);
     }
 
     // Reset initial state.
