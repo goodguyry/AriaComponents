@@ -337,9 +337,8 @@ export default class ListBox extends AriaComponent {
       }
 
       /*
-       * Close the Listbox when the Return, Escape, or Spacebar are pressed. No
-       * need to update state here; if the Listbox is open rest assured an
-       * option is selected.
+       * Select the activeDescendant and close the Listbox when the Return or
+       * Spacebar is pressed.
        */
       case 'Enter':
       case ' ': {
