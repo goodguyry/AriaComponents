@@ -66,21 +66,23 @@ The activating element is required to have an `aria-controls` attribute with a v
 
 Global methods and properties documented at [`src/README`](../).
 
-**`show()`** - Sets the target element as visible to assistive technology.
+**`show()`** - Shortcut for `dialog.expanded = true`.
 
-**`hide()`** - Sets the target element as hidden from assistive technology.
+**`hide()`** - Shortcut for `dialog.expanded = false`.
 
 **`toString()`** - Returns `'[object Dialog]'`.
 
 ## Properties
 
-**`expanded`** - Set and get the component state.
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
+
+**`expanded`** - _(getter)_ Get the component state.
 
 **`controller`** - The Dialog's activating element.
 
 **`target`** - The Dialog's target element.
 
-**`closeButton`** - Set a button element as the Dialog close button.
+**`closeButton`** - _(setter)_ Set a button element as the Dialog close button.
 
 ## Events
 

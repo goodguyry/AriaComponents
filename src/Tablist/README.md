@@ -68,9 +68,11 @@ See also [`src/README`](../).
 
 ## Properties
 
-**`activeIndex`** - Set and get the index of the active tab-panel pair.
+**`activeIndex`** - _(setter)_ Set the index of the active tab-panel pair and update element attribtues to hide inactive tab-panel pairs from assistive technology.
 
-**`previousIndex`** - Get the index of the previously-active tab-panel pair.
+**`activeIndex`** - _(getter)_ Get the index of the active tab-panel pair.
+
+**`previousIndex`** - _(getter)_ Get the index of the previously-active tab-panel pair.
 
 **`tabs`** - The list element containing tab links (alias of `element`).
 

@@ -41,21 +41,27 @@ The activating element is required to have an `aria-controls` attribute with a v
 
 Global methods and properties documented at [`src/README`](../).
 
-**`show()`** Sets the target element as visible to assistive technology.
+**`show()`** - Shortcut for `listbox.expanded = true`.
 
-**`hide()`** Sets the target element as hidden from assistive technology.
+**`hide()`** - Shortcut for `listbox.expanded = false`.
+
+**`toggle()`** - Shortcut for reversing `expanded` state.
 
 **`toString()`** Returns`'[object Listbox]'`.
 
 ## Properties
 
-**`expanded`** Set and get the component state.
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
+
+**`expanded`** - _(getter)_ Get the component state.
+
+**`activeDescendant`** _(setter)_ Set the selected Listbox option and update element attributes to mark the option as selected.
+
+**`activeDescendant`** _(getter)_ Get the selected Listbox option.
 
 **`controller`** The Listbox's activating element.
 
 **`target`** The Listbox's target element.
-
-**`activeDescendant`** Set and get selected option.
 
 ## Events
 
