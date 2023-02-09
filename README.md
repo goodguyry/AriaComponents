@@ -47,8 +47,7 @@ Some components have additional documentation within their local modules directo
 
 ## Contributing
 
-`npm run dev`  
-Run Jest and watch files for changes.
+Use `npm run dev` to run tests and watch files for changes.
 
 Check `npm run` for more.
 

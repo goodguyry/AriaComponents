@@ -41,53 +41,41 @@ const menu = new Menu(menu);
 Menu(menuListElement: HTMLUListElement, options: object);
 ```
 
-_**`menuListElement`**_  
-> The list element containing menu items.
+**`menuListElement`** _(Required)_ The list element containing menu items.
 
-_**`options`**_  
-> Configuration options.
+**`options`** _(Optional)_ Configuration options.
 
 ### Available Options
 
-_**`autoClose`**_`= false`  
-> Automatically close the Disclosure when its contents lose focus.
+**`autoClose`** Automatically close the Disclosure when its contents lose focus. _Default is `false`_
 
-## API
-
-### Instance Methods
+## Instance Methods
 
 Global methods and properties documented at [`src/README`](../).
 
-_**`toString()`**_  
-> `'[object Menu]'`
+**`toString()`** Returns `'[object Menu]'`.
 
-### Properties
+## Properties
 
-_**`disclosures`**_ `array`  
-> The submenu Disclosures, if any.
+**`disclosures`** The array of submenu Disclosures, if any.
 
-### Events
+## Events
 
 Events are namespaced by their component to avoid clashes with nested components.
 
-_**`'menu.init'`**_
+**`'menu.init'`**
 
 > Fired after the component is initialized.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
 
-_**`'menu.destroy'`**_
+`event.detail.instance` The class instance from which the event originated.
+
+**`'menu.destroy'`**
 
 > Fired after the component is destroyed.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
 
-> **Note** Full event details documented at [`src/README`](../).
+`event.detail.instance` The class instance from which the event originated.
+
+`event.detail.element` The element passed to the constructor.
 
 ## References
 

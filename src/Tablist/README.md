@@ -50,78 +50,62 @@ const tablist = new Tablist(tabs, options);
 Tablist(tabsListElement: HTMLUListElement);
 ```
 
-_**`tabsListElement`**_  
-> The list element containing tab links; each link must contain an \`aria-controls\`  
-> attribute referencing the ID of the associated tabPanel.
+**`tabsListElement`** - _(Required)_ The list element containing tab links. Each interactive element must contain an `aria-controls` attribute referencing the ID of the associated tabPanel.
 
-_**`options`**_  
-> Configuration options.
+**`options`** - _(Optional)_ Configuration options.
 
 ### Available Options
 
-_**`modules`**_`= []`  
-> A single module, or array of modules, to initialize.
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
-## API
-
-### Instance Methods
+## Instance Methods
 
 See also [`src/README`](../).
 
-_**`switchTo(index: Number)`**_
-> Activate the tab at the given zero-based index.
+**`switchTo(index: Number)`** - Activate the tab at the given zero-based index.
 
-_**`toString()`**_  
-> `'[object Tablist]'`
+**`toString()`** - Returns `'[object Tablist]'`.
 
-### Properties
+## Properties
 
-_**`activeIndex`**_ `Number`  
-> Set and get the index of the active tab-panel pair.
+**`activeIndex`** - _(setter)_ Set the index of the active tab-panel pair and update element attribtues to hide inactive tab-panel pairs from assistive technology.
 
-_**`previousIndex`**_ `Number`  
-> Get the index of the previously-active tab-panel pair.
+**`activeIndex`** - _(getter)_ Get the index of the active tab-panel pair.
 
-_**`tabs`**_ `HTMLUListElement`  
-> The list element containing tab links (alias of `element`).
+**`previousIndex`** - _(getter)_ Get the index of the previously-active tab-panel pair.
 
-_**`panels`**_ `array`  
-> The tab panel elements.
+**`tabs`** - The list element containing tab links (alias of `element`).
 
-_**`tabLinks`**_ `array`  
-> The anchors collected from inside of each list items.
+**`panels`** - The tab panel elements.
 
-### Events
+**`tabLinks`** - The anchors collected from inside of each list items.
+
+## Events
 
 Events are namespaced by their component to avoid clashes with nested components.
 
-_**`'tablist.init'`**_
+**`'tablist.init'`**
 
-> Fired after the component is initialized.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+Fired after the component is initialized.
 
-_**`'tablist.stateChange'`**_
+`event.detail.instance` - The class instance from which the event originated.
 
-> Fired after component state is updated.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.activeIndex` | The index of the currently active tab/panel. | `boolean` |
 
-_**`'tablist.destroy'`**_
+**`'tablist.stateChange'`**
 
-> Fired after the component is destroyed.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+Fired after component state is updated.
 
-> **Note** Full event details documented at [`src/README`](../).
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.activeIndex` - The index of the currently active tab/panel.
+
+**`'tablist.destroy'`**
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
 
 ## Modules
 
@@ -131,18 +115,17 @@ Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
 import Tablist, { AutomaticActivation } from 'aria-components/tablist';
 ```
 
-### AutomaticActivation
+**`AutomaticActivation`**
 
 Automatically activate the associated tabpanel when its tab is selected
 
-### ManageTabIndex
+**`ManageTabIndex`**
 
 Removes inactive tabpanels' interactive children from the tab index.
 
-### UseHiddenAttribute
+**`UseHiddenAttribute`**
 
-Hides inactive tabels with the `hidden` attribute, removing the need to do it 
-with CSS. Note that the use of the hidden attribute can hinder animations.
+Hides inactive tabels with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
 
 
 ## References

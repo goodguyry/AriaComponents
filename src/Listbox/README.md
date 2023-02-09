@@ -33,71 +33,61 @@ const listbox = new Listbox(controller);
 Listbox(element: HTMLElement);
 ```
 
-_**`element`**_  
-> Either the element used to activate the Listbox target, or the Listbox target element.
-> 
-> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
->
-> **Note** The component's events will dispatch from this element.
+**`element`** _(Required)_ Either the element used to activate the Listbox target, or the Listbox target element.
 
-## API
+The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
 
-### Instance Methods
+## Instance Methods
 
 Global methods and properties documented at [`src/README`](../).
 
-_**`show()`**_  
-> Updates component state to show the target element.
+**`show()`** - Shortcut for `listbox.expanded = true`.
 
-_**`hide()`**_  
-> Updates component state to hide the target element.
+**`hide()`** - Shortcut for `listbox.expanded = false`.
 
-_**`toString()`**_  
-> `'[object Listbox]'`
+**`toggle()`** - Shortcut for reversing `expanded` state.
 
-### Properties
+**`toString()`** Returns`'[object Listbox]'`.
 
-_**`expanded`**_ `boolean`  
-> Set and get the component state.
+## Properties
 
-_**`controller`**_ `HTMLButtonElement`  
-> The Listbox's activating element.
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
 
-_**`target`**_ `HTMLElement`  
-> The Listbox's target element.
+**`expanded`** - _(getter)_ Get the component state.
 
-_**`activeDescendant`**_ `HTMLElement`  
-> Set and get selected option.
+**`activeDescendant`** _(setter)_ Set the selected Listbox option and update element attributes to mark the option as selected.
 
-### Events
+**`activeDescendant`** _(getter)_ Get the selected Listbox option.
+
+**`controller`** The Listbox's activating element.
+
+**`target`** The Listbox's target element.
+
+## Events
 
 Events are namespaced by their component to avoid clashes with nested components.
 
-_**`'listbox.init'`**_
+**`'listbox.init'`**
 
-> Fired after the component is initialized.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+Fired after the component is initialized.
 
-_**`'listbox.stateChange'`**_
+`event.detail.instance` The class instance from which the event originated.
 
-> Fired after component state is updated.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+**`'listbox.stateChange'`**
 
-_**`'listbox.destroy'`**_
+Fired after component state is updated.
 
-> Fired after the component is destroyed.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+`event.detail.instance` The class instance from which the event originated.
+
+`event.detail.expanded` The current expanded component state.
+
+**`'listbox.destroy'`**
+
+Fired after the component is destroyed.
+
+`event.detail.instance` The class instance from which the event originated.
+
+`event.detail.element` The element passed to the constructor.
 
 ## References
 

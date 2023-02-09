@@ -9,85 +9,69 @@ Class for independently revealing and hiding inline content.
 new Disclosure(element: HTMLElement, options: object);
 ```
 
-_**`element`**_  
-> Either the element used to activate the Disclosure target, or the Disclosure target element.
-> 
-> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
->
-> **Note** The component's events will dispatch from this element.
+**`element`** - _(Required)_ Either the element used to activate the Disclosure target, or the Disclosure target element.
 
-_**`options`**_  
-> Configuration options.
+The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
+
+**`options`** - _(Optional)_ Configuration options.
 
 ### Available Options
 
-_**`loadOpen`**_`= false`  
-> Set the Disclosure open on load.
+**`loadOpen`** - Set the Disclosure open on load. _Default is `false`_
 
-_**`allowOutsideClick`**_`= true`  
-> Keep the Disclosure open when the user interacts with external content.
+**`allowOutsideClick`** - Keep the Disclosure open when the user interacts with external content. _Default is `true`_
 
-_**`autoClose`**_`= false`  
-> Automatically close the Disclosure after tabbing from its last child.
+**`autoClose`** - Automatically close the Disclosure after tabbing from its last child. _Default is `false`_
 
-_**`modules`**_`= []`  
-> A single module, or array of modules, to initialize.
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
-## API
-
-### Instance Methods
+## Instance Methods
 
 Global methods and properties documented at [`src/README`](../).
 
-_**`show()`**_
-> Updates component state to show the target element.
+**`open()`** - Shortcut for `disclosure.expanded = true`.
 
-_**`hide()`**_
-> Updates component state to hide the target element.
+**`close()`** - Shortcut for `disclosure.expanded = false`.
 
-_**`toString()`**_  
-> `'[object Disclosure]'`.
+**`toggle()`** - Shortcut for reversing `expanded` state.
 
-### Properties
+**`toString()`** - Returns `'[object Disclosure]'`.
 
-_**`expanded`**_ `boolean`  
-> Set and get the component state.
+## Properties
 
-_**`controller`**_ `HTMLButtonElement`  
-> The Disclosure's activating element.
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
 
-_**`target`**_ `HTMLElement`  
-> The Disclosure's target element.
+**`expanded`** - _(getter)_ Get the component state.
 
-### Events
+**`controller`** - The Disclosure's activating element.
+
+**`target`** - The Disclosure's target element.
+
+## Events
 
 Events are namespaced by their component to avoid clashes with nested components.
 
-_**`'disclosure.init'`**_
+**`'disclosure.init'`**
 
-> Fired after the component is initialized.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+Fired after the component is initialized.
 
-_**`'disclosure.stateChange'`**_
+`event.detail.instance` -  The class instance from which the event originated.
 
-> Fired after component state is updated.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+**`'disclosure.stateChange'`**
 
-_**`'disclosure.destroy'`**_
+Fired after component state is updated.
 
-> Fired after the component is destroyed.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.expanded` - The current expanded component state.
+
+**`'disclosure.destroy'`**
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
 
 ## Modules
 
@@ -97,24 +81,21 @@ Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
 import Disclosure, { ManageTabIndex } from 'aria-components/disclosure';
 ```
 
-### ComponentConnector
+**`ComponentConnector`**
 
 Forces tab focus between a controller and target pair when they are not adjacent siblings.
 
-### ManageTabIndex
+**`ManageTabIndex`**
 
-Removes the target element's interactive children from the tab index when the 
-target is hidden.
+Removes the target element's interactive children from the tab index when the  target is hidden.
 
-### UseButtonRole
+**`UseButtonRole`**
 
-Mimics a button for non-button controllers by using `role=button` and mapping the 
-Space and Enter keys to `click` events
+Mimics a button for non-button controllers by using `role=button` and mapping the  Space and Enter keys to `click` events
 
-### UseHiddenAttribute
+**`UseHiddenAttribute`**
 
-Hides the target element with the `hidden` attribute, removing the need to do it 
-with CSS. Note that the use of the hidden attribute can hinder animations.
+Hides the target element with the `hidden` attribute, removing the need to do it  with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 
