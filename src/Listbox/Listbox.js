@@ -28,11 +28,10 @@ export default class ListBox extends AriaComponent {
    * Create a ListBox.
    * @constructor
    *
-   * @param {HTMLElement} lement  The component element.
-   * @param {object}      options The options object.
+   * @param {HTMLElement} lement The component element.
    */
-  constructor(element, options = {}) {
-    super(element, options);
+  constructor(element) {
+    super(element);
 
     /**
      * The string description for this object.
@@ -54,14 +53,15 @@ export default class ListBox extends AriaComponent {
     this.buttonLabel = this.controller.textContent;
 
     // Bind class methods.
-    this.preventWindowScroll = this.preventWindowScroll.bind(this);
+    this.windowHandleKeydown = this.windowHandleKeydown.bind(this);
+    this.controllerHandleClick = this.controllerHandleClick.bind(this);
     this.controllerHandleKeyup = this.controllerHandleKeyup.bind(this);
     this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
     this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
     this.targetHandleClick = this.targetHandleClick.bind(this);
     this.targetHandleBlur = this.targetHandleBlur.bind(this);
+    this.bodyHandleClick = this.bodyHandleClick.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
-    this.handleBodyClick = this.handleBodyClick.bind(this);
     this.hide = this.hide.bind(this);
     this.show = this.show.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -181,19 +181,19 @@ export default class ListBox extends AriaComponent {
      *
      * @type {array}
      */
-    this.options = Array.from(this.target.children);
+    this.targetChildren = Array.from(this.target.children);
 
     /**
      * Initialize search.
      * @type {Search}
      */
-    this.search = new Search(this.options);
+    this.search = new Search(this.targetChildren);
 
     // Set the `option` role for each list item and ensure each has a unique ID.
-    this.options.forEach((listItem) => this.addAttribute(listItem, 'role', 'option'));
+    this.targetChildren.forEach((listItem) => this.addAttribute(listItem, 'role', 'option'));
 
     // Save the first and last options.
-    const [firstOption, lastOption] = this.constructor.getFirstAndLastItems(this.options);
+    const [firstOption, lastOption] = this.constructor.getFirstAndLastItems(this.targetChildren);
     this.firstOption = firstOption;
     this.lastOption = lastOption;
 
@@ -230,16 +230,16 @@ export default class ListBox extends AriaComponent {
     this.addAttribute(this.target, 'tabindex', '-1');
 
     // Add event listeners.
-    this.controller.addEventListener('click', this.toggle);
+    this.controller.addEventListener('click', this.controllerHandleClick);
     this.controller.addEventListener('keydown', this.controllerHandleKeydown);
     this.controller.addEventListener('keyup', this.controllerHandleKeyup);
     this.target.addEventListener('blur', this.targetHandleBlur);
     this.target.addEventListener('click', this.targetHandleClick);
     this.target.addEventListener('keydown', this.targetHandleKeydown);
-    document.body.addEventListener('click', this.handleBodyClick);
+    document.body.addEventListener('click', this.bodyHandleClick);
 
     // Prevent scrolling when using arrow up/down on the button.
-    window.addEventListener('keydown', this.preventWindowScroll);
+    window.addEventListener('keydown', this.windowHandleKeydown);
 
     // Install modules.
     this.initModules();
@@ -253,12 +253,23 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  preventWindowScroll(event) {
+  windowHandleKeydown(event) {
     const { target: keydownTarget, key } = event;
 
     if (keydownTarget === this.target && ['ArrowUp', 'ArrowDown'].includes(key)) {
       event.preventDefault();
     }
+  }
+
+  /**
+   * Show the Listbox when the controller is clicked.
+   *
+   * @param {Event} event The event object.
+   */
+  controllerHandleClick(event) {
+    event.preventDefault();
+
+    this.toggle();
   }
 
   /**
@@ -326,9 +337,8 @@ export default class ListBox extends AriaComponent {
       }
 
       /*
-       * Close the Listbox when the Return, Escape, or Spacebar are pressed. No
-       * need to update state here; if the Listbox is open rest assured an
-       * option is selected.
+       * Select the activeDescendant and close the Listbox when the Return or
+       * Spacebar is pressed.
        */
       case 'Enter':
       case ' ': {
@@ -433,7 +443,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  handleBodyClick(event) {
+  bodyHandleClick(event) {
     const { target: eventTarget } = event;
 
     if (
@@ -484,11 +494,7 @@ export default class ListBox extends AriaComponent {
   /**
    * Toggle the Listbox state.
    */
-  toggle(event) {
-    if (null != event) {
-      event.preventDefault();
-    }
-
+  toggle() {
     this.expanded = (! this.expanded);
   }
 
@@ -505,7 +511,7 @@ export default class ListBox extends AriaComponent {
     this.#selectedOption = null;
 
     // Remove list item attributes.
-    this.options.forEach((listItem) => this.removeAttributes(listItem));
+    this.targetChildren.forEach((listItem) => this.removeAttributes(listItem));
 
     // Remove target attributes.
     this.removeAttributes(this.target);
@@ -513,14 +519,14 @@ export default class ListBox extends AriaComponent {
     this.controller.textContent = this.buttonLabel;
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.toggle);
+    this.controller.removeEventListener('click', this.controllerHandleClick);
     this.controller.removeEventListener('keydown', this.controllerHandleKeydown);
     this.controller.removeEventListener('keyup', this.controllerHandleKeyup);
     this.target.removeEventListener('blur', this.targetHandleBlur);
     this.target.removeEventListener('click', this.targetHandleClick);
     this.target.removeEventListener('keydown', this.targetHandleKeydown);
-    document.body.removeEventListener('click', this.handleBodyClick);
-    window.removeEventListener('keydown', this.preventWindowScroll);
+    document.body.removeEventListener('click', this.bodyHandleClick);
+    window.removeEventListener('keydown', this.windowHandleKeydown);
 
     // Cleanup after modules.
     this.cleanupModules();

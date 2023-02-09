@@ -22,3 +22,6 @@ _**`off(event: string, listener: function, options: object)`**_
 
 _**`element`**_ `HTMLElement`  
 > Returns the element passed to the constructor.
+
+_**`id`**_ `string`  
+> The component ID; matches `element.id`

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 /**
  * Get the controller and target elements based on the given element's attributes.
  *
@@ -15,13 +17,13 @@ const getElementPair = (element) => {
 
     if (null === target) {
       // eslint-disable-next-line max-len
-      throw new Error(`Configuration error: A target element with \`id="${elementControls}"\` is not found`);
-    } else {
-      return {
-        controller: element,
-        target,
-      };
+      console.error(`Configuration error: A target element with \`id="${elementControls}"\` is not found`);
     }
+
+    return {
+      controller: element,
+      target,
+    };
   }
 
   // Find the controlling element based on the target element's id attribute.
@@ -31,16 +33,17 @@ const getElementPair = (element) => {
 
     if (null === controller) {
       // eslint-disable-next-line max-len
-      throw new Error(`Configuration error: A controlling element with \`aria-controls="${elementId}"\` is not found`);
-    } else {
-      return {
-        controller,
-        target: element,
-      };
+      console.error(`Configuration error: A controlling element with \`aria-controls="${elementId}"\` is not found`);
     }
+
+    return {
+      controller,
+      target: element,
+    };
   }
 
-  throw new Error('Configuration error: The element is missing the required attributes');
+  console.error('Configuration error: The element is missing the required attributes');
+  return { controller: null, target: null };
 };
 
 export default getElementPair;

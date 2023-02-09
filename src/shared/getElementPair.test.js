@@ -1,4 +1,7 @@
+/* eslint-disable max-len, no-console */
 import getElementPair from './getElementPair';
+
+jest.spyOn(global.console, 'error').mockImplementation();
 
 describe('Collects interactive child elements', () => {
   // Set up our document body
@@ -36,14 +39,17 @@ describe('Collects interactive child elements', () => {
   });
 
   it('Error: Controller has no target', () => {
-    expect(() => getElementPair(hasNoTarget)).toThrow();
+    expect(getElementPair(hasNoTarget)).toStrictEqual({ target: null, controller: hasNoTarget });
+    expect(console.error).toBeCalledTimes(1);
   });
 
   it('Error: Target has no controller', () => {
-    expect(() => getElementPair(hasNoController)).toThrow();
+    expect(getElementPair(hasNoController)).toStrictEqual({ target: hasNoController, controller: null });
+    expect(console.error).toBeCalledTimes(2);
   });
 
   it('Error: Element has no required attributes', () => {
-    expect(() => getElementPair(hasNoAttributes)).toThrow();
+    expect(getElementPair(hasNoAttributes)).toStrictEqual({ target: null, controller: null });
+    expect(console.error).toBeCalledTimes(3);
   });
 });

@@ -74,6 +74,19 @@ export default class AriaComponent {
     this.searchString = '';
 
     /**
+     * The component parameters.
+     *
+     * @type {Object} {
+     *   @param {HTMLElement} element The component element.
+     *   @param {Object}.     options The original options.
+     * }
+     */
+    this.params = {
+      element,
+      options,
+    };
+
+    /**
      * Component modules to include.
      *
      * @type {array}
@@ -311,7 +324,11 @@ export default class AriaComponent {
     if (! this.__includedModules.includes(mod.name)) {
       this.__includedModules.push(mod.name);
 
-      return mod({ component: this, namespace: this.namespace });
+      return mod({
+        component: this,
+        namespace: this.namespace,
+        ...this.params, // element, options
+      });
     }
 
     return null;

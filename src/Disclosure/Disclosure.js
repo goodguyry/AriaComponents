@@ -86,9 +86,10 @@ export default class Disclosure extends AriaComponent {
 
     // Bind class methods.
     this.init = this.init.bind(this);
-    this.closeOnEscKey = this.closeOnEscKey.bind(this);
-    this.closeOnTabOut = this.closeOnTabOut.bind(this);
-    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this);
+    this.controllerHandleClick = this.controllerHandleClick.bind(this);
+    this.componentHandleKeydown = this.componentHandleKeydown.bind(this);
+    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
+    this.bodyHandleClick = this.bodyHandleClick.bind(this);
     this.destroy = this.destroy.bind(this);
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
@@ -107,9 +108,9 @@ export default class Disclosure extends AriaComponent {
    */
   set autoClose(shouldAutoClose) {
     if (shouldAutoClose) {
-      this.target.addEventListener('keydown', this.closeOnTabOut);
+      this.target.addEventListener('keydown', this.targetHandleKeydown);
     } else {
-      this.target.removeEventListener('keydown', this.closeOnTabOut);
+      this.target.removeEventListener('keydown', this.targetHandleKeydown);
     }
   }
 
@@ -121,9 +122,9 @@ export default class Disclosure extends AriaComponent {
    */
   set allowOutsideClick(shouldAllowOutsideClick) {
     if (shouldAllowOutsideClick) {
-      document.body.removeEventListener('click', this.closeOnOutsideClick);
+      document.body.removeEventListener('click', this.bodyHandleClick);
     } else {
-      document.body.addEventListener('click', this.closeOnOutsideClick);
+      document.body.addEventListener('click', this.bodyHandleClick);
     }
   }
 
@@ -192,9 +193,9 @@ export default class Disclosure extends AriaComponent {
     }
 
     // Add event listeners
-    this.controller.addEventListener('click', this.toggle);
-    this.controller.addEventListener('keydown', this.closeOnEscKey);
-    this.target.addEventListener('keydown', this.closeOnEscKey);
+    this.controller.addEventListener('click', this.controllerHandleClick);
+    this.controller.addEventListener('keydown', this.componentHandleKeydown);
+    this.target.addEventListener('keydown', this.componentHandleKeydown);
 
     // Install modules.
     this.initModules();
@@ -208,7 +209,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  closeOnEscKey(event) {
+  componentHandleKeydown(event) {
     if ('Escape' === event.key && this.expanded) {
       event.preventDefault();
 
@@ -225,11 +226,22 @@ export default class Disclosure extends AriaComponent {
   }
 
   /**
+   * Show the Disclosure when the controller is clicked.
+   *
+   * @param {Event} event The event object.
+   */
+  controllerHandleClick(event) {
+    event.preventDefault();
+
+    this.toggle();
+  }
+
+  /**
    * Close the Disclosure when tabbing forward from the last interactve child.
    *
    * @param {Event} event The event object.
    */
-  closeOnTabOut(event) {
+  targetHandleKeydown(event) {
     if (
       'Tab' === event.key && ! event.shiftKey
       && this.lastInteractiveChild === document.activeElement
@@ -243,7 +255,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  closeOnOutsideClick(event) {
+  bodyHandleClick(event) {
     if (
       this.expanded
       && event.target !== this.controller
@@ -262,10 +274,10 @@ export default class Disclosure extends AriaComponent {
     this.removeAttributes(this.target);
 
     // Remove event listeners.
-    this.controller.removeEventListener('click', this.toggle);
-    document.body.removeEventListener('click', this.closeOnOutsideClick);
-    this.controller.removeEventListener('keydown', this.closeOnEscKey);
-    this.target.removeEventListener('keydown', this.closeOnEscKey);
+    this.controller.removeEventListener('click', this.controllerHandleClick);
+    document.body.removeEventListener('click', this.bodyHandleClick);
+    this.controller.removeEventListener('keydown', this.componentHandleKeydown);
+    this.target.removeEventListener('keydown', this.componentHandleKeydown);
 
     // Reset initial state.
     this.#expanded = this.#optionLoadOpen;

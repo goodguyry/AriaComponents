@@ -38,7 +38,7 @@ const dialogMarkup = `
 // Set up our document body
 document.body.innerHTML = dialogMarkup;
 
-const controller = document.querySelector('.link');
+const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
 const content = document.querySelector('main');
 const footer = document.querySelector('footer');
@@ -46,7 +46,8 @@ const outsideLink = document.querySelector('.outside-link');
 
 // Cached elements.
 const firstItem = target.querySelector('button');
-const lastItem = document.querySelector('.last-item');
+const lastItem = target.querySelector('.last-item');
+const anyLink = target.querySelector('a');
 
 // Mock functions.
 const onInit = jest.fn();
@@ -134,9 +135,24 @@ describe('The Dialog correctly responds to events', () => {
     expect(document.activeElement).toEqual(firstItem);
   });
 
-  test('The `setCloseButton` method connects the close button', () => {
-    modal.setCloseButton(firstItem);
+  test('The `close` setter connects the close button', () => {
+    modal.closeButton = firstItem;
     firstItem.dispatchEvent(click);
+
+    expect(modal.expanded).toBe(false);
+    expect(footer.getAttribute('aria-hidden')).toBeNull();
+    expect(content.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+  });
+
+  test('The `close` setter overwrites as expected', () => {
+    modal.closeButton = anyLink;
+
+    // Listener removed from old button.
+    firstItem.dispatchEvent(click);
+    expect(modal.expanded).toBe(true);
+
+    anyLink.dispatchEvent(click);
 
     expect(modal.expanded).toBe(false);
     expect(footer.getAttribute('aria-hidden')).toBeNull();

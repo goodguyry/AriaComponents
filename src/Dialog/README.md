@@ -64,6 +64,9 @@ _**`options`**_
 _**`content`**_`= null`  
 > The element or NodeList of elements that should be inaccessible when the Dialog element is open.
 
+_**`modules`**_`= []`  
+> A single module, or array of modules, to initialize.
+
 ## API
 
 ### Instance Methods
@@ -79,9 +82,6 @@ _**`hide()`**_
 _**`toString()`**_  
 > `'[object Dialog]'`
 
-_**`setCloseButton(closeButton: HTMLButtonElement)`**_
-> Sets the given button element as the Dialog close button.  
-
 ### Properties
 
 _**`expanded`**_ `boolean`  
@@ -92,6 +92,9 @@ _**`controller`**_ `HTMLButtonElement`
 
 _**`target`**_ `HTMLElement`  
 > The Dialog's target element.
+
+_**`closeButton`**_ `HTMLButtonElement`. 
+> Set a button element as the Dialog close button.  
 
 ### Events
 

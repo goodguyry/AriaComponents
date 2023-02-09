@@ -41,7 +41,7 @@ at a time.
 import Tablist from 'aria-components/tablist';
 
 const tabs = document.querySelector('.tabs');
-const tablist = new Tablist(tabs);
+const tablist = new Tablist(tabs, options);
 ```
 
 ## Constructor
@@ -53,6 +53,14 @@ Tablist(tabsListElement: HTMLUListElement);
 _**`tabsListElement`**_  
 > The list element containing tab links; each link must contain an \`aria-controls\`  
 > attribute referencing the ID of the associated tabPanel.
+
+_**`options`**_  
+> Configuration options.
+
+### Available Options
+
+_**`modules`**_`= []`  
+> A single module, or array of modules, to initialize.
 
 ## API
 
