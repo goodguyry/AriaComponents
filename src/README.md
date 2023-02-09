@@ -7,21 +7,14 @@ The base class from which all components are extended.
 
 ### Instance Methods
 
-_**`toString()`**_  
-> `'[object AriaComponent]'`
+**`toString()`** - Returns `'[object AriaComponent]'`
 
-_**`on(event: string, listener: function, options: object)`**_  
-> Registers an event handler for the given event type.  
->
-> **Note**: It is not possible to respond to the `init` event using the `on` and `off` methods.
+**`on(event: string, listener: function, options: object)`** - Registers an event handler for the given event type. Parameters match those of [`addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener). It is not possible to respond to the `init` event using the `on` and `off` methods.
 
-_**`off(event: string, listener: function, options: object)`**_  
-> Unregisters an event handler for the given event type.
+**`off(event: string, listener: function, options: object)`** - Unregisters an event handler for the given event type. Parameters match those of [`removeEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
 
 ### Properties
 
-_**`element`**_ `HTMLElement`  
-> Returns the element passed to the constructor.
+**`element`** - Returns the element passed to the constructor.
 
-_**`id`**_ `string`  
-> The component ID; matches `element.id`
+**`id`** - The component ID; matches `element.id`

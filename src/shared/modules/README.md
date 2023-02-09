@@ -16,48 +16,29 @@ const disclosure = new Disclosure(controller, { modules: [UseHiddenAttribute] })
 
 ## Shared modules
 
-### ComponentConnector
+**`ComponentConnector`**
 
 Forces tab focus between a controller and target pair when they are not adjacent siblings.
 
-**Compatiblility:**
+_Compatible with: Disclosure and Popup_
 
-|                      | Dialog | Disclosure | Listbox | Menu | Popup | Tablist |
-|:---------------------|:------:|:----------:|:-------:|:----:|:-----:|:-------:|
-| `ComponentConnector` |        |      •     |         |      |   •   |         |
+**`ManageTabIndex`**
 
-### ManageTabIndex
+Removes the target element's interactive children from the tab index when the target is hidden.
 
-Removes the target element's interactive children from the tab index when the 
-target is hidden.
+_Compatible with: Dialog, Disclosure, and Popup_
 
-**Compatiblility:**
+**`UseButtonRole`**
 
-|                      | Dialog | Disclosure | Listbox | Menu | Popup | Tablist |
-|:---------------------|:------:|:----------:|:-------:|:----:|:-----:|:-------:|
-| `ManageTabIndex`     |    •   |      •     |         |      |   •   |         |
+Mimics a button for non-button controllers by using `role=button` and mapping the Space and Enter keys to `click` events.
 
-### UseButtonRole
+_Compatible with: Dialog, Disclosure, and Popup_
 
-Mimics a button for non-button controllers by using `role=button` and mapping the 
-Space and Enter keys to `click` events
+**`UseHiddenAttribute`**
 
-**Compatiblility:**
+Hides the target element with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the `hidden` attribute will prevent animations.
 
-|                      | Dialog | Disclosure | Listbox | Menu | Popup | Tablist |
-|:---------------------|:------:|:----------:|:-------:|:----:|:-----:|:-------:|
-| `UseButtonRole`      |    •   |      •     |         |      |   •   |         |
-
-### UseHiddenAttribute
-
-Hides the target element with the `hidden` attribute, removing the need to do it 
-with CSS. Note that the use of the hidden attribute can hinder animations.
-
-**Compatiblility:**
-
-|                      | Dialog | Disclosure | Listbox | Menu | Popup | Tablist |
-|:---------------------|:------:|:----------:|:-------:|:----:|:-----:|:-------:|
-| `UseHiddenAttribute` |    •   |      •     |         |      |   •   |         |
+_Compatible with: Dialog, Disclosure, and Popup_
 
 ## Writing a module
 

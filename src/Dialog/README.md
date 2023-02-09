@@ -1,7 +1,7 @@
 Dialog
 ======
 
-Class for setting up an interactive Dialog element.
+Class for managing an interactive Dialog element.
 
 ## Example
 
@@ -49,82 +49,65 @@ const dialog = new Dialog(controller);
 ```jsx
 Dialog(element: HTMLElement, options: object);
 ```
-_**`element`**_  
-> Either the element used to activate the Dialog target, or the Dialog target element.
-> 
-> The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element.
->
-> **Note** The component's events will dispatch from this element.
 
-_**`options`**_  
-> Configuration options.
+**`element`** - _(Required)_ Either the element used to activate the Dialog target, or the Dialog target element.
+
+The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
+
+**`options`** - _(Optional)_ Configuration options.
 
 ### Available Options
 
-_**`content`**_`= null`  
-> The element or NodeList of elements that should be inaccessible when the Dialog element is open.
+**`content`** - The `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `null`_
 
-_**`modules`**_`= []`  
-> A single module, or array of modules, to initialize.
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
-## API
-
-### Instance Methods
+## Instance Methods
 
 Global methods and properties documented at [`src/README`](../).
 
-_**`show()`**_
-> Updates component state to show the target element.
+**`show()`** - Sets the target element as visible to assistive technology.
 
-_**`hide()`**_
-> Updates component state to hide the target element.
+**`hide()`** - Sets the target element as hidden from assistive technology.
 
-_**`toString()`**_  
-> `'[object Dialog]'`
+**`toString()`** - Returns `'[object Dialog]'`.
 
-### Properties
+## Properties
 
-_**`expanded`**_ `boolean`  
-> Set and get the component state.
+**`expanded`** - Set and get the component state.
 
-_**`controller`**_ `HTMLButtonElement`  
-> The Dialog's activating element.
+**`controller`** - The Dialog's activating element.
 
-_**`target`**_ `HTMLElement`  
-> The Dialog's target element.
+**`target`** - The Dialog's target element.
 
-_**`closeButton`**_ `HTMLButtonElement`. 
-> Set a button element as the Dialog close button.  
+**`closeButton`** - Set a button element as the Dialog close button.
 
-### Events
+## Events
 
 Events are namespaced by their component to avoid clashes with nested components.
 
-_**`'dialog.init'`**_
+**`'dialog.init'`** 
 
-> Fired after the component is initialized.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
+Fired after the component is initialized.
 
-_**`'dialog.stateChange'`**_
+`event.detail.instance` - The class instance from which the event originated.
 
-> Fired after component state is updated.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.expanded` | The current expanded component state. | `boolean` |
+**`'dialog.stateChange'`** 
 
-_**`'dialog.destroy'`**_
+Fired after component state is updated.
 
-> Fired after the component is destroyed.
-> 
-> | Detail Property | Description | Type |
-> |:--|:--|:--|
-> | `event.detail.instance` | The class instance from which the event originated. | Component class |
-> | `event.detail.element` | The element passed to the constructor. | `HTMLElement` |
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.expanded` - The current expanded component state.
+
+**`'dialog.destroy'`** 
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
+
 
 ## Modules
 
@@ -134,20 +117,17 @@ Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
 import Dialog, { UseHiddenAttribute } from 'aria-components/dialog';
 ```
 
-### ManageTabIndex
+**`ManageTabIndex`**
 
-Removes the target element's interactive children from the tab index when the 
-target is hidden.
+Removes the target element's interactive children from the tab index when the target is hidden.
 
-### UseButtonRole
+**`UseButtonRole`**
 
-Mimics a button for non-button controllers by using `role=button` and mapping the 
-Space and Enter keys to `click` events
+Mimics a button for non-button controllers by using `role=button` and mapping the Space and Enter keys to `click` events
 
-### UseHiddenAttribute
+**`UseHiddenAttribute`**
 
-Hides the target element with the `hidden` attribute, removing the need to do it 
-with CSS. Note that the use of the hidden attribute can hinder animations.
+Hides the target element with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 
