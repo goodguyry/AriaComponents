@@ -55,10 +55,6 @@ export default class Menu extends AriaComponent {
      */
     this.autoClose = autoClose;
 
-    // Bind class methods
-    this.handleDisclosureStateChange = this.handleDisclosureStateChange.bind(this);
-    this.destroy = this.destroy.bind(this);
-
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(list.nodeName)) {
       this.init();
@@ -85,7 +81,7 @@ export default class Menu extends AriaComponent {
   /**
    * Collect menu links and recursively instantiate sublist menu items.
    */
-  init() {
+  init = () => {
     // Set and collect submenu Disclosures.
     Array.from(this.element.children).forEach((item) => {
       const [firstChild, ...theRest] = Array.from(item.children);
@@ -125,7 +121,7 @@ export default class Menu extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  handleDisclosureStateChange(event) {
+  handleDisclosureStateChange = (event) => {
     const { detail: { instance } } = event;
 
     if (instance.expanded) {
@@ -141,7 +137,7 @@ export default class Menu extends AriaComponent {
   /**
    * Destroy the Menu and any submenus.
    */
-  destroy() {
+  destroy = () => {
     /*
      * Destroy inner Disclosure(s).
      *

@@ -63,23 +63,12 @@ export default class Popup extends AriaComponent {
 
     // Intial component state.
     this.expanded = this.#expanded;
-
-    // Bind class methods.
-    this.init = this.init.bind(this);
-    this.hide = this.hide.bind(this);
-    this.show = this.show.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.controllerHandleClick = this.controllerHandleClick.bind(this);
-    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
-    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
-    this.bodyHandleClick = this.bodyHandleClick.bind(this);
-    this.destroy = this.destroy.bind(this);
   }
 
   /**
    * Set up the component's DOM attributes and event listeners.
    */
-  init() {
+  init = () => {
     /**
      * Collect the target element's interactive child elements.
      *
@@ -155,7 +144,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleClick(event) {
+  controllerHandleClick = (event) => {
     event.preventDefault();
 
     this.toggle();
@@ -166,7 +155,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleKeydown(event) {
+  controllerHandleKeydown = (event) => {
     const { key } = event;
 
     if (this.expanded && 'Escape' === key) {
@@ -186,7 +175,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetHandleKeydown(event) {
+  targetHandleKeydown = (event) => {
     const { key, shiftKey } = event;
     const { activeElement } = document;
 
@@ -224,7 +213,7 @@ export default class Popup extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  bodyHandleClick(event) {
+  bodyHandleClick = (event) => {
     const { target: eventTarget } = event;
 
     if (
@@ -239,7 +228,7 @@ export default class Popup extends AriaComponent {
   /**
    * Remove all attributes and event listeners added by this class.
    */
-  destroy() {
+  destroy = () => {
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);
@@ -263,21 +252,21 @@ export default class Popup extends AriaComponent {
   /**
    * Update component state to show the target element.
    */
-  show() {
+  show = () => {
     this.expanded = true;
   }
 
   /**
    * Update component state to hide the target element.
    */
-  hide() {
+  hide = () => {
     this.expanded = false;
   }
 
   /**
    * Toggle the popup state.
    */
-  toggle() {
+  toggle = () => {
     this.expanded = (! this.expanded);
   }
 }

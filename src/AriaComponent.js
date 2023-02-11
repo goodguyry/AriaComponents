@@ -107,20 +107,6 @@ export default class AriaComponent {
      */
     this.__includedModules = [];
 
-    // Bind class methods.
-    this.initModules = this.initModules.bind(this);
-    this.start = this.start.bind(this);
-    this.cleanupModules = this.cleanupModules.bind(this);
-    this.addAttribute = this.addAttribute.bind(this);
-    this.getTrackedAttributesFor = this.getTrackedAttributesFor.bind(this);
-    this.updateAttribute = this.updateAttribute.bind(this);
-    this.removeAttributes = this.removeAttributes.bind(this);
-    this.dispatch = this.dispatch.bind(this);
-    this.dispatchEventInit = this.dispatchEventInit.bind(this);
-    this.dispatchEventDestroy = this.dispatchEventDestroy.bind(this);
-    this.on = this.on.bind(this);
-    this.off = this.off.bind(this);
-
     /**
      * The instance ID.
      *
@@ -168,7 +154,7 @@ export default class AriaComponent {
    * @param  {HTMLElement} element The element for which attributes are being retrieved.
    * @return {array}
    */
-  getTrackedAttributesFor(element) {
+  getTrackedAttributesFor = (element) => {
     const id = element.id || this.constructor.getUniqueId();
     const { [id]: trackedAttributes = [] } = this.__trackedAttributes;
 
@@ -188,7 +174,7 @@ export default class AriaComponent {
    * @param {string}      attribute The attribute name.
    * @param {string}      value     The attribute value.
    */
-  addAttribute(element, attribute, value) {
+  addAttribute = (element, attribute, value) => {
     // Don't overwrite existing attributes.
     if (! element.hasAttribute(attribute) && null != value) {
       const trackedAttributes = this.getTrackedAttributesFor(element);
@@ -207,7 +193,7 @@ export default class AriaComponent {
    * @param {string}      attribute The attribute name.
    * @param {string}      value     The attribute value.
    */
-  updateAttribute(element, attribute, value) {
+  updateAttribute = (element, attribute, value) => {
     const trackedAttributes = this.getTrackedAttributesFor(element);
 
     // Remove null/undefined attributes.
@@ -227,7 +213,7 @@ export default class AriaComponent {
    *
    * @param {HTMLElement} element The elemen on which attributes were added.
    */
-  removeAttributes(element) {
+  removeAttributes = (element) => {
     const trackedAttributes = this.getTrackedAttributesFor(element);
     trackedAttributes.forEach((attr) => element.removeAttribute(attr));
   }
@@ -238,7 +224,7 @@ export default class AriaComponent {
    * @param  {string} name   The event name.
    * @param  {object} detail The event detail object.
    */
-  dispatch(name, detail) {
+  dispatch = (name, detail) => {
     const event = new CustomEvent(
       `${this.namespace}.${name}`,
       {
@@ -254,7 +240,7 @@ export default class AriaComponent {
   /**
    * Dispatch the `init` event.
    */
-  dispatchEventInit() {
+  dispatchEventInit = () => {
     this.dispatch(
       'init',
       {
@@ -266,7 +252,7 @@ export default class AriaComponent {
   /**
    * Dispatch the `destroy` event.
    */
-  dispatchEventDestroy() {
+  dispatchEventDestroy = () => {
     this.dispatch(
       'destroy',
       {
@@ -283,7 +269,7 @@ export default class AriaComponent {
    * @param {function} listener The event listener callback.
    * @param {object}   options  Event options.
    */
-  on(type, listener, options = {}) {
+  on = (type, listener, options = {}) => {
     this.element.addEventListener(type, listener, options);
 
     return this;
@@ -296,7 +282,7 @@ export default class AriaComponent {
    * @param {function} listener The event callback.
    * @param {object}   options  Event options.
    */
-  off(type, listener, options = {}) {
+  off = (type, listener, options = {}) => {
     this.element.removeEventListener(type, listener, options);
 
     return this;
@@ -305,7 +291,7 @@ export default class AriaComponent {
   /**
    * Initialize modules.
    */
-  initModules() {
+  initModules = () => {
     const afterDestroy = this.cleanupFunctions || [];
 
     const modules = Array.isArray(this.modules) ? this.modules : [this.modules];
@@ -320,7 +306,7 @@ export default class AriaComponent {
    * @param  {Funciton} mod The module initializing function.
    * @return {Functions} The cleanup function.
    */
-  start(mod) {
+  start = (mod) => {
     if (! this.__includedModules.includes(mod.name)) {
       this.__includedModules.push(mod.name);
 
@@ -337,7 +323,7 @@ export default class AriaComponent {
   /**
    * Run module cleanup function.
    */
-  cleanupModules() {
+  cleanupModules = () => {
     this.cleanupFunctions.forEach((cleanup) => cleanup && cleanup());
   }
 }
