@@ -45,5 +45,15 @@
     "dev:menu": "npm run dev:only --component=Menu",
     "dev:popup": "npm run dev:only --component=Popup",
     "dev:tablist": "npm run dev:only --component=Tablist"
+  },
+  "exports": {
+    "./dialog": "./src/Dialog",
+    "./disclosure": "./src/Disclosure",
+    "./listbox": "./src/Listbox",
+    "./menu": "./src/Menu",
+    "./menubar": "./src/MenuBar",
+    "./menubutton": "./src/MenuButton",
+    "./popup": "./src/Popup",
+    "./tablist": "./src/Tablist"
   }
 }
