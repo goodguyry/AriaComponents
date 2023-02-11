@@ -46,14 +46,6 @@ export default class Tablist extends AriaComponent {
      */
     this.tabs = tabs;
 
-    // Bind class methods.
-    this.panelHandleKeydown = this.panelHandleKeydown.bind(this);
-    this.tabsHandleKeydown = this.tabsHandleKeydown.bind(this);
-    this.tabsHandleClick = this.tabsHandleClick.bind(this);
-    this.getNextIndex = this.getNextIndex.bind(this);
-    this.switchTo = this.switchTo.bind(this);
-    this.destroy = this.destroy.bind(this);
-
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(tabs.nodeName)) {
       this.init();
@@ -135,7 +127,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Set up the component's DOM attributes and event listeners.
    */
-  init() {
+  init = () => {
     /**
      * Tablist anchor elements.
      *
@@ -244,7 +236,7 @@ export default class Tablist extends AriaComponent {
    * @param  {number} currentIndex The currently event target.
    * @return {number}              The index to which focus should move.
    */
-  getNextIndex(key, currentIndex) {
+  getNextIndex = (key, currentIndex) => {
     switch (key) {
       // Move to the first item.
       case 'Home': {
@@ -277,7 +269,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  panelHandleKeydown(event) {
+  panelHandleKeydown = (event) => {
     const { key, shiftKey } = event;
     const { activeElement } = document;
     const [firstInteractiveChild] = this.interactiveChildElements;
@@ -302,7 +294,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  tabsHandleKeydown(event) {
+  tabsHandleKeydown = (event) => {
     const { key, target } = event;
     const currentIndex = this.tabLinks.indexOf(target);
     const nextIndex = this.getNextIndex(key, currentIndex);
@@ -350,7 +342,7 @@ export default class Tablist extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  tabsHandleClick(event) {
+  tabsHandleClick = (event) => {
     const { target } = event;
     event.preventDefault();
 
@@ -368,14 +360,14 @@ export default class Tablist extends AriaComponent {
    *
    * @param {number} index The zero-based tab index to activate.
    */
-  switchTo(index) {
+  switchTo = (index) => {
     this.activeIndex = index;
   }
 
   /**
    * Destroy the tablist, removing ARIA attributes and event listeners
    */
-  destroy() {
+  destroy = () => {
     // Remove the tablist role.
     this.removeAttributes(this.tabs);
 

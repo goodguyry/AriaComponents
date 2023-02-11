@@ -63,15 +63,6 @@ export default class Dialog extends AriaComponent {
     // Save static options.
     this.content = content;
 
-    // Bind class methods
-    this.setInteractiveChildren = this.setInteractiveChildren.bind(this);
-    this.controllerHandleClick = this.controllerHandleClick.bind(this);
-    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
-    this.bodyHandleKeydown = this.bodyHandleKeydown.bind(this);
-    this.show = this.show.bind(this);
-    this.hide = this.hide.bind(this);
-    this.destroy = this.destroy.bind(this);
-
     this.init();
   }
 
@@ -126,7 +117,7 @@ export default class Dialog extends AriaComponent {
   /**
    * Collect the Dialog's interactive child elements.
    */
-  setInteractiveChildren() {
+  setInteractiveChildren = () => {
     this.interactiveChildElements = interactiveChildren(this.target);
 
     const [
@@ -142,7 +133,7 @@ export default class Dialog extends AriaComponent {
   /**
    * Set the component's DOM attributes and event listeners.
    */
-  init() {
+  init = () => {
     // Get the content items if none are provided.
     if (0 === this.content.length || undefined === this.content) {
       this.content = Array.from(document.body.children)
@@ -229,7 +220,7 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleClick(event) {
+  controllerHandleClick = (event) => {
     event.preventDefault();
 
     this.show();
@@ -240,7 +231,7 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  targetHandleKeydown(event) {
+  targetHandleKeydown = (event) => {
     const { key, shiftKey } = event;
 
     if (this.expanded && 'Tab' === key) {
@@ -277,7 +268,7 @@ export default class Dialog extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  bodyHandleKeydown(event) {
+  bodyHandleKeydown = (event) => {
     const { key, target: eventTarget } = event;
 
     switch (key) {
@@ -303,7 +294,7 @@ export default class Dialog extends AriaComponent {
   /**
    * Destroy the Dialog and Popup.
    */
-  destroy() {
+  destroy = () => {
     // Remove the `aria-hidden` attribute from the content wrapper.
     const contentLength = this.content.length;
     for (let i = 0; i < contentLength; i += 1) {
@@ -336,14 +327,14 @@ export default class Dialog extends AriaComponent {
   /**
    * Show the Dialog.
    */
-  show() {
+  show = () => {
     this.expanded = true;
   }
 
   /**
    * Hide the Dialog.
    */
-  hide() {
+  hide = () => {
     this.expanded = false;
   }
 }

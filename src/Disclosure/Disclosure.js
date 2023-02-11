@@ -84,17 +84,6 @@ export default class Disclosure extends AriaComponent {
     this.allowOutsideClick = allowOutsideClick;
     this.autoClose = autoClose;
 
-    // Bind class methods.
-    this.init = this.init.bind(this);
-    this.controllerHandleClick = this.controllerHandleClick.bind(this);
-    this.componentHandleKeydown = this.componentHandleKeydown.bind(this);
-    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
-    this.bodyHandleClick = this.bodyHandleClick.bind(this);
-    this.destroy = this.destroy.bind(this);
-    this.open = this.open.bind(this);
-    this.close = this.close.bind(this);
-    this.toggle = this.toggle.bind(this);
-
     // Update component state directly.
     this.#expanded = this.#optionLoadOpen;
 
@@ -161,7 +150,7 @@ export default class Disclosure extends AriaComponent {
   /**
    * Add initial attributes and listen for events
    */
-  init() {
+  init = () => {
     /**
      * Collect the target element's interactive child elements.
      *
@@ -209,7 +198,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  componentHandleKeydown(event) {
+  componentHandleKeydown = (event) => {
     if ('Escape' === event.key && this.expanded) {
       event.preventDefault();
 
@@ -230,7 +219,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleClick(event) {
+  controllerHandleClick = (event) => {
     event.preventDefault();
 
     this.toggle();
@@ -241,7 +230,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetHandleKeydown(event) {
+  targetHandleKeydown = (event) => {
     if (
       'Tab' === event.key && ! event.shiftKey
       && this.lastInteractiveChild === document.activeElement
@@ -255,7 +244,7 @@ export default class Disclosure extends AriaComponent {
    *
    * @param {Event} event The Event object.
    */
-  bodyHandleClick(event) {
+  bodyHandleClick = (event) => {
     if (
       this.expanded
       && event.target !== this.controller
@@ -268,7 +257,7 @@ export default class Disclosure extends AriaComponent {
   /**
    * Remove all ARIA attributes and event listeners added by this class.
    */
-  destroy() {
+  destroy = () => {
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);
@@ -292,21 +281,21 @@ export default class Disclosure extends AriaComponent {
   /**
    * Update component state to open the Disclosure.
    */
-  open() {
+  open = () => {
     this.expanded = true;
   }
 
   /**
    * Update component state to close the Disclosure.
    */
-  close() {
+  close = () => {
     this.expanded = false;
   }
 
   /**
    * Toggle the Disclosure expanded state.
    */
-  toggle() {
+  toggle = () => {
     this.expanded = (! this.expanded);
   }
 }

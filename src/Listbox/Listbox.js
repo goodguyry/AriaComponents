@@ -52,21 +52,6 @@ export default class ListBox extends AriaComponent {
      */
     this.buttonLabel = this.controller.textContent;
 
-    // Bind class methods.
-    this.windowHandleKeydown = this.windowHandleKeydown.bind(this);
-    this.controllerHandleClick = this.controllerHandleClick.bind(this);
-    this.controllerHandleKeyup = this.controllerHandleKeyup.bind(this);
-    this.controllerHandleKeydown = this.controllerHandleKeydown.bind(this);
-    this.targetHandleKeydown = this.targetHandleKeydown.bind(this);
-    this.targetHandleClick = this.targetHandleClick.bind(this);
-    this.targetHandleBlur = this.targetHandleBlur.bind(this);
-    this.bodyHandleClick = this.bodyHandleClick.bind(this);
-    this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
-    this.hide = this.hide.bind(this);
-    this.show = this.show.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.destroy = this.destroy.bind(this);
-
     this.init();
   }
 
@@ -175,7 +160,7 @@ export default class ListBox extends AriaComponent {
   /**
    * Set up the component's DOM attributes and event listeners.
    */
-  init() {
+  init = () => {
     /**
      * The target list items.
      *
@@ -253,7 +238,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  windowHandleKeydown(event) {
+  windowHandleKeydown = (event) => {
     const { target: keydownTarget, key } = event;
 
     if (keydownTarget === this.target && ['ArrowUp', 'ArrowDown'].includes(key)) {
@@ -266,7 +251,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleClick(event) {
+  controllerHandleClick = (event) => {
     event.preventDefault();
 
     this.toggle();
@@ -278,7 +263,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleKeyup(event) {
+  controllerHandleKeyup = (event) => {
     if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
       event.preventDefault();
 
@@ -291,7 +276,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  controllerHandleKeydown(event) {
+  controllerHandleKeydown = (event) => {
     const { key } = event;
 
     if (this.expanded && 'Escape' === key) {
@@ -311,7 +296,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetHandleKeydown(event) {
+  targetHandleKeydown = (event) => {
     const { key, shiftKey } = event;
     const { activeElement } = document;
 
@@ -423,7 +408,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  targetHandleClick(event) {
+  targetHandleClick = (event) => {
     this.activeDescendant = event.target;
     this.hide();
   }
@@ -431,7 +416,7 @@ export default class ListBox extends AriaComponent {
   /**
    * Close the Listbox when focus is moved away from the target.
    */
-  targetHandleBlur() {
+  targetHandleBlur = () => {
     if (this.expanded) {
       this.hide();
     }
@@ -443,7 +428,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {Event} event The event object.
    */
-  bodyHandleClick(event) {
+  bodyHandleClick = (event) => {
     const { target: eventTarget } = event;
 
     if (
@@ -461,7 +446,7 @@ export default class ListBox extends AriaComponent {
    *
    * @param {HTMLElement} moveTo The element getting focus.
    */
-  scrollOptionIntoView(moveTo) {
+  scrollOptionIntoView = (moveTo) => {
     const { scrollHeight, clientHeight, scrollTop } = this.target;
     const { offsetTop, offsetHeight } = moveTo;
 
@@ -480,28 +465,28 @@ export default class ListBox extends AriaComponent {
   /**
    * Update component state to show the target element.
    */
-  show() {
+  show = () => {
     this.expanded = true;
   }
 
   /**
    * Update component state to hide the target element.
    */
-  hide() {
+  hide = () => {
     this.expanded = false;
   }
 
   /**
    * Toggle the Listbox state.
    */
-  toggle() {
+  toggle = () => {
     this.expanded = (! this.expanded);
   }
 
   /**
    * Destroy the Listbox.
    */
-  destroy() {
+  destroy = () => {
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);
