@@ -182,7 +182,7 @@ export default class AriaComponent {
       element.setAttribute(attribute, value);
       trackedAttributes.push(attribute);
 
-      this.__trackedAttributes[element.id] = trackedAttributes;
+      this.__trackedAttributes[element.id] = Array.from(new Set(trackedAttributes));
     }
   }
 
@@ -205,7 +205,7 @@ export default class AriaComponent {
       trackedAttributes.push(attribute);
     }
 
-    this.__trackedAttributes[element.id] = trackedAttributes;
+    this.__trackedAttributes[element.id] = Array.from(new Set(trackedAttributes));
   }
 
   /**
