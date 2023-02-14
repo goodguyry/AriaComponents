@@ -74,35 +74,25 @@ test('ManageTabIndex: Manage target element tabindex', () => {
   });
 });
 
-describe('UseButtonRole', () => {
-  beforeEach(() => {
-    dialog.expanded = false;
-  });
+test('UseButtonRole: Treats non-button controller as a button', async () => {
+  expect(controller.getAttribute('role')).toBe('button');
+  expect(controller.getAttribute('tabindex')).not.toBe('0');
 
-  test('Should use the button role on the controller', () => {
-    expect(controller.getAttribute('role')).toBe('button');
-    expect(controller.getAttribute('tabindex')).not.toBe('0');
-  });
+  // Verify Dialog state.
+  expect(dialog.expanded).toBe(false);
 
-  test('The Return key and Spacebar activate the Dialog target', async () => {
-    // Ensure the Dialog is closed.
-    expect(dialog.expanded).toBe(false);
+  // Enter activates the Dialog.
+  await user.keyboard('{Enter}');
+  expect(dialog.expanded).toBe(true);
 
-    // Enter.
-    await user.keyboard('{Enter}');
-    expect(dialog.expanded).toBe(true);
+  // Spacebar activates the Dialog.
+  await user.keyboard('{ }');
+  expect(dialog.expanded).toBe(true);
 
-    // Spacebar.
-    await user.keyboard('{ }');
-    expect(dialog.expanded).toBe(true);
-  });
-
-  // @todo
-  test.skip('Module cleanup runs', () => {
-    dialog.destroy();
-    expect(controller.getAttribute('role')).toBeNull();
-    expect(controller.getAttribute('tabindex')).toBeNull();
-  });
+  // Module cleanup.
+  dialog.destroy();
+  expect(controller.getAttribute('role')).toBeNull();
+  expect(controller.getAttribute('tabindex')).toBeNull();
 });
 
 test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () => {

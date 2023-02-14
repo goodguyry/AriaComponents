@@ -77,31 +77,25 @@ test('ManageTabIndex: Manage target element tabindex', () => {
   popup.interactiveChildElements.forEach((link) => expect(link.getAttribute('tabindex')).toBeNull());
 });
 
-describe('UseButtonRole', () => {
-  test('Should use the button role on the controller', () => {
-    expect(controller.getAttribute('role')).toBe('button');
-    expect(controller.getAttribute('tabindex')).not.toBe('0');
-  });
+test('UseButtonRole: Treats non-button controller as a button', async () => {
+  expect(controller.getAttribute('role')).toBe('button');
+  expect(controller.getAttribute('tabindex')).not.toBe('0');
 
-  test('The Return key and Spacebar activate the Popup target', async () => {
-    // Ensure the Popup is closed.
-    expect(popup.expanded).toBe(false);
+  // Verify initial state.
+  expect(popup.expanded).toBe(false);
 
-    // Enter.
-    await user.keyboard('{Enter}');
-    expect(popup.expanded).toBe(true);
+  // Enter activates the Popup.
+  await user.keyboard('{Enter}');
+  expect(popup.expanded).toBe(true);
 
-    // Spacebar.
-    await user.keyboard('{ }');
-    expect(popup.expanded).toBe(false);
-  });
+  // Spacebar activates the Popup.
+  await user.keyboard('{ }');
+  expect(popup.expanded).toBe(false);
 
-  // @todo
-  test.skip('Module cleanup runs', () => {
-    popup.destroy();
-    expect(controller.getAttribute('role')).toBeNull();
-    expect(controller.getAttribute('tabindex')).toBeNull();
-  });
+  // Module cleanup.
+  popup.destroy();
+  expect(controller.getAttribute('role')).toBeNull();
+  expect(controller.getAttribute('tabindex')).toBeNull();
 });
 
 test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () => {
