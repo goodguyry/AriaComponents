@@ -1,20 +1,6 @@
 /* eslint-disable max-len, prefer-destructuring */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Listbox from '.';
-
-const {
-  click,
-  keydownArrowDown,
-  keydownArrowUp,
-  keydownEnd,
-  keydownEnter,
-  keydownEscape,
-  keydownHome,
-  keydownSpace,
-  keydownTab,
-  keyupArrowDown,
-  keyupArrowUp,
-} = events;
 
 const listboxMarkup = `
   <button aria-controls="options">Choose</button>
@@ -118,30 +104,30 @@ describe('Listbox correctly responds to events', () => {
     listbox.expanded = true;
   });
 
-  test('The Listbox closes when the Escape key is pressed', () => {
+  test('The Listbox closes when the Escape key is pressed', async () => {
     controller.focus();
-    controller.dispatchEvent(keydownEscape);
+    await user.keyboard('{Escape}');
     expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
   test(
     'The Listbox closes and focus is moved to the controller when the Escape key is pressed',
-    () => {
-      target.dispatchEvent(keydownEscape);
+    async () => {
+      await user.keyboard('{Escape}');
       expect(listbox.expanded).toBe(false);
       expect(document.activeElement).toEqual(controller);
     }
   );
 
-  test('The Listbox closes when Tabbing from the target', () => {
+  test('The Listbox closes when Tabbing from the target', async () => {
     target.focus();
-    target.dispatchEvent(keydownTab);
+    await user.keyboard('{Tab}');
     expect(listbox.expanded).toBe(false);
   });
 
-  test('The Listbox closes when an external element is clicked', () => {
-    document.body.dispatchEvent(click);
+  test('The Listbox closes when an external element is clicked', async () => {
+    await user.click(document.body);
 
     expect(listbox.expanded).toBe(false);
   });
@@ -152,41 +138,41 @@ describe('The Listbox target responds to events as expected', () => {
     listbox.expanded = true;
   });
 
-  test('Should open the popup on controller arrow down key', () => {
-    controller.dispatchEvent(keyupArrowDown);
+  test('Should open the popup on controller arrow down key', async () => {
+    await user.keyboard('{ArrowDown}');
     expect(document.activeElement).toEqual(target);
     expect(listbox.expanded).toBe(true);
   });
 
-  test('The Listbox closes and focus moves to the controller on Enter key', () => {
-    target.dispatchEvent(keydownEnter);
+  test('The Listbox closes and focus moves to the controller on Enter key', async () => {
+    await user.keyboard('{Enter}');
     expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
-  test('The Listbox closes on controller arrow up key', () => {
-    controller.dispatchEvent(keyupArrowUp);
+  test('The Listbox closes on controller arrow up key', async () => {
+    await user.keyboard('{ArrowUp}');
     expect(document.activeElement).toEqual(target);
     expect(listbox.expanded).toBe(true);
   });
 
-  test('The Listbox closes and focus moves to the controller on Escape key', () => {
-    target.dispatchEvent(keydownEscape);
+  test('The Listbox closes and focus moves to the controller on Escape key', async () => {
+    await user.keyboard('{Escape}');
     expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
-  test('The Listbox closes and focus moves to the controller on Space key', () => {
-    target.dispatchEvent(keydownSpace);
+  test('The Listbox closes and focus moves to the controller on Space key', async () => {
+    await user.keyboard('{ }');
     expect(listbox.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
-  test('The previous element is set as activedescendant on arrow up key', () => {
+  test('The previous element is set as activedescendant on arrow up key', async () => {
     listbox.activeDescendant = target.children[3];
     expect(target.children[3].getAttribute('aria-selected')).toEqual('true');
 
-    target.dispatchEvent(keydownArrowUp);
+    await user.keyboard('{ArrowUp}');
 
     expect(document.activeElement).toEqual(target);
     expect(target.children[3].getAttribute('aria-selected')).toBeNull();
@@ -194,11 +180,11 @@ describe('The Listbox target responds to events as expected', () => {
     expect(target.children[2].getAttribute('aria-selected')).toEqual('true');
   });
 
-  test('The next element is set as activedescendant on target arrow down key', () => {
+  test('The next element is set as activedescendant on target arrow down key', async () => {
     listbox.activeDescendant = target.children[4];
     expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
 
-    target.dispatchEvent(keydownArrowDown);
+    await user.keyboard('{ArrowDown}');
 
     expect(document.activeElement).toEqual(target);
     expect(target.children[4].getAttribute('aria-selected')).toBeNull();
@@ -206,26 +192,26 @@ describe('The Listbox target responds to events as expected', () => {
     expect(target.children[5].getAttribute('aria-selected')).toEqual('true');
   });
 
-  test('The first element is set as activedescendant on target Home key', () => {
-    target.dispatchEvent(keydownHome);
+  test('The first element is set as activedescendant on target Home key', async () => {
+    await user.keyboard('{Home}');
 
     expect(document.activeElement).toEqual(target);
     expect(listbox.activeDescendant).toEqual(target.children[0]);
     expect(target.children[0].getAttribute('aria-selected')).toEqual('true');
   });
 
-  test('The last element is set as activedescendant on target End key', () => {
+  test('The last element is set as activedescendant on target End key', async () => {
     const lastChild = target.children[target.children.length - 1];
 
-    target.dispatchEvent(keydownEnd);
+    await user.keyboard('{End}');
 
     expect(document.activeElement).toEqual(target);
     expect(listbox.activeDescendant).toEqual(lastChild);
     expect(lastChild.getAttribute('aria-selected')).toEqual('true');
   });
 
-  test('When an option is clicked it is selected and the Listbox closes', () => {
-    target.children[3].dispatchEvent(click);
+  test('When an option is clicked it is selected and the Listbox closes', async () => {
+    await user.click(target.children[3]);
 
     expect(listbox.expanded).toBe(false);
     expect(listbox.activeDescendant).toEqual(target.children[3]);
@@ -236,10 +222,10 @@ describe('The Listbox target responds to events as expected', () => {
     expect(controller.textContent).toEqual(listbox.activeDescendant.textContent);
   });
 
-  test('The Listbox closes when an external element is clicked', () => {
+  test('The Listbox closes when an external element is clicked', async () => {
     listbox.activeDescendant = target.children[5];
 
-    document.body.dispatchEvent(click);
+    await user.click(document.body);
 
     expect(listbox.expanded).toBe(false);
     expect(listbox.activeDescendant).toEqual(target.children[5]);
@@ -251,7 +237,7 @@ describe('The Listbox target responds to events as expected', () => {
 });
 
 describe('Listbox destroy', () => {
-  test('All attributes are removed from elements managed by the Listbox', () => {
+  test('All attributes are removed from elements managed by the Listbox', async () => {
     listbox.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
@@ -266,7 +252,7 @@ describe('Listbox destroy', () => {
       expect(item.getAttribute('aria-selected')).toBeNull();
     });
 
-    controller.dispatchEvent(click);
+    await user.click(controller);
     expect(listbox.expanded).toBe(false);
 
     // Quick and dirty verification that the original markup is restored.

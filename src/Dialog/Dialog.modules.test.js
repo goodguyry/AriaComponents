@@ -1,12 +1,10 @@
 /* eslint-disable max-len */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Dialog, {
   ManageTabIndex,
   UseButtonRole,
   UseHiddenAttribute,
 } from '.';
-
-const { keydownEnter, keydownSpace } = events;
 
 // Set up our document body
 document.body.innerHTML = `
@@ -86,19 +84,20 @@ describe('UseButtonRole', () => {
     expect(controller.getAttribute('tabindex')).not.toBe('0');
   });
 
-  test('The Return key and Spacebar activate the Dialog target', () => {
+  test('The Return key and Spacebar activate the Dialog target', async () => {
     // Ensure the Dialog is closed.
     expect(dialog.expanded).toBe(false);
 
     // Enter.
-    controller.dispatchEvent(keydownEnter);
+    await user.keyboard('{Enter}');
     expect(dialog.expanded).toBe(true);
 
     // Spacebar.
-    controller.dispatchEvent(keydownSpace);
+    await user.keyboard('{ }');
     expect(dialog.expanded).toBe(true);
   });
 
+  // @todo
   test.skip('Module cleanup runs', () => {
     dialog.destroy();
     expect(controller.getAttribute('role')).toBeNull();

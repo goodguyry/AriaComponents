@@ -1,13 +1,6 @@
 /* eslint-disable max-len */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Popup from '.';
-
-const {
-  click,
-  keydownEscape,
-  keydownTab,
-  keydownShiftTab,
-} = events;
 
 const popupMarkup = `
   <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
@@ -90,16 +83,16 @@ describe('The Popup should initialize as expected', () => {
     });
   });
 
-  test('Click events on the Popup controller updates atttributes as expected', () => {
+  test('Click events on the Popup controller updates atttributes as expected', async () => {
     // Click to open.
-    controller.dispatchEvent(click);
+    await user.click(controller);
     expect(popup.expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(3);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
     // Click again to close.
-    controller.dispatchEvent(click);
+    await user.click(controller);
     expect(popup.expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
@@ -113,41 +106,41 @@ describe('Popup correctly responds to events', () => {
     popup.expanded = true;
   });
 
-  test('The Popup closes when the Escape key is pressed', () => {
+  test('The Popup closes when the Escape key is pressed', async () => {
     controller.focus();
-    controller.dispatchEvent(keydownEscape);
+    await user.keyboard('{Escape}');
     expect(popup.expanded).toBe(false);
     expect(document.activeElement).toEqual(controller);
   });
 
   test(
     'The Popup closes and focus is moved to the controller when the Escape key is pressed',
-    () => {
-      target.dispatchEvent(keydownEscape);
+    async () => {
+      await user.keyboard('{Escape}');
       expect(popup.expanded).toBe(false);
       expect(document.activeElement).toEqual(controller);
     }
   );
 
-  test('The Popup closes when Tabbing from the last child', () => {
+  test('The Popup closes when Tabbing from the last child', async () => {
     domLastChild.focus();
-    target.dispatchEvent(keydownTab);
+    await user.keyboard('{Tab}');
     expect(popup.expanded).toBe(false);
   });
 
-  test('The Popup remains open when tabbing back from the last child', () => {
+  test('The Popup remains open when tabbing back from the last child', async () => {
     domLastChild.focus();
-    target.dispatchEvent(keydownShiftTab);
+    await user.keyboard('{Shift>}{Tab}{/Shift}');
     expect(popup.expanded).toBe(true);
   });
 
-  test('The Popup closes when an external element is clicked', () => {
-    document.body.dispatchEvent(click);
+  test('The Popup closes when an external element is clicked', async () => {
+    await user.click(document.body);
 
     expect(popup.expanded).toBe(false);
   });
 
-  test('All attributes are removed from elements managed by the Popup', () => {
+  test('All attributes are removed from elements managed by the Popup', async () => {
     popup.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
@@ -159,7 +152,7 @@ describe('Popup correctly responds to events', () => {
     expect(controller.popup).toBeUndefined();
     expect(target.popup).toBeUndefined();
 
-    controller.dispatchEvent(click);
+    await user.click(controller);
     expect(popup.expanded).toBe(false);
 
     // Quick and dirty verification that the original markup is restored.

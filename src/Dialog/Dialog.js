@@ -277,7 +277,9 @@ export default class Dialog extends AriaComponent {
         break;
 
       case 'Tab':
-        if (! this.target.contains(eventTarget)) {
+        if (this.expanded && ! this.target.contains(eventTarget)) {
+          event.preventDefault();
+
           /*
            * Move focus to the first interactive child element. This is a stopgap
            * for instances where clicking outside of the Dialog moves focus out.
