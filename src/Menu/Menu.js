@@ -114,7 +114,7 @@ export default class Menu extends AriaComponent {
 
     // Fire the init event.
     this.dispatchEventInit();
-  }
+  };
 
   /**
    * Close any open Disclosure(s) when another is opened.
@@ -132,7 +132,7 @@ export default class Menu extends AriaComponent {
 
       open?.close();
     }
-  }
+  };
 
   /**
    * Destroy the Menu and any submenus.
@@ -153,5 +153,5 @@ export default class Menu extends AriaComponent {
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
-  }
+  };
 }

@@ -109,7 +109,7 @@ export default class Popup extends AriaComponent {
 
     // Install modules.
     this.initModules();
-  }
+  };
 
   /**
    * Update the component attributes based on new state.
@@ -148,7 +148,7 @@ export default class Popup extends AriaComponent {
     event.preventDefault();
 
     this.toggle();
-  }
+  };
 
   /**
    * Handle keydown events on the Popup controller.
@@ -168,7 +168,7 @@ export default class Popup extends AriaComponent {
        */
       this.hide();
     }
-  }
+  };
 
   /**
    * Handle keydown events on the Popup target.
@@ -205,7 +205,7 @@ export default class Popup extends AriaComponent {
        */
       this.hide();
     }
-  }
+  };
 
   /**
    * Close the Popup when clicking anywhere outside of the target or controller
@@ -223,7 +223,7 @@ export default class Popup extends AriaComponent {
     ) {
       this.hide();
     }
-  }
+  };
 
   /**
    * Remove all attributes and event listeners added by this class.
@@ -247,26 +247,26 @@ export default class Popup extends AriaComponent {
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
-  }
+  };
 
   /**
    * Update component state to show the target element.
    */
   show = () => {
     this.expanded = true;
-  }
+  };
 
   /**
    * Update component state to hide the target element.
    */
   hide = () => {
     this.expanded = false;
-  }
+  };
 
   /**
    * Toggle the popup state.
    */
   toggle = () => {
     this.expanded = (! this.expanded);
-  }
+  };
 }
