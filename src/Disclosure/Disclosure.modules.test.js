@@ -83,35 +83,25 @@ test('ManageTabIndex: Manage target element tabindex', () => {
   });
 });
 
-describe('UseButtonRole', () => {
-  beforeEach(() => {
-    disclosure.expanded = false;
-  });
+test('UseButtonRole: Treats non-button controller as a button', async () => {
+  expect(controller.getAttribute('role')).toBe('button');
+  expect(controller.getAttribute('tabindex')).not.toBe('0');
 
-  test('Should use the button role on the controller', () => {
-    expect(controller.getAttribute('role')).toBe('button');
-    expect(controller.getAttribute('tabindex')).not.toBe('0');
-  });
+  // Verify initial state.
+  expect(disclosure.expanded).toBe(false);
 
-  test('The Return key and Spacebar activate the Disclosure target', async () => {
-    // Ensure the disclosure is closed.
-    expect(disclosure.expanded).toBe(false);
+  // Enter activates the Disclosure.
+  await user.keyboard('{Enter}');
+  expect(disclosure.expanded).toBe(true);
 
-    // Enter.
-    await user.keyboard('{Enter}');
-    expect(disclosure.expanded).toBe(true);
+  // Spacebar activates the Disclosure.
+  await user.keyboard('{ }');
+  expect(disclosure.expanded).toBe(false);
 
-    // Spacebar.
-    await user.keyboard('{ }');
-    expect(disclosure.expanded).toBe(false);
-  });
-
-  // @todo
-  test.skip('Module cleanup runs', () => {
-    disclosure.destroy();
-    expect(controller.getAttribute('role')).toBeNull();
-    expect(controller.getAttribute('tabindex')).toBeNull();
-  });
+  // Module cleanup.
+  disclosure.destroy();
+  expect(controller.getAttribute('role')).toBeNull();
+  expect(controller.getAttribute('tabindex')).toBeNull();
 });
 
 test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () => {
