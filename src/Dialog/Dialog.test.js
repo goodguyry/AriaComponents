@@ -156,7 +156,7 @@ describe('The Dialog correctly responds to events', () => {
   });
 
   // What was this in response to?
-  test.skip('Focus moves back to the Dialog from outside', async () => {
+  test('Focus moves back to the Dialog from outside', async () => {
     outsideLink.focus();
     await user.keyboard('{Tab}');
     expect(document.activeElement).toEqual(firstItem);
