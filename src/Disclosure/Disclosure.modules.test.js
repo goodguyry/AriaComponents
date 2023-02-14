@@ -106,6 +106,7 @@ describe('UseButtonRole', () => {
     expect(disclosure.expanded).toBe(false);
   });
 
+  // @todo
   test.skip('Module cleanup runs', () => {
     disclosure.destroy();
     expect(controller.getAttribute('role')).toBeNull();

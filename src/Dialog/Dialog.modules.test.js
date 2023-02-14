@@ -97,6 +97,7 @@ describe('UseButtonRole', () => {
     expect(dialog.expanded).toBe(true);
   });
 
+  // @todo
   test.skip('Module cleanup runs', () => {
     dialog.destroy();
     expect(controller.getAttribute('role')).toBeNull();

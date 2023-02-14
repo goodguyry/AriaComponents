@@ -96,7 +96,7 @@ describe('UseButtonRole', () => {
     expect(popup.expanded).toBe(false);
   });
 
-  // @todo Clean these up!
+  // @todo
   test.skip('Module cleanup runs', () => {
     popup.destroy();
     expect(controller.getAttribute('role')).toBeNull();

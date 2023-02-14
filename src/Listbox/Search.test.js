@@ -3,6 +3,9 @@ import Search from './Search';
 /**
  * Create a KeyboardEvent for typing a character.
  *
+ * @todo This is maintained from the previous event setup because typing with
+ * user.keyboard is taking so long the tests error out.
+ *
  * @param  {string} character The character to type.
  * @return {KeyboardEvent}
  */
