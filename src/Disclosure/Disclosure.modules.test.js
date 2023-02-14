@@ -1,18 +1,11 @@
 /* eslint-disable max-len */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Disclosure, {
   ComponentConnector,
   ManageTabIndex,
   UseButtonRole,
   UseHiddenAttribute,
 } from '.';
-
-const {
-  keydownEnter,
-  keydownShiftTab,
-  keydownSpace,
-  keydownTab,
-} = events;
 
 // Set up our document body
 document.body.innerHTML = `
@@ -45,7 +38,7 @@ beforeEach(() => {
   );
 });
 
-test('ComponentConnector: Connect disconnected controller-target pair', () => {
+test('ComponentConnector: Connect disconnected controller-target pair', async () => {
   disclosure.expanded = true;
 
   // Verify initial state.
@@ -53,10 +46,10 @@ test('ComponentConnector: Connect disconnected controller-target pair', () => {
   expect(controller.getAttribute('aria-owns')).toEqual(target.id);
 
   controller.focus();
-  controller.dispatchEvent(keydownTab);
+  await user.keyboard('{Tab}');
   expect(document.activeElement).toEqual(targetFirstChild);
 
-  target.dispatchEvent(keydownShiftTab);
+  await user.keyboard('{Shift>}{Tab}{/Shift}');
   expect(document.activeElement).toEqual(controller);
 
   disclosure.destroy();
@@ -100,16 +93,16 @@ describe('UseButtonRole', () => {
     expect(controller.getAttribute('tabindex')).not.toBe('0');
   });
 
-  test('The Return key and Spacebar activate the Disclosure target', () => {
+  test('The Return key and Spacebar activate the Disclosure target', async () => {
     // Ensure the disclosure is closed.
     expect(disclosure.expanded).toBe(false);
 
     // Enter.
-    controller.dispatchEvent(keydownEnter);
+    await user.keyboard('{Enter}');
     expect(disclosure.expanded).toBe(true);
 
     // Spacebar.
-    controller.dispatchEvent(keydownSpace);
+    await user.keyboard('{ }');
     expect(disclosure.expanded).toBe(false);
   });
 

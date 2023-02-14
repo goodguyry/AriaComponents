@@ -1,5 +1,17 @@
 import Search from './Search';
-import { typeCharacter } from '../../.jest/events';
+
+/**
+ * Create a KeyboardEvent for typing a character.
+ *
+ * @param  {string} character The character to type.
+ * @return {KeyboardEvent}
+ */
+function typeCharacter(character) {
+  return new KeyboardEvent(
+    'keydown',
+    { key: character, bubbles: true }
+  );
+}
 
 // Set up our document body
 document.body.innerHTML = `

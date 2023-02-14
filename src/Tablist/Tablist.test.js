@@ -1,14 +1,6 @@
 /* eslint-disable max-len */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Tablist from '.';
-
-const {
-  click,
-  keydownArrowLeft,
-  keydownArrowRight,
-  keydownHome,
-  keydownEnd,
-} = events;
 
 const tablistMarkup = `
   <ul class="tablist">
@@ -175,8 +167,8 @@ describe('The Tablist should initialize as expected', () => {
   });
 
   describe('Tablist correctly responds to events', () => {
-    test('Attribute values are updated as expected after state changes', () => {
-      firstTab.dispatchEvent(click);
+    test('Attribute values are updated as expected after state changes', async () => {
+      await user.click(firstTab);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
       expect(secondTab.getAttribute('aria-selected')).toBeNull();
       expect(thirdTab.getAttribute('aria-selected')).toBeNull();
@@ -189,7 +181,7 @@ describe('The Tablist should initialize as expected', () => {
       expect(secondPanel.getAttribute('aria-hidden')).toEqual('true');
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
-      thirdTab.dispatchEvent(click);
+      await user.click(thirdTab);
       expect(firstTab.getAttribute('aria-selected')).toBeNull();
       expect(secondTab.getAttribute('aria-selected')).toBeNull();
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
@@ -203,40 +195,40 @@ describe('The Tablist should initialize as expected', () => {
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
     });
 
-    test('Arrow keys navigate and activate tabs', () => {
+    test('Arrow keys navigate and activate tabs', async () => {
       firstTab.focus();
-      firstTab.dispatchEvent(keydownArrowRight);
+      await user.keyboard('{ArrowRight}');
       expect(document.activeElement).toEqual(secondTab);
 
-      secondTab.dispatchEvent(keydownArrowRight);
+      await user.keyboard('{ArrowRight}');
       expect(document.activeElement).toEqual(thirdTab);
 
-      thirdTab.dispatchEvent(keydownArrowRight);
+      await user.keyboard('{ArrowRight}');
       expect(document.activeElement).toEqual(firstTab); // cycle
 
-      thirdTab.dispatchEvent(keydownArrowLeft);
+      await user.keyboard('{ArrowLeft}');
+      expect(document.activeElement).toEqual(thirdTab); // cycle
+
+      await user.keyboard('{ArrowLeft}');
       expect(document.activeElement).toEqual(secondTab);
 
-      secondTab.dispatchEvent(keydownArrowLeft);
-      expect(document.activeElement).toEqual(firstTab);
-
-      firstTab.dispatchEvent(keydownArrowLeft);
-      expect(document.activeElement).toEqual(thirdTab); // cycle
-    });
-
-    test('The Home key moves selection to the first tab', () => {
-      tablist.switchTo(1);
-
-      secondTab.focus();
-      secondTab.dispatchEvent(keydownHome);
+      await user.keyboard('{ArrowLeft}');
       expect(document.activeElement).toEqual(firstTab);
     });
 
-    test('The End key moves selection to the last tab', () => {
+    test('The Home key moves selection to the first tab', async () => {
       tablist.switchTo(1);
 
       secondTab.focus();
-      secondTab.dispatchEvent(keydownEnd);
+      await user.keyboard('{Home}');
+      expect(document.activeElement).toEqual(firstTab);
+    });
+
+    test('The End key moves selection to the last tab', async () => {
+      tablist.switchTo(1);
+
+      secondTab.focus();
+      await user.keyboard('{End}');
       expect(document.activeElement).toEqual(thirdTab);
     });
 

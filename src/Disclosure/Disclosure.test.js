@@ -1,13 +1,6 @@
 /* eslint-disable max-len */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Disclosure from '.';
-
-const {
-  click,
-  keydownEscape,
-  keydownTab,
-  keydownShiftTab,
-} = events;
 
 const disclosureMarkup = `
   <dl>
@@ -74,9 +67,9 @@ describe('The Disclosure should initialize as expected', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  test('Click events on the Disclosure controller updates atttributes as expected', () => {
+  test('Click events on the Disclosure controller updates atttributes as expected', async () => {
     // Click to open.
-    controller.dispatchEvent(click);
+    await user.click(controller);
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
     expect(disclosure.expanded).toBe(true);
@@ -84,7 +77,7 @@ describe('The Disclosure should initialize as expected', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
     // Should allow outside click.
-    document.body.dispatchEvent(click);
+    await user.click(document.body);
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
     expect(disclosure.expanded).toBe(true);
@@ -92,7 +85,7 @@ describe('The Disclosure should initialize as expected', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('false');
 
     // Click again to close.
-    controller.dispatchEvent(click);
+    await user.click(controller);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
     expect(disclosure.expanded).toBe(false);
@@ -134,8 +127,8 @@ describe('The Disclosure should initialize as expected', () => {
       disclosure.allowOutsideClick = false;
     });
 
-    test('The Disclosure closes when an external element is clicked', () => {
-      document.body.dispatchEvent(click);
+    test('The Disclosure closes when an external element is clicked', async () => {
+      await user.click(document.body);
 
       expect(disclosure.expanded).toBe(false);
       expect(controller.getAttribute('aria-expanded')).toEqual('false');
@@ -154,9 +147,9 @@ describe('The Disclosure should initialize as expected', () => {
       disclosure.expanded = true;
     });
 
-    test('The Disclosure closes when the Escape key is pressed', () => {
+    test('The Disclosure closes when the Escape key is pressed', async () => {
       controller.focus();
-      controller.dispatchEvent(keydownEscape);
+      await user.keyboard('{Escape}');
 
       expect(disclosure.expanded).toBe(false);
       expect(document.activeElement).toEqual(controller);
@@ -164,24 +157,24 @@ describe('The Disclosure should initialize as expected', () => {
 
     test(
       'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
-      () => {
-        target.dispatchEvent(keydownEscape);
+      async () => {
+        await user.keyboard('{Escape}');
 
         expect(disclosure.expanded).toBe(false);
         expect(document.activeElement).toEqual(controller);
       }
     );
 
-    test('The Disclosure closes when Tabbing from the last child', () => {
+    test('The Disclosure closes when Tabbing from the last child', async () => {
       domLastChild.focus();
-      target.dispatchEvent(keydownTab);
+      await user.keyboard('{Tab}');
 
       expect(disclosure.expanded).toBe(false);
     });
 
-    test('The Disclosure remains open when tabbing back from the last child', () => {
+    test('The Disclosure remains open when tabbing back from the last child', async () => {
       domLastChild.focus();
-      target.dispatchEvent(keydownShiftTab);
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
 
       expect(disclosure.expanded).toBe(true);
     });

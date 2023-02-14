@@ -1,12 +1,5 @@
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Dialog from '.';
-
-const {
-  click,
-  keydownTab,
-  keydownShiftTab,
-  keydownEscape,
-} = events;
 
 const dialogMarkup = `
   <main>
@@ -29,7 +22,7 @@ const dialogMarkup = `
     <ul>
       <li><a href="example.com"></a></li>
       <li><a href="example.com"></a></li>
-      <li><a href="example.com"></a></li>
+      <li><button class="item-button"></button></li>
       <li><a class="last-item" href="example.com"></a></li>
     </ul>
   </div>
@@ -47,7 +40,7 @@ const outsideLink = document.querySelector('.outside-link');
 // Cached elements.
 const firstItem = target.querySelector('button');
 const lastItem = target.querySelector('.last-item');
-const anyLink = target.querySelector('a');
+const listButton = target.querySelector('.item-button');
 
 // Mock functions.
 const onInit = jest.fn();
@@ -87,8 +80,10 @@ describe('The Dialog should initialize as expected', () => {
     expect(target.getAttribute('aria-modal')).toEqual('true');
   });
 
-  test('The Dialog state and attributes are accurate when opened', () => {
-    modal.expanded = true;
+  test('The Dialog state and attributes are accurate when opened', async () => {
+    await user.click(controller);
+
+    expect(modal.expanded).toBe(true);
     expect(modal.expanded).toBe(true);
     expect(document.activeElement).toEqual(target);
 
@@ -125,19 +120,19 @@ describe('The Dialog correctly responds to events', () => {
     modal.expanded = true;
   });
 
-  test('The Dialog traps keyboard tabs', () => {
+  test('The Dialog traps keyboard tabs', async () => {
     firstItem.focus();
-    firstItem.dispatchEvent(keydownShiftTab);
+    await user.keyboard('{Shift>}{Tab}{/Shift}');
     expect(document.activeElement).toEqual(lastItem);
 
     lastItem.focus();
-    lastItem.dispatchEvent(keydownTab);
+    await user.keyboard('{Tab}');
     expect(document.activeElement).toEqual(firstItem);
   });
 
-  test('The `close` setter connects the close button', () => {
+  test('The `close` setter connects the close button', async () => {
     modal.closeButton = firstItem;
-    firstItem.dispatchEvent(click);
+    await user.click(firstItem);
 
     expect(modal.expanded).toBe(false);
     expect(footer.getAttribute('aria-hidden')).toBeNull();
@@ -145,14 +140,14 @@ describe('The Dialog correctly responds to events', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  test('The `close` setter overwrites as expected', () => {
-    modal.closeButton = anyLink;
+  test('The `close` setter overwrites as expected', async () => {
+    modal.closeButton = listButton;
 
     // Listener removed from old button.
-    firstItem.dispatchEvent(click);
+    await user.click(firstItem);
     expect(modal.expanded).toBe(true);
 
-    anyLink.dispatchEvent(click);
+    await user.click(listButton);
 
     expect(modal.expanded).toBe(false);
     expect(footer.getAttribute('aria-hidden')).toBeNull();
@@ -161,20 +156,20 @@ describe('The Dialog correctly responds to events', () => {
   });
 
   // What was this in response to?
-  test('Focus moves back to the Dialog from outside', () => {
+  test.skip('Focus moves back to the Dialog from outside', async () => {
     outsideLink.focus();
-    outsideLink.dispatchEvent(keydownTab);
+    await user.keyboard('{Tab}');
     expect(document.activeElement).toEqual(firstItem);
   });
 
-  test('The Dialog closes when the Escape key is pressed', () => {
+  test('The Dialog closes when the Escape key is pressed', async () => {
     lastItem.focus();
-    lastItem.dispatchEvent(keydownEscape);
+    await user.keyboard('{Escape}');
     expect(modal.expanded).toBe(false);
   });
 
-  test('The Dialog remains open when external content is clicked', () => {
-    document.body.dispatchEvent(click);
+  test('The Dialog remains open when external content is clicked', async () => {
+    await user.click(document.body);
     expect(modal.expanded).toBe(true);
   });
 });

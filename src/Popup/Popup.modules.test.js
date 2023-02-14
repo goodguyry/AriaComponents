@@ -1,18 +1,11 @@
 /* eslint-disable max-len */
-import { events } from '@/.jest/events';
+import user from '@/.jest/user';
 import Popup, {
   ComponentConnector,
   ManageTabIndex,
   UseButtonRole,
   UseHiddenAttribute,
 } from '.';
-
-const {
-  keydownEnter,
-  keydownShiftTab,
-  keydownSpace,
-  keydownTab,
-} = events;
 
 // Set up our document body
 document.body.innerHTML = `
@@ -50,17 +43,18 @@ beforeEach(() => {
 
 const targetFirstChild = document.querySelector('.first-child');
 
-test('ComponentConnector: Connect disconnected controller-target pair', () => {
+test('ComponentConnector: Connect disconnected controller-target pair', async () => {
   expect(controller.getAttribute('aria-owns')).toEqual(target.id);
 
   popup.expanded = true;
   expect(popup.expanded).toBe(true);
 
   controller.focus();
-  controller.dispatchEvent(keydownTab);
+
+  await user.keyboard('{Tab}');
   expect(document.activeElement).toEqual(targetFirstChild);
 
-  target.dispatchEvent(keydownShiftTab);
+  await user.keyboard('{Shift>}{Tab}{/Shift}');
   expect(document.activeElement).toEqual(controller);
 
   popup.destroy();
@@ -89,19 +83,20 @@ describe('UseButtonRole', () => {
     expect(controller.getAttribute('tabindex')).not.toBe('0');
   });
 
-  test('The Return key and Spacebar activate the Popup target', () => {
+  test('The Return key and Spacebar activate the Popup target', async () => {
     // Ensure the Popup is closed.
     expect(popup.expanded).toBe(false);
 
     // Enter.
-    controller.dispatchEvent(keydownEnter);
+    await user.keyboard('{Enter}');
     expect(popup.expanded).toBe(true);
 
     // Spacebar.
-    controller.dispatchEvent(keydownSpace);
+    await user.keyboard('{ }');
     expect(popup.expanded).toBe(false);
   });
 
+  // @todo Clean these up!
   test.skip('Module cleanup runs', () => {
     popup.destroy();
     expect(controller.getAttribute('role')).toBeNull();
