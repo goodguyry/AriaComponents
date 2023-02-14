@@ -231,7 +231,7 @@ export default class ListBox extends AriaComponent {
 
     // Fire the init event.
     this.dispatchEventInit();
-  }
+  };
 
   /**
    * Prevent the page from scrolling when the arrow keys are used.
@@ -244,7 +244,7 @@ export default class ListBox extends AriaComponent {
     if (keydownTarget === this.target && ['ArrowUp', 'ArrowDown'].includes(key)) {
       event.preventDefault();
     }
-  }
+  };
 
   /**
    * Show the Listbox when the controller is clicked.
@@ -255,7 +255,7 @@ export default class ListBox extends AriaComponent {
     event.preventDefault();
 
     this.toggle();
-  }
+  };
 
   /**
    * Handle keyup events on the button.
@@ -269,7 +269,7 @@ export default class ListBox extends AriaComponent {
 
       this.show();
     }
-  }
+  };
 
   /**
    * Handle keydown events on the Listbox controller.
@@ -289,7 +289,7 @@ export default class ListBox extends AriaComponent {
        */
       this.hide();
     }
-  }
+  };
 
   /**
    * Handle keydown events on the listbox.
@@ -400,7 +400,7 @@ export default class ListBox extends AriaComponent {
         break;
       }
     }
-  }
+  };
 
   /**
    * Close the Listbox, but not before updating state to reflect the option that
@@ -411,7 +411,7 @@ export default class ListBox extends AriaComponent {
   targetHandleClick = (event) => {
     this.activeDescendant = event.target;
     this.hide();
-  }
+  };
 
   /**
    * Close the Listbox when focus is moved away from the target.
@@ -420,7 +420,7 @@ export default class ListBox extends AriaComponent {
     if (this.expanded) {
       this.hide();
     }
-  }
+  };
 
   /**
    * Close the Listbox when clicking anywhere outside of the target or controller
@@ -438,7 +438,7 @@ export default class ListBox extends AriaComponent {
     ) {
       this.hide();
     }
-  }
+  };
 
   /**
    * If the Listbox is scrollable, and the selected option is not visible,
@@ -460,28 +460,28 @@ export default class ListBox extends AriaComponent {
         this.target.scrollTop = offsetTop;
       }
     }
-  }
+  };
 
   /**
    * Update component state to show the target element.
    */
   show = () => {
     this.expanded = true;
-  }
+  };
 
   /**
    * Update component state to hide the target element.
    */
   hide = () => {
     this.expanded = false;
-  }
+  };
 
   /**
    * Toggle the Listbox state.
    */
   toggle = () => {
     this.expanded = (! this.expanded);
-  }
+  };
 
   /**
    * Destroy the Listbox.
@@ -518,5 +518,5 @@ export default class ListBox extends AriaComponent {
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
-  }
+  };
 }

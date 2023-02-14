@@ -227,7 +227,7 @@ export default class Tablist extends AriaComponent {
 
     // Fire the init event.
     this.dispatchEventInit();
-  }
+  };
 
   /**
    * Returns the next index based on the key pressed.
@@ -262,7 +262,7 @@ export default class Tablist extends AriaComponent {
         // Do nothing.
         return undefined;
     }
-  }
+  };
 
   /**
    * Handle keydown events on the tabpanels.
@@ -287,7 +287,7 @@ export default class Tablist extends AriaComponent {
         this.panels[this.activeIndex].focus();
       }
     }
-  }
+  };
 
   /**
    * Handle tablist key presses.
@@ -335,7 +335,7 @@ export default class Tablist extends AriaComponent {
       default:
         break;
     }
-  }
+  };
 
   /**
    * Activate the tab panel when a tab is clicked.
@@ -353,7 +353,7 @@ export default class Tablist extends AriaComponent {
     ) {
       this.switchTo(this.tabLinks.indexOf(target));
     }
-  }
+  };
 
   /**
    * Switch directly to a tab.
@@ -362,7 +362,7 @@ export default class Tablist extends AriaComponent {
    */
   switchTo = (index) => {
     this.activeIndex = index;
-  }
+  };
 
   /**
    * Destroy the tablist, removing ARIA attributes and event listeners
@@ -401,5 +401,5 @@ export default class Tablist extends AriaComponent {
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
-  }
+  };
 }

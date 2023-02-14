@@ -128,7 +128,7 @@ export default class Dialog extends AriaComponent {
     // Save as instance properties.
     this.firstInteractiveChild = firstInteractiveChild;
     this.lastInteractiveChild = lastInteractiveChild;
-  }
+  };
 
   /**
    * Set the component's DOM attributes and event listeners.
@@ -185,7 +185,7 @@ export default class Dialog extends AriaComponent {
 
     // Fire the init event.
     this.dispatchEventInit();
-  }
+  };
 
   /**
    * Handles setting the close button's event listener
@@ -207,13 +207,15 @@ export default class Dialog extends AriaComponent {
   /**
    * Close the dialog on when users click outside of the Dialog element.
    *
+   * @todo This isn't actually used.
+   *
    * @param {Event} event The Event object.
    */
-  outsideClick(event) {
+  outsideClick = (event) => {
     if (this.expanded && ! this.target.contains(event.target)) {
       this.hide();
     }
-  }
+  };
 
   /**
    * Show the Dialog when the controller is clicked.
@@ -224,7 +226,7 @@ export default class Dialog extends AriaComponent {
     event.preventDefault();
 
     this.show();
-  }
+  };
 
   /**
    * Trap key tabs within the dialog.
@@ -259,7 +261,7 @@ export default class Dialog extends AriaComponent {
         this.firstInteractiveChild.focus();
       }
     }
-  }
+  };
 
   /**
    * Close the dialog on 'Escape' key press. This is added to the body element, so
@@ -291,7 +293,7 @@ export default class Dialog extends AriaComponent {
       default:
         break;
     }
-  }
+  };
 
   /**
    * Destroy the Dialog and Popup.
@@ -324,19 +326,19 @@ export default class Dialog extends AriaComponent {
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
-  }
+  };
 
   /**
    * Show the Dialog.
    */
   show = () => {
     this.expanded = true;
-  }
+  };
 
   /**
    * Hide the Dialog.
    */
   hide = () => {
     this.expanded = false;
-  }
+  };
 }

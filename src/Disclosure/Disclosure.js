@@ -191,7 +191,7 @@ export default class Disclosure extends AriaComponent {
 
     // Fire the init event.
     this.dispatchEventInit();
-  }
+  };
 
   /**
    * Close the Disclosure when the Escape key is pressed.
@@ -212,7 +212,7 @@ export default class Disclosure extends AriaComponent {
         this.controller.focus();
       }
     }
-  }
+  };
 
   /**
    * Show the Disclosure when the controller is clicked.
@@ -223,7 +223,7 @@ export default class Disclosure extends AriaComponent {
     event.preventDefault();
 
     this.toggle();
-  }
+  };
 
   /**
    * Close the Disclosure when tabbing forward from the last interactve child.
@@ -237,7 +237,7 @@ export default class Disclosure extends AriaComponent {
     ) {
       this.close();
     }
-  }
+  };
 
   /**
    * Close the Disclosure when the user clicks outside of the target.
@@ -252,7 +252,7 @@ export default class Disclosure extends AriaComponent {
     ) {
       this.close();
     }
-  }
+  };
 
   /**
    * Remove all ARIA attributes and event listeners added by this class.
@@ -276,26 +276,26 @@ export default class Disclosure extends AriaComponent {
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
-  }
+  };
 
   /**
    * Update component state to open the Disclosure.
    */
   open = () => {
     this.expanded = true;
-  }
+  };
 
   /**
    * Update component state to close the Disclosure.
    */
   close = () => {
     this.expanded = false;
-  }
+  };
 
   /**
    * Toggle the Disclosure expanded state.
    */
   toggle = () => {
     this.expanded = (! this.expanded);
-  }
+  };
 }

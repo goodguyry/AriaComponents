@@ -165,7 +165,7 @@ export default class AriaComponent {
     }
 
     return trackedAttributes;
-  }
+  };
 
   /**
    * Adds an attribute for the given element and tracks it for later removal.
@@ -184,7 +184,7 @@ export default class AriaComponent {
 
       this.__trackedAttributes[element.id] = Array.from(new Set(trackedAttributes));
     }
-  }
+  };
 
   /**
    * Updates an attribute for the given element and tracks it for later removal.
@@ -206,7 +206,7 @@ export default class AriaComponent {
     }
 
     this.__trackedAttributes[element.id] = Array.from(new Set(trackedAttributes));
-  }
+  };
 
   /**
    * Removes tracked attributes added to the given element.
@@ -216,7 +216,7 @@ export default class AriaComponent {
   removeAttributes = (element) => {
     const trackedAttributes = this.getTrackedAttributesFor(element);
     trackedAttributes.forEach((attr) => element.removeAttribute(attr));
-  }
+  };
 
   /**
    * Dispatch event.
@@ -235,7 +235,7 @@ export default class AriaComponent {
     );
 
     this.element.dispatchEvent(event);
-  }
+  };
 
   /**
    * Dispatch the `init` event.
@@ -247,7 +247,7 @@ export default class AriaComponent {
         instance: this,
       }
     );
-  }
+  };
 
   /**
    * Dispatch the `destroy` event.
@@ -260,7 +260,7 @@ export default class AriaComponent {
         instance: this,
       }
     );
-  }
+  };
 
   /**
    * Register an event handler for the given event type.
@@ -273,7 +273,7 @@ export default class AriaComponent {
     this.element.addEventListener(type, listener, options);
 
     return this;
-  }
+  };
 
   /**
    * Unregister an event handler for the given event type.
@@ -286,7 +286,7 @@ export default class AriaComponent {
     this.element.removeEventListener(type, listener, options);
 
     return this;
-  }
+  };
 
   /**
    * Initialize modules.
@@ -298,7 +298,7 @@ export default class AriaComponent {
     const cleanup = modules.map((mod) => this.start(mod));
 
     this.cleanupFunctions = [...afterDestroy, ...cleanup];
-  }
+  };
 
   /**
    * Run the module function, which returns a cleanup function.
@@ -318,12 +318,12 @@ export default class AriaComponent {
     }
 
     return null;
-  }
+  };
 
   /**
    * Run module cleanup function.
    */
   cleanupModules = () => {
     this.cleanupFunctions.forEach((cleanup) => cleanup && cleanup());
-  }
+  };
 }
