@@ -3,71 +3,53 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.4.0
 
+A complete rewrite.
+
+### Highlights
+
+* **Simplified component parameters**: For components with a controller-target pair, pass in either the controller or target. Just be sure to add the `aria-controls` attribute to the controlling element with a matching `id` attribute on the target element. (#51, #66, #65, #70)
+* **Extend core functionality with Modules**: Modules contain optional features and functionality available for contexts in which they'll simplify and/or improve UX (#84, #86)
+* **Custom events**: Components dispatch custom `init`, `stateChange` and `destroy` events, rather than accepting callbacks (#55, #77)
+
+... and more:
+
+- Some options can be set on-the-fly via setters (#82)
+- `instance.on()` and `instance.off()` methods for subscribing to events (#67)
+- Components track attributes they add and will only overwrite existing attribute values where required (#73)
+- Components are now exported from their own endpoint (#84)
+- MenuBar and MenuButton components are now deprecated (#75)
+- Component state now uses setter/getter pattern (#83)
+
 **Changed**
 
-- Changes constructor parameters to accept a component element and an object of options (#51)
-- Requires activating elements to have an `aria-current` attribute matching the ID value of the target element (#51, #66)
-- MenuButton and ListBox now _extend_ Popup, rather than using it internally (#54)
-- Dialog is no longer a Popup (#59)
-- Dialog focuses the target element on open (#51)
-- Loosens MenuBar and Menu components' markup requirements (#48, 3385f2e)
-- Moves docs site packages and scripts to the docs directory (#57)
-- Removes Travis, adds GitHub Action (#58)
-- Components can accept either a controller or target element (#65, #70)
-- Deprecates MenuBar component; use Menu instead (#75)
-- Removes antipatterns from Menu component (#75)
-- Replaces `KeyboardEvent.keyCode` with `KeyboardEvent.key`; removes keyCodes helper (#79)
-- Components are now exported from their own endpoint (#84)
-- Listbox no longer extends Popup (#85)
-- Components now pass the original parameters to modules (#86)
-- `Dialog.closeButton` setter replaces `Dialog.setCloseButton` method (#86)
-- No longer throws configuration errors, but logs errors instead (#86)
+- Dialog now focuses the target element when opened (#51)
+- Loosens the Menu component's markup requirements (#48, 3385f2e)
+- Dialog and Listbox no longer extend Popup (#59, #85)
+- Use the `Dialog.closeButton` setter to configure the Dialog close button (#86)
+- Removes scarcely-used utilities and incorporates widely-used utilities into the component that uses them (#80, #81)
 
 **Added**
 
-- Component element fires `init`, `stateChange` and `destroy` events (#55)
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
-- Adds `itemMatches` option for validating Menu & MenuBar menu items (#49, 75bcb56)
 - Gets Dialog content element(s) if none provided (#51)
-- Throws a configuration error for misconfigured components (#51)
-- Exports `isInstanceOf` helper function (#52)
-- Allows authors to disable the use of the hidden attribute in Dialog, Disclosure, and Popup state changes via the `useHiddenAttribute` option. (#61)
-- `instance.on()` and `instance.off()` methods for subscribing to events (#67)
-- Menu, MenuBar, and MenuButton will log a warning if used for website navigation (#68)
-- Components track attributes they add and will only overwrite existing attribute values where required (#73)
-- Adds an autoClose option to Disclosure and Menu (#75, #76)
-- Adds event namespaces: `'<componentName>.<eventName>'` (#77)
-- Some options can be set after the component initializes (#82)
-- Component state now uses setter/getter pattern (#83)
-- Adds support for modules (#84)
+- Logs a configuration error for misconfigured components (#51)
+- Adds an `autoClose` option to Disclosure and Menu (#75, #76)
 
 **Fixed**
 
 - MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
 - Component callbacks (now, Custom Events) could be run more than once (#54)
-- MenuBar wasn't tracking the current Popup (6c2fe90)
-- MenuBar keydown could trigger an unexpected Popup `stateChange` event (e86d06e, 8001226)
 - Dialog no longer re-queries for interactive child elements on every TAB keydown (a964674)
 - Corrects an issue where shift-tab from the Popup controller would focus the target's first child (#76)
 
 **Removed**
 
-- Dialog no longer requires a close button, and will not create one (#51)
-- Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks (#54, #55)
-- MenuBar no longer tracks Popup `expanded` state separately (e86d06e)
-- Components no longer manage the `hidden` attribute (#74)
-- MenuButton component (#75)
-- Remove `collapse` and `itemMatches` Menu options (#75)
 - Components no longer set a reference to their instance on the component's HTML elements (#78)
-- Removes scarcely-used utilities (#80)
-  - `tabIndexAllow`, `tabIndexDeny`, and `rovingTabIndex` from 'lib/rovingTabIndex'
-  - `getUniqueId` and `setUniqueId` from 'lib/uniqueId'
-  - `Search` from 'lib/Search' (Moved to 'src/Listbox')
-  - `getFirstAndLastItems` from 'lib/getFirstAndLastItems'
-- Incorporates widely-used utilities into the component that uses them (#80)
-  - `getFirstAndLastItems` into `AriaComponent` from 'lib/getFirstAndLastItems'
-  - `nextPreviousFromLeftRight` into `Tablist` from 'lib/nextPrevious'
-- Removes util exports (#81)
+- Dialog no longer requires a close button, and will not create one (#51)
+- Components no longer manage the `hidden` attribute (#74)
+- Components no longer set a reference to their instance on the component's HTML elements (#78)
+- Utility functions are no longer exported (#80, #81)
+- Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks (#55)
 
 ## 0.3.1
 
