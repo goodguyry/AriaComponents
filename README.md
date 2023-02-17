@@ -13,6 +13,8 @@ npm i aria-components
 
 ## Usage
 
+🌸 See the [release/v0.3](tree/release/v0.3) branch for docs related to the current version.
+
 Each component accepts an element and an `options` object.
 
 ```jsx
