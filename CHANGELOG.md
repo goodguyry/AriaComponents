@@ -50,6 +50,7 @@ A complete rewrite.
 - Components no longer set a reference to their instance on the component's HTML elements (#78)
 - Utility functions are no longer exported (#80, #81)
 - Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks (#55)
+- Removes the docs directory; example page now at [aria-components-examples](https://github.com/goodguyry/aria-components-examples/)
 
 ## 0.3.1
 
