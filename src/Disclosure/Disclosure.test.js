@@ -1,20 +1,16 @@
 /* eslint-disable max-len */
-import { Disclosure } from 'root';
-import { events } from '../lib/events';
-
-const {
-  click,
-  keydownReturn,
-  keydownSpace,
-} = events;
+import user from '@/.jest/user';
+import Disclosure from '.';
 
 const disclosureMarkup = `
   <dl>
-    <dt class="question">
-      <button class="button">What is Lorem Ipsum?</button>
+    <dt>
+      <a href="#" aria-controls="answer">What is Lorem Ipsum?</a>
     </dt>
-    <dd class="answer">
+    <dd id="answer">
+      <a class="first-child" href="example.com"></a>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <a class="last-child" href="example.com"></a>
     </dd>
   </dl>
 `;
@@ -22,155 +18,173 @@ const disclosureMarkup = `
 // Set up our document body
 document.body.innerHTML = disclosureMarkup;
 
-const controller = document.querySelector('.button');
-const target = document.querySelector('.answer');
+const controller = document.querySelector('[aria-controls="answer"]');
+const target = document.querySelector('#answer');
 
-let disclosure;
+const domLastChild = document.querySelector('.last-child');
 
-describe('Disclosure with default configuration', () => {
-  beforeEach(() => {
-    disclosure = new Disclosure({ controller, target });
+// Mock functions.
+const onStateChange = jest.fn();
+const onInit = jest.fn();
+const onDestroy = jest.fn();
+
+controller.addEventListener('disclosure.stateChange', onStateChange);
+controller.addEventListener('disclosure.init', onInit);
+controller.addEventListener('disclosure.destroy', onDestroy);
+
+let disclosure = null;
+
+beforeAll(() => {
+  disclosure = new Disclosure(controller);
+});
+
+describe('The Disclosure should initialize as expected', () => {
+  test('The Disclosure includes the expected property values', () => {
+    expect(disclosure).toBeInstanceOf(Disclosure);
+    expect(disclosure.toString()).toEqual('[object Disclosure]');
+
+    expect(controller.id).toEqual(disclosure.id);
+
+    expect(disclosure.expanded).toBe(false);
+    expect(disclosure.lastInteractiveChild).toEqual(domLastChild);
   });
 
-  describe('Disclosure adds and manipulates DOM element attributes', () => {
-    it('Should be instantiated as expected', () => {
-      expect(disclosure).toBeInstanceOf(Disclosure);
+  test('The `init` event fires once', () => {
+    expect(onInit).toHaveBeenCalledTimes(1);
 
-      expect(disclosure.getState().expanded).toBeFalsy();
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
 
-      expect(controller.disclosure).toBeInstanceOf(Disclosure);
-      expect(target.disclosure).toBeInstanceOf(Disclosure);
-    });
-
-    it('Should add the correct attributes to the disclosure controller',
-      () => {
-        expect(controller.getAttribute('aria-expanded')).toEqual('false');
-        expect(controller.getAttribute('aria-controls')).toEqual(target.id);
-        expect(controller.getAttribute('tabindex')).toBeNull();
-        expect(controller.getAttribute('aria-owns')).toEqual(target.id);
-      });
-
-    it('Should add the correct attributes to the disclosure target',
-      () => {
-        expect(target.getAttribute('aria-hidden')).toEqual('true');
-        expect(target.getAttribute('hidden')).toEqual('');
-      });
-  });
-
-  describe('Disclosure correctly responds to events', () => {
-    it('Should update attributes when the controller is clicked', () => {
-      // Click to open.
-      controller.dispatchEvent(click);
-      expect(disclosure.getState().expanded).toBeTruthy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
-
-      // Click again to close.
-      controller.dispatchEvent(click);
-      expect(disclosure.getState().expanded).toBeFalsy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
-
-      // Re-open the disclosure.
-      disclosure.open();
-      // Should close on outside click.
-      document.body.dispatchEvent(click);
-      expect(disclosure.getState().expanded).toBeTruthy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
-    });
-
-    it('Should update attributes when Return or Spacebar are pressed', () => {
-      // Ensure the disclosure is closed.
-      disclosure.close();
-
-      // Return to open.
-      controller.dispatchEvent(keydownReturn);
-      expect(disclosure.getState().expanded).toBeTruthy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('true');
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
-
-      // Spacebar to close.
-      controller.dispatchEvent(keydownSpace);
-      expect(disclosure.getState().expanded).toBeFalsy();
-      expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
+      expect(detail.instance).toStrictEqual(disclosure);
     });
   });
 
-  it('Should remove all DOM attributes when destroyed', () => {
+  test('The Disclosure controller includes the expected attribute values', () => {
+    expect(controller.getAttribute('aria-expanded')).toEqual('false');
+  });
+
+  test('The Disclosure target includes the expected attribute values', () => {
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+  });
+
+  test('Click events on the Disclosure controller updates atttributes as expected', async () => {
+    // Click to open.
+    await user.click(controller);
+    expect(onStateChange).toHaveBeenCalledTimes(1);
+
+    expect(disclosure.expanded).toBe(true);
+    expect(controller.getAttribute('aria-expanded')).toEqual('true');
+    expect(target.getAttribute('aria-hidden')).toEqual('false');
+
+    // Should allow outside click.
+    await user.click(document.body);
+    expect(onStateChange).toHaveBeenCalledTimes(1);
+
+    expect(disclosure.expanded).toBe(true);
+    expect(controller.getAttribute('aria-expanded')).toEqual('true');
+    expect(target.getAttribute('aria-hidden')).toEqual('false');
+
+    // Click again to close.
+    await user.click(controller);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
+
+    expect(disclosure.expanded).toBe(false);
+    expect(controller.getAttribute('aria-expanded')).toEqual('false');
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.expanded).toBe(false);
+      expect(detail.instance).toStrictEqual(disclosure);
+    });
+  });
+
+  test('All attributes are removed from elements managed by the Disclosure', () => {
     disclosure.destroy();
 
     expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
-    expect(controller.getAttribute('tabindex')).toBeNull();
-    // The test markup isn't detatched, so this doesn't apply.
-    expect(controller.getAttribute('aria-owns')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toEqual(target.id);
 
     expect(target.getAttribute('aria-hidden')).toBeNull();
-    expect(target.getAttribute('hidden')).toBeNull();
-
-    expect(disclosure.controller.disclosure).toBeUndefined();
-    expect(disclosure.target.disclosure).toBeUndefined();
+    expect(onDestroy).toHaveBeenCalledTimes(1);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
-  });
-});
 
-describe('Disclosure with non-default configuration', () => {
-  // Mock functions.
-  const onStateChange = jest.fn();
-  const onInit = jest.fn();
-  const onDestroy = jest.fn();
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
 
-  beforeEach(() => {
-    disclosure = new Disclosure({
-      controller,
-      target,
-      loadOpen: true,
-      allowOutsideClick: false,
-      onStateChange,
-      onInit,
-      onDestroy,
+      expect(detail.element).toStrictEqual(controller);
+      expect(detail.instance).toStrictEqual(disclosure);
     });
   });
 
-  it('Should load open', () => {
-    expect(disclosure.getState().expanded).toBeTruthy();
+  describe('Disclosure with `allowOutsideClick` disabled', () => {
+    beforeAll(() => {
+      disclosure = new Disclosure(controller);
+      disclosure.allowOutsideClick = false;
+    });
+
+    test('The Disclosure closes when an external element is clicked', async () => {
+      await user.click(document.body);
+
+      expect(disclosure.expanded).toBe(false);
+      expect(controller.getAttribute('aria-expanded')).toEqual('false');
+      expect(target.getAttribute('aria-hidden')).toEqual('true');
+    });
   });
 
-  it('Should close the disclosure on outside click', () => {
-    document.body.dispatchEvent(click);
-    expect(disclosure.getState().expanded).toBeFalsy();
-    expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
+  describe('Disclosure with `autoClose` enabled', () => {
+    beforeAll(() => {
+      disclosure.autoClose = true;
+      disclosure.allowOutsideClick = true; // Restore default.
+    });
+
+    // Open the disclosure prior to each test.
+    beforeEach(() => {
+      disclosure.expanded = true;
+    });
+
+    test('The Disclosure closes when the Escape key is pressed', async () => {
+      controller.focus();
+      await user.keyboard('{Escape}');
+
+      expect(disclosure.expanded).toBe(false);
+      expect(document.activeElement).toEqual(controller);
+    });
+
+    test(
+      'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
+      async () => {
+        await user.keyboard('{Escape}');
+
+        expect(disclosure.expanded).toBe(false);
+        expect(document.activeElement).toEqual(controller);
+      }
+    );
+
+    test('The Disclosure closes when Tabbing from the last child', async () => {
+      domLastChild.focus();
+      await user.keyboard('{Tab}');
+
+      expect(disclosure.expanded).toBe(false);
+    });
+
+    test('The Disclosure remains open when tabbing back from the last child', async () => {
+      domLastChild.focus();
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
+
+      expect(disclosure.expanded).toBe(true);
+    });
+  });
+});
+
+describe('Should accept static options', () => {
+  beforeAll(() => {
+    disclosure = new Disclosure(controller, { loadOpen: true });
   });
 
-  it('Should run class methods and subscriber functions', () => {
-    expect(onInit).toHaveBeenCalled();
-
-    disclosure.open();
-    expect(disclosure.getState().expanded).toBeTruthy();
-    expect(onStateChange).toHaveBeenCalled();
-
-    disclosure.close();
-    expect(disclosure.getState().expanded).toBeFalsy();
-    expect(onStateChange).toHaveBeenCalled();
-
-    disclosure.destroy();
-    expect(disclosure.controller.disclosure).toBeUndefined();
-    expect(disclosure.target.disclosure).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalled();
-
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(disclosureMarkup);
-  });
+  it('Should load open', () => expect(disclosure.expanded).toBe(true));
 });

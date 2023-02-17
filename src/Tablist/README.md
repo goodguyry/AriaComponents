@@ -4,136 +4,32 @@ Tablist
 Class for implimenting a tabs widget for sectioning content and displaying one 
 at a time.
 
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The UL parent of the Tablist tabs.
-   *
-   * @type {HTMLUListElement}
-   */
-  tabs: null,
-
-  /**
-   * The Tablist panel elements.
-   *
-   * @type {NodeList}
-   */
-  panels: null,
-
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class Tablist extends AriaComponent {
-  /**
-   * Switch directly to a tab.
-   *
-   * @param {number} index The zero-based tab index to activate.
-   */
-  switchTo(index);
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the tablist, removing ARIA attributes and event listeners
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.tabs property.
- *
- * @type {HTMLUListElement}
- */
-Tablist.tabs
-```
-
-```javascript
-/**
- * The config.panels property.
- *
- * @type {array}
- */
-Tablist.panels
-```
-
-```javascript
-/**
- * Collected anchors from inside of each list items.
- *
- * @type {array}
- */
-Tablist.tabLinks
-```
-
 ## Example
 
 ```html
 <ul class="tabs">
-  <li><a href="#first-panel"></a></li>
-  <li><a href="#second-panel"></a></li>
-  <li><a href="#third-panel"></a></li>
+  <li><a aria-controls="first-panel" href="#first-panel"></a></li>
+  <li><a aria-controls="second-panel" href="#second-panel"></a></li>
+  <li><a aria-controls="third-panel" href="#third-panel"></a></li>
 </ul>
 <div id="first-panel" class="panel">
-  <h1>The Article Title</h1>
+  <h3>The First Panel Title</h3>
   <p>Lorem ipsum dolor sit amet, <a href="example.com/first">consectetur</a>
   adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
   aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-  officia deserunt mollit anim id est laborum.</p>
+  nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 <div id="second-panel" class="panel">
-  <h1>The Article Title</h1>
-  <p>Lorem ipsum dolor sit amet, <a href="example.com/second">consectetur</a>
-  adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-  aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-  officia deserunt mollit anim id est laborum.</p>
+  <h3>The Second Panel Title</h3>
+  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
+  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
+  in culpa qui officia deserunt mollit anim id est laborum, 
+  <a href="example.com/second">consectetur</a> adipisicing elit. Sed do eiusmod 
+  tempor incididunt ut labore et dolore magna aliqua. </p>
 </div>
 <div id="third-panel" class="panel">
-  <h1>The Article Title</h1>
-  <p>Lorem ipsum dolor sit amet, <a href="example.com/third">consectetur</a>
-  adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-  aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+  <h3>The Third Panel Title</h3>
+  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
   nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
   reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
   pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
@@ -141,29 +37,98 @@ Tablist.tabLinks
 </div>
 ```
 
-```javascript
-import { Tablist } from 'aria-components';
+```jsx
+import Tablist from 'aria-components/tablist';
 
 const tabs = document.querySelector('.tabs');
-const panels = document.querySelectorAll('.panel');
-
-const tablist = new Tablist({
-  tabs,
-  panels,
-  onInit: () => {
-    console.log('Tablist initialized.');
-  },
-  onStateChange: () => {
-    console.log('Tablist state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Tablist destroyed.');
-  },
-});
+const tablist = new Tablist(tabs, options);
 ```
+
+## Constructor
+
+```jsx
+Tablist(tabsListElement: HTMLUListElement);
+```
+
+**`tabsListElement`** - _(Required)_ The list element containing tab links. Each interactive element must contain an `aria-controls` attribute referencing the ID of the associated tabPanel.
+
+**`options`** - _(Optional)_ Configuration options.
+
+### Available Options
+
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
+
+## Instance Methods
+
+See also [`src/README`](../).
+
+**`switchTo(index: Number)`** - Activate the tab at the given zero-based index.
+
+**`toString()`** - Returns `'[object Tablist]'`.
+
+## Properties
+
+**`activeIndex`** - _(setter)_ Set the index of the active tab-panel pair and update element attribtues to hide inactive tab-panel pairs from assistive technology.
+
+**`activeIndex`** - _(getter)_ Get the index of the active tab-panel pair.
+
+**`previousIndex`** - _(getter)_ Get the index of the previously-active tab-panel pair.
+
+**`tabs`** - The list element containing tab links (alias of `element`).
+
+**`panels`** - The tab panel elements.
+
+**`tabLinks`** - The anchors collected from inside of each list items.
+
+## Events
+
+Events are namespaced by their component to avoid clashes with nested components.
+
+**`'tablist.init'`**
+
+Fired after the component is initialized.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+
+**`'tablist.stateChange'`**
+
+Fired after component state is updated.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.activeIndex` - The index of the currently active tab/panel.
+
+**`'tablist.destroy'`**
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Tablist, { AutomaticActivation } from 'aria-components/tablist';
+```
+
+**`AutomaticActivation`**
+
+Automatically activate the associated tabpanel when its tab is selected
+
+**`ManageTabIndex`**
+
+Removes inactive tabpanels' interactive children from the tab index.
+
+**`UseHiddenAttribute`**
+
+Hides inactive tabels with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
+
 
 ## References
 
 - https://www.w3.org/TR/wai-aria-1.1/#tablist
-- https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel
-- https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html
+- https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/

@@ -1,127 +1,13 @@
 Popup
 =====
 
-Class for setting up an interactive popup element that can be triggered by a 
-controlling element.
-
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The element used to trigger the Popup element.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-
-  /**
-   * The Popup's target element.
-   *
-   * @type {HTMLElement}
-   */
-  target: null,
-
-  /**
-   * The value of `aria-haspopup` must match the role of the Popup container.
-   * Options: menu, listbox, tree, grid, or dialog,
-   *
-   * @type {string}
-   */
-  type: 'true', // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
-
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class Popup extends AriaComonents {
-  /**
-   * Update component state to show the target element.
-   */
-  show();
-
-  /**
-   * Update component state to hide the target element.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Remove all attributes and event listeners added by this class.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-Popup.controller
-```
-
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLElement}
- */
-Popup.target
-
-/**
- * The target's first interactive child element.
- *
- * @type {HTMLElement}
- */
-Popup.firstInteractiveChild
-
-/**
- * The target's last interactive child element.
- *
- * @type {HTMLElement}
- */
-Popup.lastInteractiveChild
-```
+Class for setting up an interactive popup button to activate a target element.
 
 ## Example
 
 ```html
-<button>Open</button>
-<div class="wrapper">
+<button aria-controls="popup">Open</button>
+<div id="popup">
   <ul>
     <li><a href="example.com"></a></li>
     <li><a href="example.com"></a></li>
@@ -131,26 +17,102 @@ Popup.lastInteractiveChild
 </div>
 ```
 
-```javascript
-import { Popup } from 'aria-components';
+```jsx
+import Popup from 'aria-components/popup';
 
-const controller = document.querySelector('button');
-const target = document.querySelector('.wrapper');
-
-const popup = new Popup({
-  controller,
-  target,
-  onInit: () => {
-    console.log('Popup initialized.');
-  },
-  onStateChange: () => {
-    console.log('Popup state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Popup destroyed.');
-  },
-});
+const controller = document.querySelector('button[target]');
+const popup = new Popup(controller);
 ```
+
+## Constructor
+
+```jsx
+Popup(element: HTMLElement, options: object);
+```
+
+**`element`** - _(Required)_ Either the element used to activate the Popup target, or the Popup target element.
+
+The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
+
+**`options`** - _(Optional)_ Configuration options.
+
+### Available Options
+
+**`type`** - The string value of the Popup's `aria-haspopup` attribute, required to match the `role` attribute of the Popup container. _Default is `'true'`_
+
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
+
+## Instance Methods
+
+Global methods and properties documented at [`src/README`](../).
+
+**`show()`** - Shortcut for `popup.expanded = true`.
+
+**`hide()`** - Shortcut for `popup.expanded = false`.
+
+**`toggle()`** - Shortcut for reversing `expanded` state.
+
+**`toString()`** - Returns `'[object Popup]'`.
+
+## Properties
+
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
+
+**`expanded`** - _(getter)_ Get the component state.
+
+**`controller`** - The Popup's activating element.
+
+**`target`** - The Popup's target element.
+
+## Events
+
+Events are namespaced by their component to avoid clashes with nested components.
+
+**`'popup.init'`**
+
+Fired after the component is initialized.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+**`'popup.stateChange'`**
+
+Fired after component state is updated.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.expanded` - The current expanded component state.
+
+**`'popup.destroy'`**
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Popup, { ManageTabIndex } from 'aria-components/popup'
+```
+
+**`ComponentConnector`**
+
+Forces tab focus between a controller and target pair when they are not adjacent siblings.
+
+**`ManageTabIndex`**
+
+Removes the target element's interactive children from the tab index when the target is hidden.
+
+**`UseButtonRole`**
+
+Mimics a button for non-button controllers by using `role=button` and mapping the Space and Enter keys to `click` events
+
+**`UseHiddenAttribute`**
+
+Hides the target element with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

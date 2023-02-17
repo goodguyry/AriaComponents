@@ -1,23 +1,13 @@
 /* eslint-disable max-len */
-import { MenuBar, Popup } from 'root';
-import { events } from '../lib/events';
+import MenuBar from '.';
+import Menu from '../Menu';
 
-const {
-  keydownDown,
-  keydownRight,
-  keydownLeft,
-  keydownEnd,
-  keydownHome,
-  keydownSpace,
-  keydownReturn,
-} = events;
-
-const menubarMarkup = `
+document.body.innerHTML = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menubar">
       <li>
-        <button class="first-item">Fruit</button>
-        <ul class="sublist1">
+        <button aria-controls="first-popup" class="first-item">Fruit</button>
+        <ul id="first-popup" class="sublist1">
           <li><a class="sublist1-first-item" href="example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="example.com">Bananas</a></li>
           <li><a class="sublist1-last-item" href="example.com">Cantaloupe</a></li>
@@ -26,8 +16,8 @@ const menubarMarkup = `
       <li><a class="second-item" href="example.com">Cake</a></li>
       <li>
         <svg><use href="my-icon"></use></svg>
-        <a class="third-item" href="example.com">Vegetables</a>
-        <div class="not-a-list">
+        <a aria-controls="second-popup" class="third-item" href="example.com">Vegetables</a>
+        <div id="second-popup" class="not-a-list">
           <ul class="sublist2">
             <li><a class="sublist2-first-item" href="example.com">Carrots</a></li>
             <li><a class="sublist2-second-item" href="example.com">Broccoli</a></li>
@@ -43,198 +33,10 @@ const menubarMarkup = `
   </nav>
 `;
 
-// Set up our document body
-document.body.innerHTML = menubarMarkup;
+const list = document.querySelector('.menubar');
+const menuBar = new MenuBar(list, { quiet: true });
 
-// Collect references to DOM elements.
-const domElements = {
-  list: document.querySelector('.menubar'),
-  listFirstItem: document.querySelector('.first-item'),
-  listSecondItem: document.querySelector('.second-item'),
-  listThirdItem: document.querySelector('.third-item'),
-  listFourthItem: document.querySelector('.fourth-item'),
-  listLastItem: document.querySelector('.last-item'),
-
-  sublistOne: document.querySelector('.sublist1'),
-  sublistOneFirstItem: document.querySelector('.sublist1-first-item'),
-  sublistOneSecondItem: document.querySelector('.sublist1-second-item'),
-  sublistOneLastItem: document.querySelector('.sublist1-last-item'),
-
-  sublistTwo: document.querySelector('.sublist2'),
-  sublistTwoFirstItem: document.querySelector('.sublist2-first-item'),
-  sublistTwoSecondItem: document.querySelector('.sublist2-second-item'),
-  sublistTwoThirdItem: document.querySelector('.sublist2-third-item'),
-  sublistTwoLastItem: document.querySelector('.sublist2-last-item'),
-};
-
-// Mock functions.
-const onInit = jest.fn();
-const onStateChange = jest.fn();
-const onDestroy = jest.fn();
-const onPopupInit = jest.fn();
-const { list } = domElements;
-
-const menuBar = new MenuBar({
-  list,
-  itemMatches: ':not(.exclude)',
-  onInit,
-  onStateChange,
-  onDestroy,
-  onPopupInit,
-});
-
-describe('Menu collects DOM elements and adds attributes', () => {
-  it('Should instantiate the Menu class with correct instance values', () => {
-    expect(menuBar).toBeInstanceOf(MenuBar);
-    expect(domElements.list.menubar).toBeInstanceOf(MenuBar);
-    expect(domElements.list.menubar.itemMatches).toEqual(':not(.exclude)');
-
-    expect(onInit).toHaveBeenCalled();
-
-    expect(domElements.listThirdItem.popup).toBeInstanceOf(Popup);
-    expect(onPopupInit).toHaveBeenCalled();
-  });
-
-  it('Should add the correct DOM attributes and collect elements', () => {
-    expect(domElements.list.getAttribute('role')).toEqual('menubar');
-
-    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toEqual('5');
-    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toEqual('3');
-
-    expect(menuBar.getState().menubarItem).toEqual(domElements.listFirstItem);
-
-    expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toEqual('4');
-    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toEqual('4');
-    expect(domElements.sublistTwoFirstItem.getAttribute('role')).toEqual('menuitem');
-
-    expect(domElements.listThirdItem.getAttribute('aria-haspopup')).toEqual('menu');
-    // Popups should not override the item's role.
-    expect(domElements.listThirdItem.getAttribute('role')).toEqual('menuitem');
-
-    expect(domElements.sublistTwoFirstItem.parentElement.getAttribute('role')).toEqual('presentation');
-    expect(domElements.sublistTwo.getAttribute('role')).toEqual('menu');
-  });
-});
-
-// Events:
-//    down moves into the sublist
-describe('Menu correctly responds to events', () => {
-  it('Should move to the next sibling list item with right arrow key',
-    () => {
-      domElements.listFirstItem.focus();
-      domElements.listFirstItem.dispatchEvent(keydownRight);
-      expect(document.activeElement).toEqual(domElements.listSecondItem);
-      expect(onStateChange).toHaveBeenCalled();
-    });
-
-  it('Should move to the previous sibling list item with left arrow key',
-    () => {
-      domElements.listSecondItem.focus();
-      domElements.listSecondItem.dispatchEvent(keydownLeft);
-      expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
-
-  it('Should move to the last list item with end key',
-    () => {
-      domElements.listSecondItem.focus();
-      domElements.listSecondItem.dispatchEvent(keydownEnd);
-      expect(document.activeElement).toEqual(domElements.listLastItem);
-      expect(onStateChange).toHaveBeenCalled();
-    });
-
-  it('Should move to the first list item with home key',
-    () => {
-      domElements.listThirdItem.focus();
-      domElements.listThirdItem.dispatchEvent(keydownHome);
-      expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
-
-  it('Should move to the last sibling list item with left arrow key from first item',
-    () => {
-      domElements.listFirstItem.focus();
-      domElements.listFirstItem.dispatchEvent(keydownLeft);
-      expect(document.activeElement).toEqual(domElements.listLastItem);
-    });
-
-  it('Should move to the first sibling list item with right arrow key from last item',
-    () => {
-      domElements.listLastItem.focus();
-      domElements.listLastItem.dispatchEvent(keydownRight);
-      expect(document.activeElement).toEqual(domElements.listFirstItem);
-    });
-
-  it('Should move focus to the first popup child with down arrow from Menu bar',
-    () => {
-      domElements.listFirstItem.focus();
-      domElements.listFirstItem.dispatchEvent(keydownDown);
-      expect(document.activeElement).toEqual(domElements.sublistOneFirstItem);
-    });
-
-  it('Should move focus to the first popup child with spacebar from Menu bar',
-    () => {
-      domElements.listFirstItem.focus();
-      domElements.listFirstItem.dispatchEvent(keydownSpace);
-      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
-      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
-    });
-
-  it('Should move focus to the first popup child with return key from Menu bar',
-    () => {
-      domElements.listFirstItem.focus();
-      domElements.listFirstItem.dispatchEvent(keydownReturn);
-      expect(document.activeElement).toEqual(domElements.listFirstItem.popup.firstInteractiveChild);
-      expect(domElements.listFirstItem.popup.getState().expanded).toBeTruthy();
-    });
-
-  it('Should close the submenu on right arrow key on a menu item with no submenu', () => {
-    menuBar.setState({
-      menubarItem: domElements.listThirdItem,
-    });
-    domElements.sublistTwoThirdItem.focus();
-    domElements.sublistTwoThirdItem.dispatchEvent(keydownRight);
-    expect(document.activeElement).toEqual(domElements.listFourthItem);
-    expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
-  });
-
-  it('Should close the submenu on left arrow key on a menu item with no parent menu', () => {
-    menuBar.setState({
-      menubarItem: domElements.listThirdItem,
-    });
-    domElements.sublistTwoThirdItem.focus();
-    domElements.sublistTwoThirdItem.dispatchEvent(keydownLeft);
-    expect(document.activeElement).toEqual(domElements.listSecondItem);
-    expect(domElements.listThirdItem.popup.getState().expanded).toBeFalsy();
-  });
-
-  it('Should click the submenu item on spacebar or return key', () => {
-    const onclick = jest.fn();
-    domElements.sublistOneSecondItem.addEventListener('click', onclick);
-    domElements.sublistOneSecondItem.focus();
-    domElements.sublistOneSecondItem.dispatchEvent(keydownSpace);
-    expect(onclick).toHaveBeenCalled();
-  });
-});
-
-describe('Menu should destroy properly', () => {
-  it('Should remove all attributes and destroy popups', () => {
-    menuBar.destroy();
-    expect(domElements.list.getAttribute('role')).toBeNull();
-
-    expect(domElements.listFirstItem.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.listFirstItem.getAttribute('tabindex')).toBeNull();
-    expect(domElements.listThirdItem.getAttribute('aria-posinset')).toBeNull();
-    expect(domElements.listThirdItem.getAttribute('role')).toBeNull();
-
-    expect(domElements.listThirdItem.parentElement.getAttribute('role')).toBeNull();
-
-    expect(domElements.sublistTwoSecondItem.getAttribute('aria-setsize')).toBeNull();
-    expect(domElements.sublistTwoLastItem.getAttribute('aria-posinset')).toBeNull();
-    expect(domElements.sublistTwoLastItem.getAttribute('tabindex')).toBeNull();
-
-    expect(domElements.list.menubar).toBeUndefined();
-    expect(onDestroy).toHaveBeenCalled();
-
-    // Quick and dirty verification that the original markup is restored.
-    expect(document.body.innerHTML).toEqual(menubarMarkup);
-  });
+it('Do not use MenuBar; use Menu.', () => {
+  expect(menuBar).toBeInstanceOf(Menu);
+  expect(menuBar.toString()).toEqual('[object Menu]');
 });

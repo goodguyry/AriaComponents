@@ -1,149 +1,102 @@
 Disclosure
 ==========
 
-Class to set up a controller-target relationship for independently revealing and 
-hiding inline content.
+Class for independently revealing and hiding inline content.
 
-## Config Object
+## Constructor
 
-```javascript
-const config = {
-  /**
-   * The element used to trigger the Disclosure Popup.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-  
-  /**
-   * The Disclosure element.
-   *
-   * @type {HTMLElement}
-   */
-  target: null,
-  
-  /**
-   * Load the Disclosure open by default.
-   *
-   * @type {boolean}
-   */
-  loadOpen: false,
-  
-  /**
-   * Keep the Disclosure open when the user clicks outside of it.
-   *
-   * @type {boolean}
-   */
-  allowOutsideClick: true,
-  
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
+```jsx
+new Disclosure(element: HTMLElement, options: object);
 ```
 
-## Methods
+**`element`** - _(Required)_ Either the element used to activate the Disclosure target, or the Disclosure target element.
 
-> See also [`src/README`](../).
+The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
 
-```javascript
-class Disclosure extends AriaComponent {
-  /**
-   * Update component state to open the Disclosure.
-   */
-  open();
+**`options`** - _(Optional)_ Configuration options.
 
-  /**
-   * Update component state to close the Disclosure.
-   */
-  close();
+### Available Options
 
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
+**`loadOpen`** - Set the Disclosure open on load. _Default is `false`_
 
-  /**
-   * Remove all ARIA attributes added by this class.
-   */
-  destroy();
-}
-```
+**`allowOutsideClick`** - Keep the Disclosure open when the user interacts with external content. _Default is `true`_
+
+**`autoClose`** - Automatically close the Disclosure after tabbing from its last child. _Default is `false`_
+
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
+
+## Instance Methods
+
+Global methods and properties documented at [`src/README`](../).
+
+**`open()`** - Shortcut for `disclosure.expanded = true`.
+
+**`close()`** - Shortcut for `disclosure.expanded = false`.
+
+**`toggle()`** - Shortcut for reversing `expanded` state.
+
+**`toString()`** - Returns `'[object Disclosure]'`.
 
 ## Properties
 
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-Disclosure.controller
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
+
+**`expanded`** - _(getter)_ Get the component state.
+
+**`controller`** - The Disclosure's activating element.
+
+**`target`** - The Disclosure's target element.
+
+## Events
+
+Events are namespaced by their component to avoid clashes with nested components.
+
+**`'disclosure.init'`**
+
+Fired after the component is initialized.
+
+`event.detail.instance` -  The class instance from which the event originated.
+
+**`'disclosure.stateChange'`**
+
+Fired after component state is updated.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.expanded` - The current expanded component state.
+
+**`'disclosure.destroy'`**
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Disclosure, { ManageTabIndex } from 'aria-components/disclosure';
 ```
 
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLElement}
- */
-Disclosure.target
-```
+**`ComponentConnector`**
 
-## Example
+Forces tab focus between a controller and target pair when they are not adjacent siblings.
 
-```html
-<button>Open</button>
-<div class="wrapper">
-  <ul>
-    <li><a href="example.com"></a></li>
-    <li><a href="example.com"></a></li>
-    <li><a href="example.com"></a></li>
-    <li><a href="example.com"></a></li>
-  </ul>
-</div>
-```
+**`ManageTabIndex`**
 
-```javascript
-import { Disclosure } from 'aria-components';
+Removes the target element's interactive children from the tab index when the  target is hidden.
 
-const controller = document.querySelector('button');
-const target = document.querySelector('.wrapper');
+**`UseButtonRole`**
 
-const disclosure = new Disclosure({ 
-  controller, 
-  target,
-  onInit: () => {
-    console.log('Disclosure initialized.');
-  },
-  onStateChange: () => {
-    console.log('Disclosure state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Disclosure destroyed.');
-  }, 
-});
-```
+Mimics a button for non-button controllers by using `role=button` and mapping the  Space and Enter keys to `click` events
+
+**`UseHiddenAttribute`**
+
+Hides the target element with the `hidden` attribute, removing the need to do it  with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 
-- https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure
+- https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/

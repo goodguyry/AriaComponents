@@ -1,18 +1,9 @@
 /* eslint-disable max-len */
-import { Popup } from 'root';
-import { events } from '../lib/events';
-
-const {
-  click,
-  keydownEsc,
-  keydownTab,
-  keydownShiftTab,
-  keydownSpace,
-  keydownReturn,
-} = events;
+import user from '@/.jest/user';
+import Popup from '.';
 
 const popupMarkup = `
-  <a href="#dropdown" class="link">Open</a>
+  <a aria-controls="dropdown" href="#dropdown" class="link">Open</a>
   <div class="wrapper" id="dropdown">
     <ul>
       <li><a class="first-child" href="example.com"></a></li>
@@ -35,179 +26,134 @@ const target = document.querySelector('.wrapper');
 
 // Mock functions.
 const onStateChange = jest.fn();
-const onInit = jest.fn();
-const onDestroy = jest.fn();
 
-const popup = new Popup({
-  controller,
-  target,
-  onStateChange,
-  onInit,
-  onDestroy,
-});
+const popup = new Popup(controller);
+popup.on('popup.stateChange', onStateChange);
 
-describe('Popup adds and manipulates DOM element attributes', () => {
-  it('Should be instantiated as expected', () => {
+// Popup has to be instanitated.
+popup.init();
+
+describe('The Popup should initialize as expected', () => {
+  test('The Popup includes the expected property values', () => {
     expect(popup).toBeInstanceOf(Popup);
+    expect(popup.toString()).toEqual('[object Popup]');
+
+    expect(controller.id).toEqual(popup.id);
 
     expect(popup.firstInteractiveChild).toEqual(domFirstChild);
     expect(popup.lastInteractiveChild).toEqual(domLastChild);
-
-    expect(popup.getState().expanded).toBeFalsy();
-
-    expect(controller.popup).toBeInstanceOf(Popup);
-    expect(target.popup).toBeInstanceOf(Popup);
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toEqual('-1');
-    });
-
-    expect(onInit).toHaveBeenCalled();
   });
 
-  it('Should add the correct attributes to the popup controller', () => {
+  test('The `init` event fires once', () => {
+    expect(popup.expanded).toBe(false);
+  });
+
+  test('The Popup controller includes the expected attribute values', () => {
     expect(controller.getAttribute('aria-haspopup')).toEqual('true');
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
-    expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
-
-    // Link controller should get button role.
-    expect(controller.getAttribute('role')).toEqual('button');
-    expect(controller.getAttribute('tabindex')).toEqual('0');
-
-    // The test markup isn't detatched, so this doesn't apply.
-    expect(controller.getAttribute('aria-own')).toBeFalsy();
   });
 
-  it('Should add the correct attributes to the popup target', () => {
+  test('The Popup target includes the expected attribute values', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
   });
 
-  it('Should update attributes when the controller is clicked', () => {
+  test('Expanded state changes update properties and attributes as expected', () => {
+    popup.expanded = true;
+    expect(popup.expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalledTimes(1);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.expanded).toBe(true);
+      expect(detail.instance).toStrictEqual(popup);
+    });
+  });
+
+  test('Hidden state changes update properties and attributes as expected', () => {
+    popup.expanded = false;
+    expect(popup.expanded).toBe(false);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
+
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
+
+      expect(detail.expanded).toBe(false);
+      expect(detail.instance).toStrictEqual(popup);
+    });
+  });
+
+  test('Click events on the Popup controller updates atttributes as expected', async () => {
     // Click to open.
-    controller.dispatchEvent(click);
-    expect(popup.getState().expanded).toBeTruthy();
+    await user.click(controller);
+    expect(popup.expanded).toBe(true);
+    expect(onStateChange).toHaveBeenCalledTimes(3);
     expect(controller.getAttribute('aria-expanded')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
-    expect(target.getAttribute('hidden')).toBeNull();
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toBeNull();
-    });
 
     // Click again to close.
-    controller.dispatchEvent(click);
-    expect(popup.getState().expanded).toBeFalsy();
+    await user.click(controller);
+    expect(popup.expanded).toBe(false);
+    expect(onStateChange).toHaveBeenCalledTimes(4);
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-    expect(target.getAttribute('hidden')).toEqual('');
-
-    // All interactive children should initially have a negative tabindex.
-    popup.interactiveChildElements.forEach((link) => {
-      expect(link.getAttribute('tabindex')).toEqual('-1');
-    });
-  });
-
-  it('Should run class methods and subscriber functions', () => {
-    popup.show();
-    expect(onStateChange).toHaveBeenCalled();
-
-    popup.hide();
-    expect(onStateChange).toHaveBeenCalled();
   });
 });
 
 describe('Popup correctly responds to events', () => {
   // Ensure the popup is open before all tests.
   beforeEach(() => {
-    popup.show();
+    popup.expanded = true;
   });
 
-  it('Should close the popup when the ESC key is pressed',
-    () => {
-      controller.focus();
-      controller.dispatchEvent(keydownEsc);
-      expect(popup.getState().expanded).toBeFalsy();
-      expect(document.activeElement).toEqual(controller);
-    });
-
-  it('Should move focus to the first popup child on TAB from controller',
-    () => {
-      controller.dispatchEvent(keydownTab);
-      expect(document.activeElement)
-        .toEqual(domFirstChild);
-    });
-
-  it('Should update Popup state with keyboard', () => {
-    // Toggle popup
-    controller.dispatchEvent(keydownSpace);
-    expect(popup.getState().expanded).toBeFalsy();
-
-    // Toggle popup
-    controller.dispatchEvent(keydownReturn);
-    expect(popup.getState().expanded).toBeTruthy();
+  test('The Popup closes when the Escape key is pressed', async () => {
+    controller.focus();
+    await user.keyboard('{Escape}');
+    expect(popup.expanded).toBe(false);
+    expect(document.activeElement).toEqual(controller);
   });
 
-  // eslint-disable-next-line max-len
-  it('Should close the popup and focus the controller when the ESC key is pressed',
-    () => {
-      target.dispatchEvent(keydownEsc);
-      expect(popup.getState().expanded).toBeFalsy();
+  test(
+    'The Popup closes and focus is moved to the controller when the Escape key is pressed',
+    async () => {
+      await user.keyboard('{Escape}');
+      expect(popup.expanded).toBe(false);
       expect(document.activeElement).toEqual(controller);
-    });
+    }
+  );
 
-  it('Should close the popup when tabbing from the last child',
-    () => {
-      domLastChild.focus();
-      target.dispatchEvent(keydownTab);
-      expect(popup.getState().expanded).toBeFalsy();
-    });
+  test('The Popup closes when Tabbing from the last child', async () => {
+    domLastChild.focus();
+    await user.keyboard('{Tab}');
+    expect(popup.expanded).toBe(false);
+  });
 
-  it('Should not close the popup when tabbing back from the last child',
-    () => {
-      domLastChild.focus();
-      target.dispatchEvent(keydownShiftTab);
-      expect(popup.getState().expanded).toBeTruthy();
-    });
+  test('The Popup remains open when tabbing back from the last child', async () => {
+    domLastChild.focus();
+    await user.keyboard('{Shift>}{Tab}{/Shift}');
+    expect(popup.expanded).toBe(true);
+  });
 
-  it('Should focus the controller when tabbing back from the first child',
-    () => {
-      domFirstChild.focus();
-      target.dispatchEvent(keydownShiftTab);
-      expect(document.activeElement).toEqual(controller);
-    });
+  test('The Popup closes when an external element is clicked', async () => {
+    await user.click(document.body);
 
-  it('Should close the popup when an outside element it clicked',
-    () => {
-      document.body.dispatchEvent(click);
-      expect(popup.getState().expanded).toBeFalsy();
-    });
-});
+    expect(popup.expanded).toBe(false);
+  });
 
-describe('Popup destroy', () => {
-  it('Should destroy the popup as expected', () => {
+  test('All attributes are removed from elements managed by the Popup', async () => {
     popup.destroy();
 
-    if ('BUTTON' !== controller.nodeName && null === controller.getAttribute('role')) {
-      expect(controller.getAttribute('role')).toBeNull();
-      expect(controller.getAttribute('tabindex')).toBeNull();
-    }
+    expect(controller.getAttribute('role')).toBeNull();
     expect(controller.getAttribute('aria-haspopup')).toBeNull();
     expect(controller.getAttribute('aria-expanded')).toBeNull();
-    expect(controller.getAttribute('aria-controls')).toBeNull();
-    expect(controller.getAttribute('aria-owns')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toEqual('dropdown');
     expect(target.getAttribute('aria-hidden')).toBeNull();
-    expect(target.getAttribute('hidden')).toBeNull();
 
     expect(controller.popup).toBeUndefined();
     expect(target.popup).toBeUndefined();
 
-    controller.dispatchEvent(click);
-    expect(popup.getState().expanded).toBeFalsy();
-
-    expect(onDestroy).toHaveBeenCalled();
+    await user.click(controller);
+    expect(popup.expanded).toBe(false);
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(popupMarkup);

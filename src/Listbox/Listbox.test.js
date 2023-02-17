@@ -1,21 +1,10 @@
-/* eslint-disable max-len */
-import { Listbox, Popup } from 'root';
-import { events } from '../lib/events';
-
-const {
-  click,
-  keydownReturn,
-  keydownEsc,
-  keydownSpace,
-  keydownUp,
-  keydownDown,
-  keydownHome,
-  keydownEnd,
-} = events;
+/* eslint-disable max-len, prefer-destructuring */
+import user from '@/.jest/user';
+import Listbox from '.';
 
 const listboxMarkup = `
-  <button>Choose</button>
-  <ul>
+  <button aria-controls="options">Choose</button>
+  <ul id="options">
     <li>Anchorage</li>
     <li>Baltimore</li>
     <li>Chicago</li>
@@ -35,212 +24,246 @@ const controller = document.querySelector('button');
 const target = document.querySelector('ul');
 const listItems = Array.from(target.children);
 
-let listbox = {};
-
 // Mock functions.
 const onStateChange = jest.fn();
 const onInit = jest.fn();
 const onDestroy = jest.fn();
 
-describe('Listbox with default configuration', () => {
-  beforeAll(() => {
-    listbox = new Listbox({
-      controller,
-      target,
-      onStateChange,
-      onInit,
-      onDestroy,
+controller.addEventListener('listbox.stateChange', onStateChange);
+controller.addEventListener('listbox.init', onInit);
+controller.addEventListener('listbox.destroy', onDestroy);
+
+const listbox = new Listbox(controller);
+
+describe('The Listbox should initialize as expected', () => {
+  test('The Listbox includes the expected property values', () => {
+    expect(listbox).toBeInstanceOf(Listbox);
+    expect(listbox.toString()).toEqual('[object Listbox]');
+
+    expect(controller.id).toEqual(listbox.id);
+
+    expect(listbox.expanded).toBe(false);
+    const [firstListItem] = listItems;
+    expect(listbox.activeDescendant).toEqual(firstListItem);
+  });
+
+  test('The Listbox controller includes the expected attribute values', () => {
+    expect(controller.getAttribute('aria-expanded')).toEqual('false');
+    expect(controller.getAttribute('aria-activedescendant')).toBeNull();
+  });
+
+  test('The Listbox target includes the expected attribute values', () => {
+    expect(target.getAttribute('role')).toEqual('listbox');
+    expect(target.getAttribute('aria-hidden')).toEqual('true');
+    expect(target.getAttribute('tabindex')).toEqual('-1');
+
+    listItems.forEach((listItem) => {
+      expect(listItem.id).not.toBeNull();
+      expect(listItem.getAttribute('role')).toEqual('option');
     });
   });
 
-  describe('Listbox adds and manipulates DOM element attributes', () => {
-    it('Should be instantiated as expected', () => {
-      expect(listbox).toBeInstanceOf(Listbox);
+  test('The `init` event fires once', () => {
+    expect(onInit).toHaveBeenCalledTimes(1);
 
-      expect(listbox.getState().expanded).toBeFalsy();
-      const [firstListItem] = listItems;
-      expect(listbox.getState().activeDescendant).toEqual(firstListItem);
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onInit);
 
-      expect(controller.popup).toBeInstanceOf(Popup);
-
-      expect(controller.listbox).toBeInstanceOf(Listbox);
-      expect(target.listbox).toBeInstanceOf(Listbox);
-
-      expect(onInit).toHaveBeenCalled();
-    });
-
-    it('Should add the correct attributes', () => {
-      expect(controller.getAttribute('aria-haspopup')).toEqual('listbox');
-      expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      // expect(controller.getAttribute('aria-labelledby')).toEqual('location-label location-listbox-button');
-      expect(controller.getAttribute('aria-activedescendant')).toBeNull();
-
-      expect(target.getAttribute('role')).toEqual('listbox');
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-      expect(target.getAttribute('hidden')).toEqual('');
-      // expect(target.getAttribute('aria-labelledby')).toEqual('label');
-      expect(target.getAttribute('tabindex')).toEqual('-1');
-
-      listItems.forEach((listItem) => {
-        expect(listItem.id).not.toBeNull();
-        expect(listItem.getAttribute('role')).toEqual('option');
-      });
-    });
-
-    it('Should update Listbox attributes correctly when opened', () => {
-      listbox.show();
-      expect(listbox.getState().expanded).toBeTruthy();
-
-      expect(controller.getAttribute('aria-expanded')).toEqual('true');
-
-      expect(target.getAttribute('aria-hidden')).toEqual('false');
-      expect(target.getAttribute('hidden')).toBeNull();
-      expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
-      expect(document.activeElement).toEqual(target);
-
-      expect(onStateChange).toHaveBeenCalled();
+      expect(detail.instance).toStrictEqual(listbox);
     });
   });
+});
 
-  describe('Listbox controller should respond to events as expected', () => {
-    beforeEach(() => {
-      listbox.hide();
-      expect(listbox.getState().expanded).toBeFalsy();
-    });
+describe('The Listbox controller should respond to state changes', () => {
+  test('State change update atttributes as expected', () => {
+    listbox.expanded = true;
+    expect(listbox.expanded).toBe(true);
 
-    it('Should open the popup on controller DOWN arrow key', () => {
-      controller.dispatchEvent(keydownDown);
-      expect(document.activeElement).toEqual(target);
-      // @todo Why does this fail?!?!
-      // expect(listbox.getState().expanded).toBeTruthy();
-    });
+    expect(controller.getAttribute('aria-expanded')).toEqual('true');
 
-    it('Should open the popup on controller UP arrow key', () => {
-      controller.dispatchEvent(keydownUp);
-      expect(document.activeElement).toEqual(target);
-      // @todo Why does this fail?!?!
-      // expect(listbox.getState().expanded).toBeTruthy();
-    });
+    expect(target.getAttribute('aria-hidden')).toEqual('false');
+    expect(target.getAttribute('aria-activedescendant')).toEqual(target.children[0].id);
+    expect(document.activeElement).toEqual(target);
   });
 
-  describe('Listbox target should respond to events as expected', () => {
-    beforeEach(() => {
-      listbox.show();
-    });
+  test('The `stateChange` event fires only once', () => {
+    expect(onStateChange).toHaveBeenCalledTimes(1);
 
-    it('Should close the popup and focus the controller on RETURN key', () => {
-      target.dispatchEvent(keydownReturn);
-      expect(listbox.getState().expanded).toBeFalsy();
-      expect(document.activeElement).toEqual(controller);
-    });
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onStateChange);
 
-    it('Should close the popup and focus the controller on ESC key', () => {
-      target.dispatchEvent(keydownEsc);
-      expect(listbox.getState().expanded).toBeFalsy();
-      expect(document.activeElement).toEqual(controller);
-    });
-
-    it('Should close the popup and focus the controller on SPACE key', () => {
-      target.dispatchEvent(keydownSpace);
-      expect(listbox.getState().expanded).toBeFalsy();
-      expect(document.activeElement).toEqual(controller);
-    });
-
-    it('Should set next element as activedescendant on target UP arrow key', () => {
-      listbox.setState({ activeDescendant: target.children[3] });
-      expect(target.children[3].getAttribute('aria-selected')).toEqual('true');
-
-      target.dispatchEvent(keydownUp);
-
-      expect(document.activeElement).toEqual(target);
-      expect(target.children[3].getAttribute('aria-selected')).toBeNull();
-      expect(listbox.getState().activeDescendant).toEqual(target.children[2]);
-      expect(target.children[2].getAttribute('aria-selected')).toEqual('true');
-    });
-
-    it('Should set previous element as activedescendant on target DOWN arrow key', () => {
-      listbox.setState({ activeDescendant: target.children[4] });
-      expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
-
-      target.dispatchEvent(keydownDown);
-
-      expect(document.activeElement).toEqual(target);
-      expect(target.children[4].getAttribute('aria-selected')).toBeNull();
-      expect(listbox.getState().activeDescendant).toEqual(target.children[5]);
-      expect(target.children[5].getAttribute('aria-selected')).toEqual('true');
-    });
-
-    it('Should set first element as activedescendant on target HOME key', () => {
-      target.dispatchEvent(keydownHome);
-
-      expect(document.activeElement).toEqual(target);
-      expect(listbox.getState().activeDescendant).toEqual(target.children[0]);
-      expect(target.children[0].getAttribute('aria-selected')).toEqual('true');
-    });
-
-    it('Should set last element as activedescendant on target END key', () => {
-      const lastChild = target.children[target.children.length - 1];
-
-      target.dispatchEvent(keydownEnd);
-
-      expect(document.activeElement).toEqual(target);
-      expect(listbox.getState().activeDescendant).toEqual(lastChild);
-      expect(lastChild.getAttribute('aria-selected')).toEqual('true');
-    });
-
-    it('Should select the clicked listbox item and close', () => {
-      target.children[3].dispatchEvent(click);
-
-      expect(listbox.getState().expanded).toBeFalsy();
-      expect(listbox.getState().activeDescendant).toEqual(target.children[3]);
-      expect(document.activeElement).toEqual(controller);
-
-      expect(controller.getAttribute('aria-activedescendant')).toBeNull();
-      expect(controller.textContent).toEqual(target.children[3].textContent);
-    });
-
-    it('Should close on outside click', () => {
-      listbox.setState({ activeDescendant: target.children[5] });
-
-      document.body.dispatchEvent(click);
-
-      expect(listbox.getState().expanded).toBeFalsy();
-      expect(listbox.getState().activeDescendant).toEqual(target.children[5]);
-      expect(document.activeElement).not.toEqual(target);
-
-      expect(controller.getAttribute('aria-activedescendant')).toBeNull();
-      expect(controller.textContent).toEqual(target.children[5].textContent);
+      expect(detail.expanded).toBe(true);
+      expect(detail.instance).toStrictEqual(listbox);
     });
   });
+});
 
-  describe('Listbox destroy', () => {
-    it('Should destroy the Listbox as expected', () => {
-      listbox.destroy();
+describe('Listbox correctly responds to events', () => {
+  // Ensure the Listbox is open before all tests.
+  beforeEach(() => {
+    listbox.expanded = true;
+  });
 
-      expect(controller.getAttribute('aria-haspopup')).toBeNull();
-      expect(controller.getAttribute('aria-expanded')).toBeNull();
-      expect(controller.getAttribute('aria-controls')).toBeNull();
-      expect(target.getAttribute('aria-activedescendant')).toBeNull();
-      expect(target.getAttribute('aria-hidden')).toBeNull();
-      expect(target.getAttribute('hidden')).toBeNull();
+  test('The Listbox closes when the Escape key is pressed', async () => {
+    controller.focus();
+    await user.keyboard('{Escape}');
+    expect(listbox.expanded).toBe(false);
+    expect(document.activeElement).toEqual(controller);
+  });
 
-      listItems.forEach((item) => {
-        expect(item.getAttribute('role')).toBeNull();
-        expect(item.getAttribute('aria-selected')).toBeNull();
-      });
+  test(
+    'The Listbox closes and focus is moved to the controller when the Escape key is pressed',
+    async () => {
+      await user.keyboard('{Escape}');
+      expect(listbox.expanded).toBe(false);
+      expect(document.activeElement).toEqual(controller);
+    }
+  );
 
-      expect(controller.listbox).toBeUndefined();
-      expect(target.listbox).toBeUndefined();
+  test('The Listbox closes when Tabbing from the target', async () => {
+    target.focus();
+    await user.keyboard('{Tab}');
+    expect(listbox.expanded).toBe(false);
+  });
 
-      controller.dispatchEvent(click);
-      expect(listbox.getState().expanded).toBeFalsy();
+  test('The Listbox closes when an external element is clicked', async () => {
+    await user.click(document.body);
 
-      expect(onDestroy).toHaveBeenCalled();
+    expect(listbox.expanded).toBe(false);
+  });
+});
 
-      // Quick and dirty verification that the original markup is restored.
-      // But first, restore the button's original text label.
-      controller.textContent = 'Choose';
-      expect(document.body.innerHTML).toEqual(listboxMarkup);
+describe('The Listbox target responds to events as expected', () => {
+  beforeEach(() => {
+    listbox.expanded = true;
+  });
+
+  test('Should open the popup on controller arrow down key', async () => {
+    await user.keyboard('{ArrowDown}');
+    expect(document.activeElement).toEqual(target);
+    expect(listbox.expanded).toBe(true);
+  });
+
+  test('The Listbox closes and focus moves to the controller on Enter key', async () => {
+    await user.keyboard('{Enter}');
+    expect(listbox.expanded).toBe(false);
+    expect(document.activeElement).toEqual(controller);
+  });
+
+  test('The Listbox closes on controller arrow up key', async () => {
+    await user.keyboard('{ArrowUp}');
+    expect(document.activeElement).toEqual(target);
+    expect(listbox.expanded).toBe(true);
+  });
+
+  test('The Listbox closes and focus moves to the controller on Escape key', async () => {
+    await user.keyboard('{Escape}');
+    expect(listbox.expanded).toBe(false);
+    expect(document.activeElement).toEqual(controller);
+  });
+
+  test('The Listbox closes and focus moves to the controller on Space key', async () => {
+    await user.keyboard('{ }');
+    expect(listbox.expanded).toBe(false);
+    expect(document.activeElement).toEqual(controller);
+  });
+
+  test('The previous element is set as activedescendant on arrow up key', async () => {
+    listbox.activeDescendant = target.children[3];
+    expect(target.children[3].getAttribute('aria-selected')).toEqual('true');
+
+    await user.keyboard('{ArrowUp}');
+
+    expect(document.activeElement).toEqual(target);
+    expect(target.children[3].getAttribute('aria-selected')).toBeNull();
+    expect(listbox.activeDescendant).toEqual(target.children[2]);
+    expect(target.children[2].getAttribute('aria-selected')).toEqual('true');
+  });
+
+  test('The next element is set as activedescendant on target arrow down key', async () => {
+    listbox.activeDescendant = target.children[4];
+    expect(target.children[4].getAttribute('aria-selected')).toEqual('true');
+
+    await user.keyboard('{ArrowDown}');
+
+    expect(document.activeElement).toEqual(target);
+    expect(target.children[4].getAttribute('aria-selected')).toBeNull();
+    expect(listbox.activeDescendant).toEqual(target.children[5]);
+    expect(target.children[5].getAttribute('aria-selected')).toEqual('true');
+  });
+
+  test('The first element is set as activedescendant on target Home key', async () => {
+    await user.keyboard('{Home}');
+
+    expect(document.activeElement).toEqual(target);
+    expect(listbox.activeDescendant).toEqual(target.children[0]);
+    expect(target.children[0].getAttribute('aria-selected')).toEqual('true');
+  });
+
+  test('The last element is set as activedescendant on target End key', async () => {
+    const lastChild = target.children[target.children.length - 1];
+
+    await user.keyboard('{End}');
+
+    expect(document.activeElement).toEqual(target);
+    expect(listbox.activeDescendant).toEqual(lastChild);
+    expect(lastChild.getAttribute('aria-selected')).toEqual('true');
+  });
+
+  test('When an option is clicked it is selected and the Listbox closes', async () => {
+    await user.click(target.children[3]);
+
+    expect(listbox.expanded).toBe(false);
+    expect(listbox.activeDescendant).toEqual(target.children[3]);
+    expect(document.activeElement).toEqual(controller);
+
+    expect(controller.getAttribute('aria-activedescendant')).toBeNull();
+    expect(controller.textContent).toEqual(target.children[3].textContent);
+    expect(controller.textContent).toEqual(listbox.activeDescendant.textContent);
+  });
+
+  test('The Listbox closes when an external element is clicked', async () => {
+    listbox.activeDescendant = target.children[5];
+
+    await user.click(document.body);
+
+    expect(listbox.expanded).toBe(false);
+    expect(listbox.activeDescendant).toEqual(target.children[5]);
+    expect(document.activeElement).not.toEqual(target);
+
+    expect(controller.getAttribute('aria-activedescendant')).toBeNull();
+    expect(controller.textContent).toEqual(target.children[5].textContent);
+  });
+});
+
+describe('Listbox destroy', () => {
+  test('All attributes are removed from elements managed by the Listbox', async () => {
+    listbox.destroy();
+
+    expect(controller.getAttribute('role')).toBeNull();
+    expect(controller.getAttribute('aria-expanded')).toBeNull();
+    expect(controller.getAttribute('aria-controls')).toEqual(target.id);
+
+    expect(target.getAttribute('aria-hidden')).toBeNull();
+    expect(target.getAttribute('aria-activedescendant')).toBeNull();
+
+    listItems.forEach((item) => {
+      expect(item.getAttribute('role')).toBeNull();
+      expect(item.getAttribute('aria-selected')).toBeNull();
+    });
+
+    await user.click(controller);
+    expect(listbox.expanded).toBe(false);
+
+    // Quick and dirty verification that the original markup is restored.
+    expect(document.body.innerHTML).toEqual(listboxMarkup);
+
+    expect(onDestroy).toHaveBeenCalledTimes(1); // Listbox
+    return Promise.resolve().then(() => {
+      const { detail } = getEventDetails(onDestroy);
+
+      expect(detail.element).toStrictEqual(controller);
+      expect(detail.instance).toStrictEqual(listbox);
     });
   });
 });

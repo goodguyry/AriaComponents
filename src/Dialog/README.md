@@ -1,153 +1,7 @@
 Dialog
 ======
 
-Class to set up an interactive Dialog element.
-
-## Config Object
-
-```javascript
-const config = {
-  /**
-   * The button element used to trigger the dialog popup.
-   *
-   * @type {HTMLButtonElement}
-   */
-  controller: null,
-
-  /**
-   * The element used as the dialog window.
-   *
-   * @type {HTMLElement}
-   */
-  target: null,
-
-  /**
-   * The site content wrapper. 
-   * NOT necessarily <main>, but the element wrapping all site content (including 
-   * header and footer) with the sole exception of the dialog element.
-   *
-   * @type {HTMLElement}
-   */
-  content: null,
-
-  /**
-   * The button used to close the dialog.
-   * Required to be the very first element inside the dialog. If none is passed, 
-   * one will be created.
-   * 
-   * @type {HTMLButtonElement}
-   * @see createCloseButton
-   */
-  close: Dialog.createCloseButton(),
-
-  /**
-   * Callback to run after the component initializes.
-   * 
-   * @callback initCallback
-   */
-  onInit: () => {},
-
-  /**
-   * Callback to run after component state is updated.
-   * 
-   * @callback stateChangeCallback
-   */
-  onStateChange: () => {},
-
-  /**
-   * Callback to run after the component is destroyed.
-   * 
-   * @callback destroyCallback
-   */
-  onDestroy: () => {},
-};
-```
-
-## Methods
-
-> See also [`src/README`](../).
-
-```javascript
-class Dialog extends AriaComponent {
-  /**
-   * Create the dialog close button.
-   *
-   * @return {HTMLElement} The HTML button element with 'Close' as its label.
-   * @static
-   */
-  createCloseButton();
-
-  /**
-   * Show the Dialog.
-   */
-  show();
-
-  /**
-   * Hide the Dialog.
-   */
-  hide();
-
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-
-  /**
-   * Destroy the Dialog and Popup.
-   */
-  destroy();
-}
-```
-
-## Properties
-
-```javascript
-/**
- * The config.controller property.
- *
- * @type {HTMLButtonElement}
- */
-Dialog.controller
-```
-
-```javascript
-/**
- * The config.target property.
- *
- * @type {HTMLElement}
- */
-Dialog.target
-```
-
-```javascript
-/**
- * The config.content property.
- *
- * @type {HTMLElement}
- */
-Dialog.content
-```
-
-```javascript
-/**
- * The config.close property, or the button created in its absence.
- *
- * @type {HTMLButtonElement}
- */
-Dialog.close
-```
-
-```javascript
-/**
- * The Popup instance controlling the Dialog.
- * 
- * @type {Popup}
- * {@link https://github.com/goodguyry/AriaComponents/blob/master/src/Popup}
- */
-Dialog.popup
-```
+Class for managing an interactive Dialog element.
 
 ## Example
 
@@ -166,12 +20,12 @@ Dialog.popup
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.</p>
 
-        <a class="link" href="#dialog">Open dialog</a>
+        <button aria-controls="dialog">Open dialog</button>
       </article>
     </main>
   </div>
 
-  <div id="dialog">
+  <div id="dialog" hidden>
     <button>Close</button>
     <ul>
       <li><a href="example.com"></a></li>
@@ -183,30 +37,99 @@ Dialog.popup
 </body>
 ```
 
-```javascript
-import { Dialog } from 'aria-components';
+```jsx
+import Dialog from 'aria-components/dialog';
 
-const controller = document.querySelector('.link');
-const target = document.getElementById('dialog');
-const close = target.querySelector('button');
-const content = document.querySelector('.site-wrapper');
-
-const dialog = new Dialog({
-  controller,
-  target,
-  close,
-  content,
-  onInit: () => {
-    console.log('Dialog initialized.');
-  },
-  onStateChange: () => {
-    console.log('Dialog state was updated.');
-  },
-  onDestroy: () => {
-    console.log('Dialog destroyed.');
-  },
-});
+const controller = document.querySelector('[aria-controls="dialog"]');
+const dialog = new Dialog(controller);
 ```
+
+## Constructor
+
+```jsx
+Dialog(element: HTMLElement, options: object);
+```
+
+**`element`** - _(Required)_ Either the element used to activate the Dialog target, or the Dialog target element.
+
+The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
+
+**`options`** - _(Optional)_ Configuration options.
+
+### Available Options
+
+**`content`** - The `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `null`_
+
+**`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
+
+## Instance Methods
+
+Global methods and properties documented at [`src/README`](../).
+
+**`show()`** - Shortcut for `dialog.expanded = true`.
+
+**`hide()`** - Shortcut for `dialog.expanded = false`.
+
+**`toString()`** - Returns `'[object Dialog]'`.
+
+## Properties
+
+**`expanded`** - _(setter)_ Set the component state and update element attributes to show-to or hide-from assistive technology.
+
+**`expanded`** - _(getter)_ Get the component state.
+
+**`controller`** - The Dialog's activating element.
+
+**`target`** - The Dialog's target element.
+
+**`closeButton`** - _(setter)_ Set a button element as the Dialog close button.
+
+## Events
+
+Events are namespaced by their component to avoid clashes with nested components.
+
+**`'dialog.init'`** 
+
+Fired after the component is initialized.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+**`'dialog.stateChange'`** 
+
+Fired after component state is updated.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.expanded` - The current expanded component state.
+
+**`'dialog.destroy'`** 
+
+Fired after the component is destroyed.
+
+`event.detail.instance` - The class instance from which the event originated.
+
+`event.detail.element` - The element passed to the constructor.
+
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Dialog, { UseHiddenAttribute } from 'aria-components/dialog';
+```
+
+**`ManageTabIndex`**
+
+Removes the target element's interactive children from the tab index when the target is hidden.
+
+**`UseButtonRole`**
+
+Mimics a button for non-button controllers by using `role=button` and mapping the Space and Enter keys to `click` events
+
+**`UseHiddenAttribute`**
+
+Hides the target element with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
 
 ## References
 

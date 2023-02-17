@@ -1,32 +1,20 @@
-src/
+AriaComponent
 =============
 
-## AriaComponent.js
+The base class from which all components are extended.
 
-Extend the `AriaComponent` class to get access to the methods below.
+## API
 
-### Methods
+### Instance Methods
 
-```javascript
-class AriaComponent {
-  /**
-   * Set component state.
-   *
-   * @param {object} newState The new state to merge with existing state.
-   */
-  setState(newState);
+**`toString()`** - Returns `'[object AriaComponent]'`
 
-  /**
-   * Return the current component state.
-   *
-   * @return {object}
-   */
-  getState();
-}
-```
+**`on(event: string, listener: function, options: object)`** - Registers an event handler for the given event type. Parameters match those of [`addEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener). It is not possible to respond to the `init` event using the `on` and `off` methods.
 
-## lib/ Modules
+**`off(event: string, listener: function, options: object)`** - Unregisters an event handler for the given event type. Parameters match those of [`removeEventListener`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)
 
-The `src/lib/` directory contains modules available for use in creating 
-additional classes extended from AriaComponent, or for general use outside of 
-this package. See the source files for details.
+### Properties
+
+**`element`** - Returns the element passed to the constructor.
+
+**`id`** - The component ID; matches `element.id`

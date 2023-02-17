@@ -1,15 +1,56 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.3.2
+## 0.4.0
+
+A complete rewrite.
+
+### Highlights
+
+* **Simplified component parameters**: For components with a controller-target pair, pass in either the controller or target. Just be sure to add the `aria-controls` attribute to the controlling element with a matching `id` attribute on the target element. (#51, #66, #65, #70)
+* **Extend core functionality with Modules**: Modules contain optional features and functionality available for contexts in which they'll simplify and/or improve UX (#84, #86)
+* **Custom events**: Components dispatch custom `init`, `stateChange` and `destroy` events, rather than accepting callbacks (#55, #77)
+
+... and more:
+
+- Some options can be set on-the-fly via setters (#82)
+- `instance.on()` and `instance.off()` methods for subscribing to events (#67)
+- Components track attributes they add and will only overwrite existing attribute values where required (#73)
+- Components are now exported from their own endpoint (#84)
+- MenuBar and MenuButton components are now deprecated (#75)
+- Component state now uses setter/getter pattern (#83)
 
 **Changed**
 
-- Loosens MenuBar and Menu components' menuitems' markup requirements (#48, 3385f2e)
+- Dialog now focuses the target element when opened (#51)
+- Loosens the Menu component's markup requirements (#48, 3385f2e)
+- Dialog and Listbox no longer extend Popup (#59, #85)
+- Use the `Dialog.closeButton` setter to configure the Dialog close button (#86)
+- Removes scarcely-used utilities and incorporates widely-used utilities into the component that uses them (#80, #81)
 
 **Added**
 
-- Adds support for validating Menu & MenuBar menu items (#49)
+- Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
+- Gets Dialog content element(s) if none provided (#51)
+- Logs a configuration error for misconfigured components (#51)
+- Adds an `autoClose` option to Disclosure and Menu (#75, #76)
+
+**Fixed**
+
+- MenuButton could attempt to focus the first Menu child even when the Popup is closed (14599f0)
+- Component callbacks (now, Custom Events) could be run more than once (#54)
+- Dialog no longer re-queries for interactive child elements on every TAB keydown (a964674)
+- Corrects an issue where shift-tab from the Popup controller would focus the target's first child (#76)
+
+**Removed**
+
+- Components no longer set a reference to their instance on the component's HTML elements (#78)
+- Dialog no longer requires a close button, and will not create one (#51)
+- Components no longer manage the `hidden` attribute (#74)
+- Components no longer set a reference to their instance on the component's HTML elements (#78)
+- Utility functions are no longer exported (#80, #81)
+- Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks (#55)
+- Removes the docs directory; example page now at [aria-components-examples](https://github.com/goodguyry/aria-components-examples/)
 
 ## 0.3.1
 

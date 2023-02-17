@@ -1,16 +1,15 @@
 module.exports = {
-  // Extend the AirBnb lint config
+  // Extend the AirBnb lint config.
   extends: 'airbnb',
-  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 6,
     ecmaFeatures: {
       globalReturn: true,
       impliedStrict: true,
-      jsx: true,
     },
     sourceType: 'module',
   },
+  parser: '@babel/eslint-parser',
   env: {
     es6: true,
     browser: true,
@@ -19,10 +18,18 @@ module.exports = {
   },
   globals: {
     siteClassNames: true,
+    getEventDetails: true,
   },
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
-      'babel-module': {},
+      alias: {
+        map: [
+          [ '@', '.' ],
+        ],
+      },
     },
   },
   rules: {
@@ -31,7 +38,7 @@ module.exports = {
       { SwitchCase: 1 },
     ],
     'max-len': [
-      2, 80, 4,
+      2, 100, 4,
       {
         ignoreComments: true,
         ignoreUrls: true,
@@ -76,5 +83,14 @@ module.exports = {
     'no-constant-condition': ['error'],
     'arrow-parens': ['error', 'always'],
     'no-param-reassign': ['error', { props: false }],
+    'no-underscore-dangle': [
+      'error',
+      {
+        allow: [
+          '__trackedAttributes',
+          '__includedModules',
+        ],
+      },
+    ],
   },
 };
