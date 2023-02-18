@@ -3,7 +3,7 @@ import getElementPair from '../shared/getElementPair';
 import interactiveChildren from '../shared/interactiveChildren';
 
 /**
- * Class to set up an interactive Dialog element.
+ * Class to set up an interactive Modal Dialog element.
  */
 export default class Dialog extends AriaComponent {
   /**
@@ -48,20 +48,19 @@ export default class Dialog extends AriaComponent {
      *
      * @type {object}
      */
-    const { content } = {
+    const { closeButton } = {
       /**
-       * The element(s) to be hidden when the Dialog is visible. The elements
-       * wrapping all site content with the sole exception of the dialog element.
+       * The element used to close the Dialog.
        *
-       * @type {HTMLElement|NodeList|Array}
+       * @type {HTMLButtonElement}
        */
-      content: [],
+      closeButton: null,
 
       ...options,
     };
 
-    // Save static options.
-    this.content = content;
+    // Set the close button.
+    this.closeButton = closeButton;
 
     this.init();
   }
@@ -75,21 +74,18 @@ export default class Dialog extends AriaComponent {
     // Update state.
     this.#expanded = newState;
 
-    const contentLength = this.content.length;
-
-    this.setInteractiveChildren();
-
-    for (let i = 0; i < contentLength; i += 1) {
-      this.updateAttribute(this.content[i], 'aria-hidden', (this.expanded || null));
-    }
-
     // Update target element.
     this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
 
     if (this.expanded) {
+      this.setInteractiveChildren();
+
       document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
-      this.target.focus();
+      // The close button may not be the most appropriate element to focus.
+      if (null != this.#closeButton) {
+        this.#closeButton.focus();
+      }
     } else {
       document.body.removeEventListener('keydown', this.bodyHandleKeydown);
 
@@ -134,27 +130,6 @@ export default class Dialog extends AriaComponent {
    * Set the component's DOM attributes and event listeners.
    */
   init = () => {
-    // Get the content items if none are provided.
-    if (0 === this.content.length || undefined === this.content) {
-      this.content = Array.from(document.body.children)
-        .filter((child) => ! child.contains(this.target));
-    } else {
-      this.content = Array.from(this.content);
-    }
-
-    // If no content is found.
-    if (0 === this.content.length) {
-      AriaComponent.configurationError(
-        'The Dialog target should not be within the main site content'
-      );
-    }
-
-    // Be sure each element has an id attribute for internal attribute tracking.
-    const contentLength = this.content.length;
-    for (let i = 0; i < contentLength; i += 1) {
-      this.addAttribute(this.content[i], this.constructor.getUniqueId());
-    }
-
     /*
      * Collect the Dialog's interactive child elements. This is an initial pass
      * to ensure values exists, but the interactive children will be collected
@@ -162,14 +137,7 @@ export default class Dialog extends AriaComponent {
      */
     this.setInteractiveChildren();
 
-    // Allow focus on the target element.
-    this.addAttribute(this.target, 'tabindex', '0');
-
-    /*
-     * Set the target as hidden by default. Using the `aria-hidden` attribute,
-     * rather than the `hidden` attribute, means authors must hide the target
-     * element via CSS.
-     */
+    // Set the target as hidden by default.
     this.addAttribute(this.target, 'aria-hidden', 'true');
 
     // Set additional attributes.
@@ -193,6 +161,7 @@ export default class Dialog extends AriaComponent {
    * @param {HTMLButtonElement} button The Dialog's close element.
    */
   set closeButton(button) {
+    // Be sure to stop listening to the old button, if necessary.
     if (null != this.#closeButton) {
       this.#closeButton.removeEventListener('click', this.hide);
     }
@@ -203,19 +172,6 @@ export default class Dialog extends AriaComponent {
       this.#closeButton.addEventListener('click', this.hide);
     }
   }
-
-  /**
-   * Close the dialog on when users click outside of the Dialog element.
-   *
-   * @todo This isn't actually used.
-   *
-   * @param {Event} event The Event object.
-   */
-  outsideClick = (event) => {
-    if (this.expanded && ! this.target.contains(event.target)) {
-      this.hide();
-    }
-  };
 
   /**
    * Show the Dialog when the controller is clicked.
@@ -241,15 +197,12 @@ export default class Dialog extends AriaComponent {
 
       if (
         shiftKey
-        && (
-          this.firstInteractiveChild === activeElement
-          || this.target === activeElement
-        )
+        && this.firstInteractiveChild === activeElement
       ) {
         event.preventDefault();
         /*
-         * Move back from the first interactive child element, or dialog element
-         * itself, to the last interactive child element.
+         * Move back from the first interactive child element to the last
+         * interactive child element.
          */
         this.lastInteractiveChild.focus();
       } else if (! shiftKey && this.lastInteractiveChild === activeElement) {
@@ -264,9 +217,9 @@ export default class Dialog extends AriaComponent {
   };
 
   /**
-   * Close the dialog on 'Escape' key press. This is added to the body element, so
-   * any press of the 'Escape' key will short-circuit the dialog and move forcus back
-   * to the controller.
+   * Close the dialog on 'Escape' key press. This is added to the body element
+   * so any press of the 'Escape' key will short-circuit the dialog and move
+   * focus back to the controller.
    *
    * @param {Event} event The Event object.
    */
@@ -278,18 +231,6 @@ export default class Dialog extends AriaComponent {
         this.hide();
         break;
 
-      case 'Tab':
-        if (this.expanded && ! this.target.contains(eventTarget)) {
-          event.preventDefault();
-
-          /*
-           * Move focus to the first interactive child element. This is a stopgap
-           * for instances where clicking outside of the Dialog moves focus out.
-           */
-          this.firstInteractiveChild.focus();
-        }
-        break;
-
       default:
         break;
     }
@@ -299,12 +240,6 @@ export default class Dialog extends AriaComponent {
    * Destroy the Dialog and Popup.
    */
   destroy = () => {
-    // Remove the `aria-hidden` attribute from the content wrapper.
-    const contentLength = this.content.length;
-    for (let i = 0; i < contentLength; i += 1) {
-      this.removeAttributes(this.content[i]);
-    }
-
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);

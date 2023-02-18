@@ -3,6 +3,18 @@ Dialog
 
 Class for managing an interactive Dialog element.
 
+## Contents
+
+* [Example](#example)
+* [Constructor](#constructor)
+  * [Available Options](#available-options)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [Modules](#modules)
+* [References](#references)
+* [Additional Information](#additional-information)
+
 ## Example
 
 ```html
@@ -58,7 +70,7 @@ The activating element is required to have an `aria-controls` attribute with a v
 
 ### Available Options
 
-**`content`** - The `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `null`_
+**`closeButton`** - Designate a button element as the Dialog close button.
 
 **`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
@@ -130,6 +142,39 @@ Mimics a button for non-button controllers by using `role=button` and mapping th
 **`UseHiddenAttribute`**
 
 Hides the target element with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
+
+**`UseLegacyDialog`**
+
+Uses `aria-hidden` to hide outside content rather than using the `aria-model` attribute. See the section titled "Notes on aria-modal and aria-hidden" on [the Modal Dialog Example page](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/).
+
+The `UseLegacyDialog` module adds support for a **`content`** option, which defines the `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `[]`_
+
+## Additional Information
+
+Authors are responsible for adding the `aria-labelledby` and `aria-describedby` attributes. See ["WAI-ARIA Roles, States, and Properties"](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/#wai-ariaroles,states,andproperties) for more.
+
+Additionally, the close button may not be the most appropriate element to focus when the Dialog opens:
+
+> When a dialog opens, focus moves to an element contained in the dialog. Generally, focus is initially set on the first focusable element. However, the most appropriate focus placement will depend on the nature and size of the content.
+
+If the close button is not the most appropriate element to focus when the Dialog opens, we can omit the `closeButton` option to prevent the Dialog from managing focus. We can then manage focus and the close button ourselves.
+
+```jsx
+// Set up the close button.
+const cancelButton = dialog.target.querySelector('button.cancel');
+cancelButton.addEventListener('click', dialog.hide);
+
+dialog.on('dialog.stateChange', (event) => {
+  const { detail } = event;
+  if (detail.expanded) {
+    // Manage focus.
+  }
+});
+```
+
+**DOM Mutations**
+
+We can use `dialog.setInteractiveChildren()` to refresh the component after markup changes.
 
 ## References
 

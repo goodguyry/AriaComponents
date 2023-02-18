@@ -4,6 +4,7 @@ import Dialog, {
   ManageTabIndex,
   UseButtonRole,
   UseHiddenAttribute,
+  UseLegacyDialog,
 } from '.';
 
 // Set up our document body
@@ -37,21 +38,21 @@ document.body.innerHTML = `
 const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
 
+const content = document.querySelector('main');
+const footer = document.querySelector('footer');
+
 let dialog;
-beforeEach(() => {
+
+test('ManageTabIndex: Manage target element tabindex', () => {
   dialog = new Dialog(
     controller,
     {
       modules: [
         ManageTabIndex,
-        UseButtonRole,
-        UseHiddenAttribute,
       ],
     }
   );
-});
 
-test('ManageTabIndex: Manage target element tabindex', () => {
   dialog.interactiveChildElements.forEach((link) => {
     expect(link.getAttribute('tabindex')).toEqual('-1');
   });
@@ -75,6 +76,15 @@ test('ManageTabIndex: Manage target element tabindex', () => {
 });
 
 test('UseButtonRole: Treats non-button controller as a button', async () => {
+  dialog = new Dialog(
+    controller,
+    {
+      modules: [
+        UseButtonRole,
+      ],
+    }
+  );
+
   expect(controller.getAttribute('role')).toBe('button');
   expect(controller.getAttribute('tabindex')).not.toBe('0');
 
@@ -96,6 +106,15 @@ test('UseButtonRole: Treats non-button controller as a button', async () => {
 });
 
 test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () => {
+  dialog = new Dialog(
+    controller,
+    {
+      modules: [
+        UseHiddenAttribute,
+      ],
+    }
+  );
+
   expect(dialog.expanded).toBe(false);
   expect(target.getAttribute('hidden')).toBe('');
 
@@ -109,4 +128,33 @@ test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () =>
 
   dialog.destroy();
   expect(target.getAttribute('hidden')).toBeNull();
+});
+
+test('UseLegacyDialog: Uses aria-hidden on external content', () => {
+  dialog = new Dialog(
+    controller,
+    {
+      modules: [
+        UseLegacyDialog,
+      ],
+    }
+  );
+
+  expect(target.getAttribute('aria-hidden')).toBe('true');
+  expect(footer.getAttribute('aria-hidden')).toBeNull();
+  expect(content.getAttribute('aria-hidden')).toBeNull();
+
+  dialog.expanded = true;
+  expect(target.getAttribute('aria-hidden')).toBe('false');
+  expect(footer.getAttribute('aria-hidden')).toEqual('true');
+  expect(content.getAttribute('aria-hidden')).toEqual('true');
+
+  dialog.expanded = false;
+  expect(target.getAttribute('aria-hidden')).toBe('true');
+  expect(footer.getAttribute('aria-hidden')).toBeNull();
+  expect(content.getAttribute('aria-hidden')).toBeNull();
+
+  dialog.destroy();
+  expect(footer.getAttribute('aria-hidden')).toBeNull();
+  expect(content.getAttribute('aria-hidden')).toBeNull();
 });

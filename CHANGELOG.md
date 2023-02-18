@@ -8,7 +8,7 @@ A complete rewrite.
 ### Highlights
 
 * **Simplified component parameters**: For components with a controller-target pair, pass in either the controller or target. Just be sure to add the `aria-controls` attribute to the controlling element with a matching `id` attribute on the target element. (#51, #66, #65, #70)
-* **Extend core functionality with Modules**: Modules contain optional features and functionality available for contexts in which they'll simplify and/or improve UX (#84, #86)
+* **Extend core functionality with Modules**: Modules contain optional features and functionality available for contexts in which they'll simplify and/or improve UX (#84, #86, #95)
 * **Custom events**: Components dispatch custom `init`, `stateChange` and `destroy` events, rather than accepting callbacks (#55, #77)
 
 ... and more:
@@ -22,7 +22,6 @@ A complete rewrite.
 
 **Changed**
 
-- Dialog now focuses the target element when opened (#51)
 - Loosens the Menu component's markup requirements (#48, 3385f2e)
 - Dialog and Listbox no longer extend Popup (#59, #85)
 - Use the `Dialog.closeButton` setter to configure the Dialog close button (#86)
@@ -31,7 +30,6 @@ A complete rewrite.
 **Added**
 
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
-- Gets Dialog content element(s) if none provided (#51)
 - Logs a configuration error for misconfigured components (#51)
 - Adds an `autoClose` option to Disclosure and Menu (#75, #76)
 

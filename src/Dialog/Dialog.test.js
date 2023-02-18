@@ -13,11 +13,11 @@ const dialogMarkup = `
       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
       sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
       mollit anim id est laborum.</p>
-      <a aria-controls="dialog" class="link" href="#dialog">Open dialog</a>
+      <button aria-controls="dialog" class="link">Open dialog</button>
     </article>
   </main>
   <footer class="site-footer">Site footer</footer>
-  <div class="wrapper" id="dialog" tabindex="0">
+  <div class="wrapper" id="dialog">
     <button>Close</button>
     <ul>
       <li><a href="example.com"></a></li>
@@ -33,8 +33,6 @@ document.body.innerHTML = dialogMarkup;
 
 const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
-const content = document.querySelector('main');
-const footer = document.querySelector('footer');
 const outsideLink = document.querySelector('.outside-link');
 
 // Cached elements.
@@ -50,7 +48,7 @@ const onDestroy = jest.fn();
 // The `init` event is not trackable via on/off.
 target.addEventListener('dialog.init', onInit);
 
-const modal = new Dialog(target);
+const modal = new Dialog(target, { closeButton: firstItem });
 modal.on('dialog.stateChange', onStateChange);
 modal.on('dialog.destroy', onDestroy);
 
@@ -72,8 +70,6 @@ describe('The Dialog should initialize as expected', () => {
   });
 
   test('The Dialog controller includes the expected attribute values', () => {
-    expect(target.getAttribute('tabindex')).toEqual('0');
-
     expect(target.getAttribute('aria-hidden')).toEqual('true');
 
     expect(target.getAttribute('role')).toEqual('dialog');
@@ -85,10 +81,8 @@ describe('The Dialog should initialize as expected', () => {
 
     expect(modal.expanded).toBe(true);
     expect(modal.expanded).toBe(true);
-    expect(document.activeElement).toEqual(target);
+    expect(document.activeElement).toEqual(firstItem);
 
-    expect(footer.getAttribute('aria-hidden')).toEqual('true');
-    expect(content.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
   });
 
@@ -109,8 +103,6 @@ describe('The Dialog should initialize as expected', () => {
     expect(document.activeElement).toEqual(controller);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
-    expect(footer.getAttribute('aria-hidden')).toBeNull();
-    expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 });
@@ -130,17 +122,14 @@ describe('The Dialog correctly responds to events', () => {
     expect(document.activeElement).toEqual(firstItem);
   });
 
-  test('The `close` setter connects the close button', async () => {
-    modal.closeButton = firstItem;
+  test('The `closeButton` option connects the close button', async () => {
     await user.click(firstItem);
 
     expect(modal.expanded).toBe(false);
-    expect(footer.getAttribute('aria-hidden')).toBeNull();
-    expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  test('The `close` setter overwrites as expected', async () => {
+  test('The `closeButton` setter overwrites as expected', async () => {
     modal.closeButton = listButton;
 
     // Listener removed from old button.
@@ -150,16 +139,7 @@ describe('The Dialog correctly responds to events', () => {
     await user.click(listButton);
 
     expect(modal.expanded).toBe(false);
-    expect(footer.getAttribute('aria-hidden')).toBeNull();
-    expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
-  });
-
-  // What was this in response to?
-  test('Focus moves back to the Dialog from outside', async () => {
-    outsideLink.focus();
-    await user.keyboard('{Tab}');
-    expect(document.activeElement).toEqual(firstItem);
   });
 
   test('The Dialog closes when the Escape key is pressed', async () => {
