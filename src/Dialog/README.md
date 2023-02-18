@@ -172,6 +172,10 @@ dialog.on('dialog.stateChange', (event) => {
 });
 ```
 
+**DOM Mutations**
+
+We can use `dialog.setInteractiveChildren()` to refresh the component after markup changes.
+
 ## References
 
 - https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html
