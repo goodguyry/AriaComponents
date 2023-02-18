@@ -74,12 +74,12 @@ export default class Dialog extends AriaComponent {
     // Update state.
     this.#expanded = newState;
 
-    this.setInteractiveChildren();
-
     // Update target element.
     this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
 
     if (this.expanded) {
+      this.setInteractiveChildren();
+
       document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
       if (null != this.#closeButton) {
