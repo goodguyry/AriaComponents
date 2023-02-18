@@ -140,14 +140,17 @@ test('UseLegacyDialog: Uses aria-hidden on external content', () => {
     }
   );
 
+  expect(target.getAttribute('aria-hidden')).toBe('true');
   expect(footer.getAttribute('aria-hidden')).toBeNull();
   expect(content.getAttribute('aria-hidden')).toBeNull();
 
   dialog.expanded = true;
+  expect(target.getAttribute('aria-hidden')).toBe('false');
   expect(footer.getAttribute('aria-hidden')).toEqual('true');
   expect(content.getAttribute('aria-hidden')).toEqual('true');
 
   dialog.expanded = false;
+  expect(target.getAttribute('aria-hidden')).toBe('true');
   expect(footer.getAttribute('aria-hidden')).toBeNull();
   expect(content.getAttribute('aria-hidden')).toBeNull();
 
