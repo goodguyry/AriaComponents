@@ -142,6 +142,13 @@ Mimics a button for non-button controllers by using `role=button` and mapping th
 
 Hides the target element with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
 
+**`UseLegacyDialog`**
+
+Uses `aria-hidden` to hide outside content rather than using the `aria-model` attribute. See the section titled "Notes on aria-modal and aria-hidden" on [the Modal Dialog Example page](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/).
+
+The `UseLegacyDialog` module adds support for a **`content`** option, which defines the `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `[]`_
+
+
 ## References
 
 - https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html

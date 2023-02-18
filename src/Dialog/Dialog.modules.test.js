@@ -4,6 +4,7 @@ import Dialog, {
   ManageTabIndex,
   UseButtonRole,
   UseHiddenAttribute,
+  UseLegacyDialog,
 } from '.';
 
 // Set up our document body
@@ -37,6 +38,9 @@ document.body.innerHTML = `
 const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
 
+const content = document.querySelector('main');
+const footer = document.querySelector('footer');
+
 let dialog;
 beforeEach(() => {
   dialog = new Dialog(
@@ -46,6 +50,7 @@ beforeEach(() => {
         ManageTabIndex,
         UseButtonRole,
         UseHiddenAttribute,
+        UseLegacyDialog,
       ],
     }
   );
@@ -109,4 +114,21 @@ test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () =>
 
   dialog.destroy();
   expect(target.getAttribute('hidden')).toBeNull();
+});
+
+test('UseLegacyDialog: Uses aria-hidden on external content', () => {
+  expect(footer.getAttribute('aria-hidden')).toBeNull();
+  expect(content.getAttribute('aria-hidden')).toBeNull();
+
+  dialog.expanded = true;
+  expect(footer.getAttribute('aria-hidden')).toEqual('true');
+  expect(content.getAttribute('aria-hidden')).toEqual('true');
+
+  dialog.expanded = false;
+  expect(footer.getAttribute('aria-hidden')).toBeNull();
+  expect(content.getAttribute('aria-hidden')).toBeNull();
+
+  dialog.destroy();
+  expect(footer.getAttribute('aria-hidden')).toBeNull();
+  expect(content.getAttribute('aria-hidden')).toBeNull();
 });
