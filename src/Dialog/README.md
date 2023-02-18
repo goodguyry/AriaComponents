@@ -153,6 +153,25 @@ The `UseLegacyDialog` module adds support for a **`content`** option, which defi
 
 Authors are responsible for adding the `aria-labelledby` and `aria-describedby` attributes. See ["WAI-ARIA Roles, States, and Properties"](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/#wai-ariaroles,states,andproperties) for more.
 
+Additionally, the close button may not be the most appropriate element to focus when the Dialog opens:
+
+> When a dialog opens, focus moves to an element contained in the dialog. Generally, focus is initially set on the first focusable element. However, the most appropriate focus placement will depend on the nature and size of the content.
+
+If the close button is not the most appropriate element to focus when the Dialog opens, we can omit the `closeButton` option to prevent the Dialog from managing focus. We can then manage focus and the close button ourselves.
+
+```jsx
+// Set up the close button.
+const cancelButton = dialog.target.querySelector('button.cancel');
+cancelButton.addEventListener('click', dialog.hide);
+
+dialog.on('dialog.stateChange', (event) => {
+  const { detail } = event;
+  if (detail.expanded) {
+    // Manage focus.
+  }
+});
+```
+
 ## References
 
 - https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html
