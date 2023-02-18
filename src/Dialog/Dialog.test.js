@@ -122,7 +122,7 @@ describe('The Dialog correctly responds to events', () => {
     expect(document.activeElement).toEqual(firstItem);
   });
 
-  test('The `closeButton` optioon connects the close button', async () => {
+  test('The `closeButton` option connects the close button', async () => {
     await user.click(firstItem);
 
     expect(modal.expanded).toBe(false);
