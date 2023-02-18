@@ -9,8 +9,8 @@
 export default function UseLegacyDialog({ component, options }) {
   let { content } = {
     /**
-     * The element(s) to be hidden when the Dialog is visible. The elements
-     * wrapping all site content with the sole exception of the dialog element.
+     * The element or elements containing a portion of the inert layer. When the
+     * Dialog opens, `aria-hidden` is set to true on each element
      *
      * @type {HTMLElement|NodeList}
      */
@@ -30,7 +30,7 @@ export default function UseLegacyDialog({ component, options }) {
   const contentLength = content.length;
 
   /**
-   * Hide and unhide external content when the Dialog changes state.
+   * Hide and unhide the inert layer when the Dialog changes state.
    */
   const handleStateChange = () => {
     for (let i = 0; i < contentLength; i += 1) {
@@ -41,7 +41,7 @@ export default function UseLegacyDialog({ component, options }) {
   if (0 < contentLength) {
     // Remove the `aria-modal` attribute.
     component.addAttribute(component.target, 'aria-modal', null);
-
+    // Manage the inert layer.
     component.on('dialog.stateChange', handleStateChange);
 
     // Set initial attributes.
@@ -50,6 +50,7 @@ export default function UseLegacyDialog({ component, options }) {
     }
   }
 
+  // Clean up.
   return () => {
     for (let i = 0; i < contentLength; i += 1) {
       component.removeAttributes(content[i]);

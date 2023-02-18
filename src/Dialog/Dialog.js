@@ -3,7 +3,7 @@ import getElementPair from '../shared/getElementPair';
 import interactiveChildren from '../shared/interactiveChildren';
 
 /**
- * Class to set up an interactive Dialog element.
+ * Class to set up an interactive Modal Dialog element.
  */
 export default class Dialog extends AriaComponent {
   /**
@@ -82,6 +82,7 @@ export default class Dialog extends AriaComponent {
 
       document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
+      // The close button may not be the most appropriate element to focus.
       if (null != this.#closeButton) {
         this.#closeButton.focus();
       }
@@ -136,11 +137,7 @@ export default class Dialog extends AriaComponent {
      */
     this.setInteractiveChildren();
 
-    /*
-     * Set the target as hidden by default. Using the `aria-hidden` attribute,
-     * rather than the `hidden` attribute, means authors must hide the target
-     * element via CSS.
-     */
+    // Set the target as hidden by default.
     this.addAttribute(this.target, 'aria-hidden', 'true');
 
     // Set additional attributes.
@@ -164,6 +161,7 @@ export default class Dialog extends AriaComponent {
    * @param {HTMLButtonElement} button The Dialog's close element.
    */
   set closeButton(button) {
+    // Be sure to stop listening to the old button, if necessary.
     if (null != this.#closeButton) {
       this.#closeButton.removeEventListener('click', this.hide);
     }
@@ -219,7 +217,7 @@ export default class Dialog extends AriaComponent {
   };
 
   /**
-   * Close the dialog on 'Escape' key press. This is added to the body element,
+   * Close the dialog on 'Escape' key press. This is added to the body element
    * so any press of the 'Escape' key will short-circuit the dialog and move
    * focus back to the controller.
    *
