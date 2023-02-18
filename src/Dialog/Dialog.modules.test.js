@@ -42,21 +42,17 @@ const content = document.querySelector('main');
 const footer = document.querySelector('footer');
 
 let dialog;
-beforeEach(() => {
+
+test('ManageTabIndex: Manage target element tabindex', () => {
   dialog = new Dialog(
     controller,
     {
       modules: [
         ManageTabIndex,
-        UseButtonRole,
-        UseHiddenAttribute,
-        UseLegacyDialog,
       ],
     }
   );
-});
 
-test('ManageTabIndex: Manage target element tabindex', () => {
   dialog.interactiveChildElements.forEach((link) => {
     expect(link.getAttribute('tabindex')).toEqual('-1');
   });
@@ -80,6 +76,15 @@ test('ManageTabIndex: Manage target element tabindex', () => {
 });
 
 test('UseButtonRole: Treats non-button controller as a button', async () => {
+  dialog = new Dialog(
+    controller,
+    {
+      modules: [
+        UseButtonRole,
+      ],
+    }
+  );
+
   expect(controller.getAttribute('role')).toBe('button');
   expect(controller.getAttribute('tabindex')).not.toBe('0');
 
@@ -101,6 +106,15 @@ test('UseButtonRole: Treats non-button controller as a button', async () => {
 });
 
 test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () => {
+  dialog = new Dialog(
+    controller,
+    {
+      modules: [
+        UseHiddenAttribute,
+      ],
+    }
+  );
+
   expect(dialog.expanded).toBe(false);
   expect(target.getAttribute('hidden')).toBe('');
 
@@ -117,6 +131,15 @@ test('UseHiddenAttribute: Uses hidden attribute when target not expanded', () =>
 });
 
 test('UseLegacyDialog: Uses aria-hidden on external content', () => {
+  dialog = new Dialog(
+    controller,
+    {
+      modules: [
+        UseLegacyDialog,
+      ],
+    }
+  );
+
   expect(footer.getAttribute('aria-hidden')).toBeNull();
   expect(content.getAttribute('aria-hidden')).toBeNull();
 
