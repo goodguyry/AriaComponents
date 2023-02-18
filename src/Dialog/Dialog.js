@@ -176,19 +176,6 @@ export default class Dialog extends AriaComponent {
   }
 
   /**
-   * Close the dialog on when users click outside of the Dialog element.
-   *
-   * @todo This isn't actually used.
-   *
-   * @param {Event} event The Event object.
-   */
-  outsideClick = (event) => {
-    if (this.expanded && ! this.target.contains(event.target)) {
-      this.hide();
-    }
-  };
-
-  /**
    * Show the Dialog when the controller is clicked.
    *
    * @param {Event} event The event object.
