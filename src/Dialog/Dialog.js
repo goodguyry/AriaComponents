@@ -235,9 +235,9 @@ export default class Dialog extends AriaComponent {
   };
 
   /**
-   * Close the dialog on 'Escape' key press. This is added to the body element, so
-   * any press of the 'Escape' key will short-circuit the dialog and move forcus back
-   * to the controller.
+   * Close the dialog on 'Escape' key press. This is added to the body element,
+   * so any press of the 'Escape' key will short-circuit the dialog and move
+   * focus back to the controller.
    *
    * @param {Event} event The Event object.
    */
@@ -247,18 +247,6 @@ export default class Dialog extends AriaComponent {
     switch (key) {
       case 'Escape':
         this.hide();
-        break;
-
-      case 'Tab':
-        if (this.expanded && ! this.target.contains(eventTarget)) {
-          event.preventDefault();
-
-          /*
-           * Move focus to the first interactive child element. This is a stopgap
-           * for instances where clicking outside of the Dialog moves focus out.
-           */
-          this.firstInteractiveChild.focus();
-        }
         break;
 
       default:

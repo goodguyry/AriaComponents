@@ -142,13 +142,6 @@ describe('The Dialog correctly responds to events', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  // What was this in response to?
-  test('Focus moves back to the Dialog from outside', async () => {
-    outsideLink.focus();
-    await user.keyboard('{Tab}');
-    expect(document.activeElement).toEqual(firstItem);
-  });
-
   test('The Dialog closes when the Escape key is pressed', async () => {
     lastItem.focus();
     await user.keyboard('{Escape}');
