@@ -58,8 +58,6 @@ The activating element is required to have an `aria-controls` attribute with a v
 
 ### Available Options
 
-**`content`** - The `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `null`_
-
 **`closeButton`** - Designate a button element as the Dialog close button.
 
 **`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_

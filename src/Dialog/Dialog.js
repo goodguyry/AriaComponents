@@ -48,18 +48,7 @@ export default class Dialog extends AriaComponent {
      *
      * @type {object}
      */
-    const {
-      content,
-      closeButton,
-    } = {
-      /**
-       * The element(s) to be hidden when the Dialog is visible. The elements
-       * wrapping all site content with the sole exception of the dialog element.
-       *
-       * @type {HTMLElement|NodeList|Array}
-       */
-      content: [],
-
+    const { closeButton } = {
       /**
        * The element used to close the Dialog.
        *
@@ -73,9 +62,6 @@ export default class Dialog extends AriaComponent {
     // Set the close button.
     this.closeButton = closeButton;
 
-    // Save static options.
-    this.content = content;
-
     this.init();
   }
 
@@ -88,13 +74,7 @@ export default class Dialog extends AriaComponent {
     // Update state.
     this.#expanded = newState;
 
-    const contentLength = this.content.length;
-
     this.setInteractiveChildren();
-
-    for (let i = 0; i < contentLength; i += 1) {
-      this.updateAttribute(this.content[i], 'aria-hidden', (this.expanded || null));
-    }
 
     // Update target element.
     this.updateAttribute(this.target, 'aria-hidden', (! this.expanded));
@@ -149,27 +129,6 @@ export default class Dialog extends AriaComponent {
    * Set the component's DOM attributes and event listeners.
    */
   init = () => {
-    // Get the content items if none are provided.
-    if (0 === this.content.length || undefined === this.content) {
-      this.content = Array.from(document.body.children)
-        .filter((child) => ! child.contains(this.target));
-    } else {
-      this.content = Array.from(this.content);
-    }
-
-    // If no content is found.
-    if (0 === this.content.length) {
-      AriaComponent.configurationError(
-        'The Dialog target should not be within the main site content'
-      );
-    }
-
-    // Be sure each element has an id attribute for internal attribute tracking.
-    const contentLength = this.content.length;
-    for (let i = 0; i < contentLength; i += 1) {
-      this.addAttribute(this.content[i], this.constructor.getUniqueId());
-    }
-
     /*
      * Collect the Dialog's interactive child elements. This is an initial pass
      * to ensure values exists, but the interactive children will be collected
@@ -311,12 +270,6 @@ export default class Dialog extends AriaComponent {
    * Destroy the Dialog and Popup.
    */
   destroy = () => {
-    // Remove the `aria-hidden` attribute from the content wrapper.
-    const contentLength = this.content.length;
-    for (let i = 0; i < contentLength; i += 1) {
-      this.removeAttributes(this.content[i]);
-    }
-
     // Remove attributes.
     this.removeAttributes(this.controller);
     this.removeAttributes(this.target);

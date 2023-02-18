@@ -13,7 +13,7 @@ const dialogMarkup = `
       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
       sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
       mollit anim id est laborum.</p>
-      <a aria-controls="dialog" class="link" href="#dialog">Open dialog</a>
+      <button aria-controls="dialog" class="link">Open dialog</button>
     </article>
   </main>
   <footer class="site-footer">Site footer</footer>
@@ -33,8 +33,6 @@ document.body.innerHTML = dialogMarkup;
 
 const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
-const content = document.querySelector('main');
-const footer = document.querySelector('footer');
 const outsideLink = document.querySelector('.outside-link');
 
 // Cached elements.
@@ -85,8 +83,6 @@ describe('The Dialog should initialize as expected', () => {
     expect(modal.expanded).toBe(true);
     expect(document.activeElement).toEqual(firstItem);
 
-    expect(footer.getAttribute('aria-hidden')).toEqual('true');
-    expect(content.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('aria-hidden')).toEqual('false');
   });
 
@@ -107,8 +103,6 @@ describe('The Dialog should initialize as expected', () => {
     expect(document.activeElement).toEqual(controller);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
-    expect(footer.getAttribute('aria-hidden')).toBeNull();
-    expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 });
@@ -132,8 +126,6 @@ describe('The Dialog correctly responds to events', () => {
     await user.click(firstItem);
 
     expect(modal.expanded).toBe(false);
-    expect(footer.getAttribute('aria-hidden')).toBeNull();
-    expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
@@ -147,8 +139,6 @@ describe('The Dialog correctly responds to events', () => {
     await user.click(listButton);
 
     expect(modal.expanded).toBe(false);
-    expect(footer.getAttribute('aria-hidden')).toBeNull();
-    expect(content.getAttribute('aria-hidden')).toBeNull();
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
