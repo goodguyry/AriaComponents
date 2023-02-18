@@ -13,6 +13,7 @@ Class for managing an interactive Dialog element.
 * [Events](#events)
 * [Modules](#modules)
 * [References](#references)
+* [Additional Information](#additional-information)
 
 ## Example
 
@@ -148,6 +149,9 @@ Uses `aria-hidden` to hide outside content rather than using the `aria-model` at
 
 The `UseLegacyDialog` module adds support for a **`content`** option, which defines the `HTMLElement` or `NodeList` of elements that should be inaccessible when the Dialog element is open. _Default is `[]`_
 
+## Additional Information
+
+Authors are responsible for adding the `aria-labelledby` and `aria-describedby` attributes. See ["Role, Property, State, and Tabindex Attributes"](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/#rps_label) for more.
 
 ## References
 
