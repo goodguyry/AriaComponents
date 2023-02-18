@@ -3,6 +3,17 @@ Dialog
 
 Class for managing an interactive Dialog element.
 
+## Contents
+
+* [Example](#example)
+* [Constructor](#constructor)
+  * [Available Options](#available-options)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [Modules](#modules)
+* [References](#references)
+
 ## Example
 
 ```html
