@@ -151,7 +151,7 @@ The `UseLegacyDialog` module adds support for a **`content`** option, which defi
 
 ## Additional Information
 
-Authors are responsible for adding the `aria-labelledby` and `aria-describedby` attributes. See ["Role, Property, State, and Tabindex Attributes"](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/#rps_label) for more.
+Authors are responsible for adding the `aria-labelledby` and `aria-describedby` attributes. See ["WAI-ARIA Roles, States, and Properties"](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/#wai-ariaroles,states,andproperties) for more.
 
 ## References
 
