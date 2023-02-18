@@ -50,7 +50,7 @@ const onDestroy = jest.fn();
 // The `init` event is not trackable via on/off.
 target.addEventListener('dialog.init', onInit);
 
-const modal = new Dialog(target);
+const modal = new Dialog(target, { closeButton: firstItem });
 modal.on('dialog.stateChange', onStateChange);
 modal.on('dialog.destroy', onDestroy);
 
@@ -130,8 +130,7 @@ describe('The Dialog correctly responds to events', () => {
     expect(document.activeElement).toEqual(firstItem);
   });
 
-  test('The `close` setter connects the close button', async () => {
-    modal.closeButton = firstItem;
+  test('The `closeButton` optioon connects the close button', async () => {
     await user.click(firstItem);
 
     expect(modal.expanded).toBe(false);
@@ -140,7 +139,7 @@ describe('The Dialog correctly responds to events', () => {
     expect(target.getAttribute('aria-hidden')).toEqual('true');
   });
 
-  test('The `close` setter overwrites as expected', async () => {
+  test('The `closeButton` setter overwrites as expected', async () => {
     modal.closeButton = listButton;
 
     // Listener removed from old button.
