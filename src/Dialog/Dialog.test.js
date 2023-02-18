@@ -17,7 +17,7 @@ const dialogMarkup = `
     </article>
   </main>
   <footer class="site-footer">Site footer</footer>
-  <div class="wrapper" id="dialog" tabindex="0">
+  <div class="wrapper" id="dialog">
     <button>Close</button>
     <ul>
       <li><a href="example.com"></a></li>
@@ -72,8 +72,6 @@ describe('The Dialog should initialize as expected', () => {
   });
 
   test('The Dialog controller includes the expected attribute values', () => {
-    expect(target.getAttribute('tabindex')).toEqual('0');
-
     expect(target.getAttribute('aria-hidden')).toEqual('true');
 
     expect(target.getAttribute('role')).toEqual('dialog');
@@ -85,7 +83,7 @@ describe('The Dialog should initialize as expected', () => {
 
     expect(modal.expanded).toBe(true);
     expect(modal.expanded).toBe(true);
-    expect(document.activeElement).toEqual(target);
+    expect(document.activeElement).toEqual(firstItem);
 
     expect(footer.getAttribute('aria-hidden')).toEqual('true');
     expect(content.getAttribute('aria-hidden')).toEqual('true');

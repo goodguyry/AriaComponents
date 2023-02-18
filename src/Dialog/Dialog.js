@@ -102,7 +102,9 @@ export default class Dialog extends AriaComponent {
     if (this.expanded) {
       document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
-      this.target.focus();
+      if (null != this.#closeButton) {
+        this.#closeButton.focus();
+      }
     } else {
       document.body.removeEventListener('keydown', this.bodyHandleKeydown);
 
@@ -174,9 +176,6 @@ export default class Dialog extends AriaComponent {
      * each time the dialog opens, in case the dialog's contents change.
      */
     this.setInteractiveChildren();
-
-    // Allow focus on the target element.
-    this.addAttribute(this.target, 'tabindex', '0');
 
     /*
      * Set the target as hidden by default. Using the `aria-hidden` attribute,
