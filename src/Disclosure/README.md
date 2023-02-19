@@ -3,6 +3,16 @@ Disclosure
 
 Class for independently revealing and hiding inline content.
 
+## Contents
+
+* [Constructor](#constructor)
+  * [Available Options](#available-options)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [Modules](#modules)
+* [References](#references)
+
 ## Constructor
 
 ```jsx

@@ -12,8 +12,8 @@ Class for managing an interactive Dialog element.
 * [Properties](#properties)
 * [Events](#events)
 * [Modules](#modules)
-* [References](#references)
 * [Additional Information](#additional-information)
+* [References](#references)
 
 ## Example
 
