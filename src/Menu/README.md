@@ -3,6 +3,15 @@ Menu
 
 Class to set up a Menu with collapsible submenus.
 
+## Contents
+
+* [Example](#example)
+* [Constructor](#constructor)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [References](#references)
+
 ## Example
 
 ```html
@@ -38,16 +47,10 @@ const menu = new Menu(menu);
 ## Constructor
 
 ```jsx
-Menu(menuListElement: HTMLUListElement, options: object);
+Menu(menuListElement: HTMLUListElement);
 ```
 
 **`menuListElement`** _(Required)_ The list element containing menu items.
-
-**`options`** _(Optional)_ Configuration options.
-
-### Available Options
-
-**`autoClose`** Automatically close the Disclosure when its contents lose focus. _Default is `false`_
 
 ## Instance Methods
 
@@ -57,7 +60,7 @@ Global methods and properties documented at [`src/README`](../).
 
 ## Properties
 
-**`disclosures`** The array of submenu Disclosures, if any.
+**`activeDisclosure`** The active submenu Disclosure, if any.
 
 ## Events
 
@@ -65,13 +68,21 @@ Events are namespaced by their component to avoid clashes with nested components
 
 **`'menu.init'`**
 
-> Fired after the component is initialized.
+Fired after the component is initialized.
 
 `event.detail.instance` The class instance from which the event originated.
 
+**`'menu.stateChange'`**
+
+Fired after inner Disclosure state is updated.
+
+`event.detail.instance` The class instance from which the event originated.
+
+`event.detail.activeDisclosure` The current expanded submenu.
+
 **`'menu.destroy'`**
 
-> Fired after the component is destroyed.
+Fired after the component is destroyed.
 
 `event.detail.instance` The class instance from which the event originated.
 
