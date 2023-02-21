@@ -1,5 +1,4 @@
 import AriaComponent from '../AriaComponent';
-import Disclosure, { UseButtonRole } from '../Disclosure';
 
 /**
  * Class to set up an vertically oriented interactive Menu element.
@@ -8,21 +7,20 @@ import Disclosure, { UseButtonRole } from '../Disclosure';
  */
 export default class Menu extends AriaComponent {
   /**
-   * Initial `autoClose` option value.
+   * Tracks the active Disclosure.
    * @private
    *
-   * @type {Boolean}
+   * @type {object}
    */
-  #optionAutoClose = false;
+  #activeDisclosure = null;
 
   /**
    * Create a Menu.
    * @constructor
    *
-   * @param {HTMLUListElement} list    The menu list element.
-   * @param {object}           options The options object.
+   * @param {HTMLUListElement} list The menu list element.
    */
-  constructor(list, options = {}) {
+  constructor(list) {
     super(list);
 
     /**
@@ -39,22 +37,6 @@ export default class Menu extends AriaComponent {
      */
     this.disclosures = [];
 
-    // Merge options.
-    const {
-      autoClose,
-    } = {
-      autoClose: this.#optionAutoClose,
-
-      ...options,
-    };
-
-    /**
-     * Close submenu Disclosures when they lose focus.
-     *
-     * @type {Boolean}
-     */
-    this.autoClose = autoClose;
-
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(list.nodeName)) {
       this.init();
@@ -66,90 +48,135 @@ export default class Menu extends AriaComponent {
   }
 
   /**
-   * Enables the Disclosures' `autoClose` option.
+   * Set the active Disclosure ID, which conditionally sets the active Disclosure.
    *
-   * @param {bool} shouldAutoClose Whether the Disclosure should close automatically.
+   * @param {string} disclosureId The Disclosure ID.
    */
-  set autoClose(shouldAutoClose) {
-    if (shouldAutoClose) {
-      this.on('disclosure.stateChange', this.handleDisclosureStateChange);
-    } else {
-      this.off('disclosure.stateChange', this.handleDisclosureStateChange);
+  set activeDisclosureId(disclosureId) {
+    const disclosure = this.disclosures.find((obj) => obj.id === disclosureId);
+    const isActiveId = (this.activeDisclosureId === disclosure?.id);
+
+    if (undefined !== disclosure) {
+      this.updateAttribute(disclosure.controller, 'aria-expanded', ! isActiveId);
+      this.updateAttribute(disclosure.target, 'aria-hidden', isActiveId);
     }
+
+    // Deactivate the currently-active disclosure.
+    if (null != this.activeDisclosure) {
+      this.updateAttribute(this.activeDisclosure.controller, 'aria-expanded', false);
+      this.updateAttribute(this.activeDisclosure.target, 'aria-hidden', true);
+    }
+
+    // Toggle the active Disclosure.
+    this.#activeDisclosure = isActiveId ? undefined : disclosure;
+
+    this.dispatch(
+      'stateChange',
+      {
+        instance: this,
+        activeDisclosure: this.activeDisclosure,
+      }
+    );
   }
+
+  /**
+   * Returns the active Disclosure ID.
+   *
+   * @return {string|undefined}
+   */
+  get activeDisclosureId() {
+    return this.activeDisclosure?.id;
+  }
+
+  /**
+   * Returns the active Disclosure.
+   *
+   * @return {object|undefined}
+   */
+  get activeDisclosure() {
+    return this.#activeDisclosure;
+  }
+
+  /**
+   * Initialize and save a submenu Disclosure.
+   *
+   * @param  {array}         disclosures The array of previous disclosures.
+   * @param  {HTMLLIElement} menuChild   The menu item.
+   * @return {array} A collection of submenu Disclosures.
+   */
+  initSubmenuDisclosure = (disclosures, menuChild) => {
+    let controller = menuChild.querySelector(':scope > [aria-controls]');
+
+    if (null === controller) {
+      const [firstChild, ...theRest] = Array.from(menuChild.children);
+
+      // Try to use the first child of the menu item.
+      controller = firstChild;
+
+      if (null == controller || ! controller.matches('a,button')) {
+        // The first child isn't a link or button, so find the first instance of either.
+        [controller] = Array.from(theRest).filter((child) => child.matches('a,button'));
+      }
+    }
+
+    if (null == controller) {
+      return disclosures;
+    }
+
+    const target = controller.parentElement.querySelector('ul');
+    if (null == target) {
+      return disclosures;
+    }
+
+    this.addAttribute(controller, 'aria-expanded', false);
+    this.addAttribute(target, 'aria-hidden', true);
+
+    controller.addEventListener('click', this.controllerHandleClick);
+
+    const disclosure = {
+      id: controller.id,
+      controller,
+      target,
+    };
+
+    return [...disclosures, disclosure];
+  };
 
   /**
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init = () => {
     // Set and collect submenu Disclosures.
-    Array.from(this.element.children).forEach((item) => {
-      const [firstChild, ...theRest] = Array.from(item.children);
-
-      // Try to use the first child of the menu item.
-      let itemLink = firstChild;
-
-      // If the first child isn't a link or button, find the first instance of either.
-      if (null === itemLink || ! itemLink.matches('a,button')) {
-        [itemLink] = Array.from(theRest).filter((child) => child.matches('a,button'));
-      }
-
-      if (undefined !== itemLink && itemLink.hasAttribute('aria-controls')) {
-        const disclosure = new Disclosure(
-          itemLink,
-          {
-            autoClose: this.#optionAutoClose,
-            allowOutsideClick: ! this.#optionAutoClose,
-            modules: UseButtonRole,
-          }
-        );
-
-        this.disclosures.push(disclosure);
-      }
-    });
-
-    if (this.autoClose) {
-      this.on('disclosure.stateChange', this.handleDisclosureStateChange);
-    }
+    this.disclosures = Array.from(this.element.children)
+      .reduce(this.initSubmenuDisclosure, []);
 
     // Fire the init event.
     this.dispatchEventInit();
   };
 
   /**
-   * Close any open Disclosure(s) when another is opened.
+   * Handle Disclosure controller clicks.
    *
    * @param {Event} event The Event object.
    */
-  handleDisclosureStateChange = (event) => {
-    const { detail: { instance } } = event;
-
-    if (instance.expanded) {
-      // There should only be one /shrug.
-      const open = this.disclosures.find((disclosure) => (
-        disclosure.expanded && instance.id !== disclosure.id
-      ));
-
-      open?.close();
-    }
+  controllerHandleClick = (event) => {
+    this.activeDisclosureId = event.target.id;
   };
 
   /**
    * Destroy the Menu and any submenus.
    */
   destroy = () => {
-    /*
-     * Destroy inner Disclosure(s).
-     *
-     * Inner instances of aria-components must be destroyed before the outer
-     * component so the id attribute persists, otherwise the attribute tracking is broken.
-     */
-    this.disclosures.forEach((disclosure) => disclosure.destroy());
+    // Clear submenu Disclosure attributes.
+    this.disclosures.forEach((disclosure) => {
+      this.removeAttributes(disclosure.controller);
+      this.removeAttributes(disclosure.target);
+    });
+
+    this.disclosures = [];
 
     // Remove the list attritbutes.
     this.removeAttributes(this.element);
-
-    this.off('stateChange', this.handleDisclosureStateChange);
 
     // Fire the destroy event.
     this.dispatchEventDestroy();
