@@ -132,6 +132,7 @@ export default class Menu extends AriaComponent {
     this.addAttribute(target, 'aria-hidden', true);
 
     controller.addEventListener('click', this.controllerHandleClick);
+    document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
     const disclosure = {
       id: controller.id,
@@ -164,6 +165,17 @@ export default class Menu extends AriaComponent {
   };
 
   /**
+   * Handle Escape key.
+   *
+   * @param {Event} event The Event object.
+   */
+  bodyHandleKeydown = (event) => {
+    if ('Escape' === event.key) {
+      this.activeDisclosureId = undefined;
+    }
+  };
+
+  /**
    * Destroy the Menu and any submenus.
    */
   destroy = () => {
@@ -172,6 +184,9 @@ export default class Menu extends AriaComponent {
       this.removeAttributes(disclosure.controller);
       this.removeAttributes(disclosure.target);
     });
+
+    controller.removeEventListener('click', this.controllerHandleClick);
+    document.body.removeEventListener('keydown', this.bodyHandleKeydown);
 
     this.disclosures = [];
 

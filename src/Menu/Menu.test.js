@@ -149,11 +149,20 @@ describe('The Menu should initialize as expected', () => {
     expect(detailSecond.activeDisclosure).toStrictEqual(menu.disclosures[1]);
   });
 
-  test.skip('The Disclosure closes when the Escape key is pressed', async () => {
+  test('The Disclosure closes when the Escape key is pressed', async () => {
     await user.keyboard('{Escape}');
 
-    expect(menu.disclosures[0].expanded).toBe(true);
-    expect(menu.disclosures[1].expanded).toBe(false);
+    // Verify both are hidden.
+    expect(firstController.getAttribute('aria-expanded')).toEqual('false');
+    expect(secondController.getAttribute('aria-expanded')).toEqual('false');
+    expect(firstTarget.getAttribute('aria-hidden')).toEqual('true');
+    expect(secondTarget.getAttribute('aria-hidden')).toEqual('true');
+
+    expect(onStateChange).toHaveBeenCalledTimes(5);
+
+    const { detail: detailSecond } = getEventDetails(onStateChange);
+    expect(detailSecond.instance).toStrictEqual(menu);
+    expect(detailSecond.activeDisclosure).toBeUndefined();
   });
 
   test.skip('The Disclosure remains open when Tabbing from the last child', async () => {
