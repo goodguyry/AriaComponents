@@ -63,7 +63,7 @@ beforeAll(() => {
 describe('The Menu should initialize as expected', () => {
   test('The Disclosure includes the expected property values', () => {
     expect(menu).toBeInstanceOf(Menu);
-    expect(menu.activeDisclosure).toBeNull();
+    expect(menu.activeDisclosure).toBeUndefined();
     expect(list.id).toEqual(menu.id);
   });
 

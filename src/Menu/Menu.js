@@ -12,7 +12,7 @@ export default class Menu extends AriaComponent {
    *
    * @type {object}
    */
-  #activeDisclosure = null;
+  #activeDisclosure = undefined;
 
   /**
    * Create a Menu.
@@ -53,21 +53,28 @@ export default class Menu extends AriaComponent {
    * @param {string} disclosureId The Disclosure ID.
    */
   set activeDisclosureId(disclosureId) {
+    // Find the Disclosure by ID.
     const disclosure = this.disclosures.find((obj) => obj.id === disclosureId);
-    const isActiveId = (this.activeDisclosureId === disclosure?.id);
 
+    // Get the Disclosure's current state.
+    const isActiveId = (
+      undefined !== this.activeDisclosureId
+      && this.activeDisclosureId === disclosureId
+    );
+
+    // Toggle the Disclosure's state.
     if (undefined !== disclosure) {
       this.updateAttribute(disclosure.controller, 'aria-expanded', ! isActiveId);
       this.updateAttribute(disclosure.target, 'aria-hidden', isActiveId);
     }
 
-    // Deactivate the currently-active disclosure.
-    if (null != this.activeDisclosure) {
+    // Deactivate the currently-active disclosure, if any.
+    if (undefined !== this.activeDisclosureId) {
       this.updateAttribute(this.activeDisclosure.controller, 'aria-expanded', false);
       this.updateAttribute(this.activeDisclosure.target, 'aria-hidden', true);
     }
 
-    // Toggle the active Disclosure.
+    // If `disclosureId` was the active ID, then it is no longer active.
     this.#activeDisclosure = isActiveId ? undefined : disclosure;
 
     this.dispatch(
