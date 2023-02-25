@@ -243,3 +243,7 @@ describe('The Menu should initialize as expected', () => {
     expect(detail.instance).toStrictEqual(menu);
   });
 });
+
+describe('Should accept static options', () => {
+  it('Should throw', () => expect(() => new Menu()).toThrow());
+});
