@@ -248,10 +248,11 @@ export default class Menu extends AriaComponent {
     this.disclosures.forEach((disclosure) => {
       this.removeAttributes(disclosure.controller);
       this.removeAttributes(disclosure.target);
+
+      disclosure.controller.removeEventListener('click', this.controllerHandleClick);
+      disclosure.controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
     });
 
-    controller.removeEventListener('click', this.controllerHandleClick);
-    controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);
     this.off('focusout', this.menuHandleFocusout);
     this.off('click', this.menuHandleClick);

@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { afterThis } from 'jest-after-this';
 import user from '@/.jest/user';
 import Menu from '.';
 
@@ -207,6 +208,12 @@ describe('The Menu should initialize as expected', () => {
   });
 
   test('Clicking a menu link re-sets aria-current', async () => {
+    afterThis(() => {
+      // Clean up to reset attributes.
+      menuLink.removeAttribute('aria-current');
+      current.setAttribute('aria-current', 'page');
+    });
+
     const menuLink = document.querySelector('.sublist2-first-item');
     const current = document.querySelector('[aria-current="page"]');
 
@@ -216,23 +223,23 @@ describe('The Menu should initialize as expected', () => {
     expect(current.getAttribute('aria-current')).toBeNull();
   });
 
-  test.skip('All attributes are removed from elements managed by the Menu', () => {
+  test('All attributes are removed from elements managed by the Menu', () => {
     menu.destroy();
-
-    expect(list.element).toBeUndefined();
     expect(onDestroy).toHaveBeenCalledTimes(1);
 
-    expect(sublistOne.getAttribute('aria-hidden')).toBeNull();
+    expect(list.element).toBeUndefined();
+
+    expect(firstController.getAttribute('aria-expanded')).toBeNull();
+    expect(secondController.getAttribute('aria-expanded')).toBeNull();
+    expect(firstTarget.getAttribute('aria-hidden')).toBeNull();
+    expect(secondTarget.getAttribute('aria-hidden')).toBeNull();
 
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(menuMarkup);
 
-    expect(onDestroy).toHaveBeenCalledTimes(1);
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onDestroy);
+    const { detail } = getEventDetails(onDestroy);
 
-      expect(detail.element).toStrictEqual(list);
-      expect(detail.instance).toStrictEqual(menu);
-    });
+    expect(detail.element).toStrictEqual(list);
+    expect(detail.instance).toStrictEqual(menu);
   });
 });
