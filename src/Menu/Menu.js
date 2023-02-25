@@ -1,13 +1,13 @@
 import AriaComponent from '../AriaComponent';
 
 /**
- * Class to set up an vertically oriented interactive Menu element.
+ * Class to set up an interactive Menu element.
  *
  * https://www.w3.org/WAI/ARIA/apg/example-index/disclosure/disclosure-navigation.html
  */
 export default class Menu extends AriaComponent {
   /**
-   * Tracks the active Disclosure.
+   * Tracks the active submenu Disclosure.
    * @private
    *
    * @type {object}
@@ -177,6 +177,7 @@ export default class Menu extends AriaComponent {
       this.on('focusout', this.menuHandleFocusout);
     }
 
+    // Save the current page's link for later reference.
     this.ariaCurrentPage = this.element.querySelector('[aria-current="page"]');
     this.on('click', this.menuHandleClick);
 
@@ -185,25 +186,27 @@ export default class Menu extends AriaComponent {
   };
 
   /**
-   * Handle Disclosure controller clicks.
+   * Activate the submenu Disclosure on controller click.
    *
    * @param {Event} event The Event object.
    */
   controllerHandleClick = (event) => {
     event.preventDefault();
+
+    // This is only applied to controlling elements, so it's safe to trap.
     event.stopPropagation();
 
     this.activeDisclosureId = event.target.id;
   };
 
   /**
-   * Handle menu focusout events.
+   * Close any active submenu Disclosure when the menu no longer contains the
+   * active element.
    *
    * @param {Event} event The Event object.
    */
   menuHandleFocusout = (event) => {
     if (! this.element.contains(event.relatedTarget)) {
-      // Close any active submenu Disclosure.
       this.activeDisclosureId = undefined;
     }
   };
@@ -230,7 +233,7 @@ export default class Menu extends AriaComponent {
   };
 
   /**
-   * Handle Escape key.
+   * Close any active submenu Disclosure when the Escape key is pressed.
    *
    * @param {Event} event The Event object.
    */
@@ -241,7 +244,7 @@ export default class Menu extends AriaComponent {
   };
 
   /**
-   * Destroy the Menu and any submenus.
+   * Destroy the Menu and any submenu Disclosures.
    */
   destroy = () => {
     // Clear submenu Disclosure attributes.
