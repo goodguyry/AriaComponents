@@ -44,6 +44,13 @@ export default class Menu extends AriaComponent {
      */
     this.disclosures = [];
 
+    /**
+     * The current Menu item, if any.
+     *
+     * @type {HTMLAnchorElement}
+     */
+    this.ariaCurrentPage = null;
+
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(list.nodeName)) {
       this.init();
@@ -170,6 +177,9 @@ export default class Menu extends AriaComponent {
       this.on('focusout', this.menuHandleFocusout);
     }
 
+    this.ariaCurrentPage = this.element.querySelector('[aria-current="page"]');
+    this.on('click', this.menuHandleClick);
+
     // Fire the init event.
     this.dispatchEventInit();
   };
@@ -181,6 +191,7 @@ export default class Menu extends AriaComponent {
    */
   controllerHandleClick = (event) => {
     event.preventDefault();
+    event.stopPropagation();
 
     this.activeDisclosureId = event.target.id;
   };
@@ -194,6 +205,27 @@ export default class Menu extends AriaComponent {
     if (! this.element.contains(event.relatedTarget)) {
       // Close any active submenu Disclosure.
       this.activeDisclosureId = undefined;
+    }
+  };
+
+  /**
+   * Add the aria-active attribute to the clicked menu item, removing it from
+   * any other item in the processs.
+   *
+   * @param {Event} event The Event object.
+   */
+  menuHandleClick = (event) => {
+    const { target: clickTarget } = event;
+
+    if (
+      clickTarget.nodeName === 'A'
+      && null !== clickTarget.getAttribute('href')
+      && ! clickTarget.hasAttribute('aria-current')
+    ) {
+      this.ariaCurrentPage?.removeAttribute('aria-current');
+      clickTarget.setAttribute('aria-current', 'page');
+
+      this.ariaCurrentPage = clickTarget;
     }
   };
 
@@ -222,6 +254,7 @@ export default class Menu extends AriaComponent {
     controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);
     this.off('focusout', this.menuHandleFocusout);
+    this.off('click', this.menuHandleClick);
 
     this.disclosures = [];
 

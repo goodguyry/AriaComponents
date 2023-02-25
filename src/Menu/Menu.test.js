@@ -25,7 +25,7 @@ const menuMarkup = `
         </ul>
       </li>
       <li><a class="fourth-item" href="#example.com">Pie</a></li>
-      <li><a class="last-item" href="#example.com" aria-current="true">Ice Cream</a></li>
+      <li><a class="last-item" href="#example.com" aria-current="page">Ice Cream</a></li>
       <li><a class="exclude" href="#example.com">Something Gross</a></li>
     </ul>
   </nav>
@@ -206,7 +206,7 @@ describe('The Menu should initialize as expected', () => {
     expect(detail.activeDisclosure).toBeUndefined();
   });
 
-  test.skip('Clicking a menu link re-sets aria-current', async () => {
+  test('Clicking a menu link re-sets aria-current', async () => {
     const menuLink = document.querySelector('.sublist2-first-item');
     const current = document.querySelector('[aria-current="page"]');
 
