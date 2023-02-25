@@ -15,6 +15,13 @@ export default class Menu extends AriaComponent {
   #activeDisclosure = undefined;
 
   /**
+   * Prevent focusout from propagating from the controller.
+   *
+   * @param {Event} event The Event object.
+   */
+  static controllerHandleFocusout = (event) => event.stopPropagation();
+
+  /**
    * Create a Menu.
    * @constructor
    *
@@ -139,6 +146,7 @@ export default class Menu extends AriaComponent {
     this.addAttribute(target, 'aria-hidden', true);
 
     controller.addEventListener('click', this.controllerHandleClick);
+    controller.addEventListener('focusout', this.constructor.controllerHandleFocusout);
     document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
     const disclosure = {
@@ -158,6 +166,10 @@ export default class Menu extends AriaComponent {
     this.disclosures = Array.from(this.element.children)
       .reduce(this.initSubmenuDisclosure, []);
 
+    if (0 < this.disclosures.length) {
+      this.on('focusout', this.menuHandleFocusout);
+    }
+
     // Fire the init event.
     this.dispatchEventInit();
   };
@@ -168,7 +180,21 @@ export default class Menu extends AriaComponent {
    * @param {Event} event The Event object.
    */
   controllerHandleClick = (event) => {
+    event.preventDefault();
+
     this.activeDisclosureId = event.target.id;
+  };
+
+  /**
+   * Handle menu focusout events.
+   *
+   * @param {Event} event The Event object.
+   */
+  menuHandleFocusout = (event) => {
+    if (! this.element.contains(event.relatedTarget)) {
+      // Close any active submenu Disclosure.
+      this.activeDisclosureId = undefined;
+    }
   };
 
   /**
@@ -193,7 +219,9 @@ export default class Menu extends AriaComponent {
     });
 
     controller.removeEventListener('click', this.controllerHandleClick);
+    controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);
+    this.off('focusout', this.menuHandleFocusout);
 
     this.disclosures = [];
 

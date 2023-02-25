@@ -87,12 +87,11 @@ describe('The Menu should initialize as expected', () => {
   test('Click events on the Disclosure controller updates attributes as expected', async () => {
     // Click to open.
     await user.click(firstController);
+    expect(onStateChange).toHaveBeenCalledTimes(1);
 
     expect(menu.activeDisclosure).toStrictEqual(menu.disclosures[0]);
     expect(firstController.getAttribute('aria-expanded')).toEqual('true');
     expect(firstTarget.getAttribute('aria-hidden')).toEqual('false');
-
-    expect(onStateChange).toHaveBeenCalledTimes(1);
 
     const { detail: detailFirst } = getEventDetails(onStateChange);
     expect(detailFirst.instance).toStrictEqual(menu);
@@ -100,12 +99,11 @@ describe('The Menu should initialize as expected', () => {
 
     // Click again to close.
     await user.click(firstController);
+    expect(onStateChange).toHaveBeenCalledTimes(2);
 
     expect(menu.activeDisclosure).toBeUndefined();
     expect(firstController.getAttribute('aria-expanded')).toEqual('false');
     expect(firstTarget.getAttribute('aria-hidden')).toEqual('true');
-
-    expect(onStateChange).toHaveBeenCalledTimes(2);
 
     const { detail: detailSecond } = getEventDetails(onStateChange);
     expect(detailSecond.instance).toStrictEqual(menu);
@@ -113,11 +111,12 @@ describe('The Menu should initialize as expected', () => {
   });
 
   test('Only one submenu Disclosure is allowed to be expanded', async () => {
-    // firstController.focus();
     await user.click(firstController);
-    // await user.keyboard('{ }');
+    expect(onStateChange).toHaveBeenCalledTimes(3);
 
     expect(menu.activeDisclosure).toStrictEqual(menu.disclosures[0]);
+    expect(menu.activeDisclosureId).toBe(firstController.id);
+
     expect(firstController.getAttribute('aria-expanded')).toEqual('true');
     expect(firstTarget.getAttribute('aria-hidden')).toEqual('false');
 
@@ -125,24 +124,21 @@ describe('The Menu should initialize as expected', () => {
     expect(secondController.getAttribute('aria-expanded')).toEqual('false');
     expect(secondTarget.getAttribute('aria-hidden')).toEqual('true');
 
-    expect(onStateChange).toHaveBeenCalledTimes(3);
-
     const { detail: detailFirst } = getEventDetails(onStateChange);
     expect(detailFirst.instance).toStrictEqual(menu);
     expect(detailFirst.activeDisclosure).toStrictEqual(menu.disclosures[0]);
 
-    // secondController.focus();
     await user.click(secondController);
-    // await user.keyboard('{Enter}');
+    expect(onStateChange).toHaveBeenCalledTimes(4);
 
     expect(menu.activeDisclosure).toStrictEqual(menu.disclosures[1]);
+    expect(menu.activeDisclosureId).toBe(secondController.id);
+
     expect(secondController.getAttribute('aria-expanded')).toEqual('true');
     expect(secondTarget.getAttribute('aria-hidden')).toEqual('false');
 
     expect(firstController.getAttribute('aria-expanded')).toEqual('false');
     expect(firstTarget.getAttribute('aria-hidden')).toEqual('true');
-
-    expect(onStateChange).toHaveBeenCalledTimes(4);
 
     const { detail: detailSecond } = getEventDetails(onStateChange);
     expect(detailSecond.instance).toStrictEqual(menu);
@@ -151,6 +147,7 @@ describe('The Menu should initialize as expected', () => {
 
   test('The Disclosure closes when the Escape key is pressed', async () => {
     await user.keyboard('{Escape}');
+    expect(onStateChange).toHaveBeenCalledTimes(5);
 
     // Verify both are hidden.
     expect(firstController.getAttribute('aria-expanded')).toEqual('false');
@@ -158,43 +155,55 @@ describe('The Menu should initialize as expected', () => {
     expect(firstTarget.getAttribute('aria-hidden')).toEqual('true');
     expect(secondTarget.getAttribute('aria-hidden')).toEqual('true');
 
-    expect(onStateChange).toHaveBeenCalledTimes(5);
+    expect(document.activeElement).toBe(secondController);
 
     const { detail: detailSecond } = getEventDetails(onStateChange);
     expect(detailSecond.instance).toStrictEqual(menu);
     expect(detailSecond.activeDisclosure).toBeUndefined();
   });
 
-  test.skip('The Disclosure remains open when Tabbing from the last child', async () => {
-    menu.disclosures[0].expanded = true;
+  test("The Disclosure remains open when Tabbing from the target's last child", async () => {
+    menu.activeDisclosureId = secondController.id;
+    expect(onStateChange).toHaveBeenCalledTimes(6);
 
-    const lastItem = document.querySelector('.sublist1-last-item');
-    lastItem.focus();
-    await user.keyboard('{Tab}');
+    expect(secondController.getAttribute('aria-expanded')).toEqual('true');
+    expect(secondTarget.getAttribute('aria-hidden')).toEqual('false');
 
-    expect(menu.disclosures[0].expanded).toBe(true);
-  });
-
-  // Cover potential regressions.
-  test.skip('The Disclosure remains open when tabbing back from the last child', async () => {
-    menu.disclosures[0].expanded = true;
-
-    const lastItem = document.querySelector('.sublist1-last-item');
-    lastItem.focus();
-    await user.keyboard('{Shift>}{Tab}{/Shift}');
-
-    expect(menu.disclosures[0].expanded).toBe(true);
-  });
-
-  test.skip('The Disclosure remains open when Tabbing from the last child', async () => {
-    menu.disclosures[1].expanded = true;
-
-    const lastLink = document.querySelector('.exclude');
-    lastLink.focus();
-    expect(menu.disclosures[1].expanded).toBe(true);
+    const lastTargetItem = document.querySelector('.sublist2-last-item');
+    lastTargetItem.focus();
 
     await user.keyboard('{Tab}');
-    expect(menu.disclosures[1].expanded).toBe(false);
+
+    // Has not incremented.
+    expect(onStateChange).toHaveBeenCalledTimes(6);
+
+    expect(secondController.getAttribute('aria-expanded')).toEqual('true');
+    expect(secondTarget.getAttribute('aria-hidden')).toEqual('false');
+
+    const { detail } = getEventDetails(onStateChange);
+    expect(detail.instance).toStrictEqual(menu);
+    expect(detail.activeDisclosure).toStrictEqual(menu.disclosures[1]);
+  });
+
+  test('Any active Disclosure closes when Tabbing from the last interactive Menu child', async () => {
+    menu.activeDisclosureId = firstController.id;
+    expect(onStateChange).toHaveBeenCalledTimes(7);
+
+    expect(firstController.getAttribute('aria-expanded')).toEqual('true');
+    expect(firstTarget.getAttribute('aria-hidden')).toEqual('false');
+
+    const lastMenuItem = document.querySelector('.exclude');
+    lastMenuItem.focus();
+
+    await user.keyboard('{Tab}');
+    expect(onStateChange).toHaveBeenCalledTimes(8);
+
+    expect(firstController.getAttribute('aria-expanded')).toEqual('false');
+    expect(firstTarget.getAttribute('aria-hidden')).toEqual('true');
+
+    const { detail } = getEventDetails(onStateChange);
+    expect(detail.instance).toStrictEqual(menu);
+    expect(detail.activeDisclosure).toBeUndefined();
   });
 
   test.skip('Clicking a menu link re-sets aria-current', async () => {
