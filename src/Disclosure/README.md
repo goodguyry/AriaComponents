@@ -11,6 +11,7 @@ Class for independently revealing and hiding inline content.
 * [Properties](#properties)
 * [Events](#events)
 * [Modules](#modules)
+* [Additional Information](#additional-information)
 * [References](#references)
 
 ## Constructor
@@ -100,6 +101,10 @@ Mimics a button for non-button controllers by using `role=button` and mapping th
 **`UseHiddenAttribute`**
 
 Hides the target element with the `hidden` attribute, removing the need to do it  with CSS. Note that the use of the hidden attribute can hinder animations.
+
+## Additional Information
+
+The `loadOpen` option is removed, in part because it's possible to achieve the same result without the option: Add `aria-expanded="true"` to the controling element and `aria-hidden="false"` to the target element and the attribute will treat it as expanded by default.
 
 ## References
 
