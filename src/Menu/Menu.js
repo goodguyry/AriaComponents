@@ -194,7 +194,7 @@ export default class Menu extends AriaComponent {
       this.updateAttribute(disclosure.controller, 'aria-expanded', expanded);
       this.updateAttribute(disclosure.target, 'aria-hidden', ! expanded);
     }
-  }
+  };
 
   /**
    * Activate the submenu Disclosure on controller click.
@@ -284,12 +284,14 @@ export default class Menu extends AriaComponent {
   destroy = () => {
     // Clear submenu Disclosure attributes.
     this.disclosures.forEach((disclosure) => {
-      this.removeAttributes(disclosure.controller);
-      this.removeAttributes(disclosure.target);
+      const { controller, target } = disclosure;
 
-      disclosure.controller.removeEventListener('click', this.controllerHandleClick);
-      disclosure.controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
-      disclosure.controller.removeEventListener('keydown', this.controllerHandleKeydown);
+      this.removeAttributes(controller);
+      this.removeAttributes(target);
+
+      controller.removeEventListener('click', this.controllerHandleClick);
+      controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
+      controller.removeEventListener('keydown', this.controllerHandleKeydown);
     });
 
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);

@@ -36,7 +36,6 @@ document.body.innerHTML = menuMarkup;
 
 // Collect references to DOM elements.
 const list = document.querySelector('.menu');
-const sublistOne = document.querySelector('.sublist1');
 
 const firstController = document.querySelector('.first-item');
 const firstTarget = document.getElementById('first-disclosure');
@@ -166,7 +165,7 @@ describe('The Menu should initialize as expected', () => {
     expect(detail.activeDisclosure).toBeUndefined();
   });
 
-  test("The Disclosure remains open when Tabbing from the target's last child", async () => {
+  test('The Disclosure remains open when Tabbing from the target\'s last child', async () => {
     menu.activeDisclosureId = secondController.id;
     expect(onStateChange).toHaveBeenCalledTimes(6);
 
