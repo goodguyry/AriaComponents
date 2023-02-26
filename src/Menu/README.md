@@ -62,6 +62,8 @@ Global methods and properties documented at [`src/README`](../).
 
 **`activeDisclosure`** The active submenu Disclosure, if any.
 
+**`activeDisclosureId`** Set and get the active submenu Disclosure by ID.
+
 ## Events
 
 Events are namespaced by their component to avoid clashes with nested components.
