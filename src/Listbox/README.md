@@ -3,6 +3,16 @@ Listbox
 
 Class for setting up an interactive Listbox element.
 
+## Contents
+
+* [Example](#example)
+* [Constructor](#constructor)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [Additional Information](#additional-information)
+* [References](#references)
+
 ## Example
 
 ```html
@@ -88,6 +98,12 @@ Fired after the component is destroyed.
 `event.detail.instance` The class instance from which the event originated.
 
 `event.detail.element` The element passed to the constructor.
+
+## Additional Information
+
+The _WAI-ARIA Roles, States, and Properties_ section of [the Listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/#wai-ariaroles,states,andproperties) states:
+
+> If options are arranged horizontally, the element with role `listbox` has `aria-orientation` set to `horizontal`. The default value of `aria-orientation` for `listbox` is `vertical`.
 
 ## References
 

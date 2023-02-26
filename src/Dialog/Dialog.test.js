@@ -33,7 +33,6 @@ document.body.innerHTML = dialogMarkup;
 
 const controller = document.querySelector('[aria-controls="dialog"]');
 const target = document.getElementById('dialog');
-const outsideLink = document.querySelector('.outside-link');
 
 // Cached elements.
 const firstItem = target.querySelector('button');

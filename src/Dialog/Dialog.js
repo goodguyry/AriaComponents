@@ -224,9 +224,7 @@ export default class Dialog extends AriaComponent {
    * @param {Event} event The Event object.
    */
   bodyHandleKeydown = (event) => {
-    const { key, target: eventTarget } = event;
-
-    switch (key) {
+    switch (event.key) {
       case 'Escape':
         this.hide();
         break;

@@ -3,6 +3,17 @@ Disclosure
 
 Class for independently revealing and hiding inline content.
 
+## Contents
+
+* [Constructor](#constructor)
+  * [Available Options](#available-options)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [Modules](#modules)
+* [Additional Information](#additional-information)
+* [References](#references)
+
 ## Constructor
 
 ```jsx
@@ -16,12 +27,6 @@ The activating element is required to have an `aria-controls` attribute with a v
 **`options`** - _(Optional)_ Configuration options.
 
 ### Available Options
-
-**`loadOpen`** - Set the Disclosure open on load. _Default is `false`_
-
-**`allowOutsideClick`** - Keep the Disclosure open when the user interacts with external content. _Default is `true`_
-
-**`autoClose`** - Automatically close the Disclosure after tabbing from its last child. _Default is `false`_
 
 **`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
@@ -96,6 +101,10 @@ Mimics a button for non-button controllers by using `role=button` and mapping th
 **`UseHiddenAttribute`**
 
 Hides the target element with the `hidden` attribute, removing the need to do it  with CSS. Note that the use of the hidden attribute can hinder animations.
+
+## Additional Information
+
+The `loadOpen` option is removed, in part because it's possible to achieve the same result without the option: Add `aria-expanded="true"` to the controling element and `aria-hidden="false"` to the target element and the attribute will treat it as expanded by default.
 
 ## References
 

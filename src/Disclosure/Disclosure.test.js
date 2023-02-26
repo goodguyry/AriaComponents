@@ -52,11 +52,9 @@ describe('The Disclosure should initialize as expected', () => {
   test('The `init` event fires once', () => {
     expect(onInit).toHaveBeenCalledTimes(1);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onInit);
+    const { detail } = getEventDetails(onInit);
 
-      expect(detail.instance).toStrictEqual(disclosure);
-    });
+    expect(detail.instance).toStrictEqual(disclosure);
   });
 
   test('The Disclosure controller includes the expected attribute values', () => {
@@ -92,12 +90,10 @@ describe('The Disclosure should initialize as expected', () => {
     expect(controller.getAttribute('aria-expanded')).toEqual('false');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onStateChange);
+    const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.expanded).toBe(false);
-      expect(detail.instance).toStrictEqual(disclosure);
-    });
+    expect(detail.expanded).toBe(false);
+    expect(detail.instance).toStrictEqual(disclosure);
   });
 
   test('All attributes are removed from elements managed by the Disclosure', () => {
@@ -113,77 +109,19 @@ describe('The Disclosure should initialize as expected', () => {
     // Quick and dirty verification that the original markup is restored.
     expect(document.body.innerHTML).toEqual(disclosureMarkup);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onDestroy);
+    const { detail } = getEventDetails(onDestroy);
 
-      expect(detail.element).toStrictEqual(controller);
-      expect(detail.instance).toStrictEqual(disclosure);
-    });
-  });
-
-  describe('Disclosure with `allowOutsideClick` disabled', () => {
-    beforeAll(() => {
-      disclosure = new Disclosure(controller);
-      disclosure.allowOutsideClick = false;
-    });
-
-    test('The Disclosure closes when an external element is clicked', async () => {
-      await user.click(document.body);
-
-      expect(disclosure.expanded).toBe(false);
-      expect(controller.getAttribute('aria-expanded')).toEqual('false');
-      expect(target.getAttribute('aria-hidden')).toEqual('true');
-    });
-  });
-
-  describe('Disclosure with `autoClose` enabled', () => {
-    beforeAll(() => {
-      disclosure.autoClose = true;
-      disclosure.allowOutsideClick = true; // Restore default.
-    });
-
-    // Open the disclosure prior to each test.
-    beforeEach(() => {
-      disclosure.expanded = true;
-    });
-
-    test('The Disclosure closes when the Escape key is pressed', async () => {
-      controller.focus();
-      await user.keyboard('{Escape}');
-
-      expect(disclosure.expanded).toBe(false);
-      expect(document.activeElement).toEqual(controller);
-    });
-
-    test(
-      'The Disclosure closes and focus is moved to the controller when the Escape key is pressed',
-      async () => {
-        await user.keyboard('{Escape}');
-
-        expect(disclosure.expanded).toBe(false);
-        expect(document.activeElement).toEqual(controller);
-      }
-    );
-
-    test('The Disclosure closes when Tabbing from the last child', async () => {
-      domLastChild.focus();
-      await user.keyboard('{Tab}');
-
-      expect(disclosure.expanded).toBe(false);
-    });
-
-    test('The Disclosure remains open when tabbing back from the last child', async () => {
-      domLastChild.focus();
-      await user.keyboard('{Shift>}{Tab}{/Shift}');
-
-      expect(disclosure.expanded).toBe(true);
-    });
+    expect(detail.element).toStrictEqual(controller);
+    expect(detail.instance).toStrictEqual(disclosure);
   });
 });
 
-describe('Should accept static options', () => {
+describe('Should not overwrite existing attributes', () => {
   beforeAll(() => {
-    disclosure = new Disclosure(controller, { loadOpen: true });
+    controller.setAttribute('aria-expanded', 'true');
+    target.setAttribute('aria-hidden', 'false');
+
+    disclosure = new Disclosure(controller);
   });
 
   it('Should load open', () => expect(disclosure.expanded).toBe(true));
