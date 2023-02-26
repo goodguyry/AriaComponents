@@ -1,7 +1,7 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.4.0
+## 1.0.0
 
 A complete rewrite.
 
@@ -26,12 +26,12 @@ A complete rewrite.
 - Dialog and Listbox no longer extend Popup (#59, #85)
 - Use the `Dialog.closeButton` setter to configure the Dialog close button (#86)
 - Removes scarcely-used utilities and incorporates widely-used utilities into the component that uses them (#80, #81)
+- Menu no longer uses Disclosure internally (#96)
 
 **Added**
 
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
 - Logs a configuration error for misconfigured components (#51)
-- Adds an `autoClose` option to Disclosure and Menu (#75, #76)
 
 **Fixed**
 
@@ -49,6 +49,7 @@ A complete rewrite.
 - Utility functions are no longer exported (#80, #81)
 - Components no longer accept `onInit`, `onStateChange`, nor `onDestroy` callbacks (#55)
 - Removes the docs directory; example page now at [aria-components-examples](https://github.com/goodguyry/aria-components-examples/)
+- Menu no longer accepts the `loadOpen` nor `allowOutsideClick` options (#96)
 
 ## 0.3.1
 
