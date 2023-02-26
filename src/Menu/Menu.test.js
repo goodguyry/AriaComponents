@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { afterThis } from 'jest-after-this';
 import user from '@/.jest/user';
 import Menu from '.';
 
@@ -207,20 +206,21 @@ describe('The Menu should initialize as expected', () => {
     expect(detail.activeDisclosure).toBeUndefined();
   });
 
-  test('Clicking a menu link re-sets aria-current', async () => {
-    afterThis(() => {
-      // Clean up to reset attributes.
-      menuLink.removeAttribute('aria-current');
-      current.setAttribute('aria-current', 'page');
-    });
-
+  test('Space key on a menu link re-sets aria-current', async () => {
     const menuLink = document.querySelector('.sublist2-first-item');
     const current = document.querySelector('[aria-current="page"]');
 
-    await user.click(menuLink);
+    menuLink.focus();
+    await user.keyboard('{ }');
 
     expect(menuLink.getAttribute('aria-current')).toBe('page');
     expect(current.getAttribute('aria-current')).toBeNull();
+
+    current.focus();
+    await user.keyboard('{Enter}');
+
+    expect(current.getAttribute('aria-current')).toBe('page');
+    expect(menuLink.getAttribute('aria-current')).toBeNull();
   });
 
   test('All attributes are removed from elements managed by the Menu', () => {

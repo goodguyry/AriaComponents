@@ -179,7 +179,7 @@ export default class Menu extends AriaComponent {
 
     // Save the current page's link for later reference.
     this.ariaCurrentPage = this.element.querySelector('[aria-current="page"]');
-    this.on('click', this.menuHandleClick);
+    this.on('keydown', this.menuHandleKeydown);
 
     // Fire the init event.
     this.dispatchEventInit();
@@ -192,9 +192,6 @@ export default class Menu extends AriaComponent {
    */
   controllerHandleClick = (event) => {
     event.preventDefault();
-
-    // This is only applied to controlling elements, so it's safe to trap.
-    event.stopPropagation();
 
     this.activeDisclosureId = event.target.id;
   };
@@ -212,23 +209,24 @@ export default class Menu extends AriaComponent {
   };
 
   /**
-   * Add the aria-active attribute to the clicked menu item, removing it from
+   * Add the aria-active attribute to the focused menu item, removing it from
    * any other item in the processs.
    *
    * @param {Event} event The Event object.
    */
-  menuHandleClick = (event) => {
-    const { target: clickTarget } = event;
+  menuHandleKeydown = (event) => {
+    const { target, key } = event;
 
     if (
-      clickTarget.nodeName === 'A'
-      && null !== clickTarget.getAttribute('href')
-      && ! clickTarget.hasAttribute('aria-current')
+      [' ', 'Enter'].includes(key)
+      // Non-controller menu links.
+      && null !== target.getAttribute('href')
+      && ! target.hasAttribute('aria-current')
     ) {
       this.ariaCurrentPage?.removeAttribute('aria-current');
-      clickTarget.setAttribute('aria-current', 'page');
+      target.setAttribute('aria-current', 'page');
 
-      this.ariaCurrentPage = clickTarget;
+      this.ariaCurrentPage = target;
     }
   };
 
@@ -258,7 +256,7 @@ export default class Menu extends AriaComponent {
 
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);
     this.off('focusout', this.menuHandleFocusout);
-    this.off('click', this.menuHandleClick);
+    this.off('keydown', this.menuHandleKeydown);
 
     this.disclosures = [];
 
