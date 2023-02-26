@@ -151,6 +151,7 @@ export default class Menu extends AriaComponent {
 
     controller.addEventListener('click', this.controllerHandleClick);
     controller.addEventListener('focusout', this.constructor.controllerHandleFocusout);
+    controller.addEventListener('keydown', this.controllerHandleKeydown);
     document.body.addEventListener('keydown', this.bodyHandleKeydown);
 
     const disclosure = {
@@ -207,6 +208,24 @@ export default class Menu extends AriaComponent {
   };
 
   /**
+   * Toggle Disclosures on controller keydown.
+   *
+   * @param {Event} event The Event object.
+   */
+  controllerHandleKeydown = (event) => {
+    const { target, key } = event;
+
+    if (
+      [' ', 'Enter'].includes(key)
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      this.activeDisclosureId = target.id;
+    }
+  };
+
+  /**
    * Close any active submenu Disclosure when the menu no longer contains the
    * active element.
    *
@@ -229,8 +248,7 @@ export default class Menu extends AriaComponent {
 
     if (
       [' ', 'Enter'].includes(key)
-      // Non-controller menu links.
-      && null !== target.getAttribute('href')
+      && ! target.hasAttribute('aria-controls')
       && ! target.hasAttribute('aria-current')
     ) {
       this.ariaCurrentPage?.removeAttribute('aria-current');
@@ -262,6 +280,7 @@ export default class Menu extends AriaComponent {
 
       disclosure.controller.removeEventListener('click', this.controllerHandleClick);
       disclosure.controller.removeEventListener('focusout', this.constructor.controllerHandleFocusout);
+      disclosure.controller.removeEventListener('keydown', this.controllerHandleKeydown);
     });
 
     document.body.removeEventListener('keydown', this.bodyHandleKeydown);

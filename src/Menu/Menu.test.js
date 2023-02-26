@@ -215,12 +215,46 @@ describe('The Menu should initialize as expected', () => {
 
     expect(menuLink.getAttribute('aria-current')).toBe('page');
     expect(current.getAttribute('aria-current')).toBeNull();
+    expect(menu.ariaCurrentPage).toStrictEqual(menuLink);
 
     current.focus();
     await user.keyboard('{Enter}');
 
     expect(current.getAttribute('aria-current')).toBe('page');
     expect(menuLink.getAttribute('aria-current')).toBeNull();
+    expect(menu.ariaCurrentPage).toStrictEqual(current);
+  });
+
+  test('Disclosure controllers handle keydown events', async () => {
+    expect(menu.activeDisclosure).toBeUndefined();
+
+    firstController.focus();
+    await user.keyboard('{ }');
+    expect(onStateChange).toHaveBeenCalledTimes(9);
+
+    expect(menu.activeDisclosure).toStrictEqual(menu.disclosures[0]);
+    expect(menu.activeDisclosureId).toBe(firstController.id);
+
+    expect(firstController.getAttribute('aria-expanded')).toEqual('true');
+    expect(firstTarget.getAttribute('aria-hidden')).toEqual('false');
+
+    // Verify the second is hidden.
+    expect(secondController.getAttribute('aria-expanded')).toEqual('false');
+    expect(secondTarget.getAttribute('aria-hidden')).toEqual('true');
+
+    secondController.focus();
+    await user.keyboard('{Enter}');
+    expect(onStateChange).toHaveBeenCalledTimes(10);
+
+    expect(menu.activeDisclosure).toStrictEqual(menu.disclosures[1]);
+    expect(menu.activeDisclosureId).toBe(secondController.id);
+
+    expect(secondController.getAttribute('aria-expanded')).toEqual('true');
+    expect(secondTarget.getAttribute('aria-hidden')).toEqual('false');
+
+    // Verify the first is hidden.
+    expect(firstController.getAttribute('aria-expanded')).toEqual('false');
+    expect(firstTarget.getAttribute('aria-hidden')).toEqual('true');
   });
 
   test('All attributes are removed from elements managed by the Menu', () => {
