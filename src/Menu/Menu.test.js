@@ -146,6 +146,10 @@ describe('The Menu should initialize as expected', () => {
   });
 
   test('The Disclosure closes when the Escape key is pressed', async () => {
+    const link = document.querySelector('.sublist2-third-item');
+
+    // Focus a submenu item to test moving focus to the controller.
+    link.focus();
     await user.keyboard('{Escape}');
     expect(onStateChange).toHaveBeenCalledTimes(5);
 
@@ -157,9 +161,9 @@ describe('The Menu should initialize as expected', () => {
 
     expect(document.activeElement).toBe(secondController);
 
-    const { detail: detailSecond } = getEventDetails(onStateChange);
-    expect(detailSecond.instance).toStrictEqual(menu);
-    expect(detailSecond.activeDisclosure).toBeUndefined();
+    const { detail } = getEventDetails(onStateChange);
+    expect(detail.instance).toStrictEqual(menu);
+    expect(detail.activeDisclosure).toBeUndefined();
   });
 
   test("The Disclosure remains open when Tabbing from the target's last child", async () => {

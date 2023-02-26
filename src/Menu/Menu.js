@@ -264,8 +264,17 @@ export default class Menu extends AriaComponent {
    * @param {Event} event The Event object.
    */
   bodyHandleKeydown = (event) => {
-    if ('Escape' === event.key) {
+    if (
+      'Escape' === event.key
+      && undefined !== this.activeDisclosureId
+    ) {
+      const { controller, target } = this.activeDisclosure;
+
       this.activeDisclosureId = undefined;
+
+      if (target.contains(document.activeElement)) {
+        controller.focus();
+      }
     }
   };
 
