@@ -27,12 +27,6 @@ The activating element is required to have an `aria-controls` attribute with a v
 
 ### Available Options
 
-**`loadOpen`** - Set the Disclosure open on load. _Default is `false`_
-
-**`allowOutsideClick`** - Keep the Disclosure open when the user interacts with external content. _Default is `true`_
-
-**`autoClose`** - Automatically close the Disclosure after tabbing from its last child. _Default is `false`_
-
 **`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
 ## Instance Methods

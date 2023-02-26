@@ -18,14 +18,6 @@ export default class Disclosure extends AriaComponent {
   #expanded = false;
 
   /**
-   * Initial `loadOpen` option value.
-   * @private
-   *
-   * @type {Boolean}
-   */
-  #optionLoadOpen = false;
-
-  /**
    * Create a Disclosure.
    * @constructor
    *
@@ -47,74 +39,13 @@ export default class Disclosure extends AriaComponent {
     this.controller = controller;
     this.target = target;
 
-    // Merge options with default values.
-    const {
-      loadOpen,
-      allowOutsideClick,
-      autoClose,
-    } = {
-      /**
-       * Set the Disclosure open on load.
-       *
-       * @type {boolean}
-       */
-      loadOpen: this.#optionLoadOpen,
-
-      /**
-       * Keep the Disclosure open when the user interacts with external content.
-       *
-       * @type {boolean}
-       */
-      allowOutsideClick: true,
-
-      /**
-       * Automatically close the Disclosure after tabbing from its last child.
-       *
-       * @type {boolean}
-       */
-      autoClose: false,
-
-      ...options,
-    };
-
-    // Save static options.
-    this.#optionLoadOpen = loadOpen;
-
-    // Set initial dynamic options.
-    this.allowOutsideClick = allowOutsideClick;
-    this.autoClose = autoClose;
-
     // Update component state directly.
-    this.#expanded = this.#optionLoadOpen;
+    this.#expanded = (
+      'true' === this.controller.getAttribute('aria-expanded')
+      && 'false' === this.target.getAttribute('aria-hidden')
+    );
 
     this.init();
-  }
-
-  /**
-   * Enables the autoClose option.
-   *
-   * @param {bool} shouldAutoClose Whether the Disclosure should close automatically.
-   */
-  set autoClose(shouldAutoClose) {
-    if (shouldAutoClose) {
-      this.target.addEventListener('keydown', this.targetHandleKeydown);
-    } else {
-      this.target.removeEventListener('keydown', this.targetHandleKeydown);
-    }
-  }
-
-  /**
-   * Manages the allowOutsideClick option.
-   *
-   * @param {bool} shouldAllowOutsideClick Whether the Disclosure remain open
-   *                                        when the user interacts with external content
-   */
-  set allowOutsideClick(shouldAllowOutsideClick) {
-    if (shouldAllowOutsideClick) {
-      document.body.removeEventListener('click', this.bodyHandleClick);
-    } else {
-      document.body.addEventListener('click', this.bodyHandleClick);
-    }
   }
 
   /**
@@ -153,6 +84,7 @@ export default class Disclosure extends AriaComponent {
   init = () => {
     /**
      * Collect the target element's interactive child elements.
+     * @todo This should all be moved to `manageTabIndex`.
      *
      * @type {array}
      */
@@ -177,9 +109,7 @@ export default class Disclosure extends AriaComponent {
      * rather than the `hidden` attribute, means authors must hide the target
      * element via CSS.
      */
-    if (! this.expanded) {
-      this.addAttribute(this.target, 'aria-hidden', 'true');
-    }
+    this.addAttribute(this.target, 'aria-hidden', ! this.expanded);
 
     // Add event listeners
     this.controller.addEventListener('click', this.controllerHandleClick);
@@ -226,35 +156,6 @@ export default class Disclosure extends AriaComponent {
   };
 
   /**
-   * Close the Disclosure when tabbing forward from the last interactve child.
-   *
-   * @param {Event} event The event object.
-   */
-  targetHandleKeydown = (event) => {
-    if (
-      'Tab' === event.key && ! event.shiftKey
-      && this.lastInteractiveChild === document.activeElement
-    ) {
-      this.close();
-    }
-  };
-
-  /**
-   * Close the Disclosure when the user clicks outside of the target.
-   *
-   * @param {Event} event The Event object.
-   */
-  bodyHandleClick = (event) => {
-    if (
-      this.expanded
-      && event.target !== this.controller
-      && ! this.target.contains(event.target)
-    ) {
-      this.close();
-    }
-  };
-
-  /**
    * Remove all ARIA attributes and event listeners added by this class.
    */
   destroy = () => {
@@ -264,12 +165,8 @@ export default class Disclosure extends AriaComponent {
 
     // Remove event listeners.
     this.controller.removeEventListener('click', this.controllerHandleClick);
-    document.body.removeEventListener('click', this.bodyHandleClick);
     this.controller.removeEventListener('keydown', this.componentHandleKeydown);
     this.target.removeEventListener('keydown', this.componentHandleKeydown);
-
-    // Reset initial state.
-    this.#expanded = this.#optionLoadOpen;
 
     // Cleanup after modules.
     this.cleanupModules();
