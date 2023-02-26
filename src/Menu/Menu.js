@@ -77,16 +77,10 @@ export default class Menu extends AriaComponent {
     );
 
     // Toggle the Disclosure's state.
-    if (undefined !== disclosure) {
-      this.updateAttribute(disclosure.controller, 'aria-expanded', ! isActiveId);
-      this.updateAttribute(disclosure.target, 'aria-hidden', isActiveId);
-    }
+    this.setDisclosureState(disclosure, ! isActiveId);
 
     // Deactivate the currently-active disclosure, if any.
-    if (undefined !== this.activeDisclosureId) {
-      this.updateAttribute(this.activeDisclosure.controller, 'aria-expanded', false);
-      this.updateAttribute(this.activeDisclosure.target, 'aria-hidden', true);
-    }
+    this.setDisclosureState(this.activeDisclosure, false);
 
     // If `disclosureId` was the active ID, then it is no longer active.
     this.#activeDisclosure = isActiveId ? undefined : disclosure;
@@ -184,6 +178,19 @@ export default class Menu extends AriaComponent {
     // Fire the init event.
     this.dispatchEventInit();
   };
+
+  /**
+   * Update attributes based on expanded state.
+   *
+   * @param {object} disclosure The Disclosure to update.
+   * @param {boolean} expanded  The expected updated Disclosure state.
+   */
+  setDisclosureState = (disclosure, expanded) => {
+    if (undefined !== disclosure) {
+      this.updateAttribute(disclosure.controller, 'aria-expanded', expanded);
+      this.updateAttribute(disclosure.target, 'aria-hidden', ! expanded);
+    }
+  }
 
   /**
    * Activate the submenu Disclosure on controller click.
