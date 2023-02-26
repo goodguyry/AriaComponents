@@ -146,6 +146,9 @@ export default class Menu extends AriaComponent {
     this.addAttribute(controller, 'aria-expanded', false);
     this.addAttribute(target, 'aria-hidden', true);
 
+    // Do this last to be sure the target has an ID.
+    this.addAttribute(controller, 'aria-controls', target.id);
+
     controller.addEventListener('click', this.controllerHandleClick);
     controller.addEventListener('focusout', this.constructor.controllerHandleFocusout);
     document.body.addEventListener('keydown', this.bodyHandleKeydown);
