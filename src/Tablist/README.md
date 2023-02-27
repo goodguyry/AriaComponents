@@ -4,6 +4,18 @@ Tablist
 Class for implimenting a tabs widget for sectioning content and displaying one 
 at a time.
 
+## Contents
+
+* [Example](#example)
+* [Constructor](#constructor)
+  * [Available Options](#available-options)
+* [Instance Methods](#instance-methods)
+* [Properties](#properties)
+* [Events](#events)
+* [Modules](#modules)
+* [Additional Information](#additional-information)
+* [References](#references)
+
 ## Example
 
 ```html
@@ -127,6 +139,21 @@ Removes inactive tabpanels' interactive children from the tab index.
 
 Hides inactive tabels with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
 
+**`UseVerticalTabs`**
+
+Updates keyboard handling to support a vertical tablist, where the Up and Down arrow keys navigate the tablist.
+
+## Additional Information
+
+Authors are responsible for providing a label for the Tablist. See ["Role, Property, State, and Tabindex Attributes"](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-automatic/#rps_label) for more.
+
+> If the tab list has a visible label, the element with role tablist has aria-labelledby set to a value that refers to the labelling element. Otherwise, the tablist element has a label provided by aria-label.
+
+The recommendation is to only auto-active tabs as they're selected if the associated panel's content [isn't preloaded](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/). Otherwise, we can use the `AutomaticActivation` module:
+
+```jsx
+import Tablist, { AutomaticActivation } from 'aria-components/tablist';
+```
 
 ## References
 

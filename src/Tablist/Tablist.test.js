@@ -20,13 +20,12 @@ const tablistMarkup = `
   </div>
   <div id="second-panel" class="panel">
     <h1>The Article Title</h1>
-    <p>Lorem ipsum dolor sit amet, <a href="example.com/second">consectetur</a>
-    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-    officia deserunt mollit anim id est laborum.</p>
+    <p>Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum.</p>
   </div>
   <div id="third-panel" class="panel">
     <h1>The Article Title</h1>
@@ -83,11 +82,9 @@ describe('The Tablist should initialize as expected', () => {
   test('The `init` event fires once', () => {
     expect(onInit).toHaveBeenCalledTimes(1);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onInit);
+    const { detail } = getEventDetails(onInit);
 
-      expect(detail.instance).toStrictEqual(tablist);
-    });
+    expect(detail.instance).toStrictEqual(tablist);
   });
 
   test('The Tablist elements includes the expected attribute values and overlay element', () => {
@@ -101,8 +98,10 @@ describe('The Tablist should initialize as expected', () => {
     const tabLinks = tabs.querySelectorAll('a[href]');
     Array.from(tabLinks).forEach((tab, index) => {
       expect(tab.getAttribute('role')).toEqual('tab');
-      expect(tab.getAttribute('aria-selected')).toEqual((0 === index) ? 'true' : null);
+      expect(tab.getAttribute('aria-selected')).toEqual((0 === index));
+      // When focus moves into the tab list, places focus on the active tab element.
       expect(tab.getAttribute('tabindex')).toEqual((0 === index) ? null : '-1');
+      expect(tab.getAttribute('aria-controls')).toEqual(panel[index].id);
       expect(tab.id).not.toBeNull();
     });
 
@@ -117,6 +116,8 @@ describe('The Tablist should initialize as expected', () => {
       expect(panel.id).not.toBeNull();
     });
   });
+
+  // @todo When the tabpanel does not contain any focusable elements or the first element with content is not focusable, the tabpanel should set tabindex="0" to include it in the tab sequence of the page.
 
   describe('Tablist methods work as expected', () => {
     test('The specified tab is activated', () => {
@@ -157,12 +158,10 @@ describe('The Tablist should initialize as expected', () => {
       expect(tablist.activeIndex).toBe(1);
       expect(onStateChange).toHaveBeenCalled();
 
-      return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onStateChange);
+      const { detail } = getEventDetails(onStateChange);
 
-        expect(detail.activeIndex).toBe(1);
-        expect(detail.instance).toStrictEqual(tablist);
-      });
+      expect(detail.activeIndex).toBe(1);
+      expect(detail.instance).toStrictEqual(tablist);
     });
   });
 
@@ -232,6 +231,12 @@ describe('The Tablist should initialize as expected', () => {
       expect(document.activeElement).toEqual(thirdTab);
     });
 
+    // @todo When the tab list contains the focus, moves focus to the next element in the page tab sequence outside the tablist, which is the tabpanel unless the first element containing meaningful content inside the tabpanel is focusable.
+
+    // @todo When focus is on a tab, Space or Enter: Activates the tab if it was not activated automatically on focus.
+
+    // @todo When focus is on a tab, Shift + F10: If the tab has an associated popup menu, opens the menu.
+
     test('All DOM attributes are removed from elements managed by this component', () => {
       tablist.destroy();
       expect(tabs.getAttribute('role')).toBeNull();
@@ -262,12 +267,10 @@ describe('The Tablist should initialize as expected', () => {
       expect(document.body.innerHTML).toEqual(tablistMarkup);
 
       expect(onDestroy).toHaveBeenCalledTimes(1);
-      return Promise.resolve().then(() => {
-        const { detail } = getEventDetails(onDestroy);
+      const { detail } = getEventDetails(onDestroy);
 
-        expect(detail.element).toStrictEqual(tabs);
-        expect(detail.instance).toStrictEqual(tablist);
-      });
+      expect(detail.element).toStrictEqual(tabs);
+      expect(detail.instance).toStrictEqual(tablist);
     });
   });
 });
