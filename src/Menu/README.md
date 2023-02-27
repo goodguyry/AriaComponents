@@ -62,7 +62,9 @@ Global methods and properties documented at [`src/README`](../).
 
 **`activeDisclosure`** The active submenu Disclosure, if any.
 
-**`activeDisclosureId`** Set and get the active submenu Disclosure by ID.
+**`activeDisclosureId`** _(setter)_ Set the active submenu Disclosure by ID and update submenu attributes.
+
+**`activeDisclosureId`** _(getter)_ Get the active submenu Disclosure ID.
 
 ## Events
 
