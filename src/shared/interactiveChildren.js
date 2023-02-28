@@ -1,29 +1,41 @@
+// List of possible active child element selectors
+const interactiveChildSelector = [
+  'a[href]',
+  'area[href]',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'button:not([disabled])',
+  'iframe',
+  'object',
+  'embed',
+  '[contenteditable]',
+  '[tabindex]:not([tabindex^="-"])',
+].join(',');
+
 /**
  * Collect all interactive child elements.
  *
- * @param {HTMLElement} target The element in which to search for interactive children.
- *
+ * @param {HTMLElement} target.  The element in which to search for interactive children.
+ * @param {String}      selector The interactive child selector,
  * @return {Array}
  */
-function interactiveChildren(target) {
-  // List of possible active child element selectors
-  const selectors = [
-    'a[href]',
-    'area[href]',
-    'input:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'button:not([disabled])',
-    'iframe',
-    'object',
-    'embed',
-    '[contenteditable]',
-    '[tabindex]:not([tabindex^="-"])',
-  ].join(',');
-
-  const interactiveElements = target.querySelectorAll(selectors);
-
-  return Array.from(interactiveElements);
+function hasInteractiveChildren(target, selector = interactiveChildSelector) {
+  return (null !== target.querySelector(selector));
 }
 
-export default interactiveChildren;
+/**
+ * Collect all interactive child elements.
+ *
+ * @param {HTMLElement} target.  The element in which to search for interactive children.
+ * @param {String}      selector The interactive child selector,
+ * @return {Array}
+ */
+function interactiveChildren(target, selector = interactiveChildSelector) {
+  return Array.from(target.querySelectorAll(selector));
+}
+
+export {
+  interactiveChildren,
+  hasInteractiveChildren,
+};

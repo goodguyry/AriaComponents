@@ -1,4 +1,4 @@
-import interactiveChildren from '../../shared/interactiveChildren';
+import { interactiveChildren } from '../../shared/interactiveChildren';
 
 /**
  * Tablist module for managing tabIndex for target interactive children.
