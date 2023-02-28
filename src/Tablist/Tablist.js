@@ -338,6 +338,26 @@ export default class Tablist extends AriaComponent {
         break;
       }
 
+      /*
+       * Activate the tab.
+       */
+      case ' ':
+      case 'Enter': {
+        const { target } = event;
+        const targetIndex = this.tabLinks.indexOf(target);
+
+        // Don't act when the tab is already active.
+        if (
+          targetIndex !== this.activeIndex
+          && this.tabLinks.includes(target)
+        ) {
+          event.preventDefault();
+
+          this.switchTo(targetIndex);
+        }
+        break;
+      }
+
       // fuggitaboutit.
       default:
         break;
@@ -350,15 +370,17 @@ export default class Tablist extends AriaComponent {
    * @param {Event} event The event object.
    */
   tabsHandleClick = (event) => {
-    const { target } = event;
     event.preventDefault();
 
-    // Don't act when an active tab is clicked.
+    const { target } = event;
+    const targetIndex = this.tabLinks.indexOf(target);
+
+    // Don't act when the tab is already active.
     if (
-      'true' !== target.getAttribute('aria-selected')
+      targetIndex !== this.activeIndex
       && this.tabLinks.includes(target)
     ) {
-      this.switchTo(this.tabLinks.indexOf(target));
+      this.switchTo(targetIndex);
     }
   };
 

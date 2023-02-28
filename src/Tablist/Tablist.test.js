@@ -236,8 +236,19 @@ describe('The Tablist should initialize as expected', () => {
       expect(document.activeElement).toEqual(thirdTab);
     });
 
+    test('Space or Enter: Activates the tab', async () => {
+      tablist.switchTo(1);
 
-    // @todo When focus is on a tab, Space or Enter: Activates the tab if it was not activated automatically on focus.
+      firstTab.focus();
+      await user.keyboard('{ }');
+
+      expect(tablist.activeIndex).toBe(0);
+
+      thirdTab.focus();
+      await user.keyboard('{Enter}');
+
+      expect(tablist.activeIndex).toBe(2);
+    });
 
     // @todo When focus is on a tab, Shift + F10: If the tab has an associated popup menu, opens the menu.
 
