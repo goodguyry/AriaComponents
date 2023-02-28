@@ -1,5 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../shared/getElementPair';
+import { hasInteractiveChildren } from '../shared/interactiveChildren';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -45,6 +46,20 @@ export default class Tablist extends AriaComponent {
      * @type {HTMLULElement|HTMLOLElement}
      */
     this.tabs = tabs;
+
+    /**
+     * Tablist anchor elements.
+     *
+     * @type {array}
+     */
+    this.tabLinks = [];
+
+    /**
+     * Tablist panels.
+     *
+     * @type {array}
+     */
+    this.panels = [];
 
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(tabs.nodeName)) {
@@ -128,20 +143,6 @@ export default class Tablist extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init = () => {
-    /**
-     * Tablist anchor elements.
-     *
-     * @type {array}
-     */
-    this.tabLinks = [];
-
-    /**
-     * Tablist panels.
-     *
-     * @type {array}
-     */
-    this.panels = [];
-
     const listItems = Array.from(this.tabs.children);
     const listItemsLength = listItems.length;
 
@@ -219,6 +220,10 @@ export default class Tablist extends AriaComponent {
 
       // All but the first tab should be hidden by default.
       this.addAttribute(panel, 'aria-hidden', (this.activeIndex !== index));
+
+      if (! hasInteractiveChildren(panel)) {
+        this.addAttribute(panel, 'tabindex', '0');
+      }
 
       // Listen for panel keydown events.
       panel.addEventListener('keydown', this.panelHandleKeydown);

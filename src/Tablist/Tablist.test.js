@@ -101,23 +101,28 @@ describe('The Tablist should initialize as expected', () => {
       expect(tab.getAttribute('aria-selected')).toEqual(`${(0 === index)}`);
       // When focus moves into the tab list, places focus on the active tab element.
       expect(tab.getAttribute('tabindex')).toEqual((0 === index) ? null : '-1');
-      expect(tab.getAttribute('aria-controls')).toEqual(panel[index].id);
+      expect(tab.getAttribute('aria-controls')).toEqual(panels.item(index).id);
       expect(tab.id).not.toBeNull();
     });
 
     Array.from(panels).forEach((panel, index) => {
       expect(panel.getAttribute('role')).toEqual('tabpanel');
+
       if (0 !== index) {
         expect(panel.getAttribute('aria-hidden')).toEqual('true');
       } else {
         expect(panel.getAttribute('aria-hidden')).toEqual('false');
       }
+
+      // The second panel has no interactive children.
+      if (1 === index) {
+        expect(panel.getAttribute('tabindex')).toBe('0');
+      }
+
       expect(panel.getAttribute('aria-labelledby')).not.toBeNull();
       expect(panel.id).not.toBeNull();
     });
   });
-
-  // @todo When the tabpanel does not contain any focusable elements or the first element with content is not focusable, the tabpanel should set tabindex="0" to include it in the tab sequence of the page.
 
   describe('Tablist methods work as expected', () => {
     test('The specified tab is activated', () => {
@@ -231,7 +236,6 @@ describe('The Tablist should initialize as expected', () => {
       expect(document.activeElement).toEqual(thirdTab);
     });
 
-    // @todo When the tab list contains the focus, moves focus to the next element in the page tab sequence outside the tablist, which is the tabpanel unless the first element containing meaningful content inside the tabpanel is focusable.
 
     // @todo When focus is on a tab, Space or Enter: Activates the tab if it was not activated automatically on focus.
 
@@ -260,7 +264,9 @@ describe('The Tablist should initialize as expected', () => {
         expect(panel.getAttribute('aria-labelledby')).toBeNull();
 
         const firstChild = panel.querySelector('a[href]');
-        expect(firstChild.getAttribute('tabindex')).toBeNull();
+        if (null !== firstChild) {
+          expect(firstChild.getAttribute('tabindex')).toBeNull();
+        }
       });
 
       // Quick and dirty verification that the original markup is restored.
