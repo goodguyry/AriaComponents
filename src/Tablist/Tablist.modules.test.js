@@ -82,34 +82,34 @@ describe('AutomaticActivation', () => {
     firstTab.focus();
 
     await user.keyboard('{ArrowRight}');
-    expect(firstTab.getAttribute('aria-selected')).toBeNull();
+    expect(firstTab.getAttribute('aria-selected')).toBe('false');
     expect(secondTab.getAttribute('aria-selected')).toEqual('true');
-    expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+    expect(thirdTab.getAttribute('aria-selected')).toBe('false');
 
     await user.keyboard('{ArrowRight}');
-    expect(firstTab.getAttribute('aria-selected')).toBeNull();
-    expect(secondTab.getAttribute('aria-selected')).toBeNull();
+    expect(firstTab.getAttribute('aria-selected')).toBe('false');
+    expect(secondTab.getAttribute('aria-selected')).toBe('false');
     expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
     await user.keyboard('{ArrowRight}');
     expect(firstTab.getAttribute('aria-selected')).toEqual('true');
-    expect(secondTab.getAttribute('aria-selected')).toBeNull();
-    expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+    expect(secondTab.getAttribute('aria-selected')).toBe('false');
+    expect(thirdTab.getAttribute('aria-selected')).toBe('false');
 
     await user.keyboard('{ArrowLeft}');
-    expect(firstTab.getAttribute('aria-selected')).toBeNull();
-    expect(secondTab.getAttribute('aria-selected')).toBeNull();
+    expect(firstTab.getAttribute('aria-selected')).toBe('false');
+    expect(secondTab.getAttribute('aria-selected')).toBe('false');
     expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
     await user.keyboard('{ArrowLeft}');
-    expect(firstTab.getAttribute('aria-selected')).toBeNull();
+    expect(firstTab.getAttribute('aria-selected')).toBe('false');
     expect(secondTab.getAttribute('aria-selected')).toEqual('true');
-    expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+    expect(thirdTab.getAttribute('aria-selected')).toBe('false');
 
     await user.keyboard('{ArrowLeft}');
     expect(firstTab.getAttribute('aria-selected')).toEqual('true');
-    expect(secondTab.getAttribute('aria-selected')).toBeNull();
-    expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+    expect(secondTab.getAttribute('aria-selected')).toBe('false');
+    expect(thirdTab.getAttribute('aria-selected')).toBe('false');
   });
 
   test('The Home key moves activates the first tab', async () => {
@@ -119,8 +119,8 @@ describe('AutomaticActivation', () => {
     await user.keyboard('{Home}');
 
     expect(firstTab.getAttribute('aria-selected')).toEqual('true');
-    expect(secondTab.getAttribute('aria-selected')).toBeNull();
-    expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+    expect(secondTab.getAttribute('aria-selected')).toBe('false');
+    expect(thirdTab.getAttribute('aria-selected')).toBe('false');
   });
 
   test('The End key moves activates the last tab', async () => {
@@ -129,8 +129,8 @@ describe('AutomaticActivation', () => {
     secondTab.focus();
     await user.keyboard('{End}');
 
-    expect(firstTab.getAttribute('aria-selected')).toBeNull();
-    expect(secondTab.getAttribute('aria-selected')).toBeNull();
+    expect(firstTab.getAttribute('aria-selected')).toBe('false');
+    expect(secondTab.getAttribute('aria-selected')).toBe('false');
     expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
   });
 

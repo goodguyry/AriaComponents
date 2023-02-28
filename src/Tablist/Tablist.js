@@ -70,7 +70,7 @@ export default class Tablist extends AriaComponent {
 
     // Deactivate the previously-selected tab.
     this.updateAttribute(deactivatedTab, 'tabindex', '-1');
-    this.updateAttribute(deactivatedTab, 'aria-selected', null);
+    this.updateAttribute(deactivatedTab, 'aria-selected', 'false');
 
     // Deactivate the previously-active panel.
     this.updateAttribute(deactivatedPanel, 'aria-hidden', 'true');
@@ -197,6 +197,8 @@ export default class Tablist extends AriaComponent {
       if (this.activeIndex !== index) {
         // Don't allow focus on inactive tabs.
         this.addAttribute(tab, 'tabindex', '-1');
+        // All inactive tab elements have aria-selected set to false.
+        this.addAttribute(tab, 'aria-selected', 'false');
       } else {
         // Set the first tab as selected by default.
         this.addAttribute(tab, 'aria-selected', 'true');

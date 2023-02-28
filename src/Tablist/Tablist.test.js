@@ -98,7 +98,7 @@ describe('The Tablist should initialize as expected', () => {
     const tabLinks = tabs.querySelectorAll('a[href]');
     Array.from(tabLinks).forEach((tab, index) => {
       expect(tab.getAttribute('role')).toEqual('tab');
-      expect(tab.getAttribute('aria-selected')).toEqual((0 === index));
+      expect(tab.getAttribute('aria-selected')).toEqual(`${(0 === index)}`);
       // When focus moves into the tab list, places focus on the active tab element.
       expect(tab.getAttribute('tabindex')).toEqual((0 === index) ? null : '-1');
       expect(tab.getAttribute('aria-controls')).toEqual(panel[index].id);
@@ -123,8 +123,8 @@ describe('The Tablist should initialize as expected', () => {
     test('The specified tab is activated', () => {
       tablist.switchTo(0);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
-      expect(secondTab.getAttribute('aria-selected')).toBeNull();
-      expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+      expect(secondTab.getAttribute('aria-selected')).toBe('false');
+      expect(thirdTab.getAttribute('aria-selected')).toBe('false');
 
       expect(firstTab.getAttribute('tabindex')).toBeNull();
       expect(secondTab.getAttribute('tabindex')).toEqual('-1');
@@ -137,8 +137,8 @@ describe('The Tablist should initialize as expected', () => {
       expect(onStateChange).toHaveBeenCalledTimes(1);
 
       tablist.switchTo(2);
-      expect(firstTab.getAttribute('aria-selected')).toBeNull();
-      expect(secondTab.getAttribute('aria-selected')).toBeNull();
+      expect(firstTab.getAttribute('aria-selected')).toBe('false');
+      expect(secondTab.getAttribute('aria-selected')).toBe('false');
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
       expect(firstTab.getAttribute('tabindex')).toEqual('-1');
@@ -169,8 +169,8 @@ describe('The Tablist should initialize as expected', () => {
     test('Attribute values are updated as expected after state changes', async () => {
       await user.click(firstTab);
       expect(firstTab.getAttribute('aria-selected')).toEqual('true');
-      expect(secondTab.getAttribute('aria-selected')).toBeNull();
-      expect(thirdTab.getAttribute('aria-selected')).toBeNull();
+      expect(secondTab.getAttribute('aria-selected')).toBe('false');
+      expect(thirdTab.getAttribute('aria-selected')).toBe('false');
 
       expect(firstTab.getAttribute('tabindex')).toBeNull();
       expect(secondTab.getAttribute('tabindex')).toEqual('-1');
@@ -181,8 +181,8 @@ describe('The Tablist should initialize as expected', () => {
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('true');
 
       await user.click(thirdTab);
-      expect(firstTab.getAttribute('aria-selected')).toBeNull();
-      expect(secondTab.getAttribute('aria-selected')).toBeNull();
+      expect(firstTab.getAttribute('aria-selected')).toBe('false');
+      expect(secondTab.getAttribute('aria-selected')).toBe('false');
       expect(thirdTab.getAttribute('aria-selected')).toEqual('true');
 
       expect(firstTab.getAttribute('tabindex')).toEqual('-1');
