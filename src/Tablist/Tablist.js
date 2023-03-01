@@ -1,5 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../shared/getElementPair';
+import { hasInteractiveChildren } from '../shared/interactiveChildren';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -8,6 +9,11 @@ import getElementPair from '../shared/getElementPair';
  * https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/
  */
 export default class Tablist extends AriaComponent {
+  /**
+   * The tablist orientation.
+   */
+  #orientation = 'horizontal';
+
   /**
    * The initial active index.
    *
@@ -46,6 +52,38 @@ export default class Tablist extends AriaComponent {
      */
     this.tabs = tabs;
 
+    /**
+     * Tablist anchor elements.
+     *
+     * @type {array}
+     */
+    this.tabLinks = [];
+
+    /**
+     * Tablist panels.
+     *
+     * @type {array}
+     */
+    this.panels = [];
+
+    // Merge options with default values.
+    const { orientation } = {
+      /**
+       * Whether the tabs are horizonally or vertically oriented.
+       * Options: 'horizontal', 'vertical'.
+       *
+       * @type {String}
+       */
+      orientation: this.#orientation,
+
+      ...options,
+    };
+
+    /**
+     * Set the orientation.
+     */
+    this.orientation = orientation;
+
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(tabs.nodeName)) {
       this.init();
@@ -54,6 +92,27 @@ export default class Tablist extends AriaComponent {
         'Expected component element nodeName to be `UL`'
       );
     }
+  }
+
+  /**
+   * Set the tablist orientation.
+   *
+   * @param {string} newOrientation The expected `aria-orientation` value.
+   *                                Default is 'horizontal'.
+   */
+  set orientation(newOrientation) {
+    this.#orientation = ('vertical' === newOrientation) ? newOrientation : 'horizontal';
+
+    this.updateAttribute(this.tabs, 'aria-orientation', this.orientation);
+  }
+
+  /**
+   * Returns the tablist orientation.
+   *
+   * @return {string}
+   */
+  get orientation() {
+    return this.#orientation;
   }
 
   /**
@@ -70,7 +129,7 @@ export default class Tablist extends AriaComponent {
 
     // Deactivate the previously-selected tab.
     this.updateAttribute(deactivatedTab, 'tabindex', '-1');
-    this.updateAttribute(deactivatedTab, 'aria-selected', null);
+    this.updateAttribute(deactivatedTab, 'aria-selected', 'false');
 
     // Deactivate the previously-active panel.
     this.updateAttribute(deactivatedPanel, 'aria-hidden', 'true');
@@ -128,20 +187,6 @@ export default class Tablist extends AriaComponent {
    * Set up the component's DOM attributes and event listeners.
    */
   init = () => {
-    /**
-     * Tablist anchor elements.
-     *
-     * @type {array}
-     */
-    this.tabLinks = [];
-
-    /**
-     * Tablist panels.
-     *
-     * @type {array}
-     */
-    this.panels = [];
-
     const listItems = Array.from(this.tabs.children);
     const listItemsLength = listItems.length;
 
@@ -197,6 +242,8 @@ export default class Tablist extends AriaComponent {
       if (this.activeIndex !== index) {
         // Don't allow focus on inactive tabs.
         this.addAttribute(tab, 'tabindex', '-1');
+        // All inactive tab elements have aria-selected set to false.
+        this.addAttribute(tab, 'aria-selected', 'false');
       } else {
         // Set the first tab as selected by default.
         this.addAttribute(tab, 'aria-selected', 'true');
@@ -217,6 +264,10 @@ export default class Tablist extends AriaComponent {
 
       // All but the first tab should be hidden by default.
       this.addAttribute(panel, 'aria-hidden', (this.activeIndex !== index));
+
+      if (! hasInteractiveChildren(panel)) {
+        this.addAttribute(panel, 'tabindex', '0');
+      }
 
       // Listen for panel keydown events.
       panel.addEventListener('keydown', this.panelHandleKeydown);
@@ -244,11 +295,13 @@ export default class Tablist extends AriaComponent {
       }
 
       // Move to previous sibling, or the end if we're moving from the first child.
+      case 'ArrowUp':
       case 'ArrowLeft': {
         return (0 === currentIndex) ? this.tabLinksLastIndex : (currentIndex - 1);
       }
 
       // Move to the next sibling, or the first child if we're at the end.
+      case 'ArrowDown':
       case 'ArrowRight': {
         return (this.tabLinksLastIndex === currentIndex) ? 0 : (currentIndex + 1);
       }
@@ -301,13 +354,28 @@ export default class Tablist extends AriaComponent {
 
     switch (key) {
       /*
-       * Move to and activate the previous or next tab.
+       * Move to the previous or next tab when horizontally oriented.
        */
       case 'ArrowLeft':
       case 'ArrowRight': {
-        event.preventDefault();
+        if ('horizontal' === this.orientation) {
+          event.preventDefault();
 
-        this.tabLinks[nextIndex].focus();
+          this.tabLinks[nextIndex].focus();
+        }
+        break;
+      }
+
+      /*
+       * Move to the previous or next tab when vertically oriented.
+       */
+      case 'ArrowUp':
+      case 'ArrowDown': {
+        if ('vertical' === this.orientation) {
+          event.preventDefault();
+
+          this.tabLinks[nextIndex].focus();
+        }
         break;
       }
 
@@ -331,6 +399,25 @@ export default class Tablist extends AriaComponent {
         break;
       }
 
+      /*
+       * Activate the tab.
+       */
+      case ' ':
+      case 'Enter': {
+        const targetIndex = this.tabLinks.indexOf(target);
+
+        // Don't act when the tab is already active.
+        if (
+          targetIndex !== this.activeIndex
+          && this.tabLinks.includes(target)
+        ) {
+          event.preventDefault();
+
+          this.switchTo(targetIndex);
+        }
+        break;
+      }
+
       // fuggitaboutit.
       default:
         break;
@@ -343,15 +430,17 @@ export default class Tablist extends AriaComponent {
    * @param {Event} event The event object.
    */
   tabsHandleClick = (event) => {
-    const { target } = event;
     event.preventDefault();
 
-    // Don't act when an active tab is clicked.
+    const { target } = event;
+    const targetIndex = this.tabLinks.indexOf(target);
+
+    // Don't act when the tab is already active.
     if (
-      'true' !== target.getAttribute('aria-selected')
+      targetIndex !== this.activeIndex
       && this.tabLinks.includes(target)
     ) {
-      this.switchTo(this.tabLinks.indexOf(target));
+      this.switchTo(targetIndex);
     }
   };
 

@@ -18,7 +18,9 @@ npm i aria-components
 Each component accepts an element and an `options` object.
 
 ```jsx
-new Disclosure(element, { loadOpen: true })
+import Tablist, { AutomaticActivation } from 'aria-components/tablist';
+
+new Tablist(element, { modules: [AutomaticActivation] })
 ```
 
 The base class, [AriaComponent](src/), provides properties and methods available 

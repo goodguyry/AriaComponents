@@ -1,6 +1,6 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../shared/getElementPair';
-import interactiveChildren from '../shared/interactiveChildren';
+import { interactiveChildren } from '../shared/interactiveChildren';
 
 /**
  * Class to set up an interactive Modal Dialog element.

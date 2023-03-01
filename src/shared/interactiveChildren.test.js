@@ -1,4 +1,4 @@
-import interactiveChildren from './interactiveChildren';
+import { interactiveChildren, hasInteractiveChildren } from './interactiveChildren';
 
 describe('Collects interactive child elements', () => {
   // Set up our document body
@@ -21,5 +21,10 @@ describe('Collects interactive child elements', () => {
     const interactiveChildElements = interactiveChildren(wrapper);
 
     expect(interactiveChildElements).toEqual([]);
+  });
+
+  it('Should return false', () => {
+    expect(hasInteractiveChildren(wrapper)).toBe(false);
+    expect(hasInteractiveChildren(wrapper, 'button,textarea')).toBe(true);
   });
 });
