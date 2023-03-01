@@ -233,7 +233,3 @@ test('UseHiddenAttribute: Uses hidden attribute when tabpanel not selected', () 
   expect(secondPanel.getAttribute('hidden')).toBeNull();
   expect(thirdPanel.getAttribute('hidden')).toBeNull();
 });
-
-// If the tab list is horizontal, it does not listen for Down Arrow or Up Arrow so those keys can provide their normal browser scrolling functions even when focus is inside the tab list.
-
-// If the tablist element is vertically oriented, it has the property aria-orientation set to vertical. The default value of aria-orientation for a tablist element is horizontal.

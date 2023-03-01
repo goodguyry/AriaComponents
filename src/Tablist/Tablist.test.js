@@ -63,7 +63,7 @@ const onDestroy = jest.fn();
 tabs.addEventListener('tablist.init', onInit);
 
 beforeAll(() => {
-  tablist = new Tablist(tabs);
+  tablist = new Tablist(tabs, { orientation: '' }); // Empty value to test the hard-coded fallback.
 
   tablist.on('tablist.stateChange', onStateChange);
   tablist.on('tablist.destroy', onDestroy);
@@ -89,6 +89,7 @@ describe('The Tablist should initialize as expected', () => {
 
   test('The Tablist elements includes the expected attribute values and overlay element', () => {
     expect(tabs.getAttribute('role')).toEqual('tablist');
+    expect(tabs.getAttribute('aria-orientation')).toEqual('horizontal');
 
     // List items
     Array.from(tabs.children).forEach((child) => {
@@ -199,7 +200,7 @@ describe('The Tablist should initialize as expected', () => {
       expect(thirdPanel.getAttribute('aria-hidden')).toEqual('false');
     });
 
-    test('Arrow keys navigate and activate tabs', async () => {
+    test('Arrow keys navigate tabs', async () => {
       firstTab.focus();
       await user.keyboard('{ArrowRight}');
       expect(document.activeElement).toEqual(secondTab);
@@ -217,6 +218,27 @@ describe('The Tablist should initialize as expected', () => {
       expect(document.activeElement).toEqual(secondTab);
 
       await user.keyboard('{ArrowLeft}');
+      expect(document.activeElement).toEqual(firstTab);
+    });
+
+    test('Up and down arrow keys do nothing', async () => {
+      firstTab.focus();
+      await user.keyboard('{ArrowDown}');
+      expect(document.activeElement).toEqual(firstTab);
+
+      await user.keyboard('{ArrowDown}');
+      expect(document.activeElement).toEqual(firstTab);
+
+      await user.keyboard('{ArrowDown}');
+      expect(document.activeElement).toEqual(firstTab);
+
+      await user.keyboard('{ArrowUp}');
+      expect(document.activeElement).toEqual(firstTab);
+
+      await user.keyboard('{ArrowUp}');
+      expect(document.activeElement).toEqual(firstTab);
+
+      await user.keyboard('{ArrowUp}');
       expect(document.activeElement).toEqual(firstTab);
     });
 
@@ -250,7 +272,57 @@ describe('The Tablist should initialize as expected', () => {
       expect(tablist.activeIndex).toBe(2);
     });
 
-    // @todo When focus is on a tab, Shift + F10: If the tab has an associated popup menu, opens the menu.
+    describe('Tablist orientation responds to events', () => {
+      beforeAll(() => {
+        tablist.orientation = 'vertical';
+      });
+
+      test('The tablist has the correct `aria-orientation` value', () => {
+        expect(tabs.getAttribute('aria-orientation')).toEqual('vertical');
+      });
+
+      test('Up and down arrow keys navigate tabs', async () => {
+        firstTab.focus();
+        await user.keyboard('{ArrowDown}');
+        expect(document.activeElement).toEqual(secondTab);
+
+        await user.keyboard('{ArrowDown}');
+        expect(document.activeElement).toEqual(thirdTab);
+
+        await user.keyboard('{ArrowDown}');
+        expect(document.activeElement).toEqual(firstTab); // cycle
+
+        await user.keyboard('{ArrowUp}');
+        expect(document.activeElement).toEqual(thirdTab); // cycle
+
+        await user.keyboard('{ArrowUp}');
+        expect(document.activeElement).toEqual(secondTab);
+
+        await user.keyboard('{ArrowUp}');
+        expect(document.activeElement).toEqual(firstTab);
+      });
+
+      test('Left and right arrow keys do nothing', async () => {
+        firstTab.focus();
+        await user.keyboard('{ArrowRight}');
+        expect(document.activeElement).toEqual(firstTab);
+
+        await user.keyboard('{ArrowRight}');
+        expect(document.activeElement).toEqual(firstTab);
+
+        await user.keyboard('{ArrowRight}');
+        expect(document.activeElement).toEqual(firstTab);
+
+        await user.keyboard('{ArrowLeft}');
+        expect(document.activeElement).toEqual(firstTab);
+
+        await user.keyboard('{ArrowLeft}');
+        expect(document.activeElement).toEqual(firstTab);
+
+        await user.keyboard('{ArrowLeft}');
+        expect(document.activeElement).toEqual(firstTab);
+      });
+    });
 
     test('All DOM attributes are removed from elements managed by this component', () => {
       tablist.destroy();
@@ -259,6 +331,7 @@ describe('The Tablist should initialize as expected', () => {
       // List items
       Array.from(tabs.children).forEach((child) => {
         expect(child.getAttribute('role')).toBeNull();
+        expect(child.getAttribute('aria-orientation')).toBeNull();
       });
 
       const tabLinks = tabs.querySelectorAll('a[href]');

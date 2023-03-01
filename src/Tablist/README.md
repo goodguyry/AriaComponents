@@ -68,6 +68,8 @@ Tablist(tabsListElement: HTMLUListElement);
 
 ### Available Options
 
+**`orientation`** Whether the tabs are horizonally or vertically oriented. When valid, the value is used directly in the `aria-orientation` attribute. This property is also available as a _setter_. Options are `'horizontal'` and `'vertical'`. _Default is `'horizontal'`_
+
 **`modules`** - A single module, or array of modules, to initialize. _Default is `[]`_
 
 ## Instance Methods
@@ -79,6 +81,8 @@ See also [`src/README`](../).
 **`toString()`** - Returns `'[object Tablist]'`.
 
 ## Properties
+
+**`orientation`** _(setter)_ Whether the tabs are horizonally or vertically oriented. When valid, the value is used directly in the `aria-orientation` attribute. Options are `'horizontal'` and `'vertical'`. _Default is `'horizontal'`_
 
 **`activeIndex`** - _(setter)_ Set the index of the active tab-panel pair and update element attribtues to hide inactive tab-panel pairs from assistive technology.
 
@@ -138,10 +142,6 @@ Removes inactive tabpanels' interactive children from the tab index.
 **`UseHiddenAttribute`**
 
 Hides inactive tabels with the `hidden` attribute, removing the need to do it with CSS. Note that the use of the hidden attribute can hinder animations.
-
-**`UseVerticalTabs`**
-
-Updates keyboard handling to support a vertical tablist, where the Up and Down arrow keys navigate the tablist.
 
 ## Additional Information
 

@@ -10,6 +10,11 @@ import { hasInteractiveChildren } from '../shared/interactiveChildren';
  */
 export default class Tablist extends AriaComponent {
   /**
+   * The tablist orientation.
+   */
+  #orientation = 'horizontal';
+
+  /**
    * The initial active index.
    *
    * @type {Number}
@@ -61,6 +66,24 @@ export default class Tablist extends AriaComponent {
      */
     this.panels = [];
 
+    // Merge options with default values.
+    const { orientation } = {
+      /**
+       * Whether the tabs are horizonally or vertically oriented.
+       * Options: 'horizontal', 'vertical'.
+       *
+       * @type {String}
+       */
+      orientation: this.#orientation,
+
+      ...options,
+    };
+
+    /**
+     * Set the orientation.
+     */
+    this.orientation = orientation;
+
     // Make sure the component element is a list.
     if (['UL', 'OL'].includes(tabs.nodeName)) {
       this.init();
@@ -69,6 +92,27 @@ export default class Tablist extends AriaComponent {
         'Expected component element nodeName to be `UL`'
       );
     }
+  }
+
+  /**
+   * Set the tablist orientation.
+   *
+   * @param {string} newOrientation The expected `aria-orientation` value.
+   *                                Default is 'horizontal'.
+   */
+  set orientation(newOrientation) {
+    this.#orientation = ('vertical' === newOrientation) ? newOrientation : 'horizontal';
+
+    this.updateAttribute(this.tabs, 'aria-orientation', this.orientation);
+  }
+
+  /**
+   * Returns the tablist orientation.
+   *
+   * @return {string}
+   */
+  get orientation() {
+    return this.#orientation;
   }
 
   /**
@@ -251,11 +295,13 @@ export default class Tablist extends AriaComponent {
       }
 
       // Move to previous sibling, or the end if we're moving from the first child.
+      case 'ArrowUp':
       case 'ArrowLeft': {
         return (0 === currentIndex) ? this.tabLinksLastIndex : (currentIndex - 1);
       }
 
       // Move to the next sibling, or the first child if we're at the end.
+      case 'ArrowDown':
       case 'ArrowRight': {
         return (this.tabLinksLastIndex === currentIndex) ? 0 : (currentIndex + 1);
       }
@@ -308,13 +354,28 @@ export default class Tablist extends AriaComponent {
 
     switch (key) {
       /*
-       * Move to and activate the previous or next tab.
+       * Move to the previous or next tab when horizontally oriented.
        */
       case 'ArrowLeft':
       case 'ArrowRight': {
-        event.preventDefault();
+        if ('horizontal' === this.orientation) {
+          event.preventDefault();
 
-        this.tabLinks[nextIndex].focus();
+          this.tabLinks[nextIndex].focus();
+        }
+        break;
+      }
+
+      /*
+       * Move to the previous or next tab when vertically oriented.
+       */
+      case 'ArrowUp':
+      case 'ArrowDown': {
+        if ('vertical' === this.orientation) {
+          event.preventDefault();
+
+          this.tabLinks[nextIndex].focus();
+        }
         break;
       }
 
@@ -343,7 +404,6 @@ export default class Tablist extends AriaComponent {
        */
       case ' ':
       case 'Enter': {
-        const { target } = event;
         const targetIndex = this.tabLinks.indexOf(target);
 
         // Don't act when the tab is already active.
