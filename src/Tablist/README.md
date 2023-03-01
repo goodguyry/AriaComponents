@@ -84,6 +84,8 @@ See also [`src/README`](../).
 
 **`orientation`** _(setter)_ Whether the tabs are horizonally or vertically oriented. When valid, the value is used directly in the `aria-orientation` attribute. Options are `'horizontal'` and `'vertical'`. _Default is `'horizontal'`_
 
+**`orientation`** _(getter)_ Get the current Tablist orientation.
+
 **`activeIndex`** - _(setter)_ Set the index of the active tab-panel pair and update element attribtues to hide inactive tab-panel pairs from assistive technology.
 
 **`activeIndex`** - _(getter)_ Get the index of the active tab-panel pair.
