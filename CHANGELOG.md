@@ -32,6 +32,7 @@ A complete rewrite.
 
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
 - Logs a configuration error for misconfigured components (#51)
+- Tablist now supports setting an orientation (#97)
 
 **Fixed**
 
@@ -39,6 +40,9 @@ A complete rewrite.
 - Component callbacks (now, Custom Events) could be run more than once (#54)
 - Dialog no longer re-queries for interactive child elements on every TAB keydown (a964674)
 - Corrects an issue where shift-tab from the Popup controller would focus the target's first child (#76)
+- Tablist will focus the active tab if it has no interactive children (#97)
+- Tablist `aria-selected` is now `'false'` for inactive tabs, rather than `null` (#97)
+- Tablist will now activate the focused tab with the Space and Enter keys (#97)
 
 **Removed**
 
