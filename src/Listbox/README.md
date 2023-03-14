@@ -103,7 +103,7 @@ Fired after the component is destroyed.
 
 The _WAI-ARIA Roles, States, and Properties_ section of [the Listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/#wai-ariaroles,states,andproperties) states:
 
-> If options are arranged horizontally, the element with role `listbox` has `aria-orientation` set to `horizontal`. The default value of `aria-orientation` for `listbox` is `vertical`.
+> If the element with role `listbox` is not part of another widget, such as a combobox, then it has either a visible label referenced by `aria-labelledby` or a value specified for `aria-label`.
 
 ## References
 
