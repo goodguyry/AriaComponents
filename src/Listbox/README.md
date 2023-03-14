@@ -40,12 +40,18 @@ const listbox = new Listbox(controller);
 ## Constructor
 
 ```jsx
-Listbox(element: HTMLElement);
+Listbox(element: HTMLElement, options: object);
 ```
 
 **`element`** _(Required)_ Either the element used to activate the Listbox target, or the Listbox target element.
 
 The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
+
+**`options`** - _(Optional)_ Configuration options.
+
+### Available Options
+
+**`orientation`** Whether the options are vertically or horizonally oriented. When valid, the value is used directly in the `aria-orientation` attribute. This property is also available as a _setter_. Options are `'vertical'` and `'horizontal'`. _Default is `'vertical'`_
 
 ## Instance Methods
 
@@ -103,7 +109,7 @@ Fired after the component is destroyed.
 
 The _WAI-ARIA Roles, States, and Properties_ section of [the Listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/#wai-ariaroles,states,andproperties) states:
 
-> If options are arranged horizontally, the element with role `listbox` has `aria-orientation` set to `horizontal`. The default value of `aria-orientation` for `listbox` is `vertical`.
+> If the element with role `listbox` is not part of another widget, such as a combobox, then it has either a visible label referenced by `aria-labelledby` or a value specified for `aria-label`.
 
 ## References
 

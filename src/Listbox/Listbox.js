@@ -9,6 +9,11 @@ import getElementPair from '../shared/getElementPair';
  */
 export default class ListBox extends AriaComponent {
   /**
+   * The listbox orientation.
+   */
+  #orientation = 'vertical';
+
+  /**
    * Initial expanded state.
    * @private
    *
@@ -44,6 +49,24 @@ export default class ListBox extends AriaComponent {
     const { controller, target } = getElementPair(element);
     this.controller = controller;
     this.target = target;
+
+    // Merge options with default values.
+    const { orientation } = {
+      /**
+       * Whether the Listbox options are horizonally or vertically oriented.
+       * Options: 'horizontal', 'vertical'.
+       *
+       * @type {String}
+       */
+      orientation: this.#orientation,
+
+      ...options,
+    };
+
+    /**
+     * Set the orientation.
+     */
+    this.orientation = orientation;
 
     /**
      * Saves the initial button label.
@@ -103,6 +126,27 @@ export default class ListBox extends AriaComponent {
         expanded: this.expanded,
       }
     );
+  }
+
+  /**
+   * Set the Listbox orientation.
+   *
+   * @param {string} newOrientation The expected `aria-orientation` value.
+   *                                Default is 'vertical'.
+   */
+  set orientation(newOrientation) {
+    this.#orientation = ('horizontal' === newOrientation) ? newOrientation : 'vertical';
+
+    this.updateAttribute(this.target, 'aria-orientation', this.orientation);
+  }
+
+  /**
+   * Returns the Listbox orientation.
+   *
+   * @return {string}
+   */
+  get orientation() {
+    return this.#orientation;
   }
 
   /**

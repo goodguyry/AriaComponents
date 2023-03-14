@@ -56,6 +56,7 @@ describe('The Listbox should initialize as expected', () => {
     expect(target.getAttribute('role')).toEqual('listbox');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('tabindex')).toEqual('-1');
+    expect(target.getAttribute('aria-orientation')).toEqual('vertical');
 
     listItems.forEach((listItem) => {
       expect(listItem.id).not.toBeNull();
@@ -65,12 +66,9 @@ describe('The Listbox should initialize as expected', () => {
 
   test('The `init` event fires once', () => {
     expect(onInit).toHaveBeenCalledTimes(1);
+    const { detail } = getEventDetails(onInit);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onInit);
-
-      expect(detail.instance).toStrictEqual(listbox);
-    });
+    expect(detail.instance).toStrictEqual(listbox);
   });
 });
 
@@ -89,12 +87,10 @@ describe('The Listbox controller should respond to state changes', () => {
   test('The `stateChange` event fires only once', () => {
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onStateChange);
+    const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.expanded).toBe(true);
-      expect(detail.instance).toStrictEqual(listbox);
-    });
+    expect(detail.expanded).toBe(true);
+    expect(detail.instance).toStrictEqual(listbox);
   });
 });
 
@@ -236,6 +232,16 @@ describe('The Listbox target responds to events as expected', () => {
   });
 });
 
+describe('Listbox orientation setter', () => {
+  beforeAll(() => {
+    listbox.orientation = 'horizontal';
+  });
+
+  test('The listbox has the correct `aria-orientation` value', () => {
+    expect(target.getAttribute('aria-orientation')).toEqual('horizontal');
+  });
+});
+
 describe('Listbox destroy', () => {
   test('All attributes are removed from elements managed by the Listbox', async () => {
     listbox.destroy();
@@ -259,11 +265,9 @@ describe('Listbox destroy', () => {
     expect(document.body.innerHTML).toEqual(listboxMarkup);
 
     expect(onDestroy).toHaveBeenCalledTimes(1); // Listbox
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onDestroy);
+    const { detail } = getEventDetails(onDestroy);
 
-      expect(detail.element).toStrictEqual(controller);
-      expect(detail.instance).toStrictEqual(listbox);
-    });
+    expect(detail.element).toStrictEqual(controller);
+    expect(detail.instance).toStrictEqual(listbox);
   });
 });

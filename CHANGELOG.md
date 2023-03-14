@@ -32,7 +32,7 @@ A complete rewrite.
 
 - Uses `[Symbol.toStringTag]` for component identification via `instance.toString()` (#52)
 - Logs a configuration error for misconfigured components (#51)
-- Tablist now supports setting an orientation (#97)
+- Tablist and Listbox now support setting an `orientation` (#97, #99)
 
 **Fixed**
 
