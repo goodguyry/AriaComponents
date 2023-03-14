@@ -59,7 +59,7 @@ const tablist = new Tablist(tabs, options);
 ## Constructor
 
 ```jsx
-Tablist(tabsListElement: HTMLUListElement);
+Tablist(tabsListElement: HTMLUListElement, options: object);
 ```
 
 **`tabsListElement`** - _(Required)_ The list element containing tab links. Each interactive element must contain an `aria-controls` attribute referencing the ID of the associated tabPanel.

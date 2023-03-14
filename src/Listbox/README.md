@@ -40,12 +40,18 @@ const listbox = new Listbox(controller);
 ## Constructor
 
 ```jsx
-Listbox(element: HTMLElement);
+Listbox(element: HTMLElement, options: object);
 ```
 
 **`element`** _(Required)_ Either the element used to activate the Listbox target, or the Listbox target element.
 
 The activating element is required to have an `aria-controls` attribute with a value matching the `id` attribute value of the target element; vice-versa for the target element. The component's events will dispatch from this element.
+
+**`options`** - _(Optional)_ Configuration options.
+
+### Available Options
+
+**`orientation`** Whether the options are vertically or horizonally oriented. When valid, the value is used directly in the `aria-orientation` attribute. This property is also available as a _setter_. Options are `'vertical'` and `'horizontal'`. _Default is `'vertical'`_
 
 ## Instance Methods
 
