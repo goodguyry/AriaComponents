@@ -61,11 +61,9 @@ describe('The Dialog should initialize as expected', () => {
 
   test('The `init` event fires once', () => {
     expect(onInit).toHaveBeenCalledTimes(1);
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onInit);
+    const { detail } = getEventDetails(onInit);
 
-      expect(detail.instance).toStrictEqual(modal);
-    });
+    expect(detail.instance).toStrictEqual(modal);
   });
 
   test('The Dialog controller includes the expected attribute values', () => {
@@ -88,12 +86,10 @@ describe('The Dialog should initialize as expected', () => {
   test('The `stateChange` event fires when the Dialog is opened', () => {
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onStateChange);
+    const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.expanded).toBe(true);
-      expect(detail.instance).toStrictEqual(modal);
-    });
+    expect(detail.expanded).toBe(true);
+    expect(detail.instance).toStrictEqual(modal);
   });
 
   test('The Dialog state and attributes are accurate when closed', () => {
@@ -162,10 +158,8 @@ test('All attributes are removed from elements managed by the Disclosure', () =>
   expect(document.body.innerHTML).toEqual(dialogMarkup);
 
   expect(onDestroy).toHaveBeenCalledTimes(1);
-  return Promise.resolve().then(() => {
-    const { detail } = getEventDetails(onDestroy);
+  const { detail } = getEventDetails(onDestroy);
 
-    expect(detail.element).toStrictEqual(target);
-    expect(detail.instance).toStrictEqual(modal);
-  });
+  expect(detail.element).toStrictEqual(target);
+  expect(detail.instance).toStrictEqual(modal);
 });

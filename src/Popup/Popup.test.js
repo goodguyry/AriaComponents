@@ -62,12 +62,10 @@ describe('The Popup should initialize as expected', () => {
     expect(popup.expanded).toBe(true);
     expect(onStateChange).toHaveBeenCalledTimes(1);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onStateChange);
+    const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.expanded).toBe(true);
-      expect(detail.instance).toStrictEqual(popup);
-    });
+    expect(detail.expanded).toBe(true);
+    expect(detail.instance).toStrictEqual(popup);
   });
 
   test('Hidden state changes update properties and attributes as expected', () => {
@@ -75,12 +73,10 @@ describe('The Popup should initialize as expected', () => {
     expect(popup.expanded).toBe(false);
     expect(onStateChange).toHaveBeenCalledTimes(2);
 
-    return Promise.resolve().then(() => {
-      const { detail } = getEventDetails(onStateChange);
+    const { detail } = getEventDetails(onStateChange);
 
-      expect(detail.expanded).toBe(false);
-      expect(detail.instance).toStrictEqual(popup);
-    });
+    expect(detail.expanded).toBe(false);
+    expect(detail.instance).toStrictEqual(popup);
   });
 
   test('Click events on the Popup controller updates atttributes as expected', async () => {
