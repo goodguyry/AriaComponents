@@ -232,7 +232,7 @@ describe('The Listbox target responds to events as expected', () => {
   });
 });
 
-describe('Listbox orientation responds to events', () => {
+describe('Listbox orientation setter', () => {
   beforeAll(() => {
     listbox.orientation = 'horizontal';
   });
