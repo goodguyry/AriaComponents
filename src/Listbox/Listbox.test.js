@@ -56,6 +56,7 @@ describe('The Listbox should initialize as expected', () => {
     expect(target.getAttribute('role')).toEqual('listbox');
     expect(target.getAttribute('aria-hidden')).toEqual('true');
     expect(target.getAttribute('tabindex')).toEqual('-1');
+    expect(target.getAttribute('aria-orientation')).toEqual('vertical');
 
     listItems.forEach((listItem) => {
       expect(listItem.id).not.toBeNull();
@@ -228,6 +229,16 @@ describe('The Listbox target responds to events as expected', () => {
 
     expect(controller.getAttribute('aria-activedescendant')).toBeNull();
     expect(controller.textContent).toEqual(target.children[5].textContent);
+  });
+});
+
+describe('Listbox orientation responds to events', () => {
+  beforeAll(() => {
+    listbox.orientation = 'horizontal';
+  });
+
+  test('The listbox has the correct `aria-orientation` value', () => {
+    expect(target.getAttribute('aria-orientation')).toEqual('horizontal');
   });
 });
 
