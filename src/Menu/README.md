@@ -10,6 +10,7 @@ Class to set up a Menu with collapsible submenus.
 * [Instance Methods](#instance-methods)
 * [Properties](#properties)
 * [Events](#events)
+* [Modules](#modules)
 * [References](#references)
 
 ## Example
@@ -91,6 +92,26 @@ Fired after the component is destroyed.
 `event.detail.instance` The class instance from which the event originated.
 
 `event.detail.element` The element passed to the constructor.
+
+## Modules
+
+Full modules documentation at [`src/shared/modules/`](..//shared/modules/).
+
+```jsx
+import Menu, { WithKeyboardSupport } from 'aria-components/menu';
+```
+
+**`WithKeyboardSupport`**
+
+Adds optional support for arrow, Home, and End keys as outlined in the [Keyboard Support](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/#kbd_label) section of the Disclosure Navigation example.
+
+**`UseMenubarRole`**
+
+Adds the `menubar`, `menu`, and `menuitem` roles as outlined in the [Navigation Menubar Example](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/examples/menubar-navigation/), along with the [Keyboard Support](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/examples/menubar-navigation/#kbd_label) these roles require.
+
+**`UseMenuRole`**
+
+Adds the `menu` and `menuitem` roles as outlined in the [MenuButton Example](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-links/), along with the [Keyboard Support](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-links/#kbd_label) these roles require.
 
 ## References
 
