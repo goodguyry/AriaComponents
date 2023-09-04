@@ -15,6 +15,13 @@ export default class Menu extends AriaComponent {
   #activeDisclosure = undefined;
 
   /**
+   * The baseline selector for menuItems.
+   *
+   * @type {string}
+   */
+  #menuItemsSelector = 'a[href],button:not([disabled]';
+
+  /**
    * Prevent focusout from propagating from the controller.
    *
    * @param {Event} event The Event object.
@@ -27,8 +34,8 @@ export default class Menu extends AriaComponent {
    *
    * @param {HTMLUListElement} list The menu list element.
    */
-  constructor(list) {
-    super(list);
+  constructor(list, options = {}) {
+    super(list, options);
 
     /**
      * The string description for this object.
@@ -36,6 +43,26 @@ export default class Menu extends AriaComponent {
      * @type {string}
      */
     this[Symbol.toStringTag] = 'Menu';
+
+    // Merge options with default values.
+    const { itemsMatch } = {
+      /**
+       * Selector used to validate interactive menu items.
+       *
+       * This can also be used to exclude items that would otherwise be
+       * interpreted as an interactive menu item e.g., `:not(.hidden)`.
+       *
+       * @type {undefined|string}
+       */
+      itemsMatch: undefined,
+
+      ...options,
+    };
+
+    /**
+     * Set the itemsMatch.
+     */
+    this.itemsMatch = itemsMatch;
 
     /**
      * Submenu Disclosures.
@@ -167,6 +194,48 @@ export default class Menu extends AriaComponent {
    * Collect menu links and recursively instantiate sublist menu items.
    */
   init = () => {
+    /**
+     * The component element's children.
+     *
+     * @type {array}
+     */
+    this.elementChildren = Array.from(this.element.children);
+
+    /**
+     * Collected menu links.
+     *
+     * @type {array}
+     */
+    this.menuItems = this.elementChildren.reduce((acc, item) => {
+      // Restrict `menuItems` to links and buttons.
+      const iteractiveChildren = item.querySelectorAll(`:scope > ${this.#menuItemsSelector}`);
+      if (0 === iteractiveChildren.length) {
+        return acc;
+      }
+
+      if (undefined === this.itemsMatch) {
+        // Use all iteractive children as menu items.
+        return [...acc, ...iteractiveChildren];
+      }
+
+      const [firstItem, ...theRest] = iteractiveChildren;
+
+      // Test the first item against the customized selector pattern.
+      if (firstItem.matches(this.itemsMatch)) {
+        return [...acc, firstItem];
+      }
+
+      // Find the first matching child based on the user-supplied pattern.
+      const itemLink = theRest.find((child) => child.matches(this.itemsMatch));
+
+      if (undefined !== itemLink) {
+        return [...acc, itemLink];
+      }
+
+      // No match.
+      return acc;
+    }, []);
+
     // Set and collect submenu Disclosures.
     this.disclosures = Array.from(this.element.children)
       .reduce(this.initSubmenuDisclosure, []);

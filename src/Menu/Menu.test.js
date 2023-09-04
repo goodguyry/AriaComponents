@@ -41,6 +41,7 @@ const firstController = document.querySelector('.first-item');
 const firstTarget = document.getElementById('first-disclosure');
 const secondController = document.querySelector('[aria-controls="second-disclosure"]');
 const secondTarget = document.getElementById('second-disclosure');
+const excluded = document.querySelector('.exclude');
 
 // Mock functions.
 const onInit = jest.fn();
@@ -53,17 +54,20 @@ list.addEventListener('menu.init', onInit);
 let menu = null;
 
 beforeAll(() => {
-  menu = new Menu(list);
+  menu = new Menu(list, { itemsMatch: ':not(.exclude)' });
 
   menu.on('menu.stateChange', onStateChange);
   menu.on('menu.destroy', onDestroy);
 });
 
 describe('The Menu should initialize as expected', () => {
-  test('The Disclosure includes the expected property values', () => {
+  test('The Menu includes the expected property values', () => {
     expect(menu).toBeInstanceOf(Menu);
     expect(menu.activeDisclosure).toBeUndefined();
     expect(list.id).toEqual(menu.id);
+    // Test `itemsMatch`.
+    expect(menu.menuItems.includes(excluded)).toBe(false);
+    expect(menu.menuItems.length).toBe(5);
   });
 
   test('The `init` event fires once', () => {

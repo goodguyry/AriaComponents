@@ -48,10 +48,16 @@ const menu = new Menu(menu);
 ## Constructor
 
 ```jsx
-Menu(menuListElement: HTMLUListElement);
+Menu(menuListElement: HTMLUListElement, options: object);
 ```
 
 **`menuListElement`** _(Required)_ The list element containing menu items.
+
+**`options`** - _(Optional)_ Configuration options.
+
+### Available Options
+
+**`itemsMatch`** The selector used to validate interactive menu items. When this option is not specified, the first matching interactive element in each list item will be used as the menu item. This option can also be used to exclude items that would otherwise be interpreted as an interactive menu item e.g., `:not(.hidden)`. _Default is `undefined`_
 
 ## Instance Methods
 
