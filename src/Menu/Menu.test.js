@@ -6,7 +6,7 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li id="first">
-        <button class="first-item">Fruit</button>
+        <button aria-controls="first-disclosure" class="first-item">Fruit</button>
         <ul id="first-disclosure" class="sublist1">
           <li><a class="sublist1-first-item" href="#example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="#example.com">Bananas</a></li>

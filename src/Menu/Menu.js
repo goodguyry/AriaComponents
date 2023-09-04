@@ -147,25 +147,14 @@ export default class Menu extends AriaComponent {
    * @return {array} A collection of submenu Disclosures.
    */
   initSubmenuDisclosure = (disclosures, menuChild) => {
-    let controller = menuChild.querySelector(':scope > [aria-controls]');
-
+    const controller = menuChild.querySelector(':scope > [aria-controls]');
     if (null === controller) {
-      const [firstChild, ...theRest] = Array.from(menuChild.children);
-
-      // Try to use the first child of the menu item.
-      controller = firstChild;
-
-      if (null == controller || ! controller.matches('a,button')) {
-        // The first child isn't a link or button, so find the first instance of either.
-        [controller] = Array.from(theRest).filter((child) => child.matches('a,button'));
-      }
-    }
-
-    if (null == controller) {
       return disclosures;
     }
 
-    const target = controller.parentElement.querySelector('ul');
+    const targetId = controller.getAttribute('aria-controls');
+    const target = menuChild.querySelector(`:scope > #${targetId}`);
+
     if (null == target) {
       return disclosures;
     }
@@ -237,8 +226,7 @@ export default class Menu extends AriaComponent {
     }, []);
 
     // Set and collect submenu Disclosures.
-    this.disclosures = Array.from(this.element.children)
-      .reduce(this.initSubmenuDisclosure, []);
+    this.disclosures = this.elementChildren.reduce(this.initSubmenuDisclosure, []);
 
     if (0 < this.disclosures.length) {
       this.on('focusout', this.menuHandleFocusout);
