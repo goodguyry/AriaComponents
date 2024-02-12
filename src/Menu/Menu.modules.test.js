@@ -1,6 +1,9 @@
 /* eslint-disable max-len */
 import user from '@/.jest/user';
 import Menu from '.';
+import Tablist, {
+  UseKeyboardSupport,
+} from '.';
 
 const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
@@ -62,20 +65,9 @@ const onDestroy = jest.fn();
 // The `init` event is not trackable via on/off.
 list.addEventListener('menu.init', onInit);
 
-let menu;
-
-beforeEach(() => {
-  menu = new Menu(
-    list,
-    {
-      modules: [
-        UseKeyboardSupport,
-      ],
-    }
-  );
-});
-
 test('UseKeyboardSupport: Add support for arrow, Home, and End keys', async () => {
+  const menu = new Menu(list, { modules: UseKeyboardSupport });
+
   // Down Arrow or
   // Right Arrow
   // If focus is on a button and its dropdown is collapsed, and it is not the last button, moves focus to the next button.

@@ -1,5 +1,5 @@
 /**
- * Module for managing tabIndex for the target's interactive children.
+ * Manage tabIndex for the target's interactive children.
  *
  * This isn't such an issue when the target is hidden with `display:none`, but
  * may be necessary if the target is hidden by other means.
