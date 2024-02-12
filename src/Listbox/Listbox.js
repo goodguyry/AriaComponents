@@ -35,8 +35,8 @@ export default class ListBox extends AriaComponent {
    *
    * @param {HTMLElement} lement The component element.
    */
-  constructor(element) {
-    super(element);
+  constructor(element, options = {}) {
+    super(element, options);
 
     /**
      * The string description for this object.
