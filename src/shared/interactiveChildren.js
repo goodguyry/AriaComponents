@@ -14,7 +14,7 @@ const interactiveChildSelector = [
 ].join(',');
 
 /**
- * Collect all interactive child elements.
+ * Returns true if the target contains an interactive element.
  *
  * @param {HTMLElement} target   The element in which to search for interactive children.
  * @param {String}      selector The interactive child selector.
