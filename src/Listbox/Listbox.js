@@ -129,6 +129,15 @@ export default class ListBox extends AriaComponent {
   }
 
   /**
+   * Get expanded state.
+   *
+   * @return {bool}
+   */
+  get expanded() {
+    return this.#expanded;
+  }
+
+  /**
    * Set the Listbox orientation.
    *
    * @param {string} newOrientation The expected `aria-orientation` value.
@@ -147,15 +156,6 @@ export default class ListBox extends AriaComponent {
    */
   get orientation() {
     return this.#orientation;
-  }
-
-  /**
-   * Get expanded state.
-   *
-   * @return {bool}
-   */
-  get expanded() {
-    return this.#expanded;
   }
 
   /**
