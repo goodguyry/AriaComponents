@@ -78,7 +78,7 @@ export default class AriaComponent {
      *
      * @type {Object} {
      *   @param {HTMLElement} element The component element.
-     *   @param {Object}.     options The original options.
+     *   @param {Object}      options The original options.
      * }
      */
     this.params = {
