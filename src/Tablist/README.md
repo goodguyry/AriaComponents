@@ -151,7 +151,7 @@ Authors are responsible for providing a label for the Tablist. See ["Role, Prope
 
 > If the tab list has a visible label, the element with role tablist has aria-labelledby set to a value that refers to the labelling element. Otherwise, the tablist element has a label provided by aria-label.
 
-The recommendation is to only auto-active tabs as they're selected if the associated panel's content [isn't preloaded](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/). Otherwise, we can use the `AutomaticActivation` module:
+The recommendation is to only auto-active tabs as they're selected if the associated panel's content [isn't preloaded](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/). Otherwise, use the `AutomaticActivation` module:
 
 ```jsx
 import Tablist, { AutomaticActivation } from 'aria-components/tablist';

@@ -104,7 +104,7 @@ Hides the target element with the `hidden` attribute, removing the need to do it
 
 ## Additional Information
 
-The `loadOpen` option is removed, in part because it's possible to achieve the same result without the option: Add `aria-expanded="true"` to the controling element and `aria-hidden="false"` to the target element and the attribute will treat it as expanded by default.
+Previously, there existsed a `loadOpen` option for initializing a Disclosure in the expanded state. To achieve the same result: Add `aria-expanded="true"` to the controling element and `aria-hidden="false"` to the target element.
 
 ## References
 
