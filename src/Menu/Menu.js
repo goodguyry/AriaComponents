@@ -215,9 +215,7 @@ export default class Menu extends AriaComponent {
   controllerHandleKeydown = (event) => {
     const { target, key } = event;
 
-    if (
-      [' ', 'Enter'].includes(key)
-    ) {
+    if ([' ', 'Enter'].includes(key)) {
       event.preventDefault();
       event.stopPropagation();
 
