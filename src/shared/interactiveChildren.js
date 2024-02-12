@@ -18,7 +18,7 @@ const interactiveChildSelector = [
  *
  * @param {HTMLElement} target   The element in which to search for interactive children.
  * @param {String}      selector The interactive child selector.
- * @return {Array}
+ * @return {bool}
  */
 function hasInteractiveChildren(target, selector = interactiveChildSelector) {
   return (null !== target.querySelector(selector));
