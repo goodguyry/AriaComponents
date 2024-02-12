@@ -17,7 +17,7 @@ export default class ListBox extends AriaComponent {
    * Initial expanded state.
    * @private
    *
-   * @type {Boolean}
+   * @type {bool}
    */
   #expanded = false;
 
@@ -35,8 +35,8 @@ export default class ListBox extends AriaComponent {
    *
    * @param {HTMLElement} lement The component element.
    */
-  constructor(element) {
-    super(element);
+  constructor(element, options = {}) {
+    super(element, options);
 
     /**
      * The string description for this object.
@@ -56,7 +56,7 @@ export default class ListBox extends AriaComponent {
        * Whether the Listbox options are horizonally or vertically oriented.
        * Options: 'horizontal', 'vertical'.
        *
-       * @type {String}
+       * @type {string}
        */
       orientation: this.#orientation,
 
@@ -71,7 +71,7 @@ export default class ListBox extends AriaComponent {
     /**
      * Saves the initial button label.
      *
-     * @type {String}
+     * @type {string}
      */
     this.buttonLabel = this.controller.textContent;
 
@@ -129,6 +129,15 @@ export default class ListBox extends AriaComponent {
   }
 
   /**
+   * Get expanded state.
+   *
+   * @return {bool}
+   */
+  get expanded() {
+    return this.#expanded;
+  }
+
+  /**
    * Set the Listbox orientation.
    *
    * @param {string} newOrientation The expected `aria-orientation` value.
@@ -147,15 +156,6 @@ export default class ListBox extends AriaComponent {
    */
   get orientation() {
     return this.#orientation;
-  }
-
-  /**
-   * Get expanded state.
-   *
-   * @return {bool}
-   */
-  get expanded() {
-    return this.#expanded;
   }
 
   /**

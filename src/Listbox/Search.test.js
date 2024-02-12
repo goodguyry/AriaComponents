@@ -6,7 +6,7 @@ import Search from './Search';
  * @todo This is maintained from the previous event setup because typing with
  * user.keyboard is taking so long the tests error out.
  *
- * @param  {string} character The character to type.
+ * @param {string} character The character to type.
  * @return {KeyboardEvent}
  */
 function typeCharacter(character) {

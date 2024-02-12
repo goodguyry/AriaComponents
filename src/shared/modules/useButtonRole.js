@@ -1,8 +1,8 @@
 /**
  * Mimic button element for a non-button controller.
  *
- * @param  {Dialog|Disclosure|Popup} arg.component The component instance.
- * @return {Function} The cleanup function.
+ * @param {Dialog|Disclosure|Popup} arg.component The component instance.
+ * @return {function} The cleanup function.
  */
 export default function UseButtonRole({ component }) {
   /**

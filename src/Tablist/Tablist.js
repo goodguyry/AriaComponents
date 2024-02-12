@@ -17,14 +17,14 @@ export default class Tablist extends AriaComponent {
   /**
    * The initial active index.
    *
-   * @type {Number}
+   * @type {number}
    */
   #activeIndex = 0;
 
   /**
    * The previously-active index.
    *
-   * @type {Number}
+   * @type {number}
    */
   #switchedFrom = null;
 
@@ -72,7 +72,7 @@ export default class Tablist extends AriaComponent {
        * Whether the tabs are horizonally or vertically oriented.
        * Options: 'horizontal', 'vertical'.
        *
-       * @type {String}
+       * @type {string}
        */
       orientation: this.#orientation,
 
@@ -121,7 +121,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Set the last-active index and update attributes accordingly.
    *
-   * @param {Number} previousIndex The previous index.
+   * @param {number} previousIndex The previous index.
    */
   set #previousIndex(previousIndex) {
     this.#switchedFrom = previousIndex;
@@ -141,7 +141,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Get the previously-avtive index.
    *
-   * @return {Number}
+   * @return {number}
    */
   get previousIndex() {
     return this.#switchedFrom;
@@ -150,7 +150,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Set the active index and update attributes accordingly.
    *
-   * @param {Number} newIndex The index to set as active.
+   * @param {number} newIndex The index to set as active.
    */
   set activeIndex(newIndex) {
     // Deactivate the previous tab-panel pair.
@@ -180,7 +180,7 @@ export default class Tablist extends AriaComponent {
   /**
    * Get the active index.
    *
-   * @return {Number}
+   * @return {number}
    */
   get activeIndex() {
     return this.#activeIndex;
@@ -286,8 +286,8 @@ export default class Tablist extends AriaComponent {
   /**
    * Returns the next index based on the key pressed.
    *
-   * @param  {string} key          The key name.
-   * @param  {number} currentIndex The currently event target.
+   * @param {string} key          The key name.
+   * @param {number} currentIndex The currently event target.
    * @return {number}              The index to which focus should move.
    */
   getNextIndex = (key, currentIndex) => {

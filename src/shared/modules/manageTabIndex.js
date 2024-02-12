@@ -4,9 +4,9 @@
  * This isn't such an issue when the target is hidden with `display:none`, but
  * may be necessary if the target is hidden by other means.
  *
- * @param  {Dialog|Disclosure|Popup} arg.component The component instance.
- * @param  {String}                  arg.namespace The component's event namespace.
- * @return {Function} The cleanup function.
+ * @param {Dialog|Disclosure|Popup} arg.component The component instance.
+ * @param {string}                  arg.namespace The component's event namespace.
+ * @return {function} The cleanup function.
  */
 export default function ManageTabIndex({ component, namespace }) {
   /**

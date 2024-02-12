@@ -35,7 +35,7 @@ export default class Search {
    * Select the item that matches a search string.
    * If a match is found, return it so that it can be selected.
    *
-   * @param {Number} key A keyCode value.
+   * @param {number} key A keyCode value.
    * @return {HTMLElement|null} The matched element or null if no match.
    */
   getItem(key) {

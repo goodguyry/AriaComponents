@@ -10,7 +10,7 @@ export default class Dialog extends AriaComponent {
    * Initial state.
    * @private
    *
-   * @type {Boolean}
+   * @type {bool}
    */
   #expanded = false;
 
@@ -68,7 +68,7 @@ export default class Dialog extends AriaComponent {
   /**
    * Set expanded state and update attributes.
    *
-   * @param {Object} state The component state.
+   * @param {object} state The component state.
    */
   set expanded(newState) {
     // Update state.

@@ -3,8 +3,8 @@ import { interactiveChildren } from '../../shared/interactiveChildren';
 /**
  * Tablist module for managing tabIndex for target interactive children.
  *
- * @param  {Tablist} arg.component An instance of Tablist.
- * @return {Function} The cleanup function.
+ * @param {Tablist} arg.component An instance of Tablist.
+ * @return {function} The cleanup function.
  */
 export default function ManageTabIndex({ component }) {
   /*

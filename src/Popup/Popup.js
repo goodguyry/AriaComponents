@@ -11,7 +11,7 @@ export default class Popup extends AriaComponent {
    * Initial expanded state.
    * @private
    *
-   * @type {Boolean}
+   * @type {bool}
    */
   #expanded = false;
 
@@ -19,7 +19,7 @@ export default class Popup extends AriaComponent {
    * Initial `type` option value.
    * @private
    *
-   * @type {Boolean}
+   * @type {bool}
    */
   #optionType = 'true'; // 'true' === 'menu' in UAs that don't support WAI-ARIA 1.1
 

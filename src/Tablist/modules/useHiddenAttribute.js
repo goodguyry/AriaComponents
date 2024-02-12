@@ -1,8 +1,8 @@
 /**
  * Tablist module to use the hidden attribute to hide hidden content :)
  *
- * @param  {Tablist} arg.component An instance of Tablist.
- * @return {Function} The cleanup function.
+ * @param {Tablist} arg.component An instance of Tablist.
+ * @return {function} The cleanup function.
  */
 export default function UseHiddenAttribute({ component }) {
   /**
