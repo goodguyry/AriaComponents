@@ -55,7 +55,7 @@ export default function DoSomethingHelpful({ instance }) {
 }
 ```
 
-The following properties are passed to modules:
+An object with the following properties is passed to modules:
 
 | Property    | Type          | Description                           |
 |:------------|:-------------:|:--------------------------------------|

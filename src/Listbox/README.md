@@ -1,7 +1,8 @@
 Listbox
 =======
 
-Class for setting up an interactive Listbox element.
+Class for setting up an interactive single-select Listbox for presenting a list 
+of options and allowing a user to select one of them.
 
 ## Contents
 

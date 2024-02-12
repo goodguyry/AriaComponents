@@ -18,7 +18,7 @@ A complete rewrite.
 - Components track attributes they add and will only overwrite existing attribute values where required (#73)
 - Components are now exported from their own endpoint (#84)
 - MenuBar and MenuButton components are now deprecated (#75)
-- Component state now uses setter/getter pattern (#83)
+- Component state now uses a setter/getter pattern (#83)
 
 **Changed**
 

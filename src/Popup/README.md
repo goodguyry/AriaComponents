@@ -1,7 +1,8 @@
 Popup
 =====
 
-Class for setting up an interactive popup button to activate a target element.
+Class for setting up an interactive popup button to activate a target element 
+for displaying hidden content.
 
 ## Example
 

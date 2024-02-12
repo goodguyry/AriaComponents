@@ -1,7 +1,8 @@
 Dialog
 ======
 
-Class for managing an interactive Dialog element.
+Class for managing an interactive Dialog element, typically overlaid on inert 
+content, that traps focus and prevents interaction with the outside content.
 
 ## Contents
 
@@ -157,7 +158,7 @@ Additionally, the close button may not be the most appropriate element to focus 
 
 > When a dialog opens, focus moves to an element contained in the dialog. Generally, focus is initially set on the first focusable element. However, the most appropriate focus placement will depend on the nature and size of the content.
 
-If the close button is not the most appropriate element to focus when the Dialog opens, we can omit the `closeButton` option to prevent the Dialog from managing focus. We can then manage focus and the close button ourselves.
+If the close button is not the most appropriate element to focus when the Dialog opens, omit the `closeButton` option to prevent the Dialog from managing focus and manage focus and the close button manually.
 
 ```jsx
 // Set up the close button.
@@ -174,7 +175,7 @@ dialog.on('dialog.stateChange', (event) => {
 
 **DOM Mutations**
 
-We can use `dialog.setInteractiveChildren()` to refresh the component after markup changes.
+Use `dialog.setInteractiveChildren()` to refresh the component after markup changes.
 
 ## References
 
