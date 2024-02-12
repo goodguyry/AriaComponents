@@ -17,7 +17,7 @@ const interactiveChildSelector = [
  * Returns true if the target contains an interactive element.
  *
  * @param {HTMLElement} target   The element in which to search for interactive children.
- * @param {String}      selector The interactive child selector.
+ * @param {string}      selector The interactive child selector.
  * @return {bool}
  */
 function hasInteractiveChildren(target, selector = interactiveChildSelector) {
@@ -28,8 +28,8 @@ function hasInteractiveChildren(target, selector = interactiveChildSelector) {
  * Collect all interactive child elements.
  *
  * @param {HTMLElement} target   The element in which to search for interactive children.
- * @param {String}      selector The interactive child selector.
- * @return {Array}
+ * @param {string}      selector The interactive child selector.
+ * @return {array}
  */
 function interactiveChildren(target, selector = interactiveChildSelector) {
   return Array.from(target.querySelectorAll(selector));

@@ -115,8 +115,8 @@ export default class Menu extends AriaComponent {
   /**
    * Initialize and save a submenu Disclosure.
    *
-   * @param  {array}         disclosures The array of previous disclosures.
-   * @param  {HTMLLIElement} menuChild   The menu item.
+   * @param {array}         disclosures The array of previous disclosures.
+   * @param {HTMLLIElement} menuChild   The menu item.
    * @return {array} A collection of submenu Disclosures.
    */
   initSubmenuDisclosure = (disclosures, menuChild) => {
@@ -187,7 +187,7 @@ export default class Menu extends AriaComponent {
    * Update attributes based on expanded state.
    *
    * @param {object} disclosure The Disclosure to update.
-   * @param {boolean} expanded  The expected updated Disclosure state.
+   * @param {bool} expanded  The expected updated Disclosure state.
    */
   setDisclosureState = (disclosure, expanded) => {
     if (undefined !== disclosure) {

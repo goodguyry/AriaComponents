@@ -1,7 +1,7 @@
 /**
  * Get the event detail object from the latest call.
  *
- * @param  {function} handler The event callback.
+ * @param {function} handler The event callback.
  * @return {object}
  */
 global.getEventDetails = (handler) => {

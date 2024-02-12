@@ -16,8 +16,8 @@ export default class AriaComponent {
    * Create a passably unique `id` attribute.
    * @static
    *
-   * @param {Number} radix An optional base for converting the Number to a String.
-   * @returns {String}
+   * @param {number} radix An optional base for converting the Number to a String.
+   * @returns {string}
    */
   static getUniqueId(radix = 36) {
     const [, attr] = Math.random().toString(radix).split('.');
@@ -27,7 +27,7 @@ export default class AriaComponent {
   /**
    * Returns the first and last items from an Array or NodeList.
    *
-   * @param  {array|NodeList} items The Array or NodeList from which to retrieve the items.
+   * @param {array|NodeList} items The Array or NodeList from which to retrieve the items.
    * @return {array}                The first and last items.
    */
   static getFirstAndLastItems(items) {
@@ -76,9 +76,9 @@ export default class AriaComponent {
     /**
      * The component parameters.
      *
-     * @type {Object} {
+     * @type {object} {
      *   @param {HTMLElement} element The component element.
-     *   @param {Object}      options The original options.
+     *   @param {object}      options The original options.
      * }
      */
     this.params = {
@@ -96,14 +96,14 @@ export default class AriaComponent {
     /**
      * Track attributes added by this script.
      *
-     * @type {Object}
+     * @type {object}
      */
     this.__trackedAttributes = {};
 
     /**
      * Track installed modules.
      *
-     * @type {Array}
+     * @type {array}
      */
     this.__includedModules = [];
 
@@ -151,7 +151,7 @@ export default class AriaComponent {
   /**
    * Returns tracked attributes for the given element after ensuring it has the required ID attribute.
    *
-   * @param  {HTMLElement} element The element for which attributes are being retrieved.
+   * @param {HTMLElement} element The element for which attributes are being retrieved.
    * @return {array}
    */
   getTrackedAttributesFor = (element) => {
@@ -221,8 +221,8 @@ export default class AriaComponent {
   /**
    * Dispatch event.
    *
-   * @param  {string} name   The event name.
-   * @param  {object} detail The event detail object.
+   * @param {string} name   The event name.
+   * @param {object} detail The event detail object.
    */
   dispatch = (name, detail) => {
     const event = new CustomEvent(
@@ -303,7 +303,7 @@ export default class AriaComponent {
   /**
    * Run the module function, which returns a cleanup function.
    *
-   * @param  {Funciton} mod The module initializing function.
+   * @param {Function} mod The module initializing function.
    * @return {Functions} The cleanup function.
    */
   start = (mod) => {

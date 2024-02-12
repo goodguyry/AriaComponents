@@ -2,9 +2,9 @@
  * Dialog module to use `aria-hidden` to hide outside content rather than using
  * the `aria-model` attribute.
  *
- * @param  {Dialog} arg.component The Dialog component instance.
- * @param  {object} arg.options   The options passed to the component instance.
- * @return {Function} The cleanup function.
+ * @param {Dialog} arg.component The Dialog component instance.
+ * @param {object} arg.options   The options passed to the component instance.
+ * @return {function} The cleanup function.
  */
 export default function UseLegacyDialog({ component, options }) {
   let { content } = {

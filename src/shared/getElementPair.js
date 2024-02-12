@@ -3,7 +3,7 @@
 /**
  * Get the controller and target elements based on the given element's attributes.
  *
- * @param  {HTMLElement} element Either the controller or target element.
+ * @param {HTMLElement} element Either the controller or target element.
  * @return {object} The controller and target elements.
  */
 const getElementPair = (element) => {

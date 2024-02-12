@@ -13,7 +13,7 @@ export default class Disclosure extends AriaComponent {
    * Initial expanded state.
    * @private
    *
-   * @type {Boolean}
+   * @type {bool}
    */
   #expanded = false;
 
@@ -51,7 +51,7 @@ export default class Disclosure extends AriaComponent {
   /**
    * Set expanded state and update attributes.
    *
-   * @param {Object} state The component state.
+   * @param {object} state The component state.
    */
   set expanded(newState) {
     // Update state.
