@@ -84,8 +84,11 @@ export default class Tablist extends AriaComponent {
      */
     this.orientation = orientation;
 
-    // Make sure the component element is a list.
-    if (['UL', 'OL'].includes(tabs.nodeName)) {
+    // Make sure the component element is a list that contains more than one item.
+    if (
+      ['UL', 'OL'].includes(tabs.nodeName)
+      && 1 < tabs?.children?.length
+    ) {
       this.init();
     } else {
       AriaComponent.configurationError(
