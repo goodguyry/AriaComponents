@@ -53,11 +53,11 @@ Menu(menuListElement: HTMLUListElement, options: object);
 
 **`menuListElement`** _(Required)_ The list element containing menu items.
 
-**`options`** - _(Optional)_ Configuration options.
+**`options`** _(Optional)_ Configuration options.
 
 ### Available Options
 
-**`itemsMatch`** The selector used to validate interactive menu items. When this option is not specified, the first matching interactive element in each list item will be used as the menu item. This option can also be used to exclude items that would otherwise be interpreted as an interactive menu item e.g., `:not(.hidden)`. _Default is `undefined`_
+**`itemsMatch`** A CSS selector used to validate interactive menu items. When this option is not specified, the first matching interactive element in each list item will be used as the menu item. This option can also be used to exclude items that would otherwise be interpreted as an interactive menu item (e.g., `:not(.hidden)`). _Default is `undefined`_
 
 ## Instance Methods
 
@@ -77,27 +77,19 @@ Global methods and properties documented at [`src/README`](../).
 
 Events are namespaced by their component to avoid clashes with nested components.
 
-**`'menu.init'`**
+**`'menu.init'`** Fired after the component is initialized.
 
-Fired after the component is initialized.
+**`'menu.stateChange'`** Fired after inner Disclosure state is updated.
 
-`event.detail.instance` The class instance from which the event originated.
+**`'menu.destroy'`** Fired after the component is destroyed.
 
-**`'menu.stateChange'`**
+### Properties of `event.detail`
 
-Fired after inner Disclosure state is updated.
-
-`event.detail.instance` The class instance from which the event originated.
-
-`event.detail.activeDisclosure` The current expanded submenu.
-
-**`'menu.destroy'`**
-
-Fired after the component is destroyed.
-
-`event.detail.instance` The class instance from which the event originated.
-
-`event.detail.element` The element passed to the constructor.
+| Property           | Description                                        | init | stateChange | destroy |
+|:-------------------|:---------------------------------------------------|:----:|:-----------:|:-------:|
+| `instance`         | The class instance from which the event originated | •    | •           | •       |
+| `element`          | The element passed to the constructor              |      |             | •       |
+| `activeDisclosure` | The current expanded submenu                       |      | •           |         |
 
 ## Modules
 
