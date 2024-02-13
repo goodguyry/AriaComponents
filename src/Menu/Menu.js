@@ -197,17 +197,17 @@ export default class Menu extends AriaComponent {
      */
     this.menuItems = this.elementChildren.reduce((acc, item) => {
       // Restrict `menuItems` to links and buttons.
-      const iteractiveChildren = item.querySelectorAll(`:scope > ${this.#menuItemsSelector}`);
-      if (0 === iteractiveChildren.length) {
+      const interactiveChildren = item.querySelectorAll(`:scope > ${this.#menuItemsSelector}`);
+      if (0 === interactiveChildren.length) {
         return acc;
       }
 
       if (undefined === this.itemsMatch) {
-        // Use all iteractive children as menu items.
-        return [...acc, ...iteractiveChildren];
+        // Use all interactive children as menu items.
+        return [...acc, ...interactiveChildren];
       }
 
-      const [firstItem, ...theRest] = iteractiveChildren;
+      const [firstItem, ...theRest] = interactiveChildren;
 
       // Test the first item against the customized selector pattern.
       if (firstItem.matches(this.itemsMatch)) {
