@@ -1,44 +1,40 @@
-function nextPrevious(key, activeDescendant, menuItems, keys) {
-  const { next, previous } = keys;
-  const activeIndex = menuItems.indexOf(activeDescendant);
-  const menuLastIndex = menuItems.length - 1;
+/**
+ * Returns the next or previous item from the array.
+ *
+ * @param  {bool}        key           The Event.key value.
+ * @param  {HTMLElement} activeElement The currently active item.
+ * @param  {array}       menuItems     The collective menu items.
+ * @param  {bool}        cycle:true    Whether or not to cycle around from the ends.
+ * @return {HTMLElement} The next or previous item.
+ */
+export default function nextPrevious(key, activeElement, menuItems, cycle = true) {
+  const activeIndex = menuItems.indexOf(activeElement);
+  const menuLastIndex = (menuItems.length - 1);
 
-  // Determine the direction.
-  let newIndex = (key === previous) ? activeIndex - 1 : activeIndex + 1;
-
-  // Move to the end if we're moving to the previous child from the first child.
-  if (previous === key && 0 > newIndex) {
-    newIndex = menuLastIndex;
+  if ('undefined' === typeof key) {
+    return activeElement;
   }
 
-  // Move to first child if we're at the end.
-  if (next === key && menuLastIndex < newIndex) {
-    newIndex = 0;
+  // Determine the direction.
+  let newIndex = ['ArrowDown', 'ArrowRight'].includes(key)
+    ? activeIndex + 1
+    : activeIndex - 1;
+
+  /*
+   * When cycling, move to the last item if we've moved out of the lower bounds
+   * of the array. Otherwise, correct the index to remain within the bounds.
+   */
+  if (0 > newIndex) {
+    newIndex = cycle ? menuLastIndex : 0;
+  }
+
+  /*
+   * When cycling, move to first item if we've moved out of the upper bounds of
+   * the array. Otherwise, correct the index to remain within the bounds.
+   */
+  if (menuLastIndex < newIndex) {
+    newIndex = cycle ? 0 : menuLastIndex;
   }
 
   return menuItems[newIndex];
 }
-
-function nextPreviousFromUpDown(key, activeDescendant, menuItems) {
-  return nextPrevious(
-    key,
-    activeDescendant,
-    menuItems,
-    { previous: 'ArrowUp', next: 'ArrowDown' }
-  );
-}
-
-function nextPreviousFromLeftRight(key, activeDescendant, menuItems) {
-  return nextPrevious(
-    key,
-    activeDescendant,
-    menuItems,
-    { previous: 'ArrowLeft', next: 'ArrowRight' }
-  );
-}
-
-export {
-  nextPrevious,
-  nextPreviousFromUpDown,
-  nextPreviousFromLeftRight,
-};

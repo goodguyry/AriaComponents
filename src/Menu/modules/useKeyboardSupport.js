@@ -1,4 +1,4 @@
-import { nextPreviousFromUpDown, nextPreviousFromLeftRight } from '../../shared/nextPrevious';
+import nextPrevious from '../../shared/nextPrevious';
 
 /**
  * Add support to Menu for arrow, Home, and End keys.
@@ -58,34 +58,15 @@ export default function UseKeyboardSupport({ component }) {
         /*
          * Move through sibling list items.
          */
+        case 'ArrowRight':
+        case 'ArrowLeft':
         case 'ArrowUp':
         case 'ArrowDown': {
-          const nextItem = nextPreviousFromUpDown(
-            key,
-            activeElement,
-            component.menuItems
-          );
+          const nextItem = nextPrevious(key, activeElement, component.menuItems, false);
 
           if (nextItem) {
             event.stopPropagation();
             event.preventDefault();
-
-            nextItem.focus();
-          }
-
-          break;
-        }
-
-        case 'ArrowRight':
-        case 'ArrowLeft': {
-          const nextItem = nextPreviousFromLeftRight(
-            key,
-            activeElement,
-            component.menuItems
-          );
-
-          if (nextItem) {
-            event.stopPropagation();
 
             nextItem.focus();
           }
