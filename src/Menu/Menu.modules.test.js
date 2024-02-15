@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import user from '@/.jest/user';
-import Menu from '.';
-import Tablist, {
+import Menu, {
   UseKeyboardSupport,
 } from '.';
 
@@ -93,6 +92,7 @@ test('UseKeyboardSupport: Add support for arrow, Home, and End keys', async () =
   // Left Arrow
   // If focus is on a button, and it is not the first button, moves focus to the previous button.
 
+  topLevelLastItem.focus();
   await user.keyboard('{ArrowUp}');
   expect(document.activeElement).toEqual(topLevelFourthItem);
 
@@ -105,7 +105,7 @@ test('UseKeyboardSupport: Add support for arrow, Home, and End keys', async () =
   await user.keyboard('{ArrowUp}');
   expect(document.activeElement).toEqual(firstController);
 
-  await user.keyboard('{ArrowDown}');
+  await user.keyboard('{ArrowLeft}');
   expect(document.activeElement).toEqual(firstController);
 
   // End
