@@ -236,6 +236,9 @@ export default class Menu extends AriaComponent {
     this.ariaCurrentPage = this.element.querySelector('[aria-current="page"]');
     this.on('keydown', this.menuHandleKeydown);
 
+    // Install modules.
+    this.initModules();
+
     // Fire the init event.
     this.dispatchEventInit();
   };
