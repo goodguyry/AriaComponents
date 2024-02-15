@@ -18,13 +18,9 @@ export default function UseKeyboardSupport({ component }) {
   // @todo Get first and last items from menu.
   // @todo Make it reusable for submenus?
 
-  component.menuItems = [];
-  Array.from(component.element.children).reduce((acc, listItem) => {
-    const els = listItem.querySelectorAll(':scope > a[href], :scope > button');
-    component.menuItems.concat(Array.from(els));
-  });
+  const { menuItems } = component;
 
-  const [firstItem, lastItem] = component.getFirstAndLastItems(menuItems);
+  const [firstItem, lastItem] = component.constructor.getFirstAndLastItems(menuItems);
   component.firstItem = firstItem;
   component.lastItem = lastItem;
 
@@ -35,7 +31,7 @@ export default function UseKeyboardSupport({ component }) {
     event.preventDefault();
 
     if (
-      ['ArrowDown',  'ArrowRight'].includes(event.key)
+      ['ArrowDown', 'ArrowRight'].includes(event.key)
       && component.activeDisclosureId === event.target?.id
     ) {
       const { target } = component.activeDisclosure;
@@ -53,78 +49,74 @@ export default function UseKeyboardSupport({ component }) {
    *
    * @param {Event} event The event object.
    */
-  menuHandleKeydown(event) {
+  function menuHandleKeydown(event) {
     const { key } = event;
     const { activeElement } = document;
 
-    if (! component.element.contains(activeElement)) {
-      return undefined;
-    }
+    if (component.element.contains(activeElement)) {
+      switch (key) {
+        /*
+         * Move through sibling list items.
+         */
+        case 'ArrowUp':
+        case 'ArrowDown': {
+          const nextItem = nextPreviousFromUpDown(
+            key,
+            activeElement,
+            component.menuItems
+          );
 
-    // const activeDescendant = component.element.contains(activeElement)
-    //   ? activeElement
-    //   : menuItems[0];
+          if (nextItem) {
+            event.stopPropagation();
+            event.preventDefault();
 
-    switch (key) {
-      /*
-       * Move through sibling list items.
-       */
-      case 'ArrowUp':
-      case 'ArrowDown': {
-        const nextItem = nextPreviousFromUpDown(
-          key,
-          activeElement,
-          component.menuItems
-        );
+            nextItem.focus();
+          }
 
-        if (nextItem) {
-          event.stopPropagation();
-          event.preventDefault();
-
-          nextItem.focus();
+          break;
         }
 
-        break;
-      }
+        case 'ArrowRight':
+        case 'ArrowLeft': {
+          const nextItem = nextPreviousFromLeftRight(
+            key,
+            activeElement,
+            component.menuItems
+          );
 
-      case 'ArrowRight':
-      case 'ArrowLeft': {
-        const nextItem = nextPreviousFromLeftRight(
-          key,
-          activeElement,
-          component.menuItems
-        );
+          if (nextItem) {
+            event.stopPropagation();
 
-        if (nextItem) {
-          event.stopPropagation();
-          event.preventDefault();
+            nextItem.focus();
+          }
 
-          nextItem.focus();
+          break;
         }
 
-        break;
-      }
+        /*
+         * Select the first Menu item.
+         */
+        case 'Home': {
+          event.preventDefault();
 
-      /*
-       * Select the first Menu item.
-       */
-      case 'Home': {
-        event.preventDefault();
+          component.firstItem.focus();
 
-        component.firstItem.focus();
+          break;
+        }
 
-        break;
-      }
+        /*
+         * Select the last Menu item.
+         */
+        case 'End': {
+          event.preventDefault();
 
-      /*
-       * Select the last Menu item.
-       */
-      case 'End:' {
-        event.preventDefault();
+          component.lastItem.focus();
 
-        component.lastItem.focus();
+          break;
+        }
 
-        break;
+        default:
+          break;
       }
     }
   }
@@ -135,7 +127,7 @@ export default function UseKeyboardSupport({ component }) {
 
   component.disclosures.forEach((disclosure) => {
     disclosure.controller.addEventListener('keydown', controllerHandleKeydown);
-  };
+  });
 
   // @todo Maybe just make Menu recursive?
   // @todo Listen for submenu down/right, up/left, home, end.
@@ -145,6 +137,6 @@ export default function UseKeyboardSupport({ component }) {
   return () => {
     component.disclosures.forEach((disclosure) => {
       disclosure.controller.removeEventListener('keydown', controllerHandleKeydown);
-    };
+    });
   };
 }
