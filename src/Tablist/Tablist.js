@@ -1,6 +1,7 @@
 import AriaComponent from '../AriaComponent';
 import getElementPair from '../shared/getElementPair';
 import { hasInteractiveChildren } from '../shared/interactiveChildren';
+import getNextIndexFromCurrent, { findIn } from '../shared/getNextIndexFromCurrent';
 
 /**
  * Class for implimenting a tabs widget for sectioning content and displaying
@@ -284,43 +285,6 @@ export default class Tablist extends AriaComponent {
   };
 
   /**
-   * Returns the next index based on the key pressed.
-   *
-   * @param {string} key          The key name.
-   * @param {number} currentIndex The currently event target.
-   * @return {number}              The index to which focus should move.
-   */
-  getNextIndex = (key, currentIndex) => {
-    switch (key) {
-      // Move to the first item.
-      case 'Home': {
-        return 0;
-      }
-
-      // Move to previous sibling, or the end if we're moving from the first child.
-      case 'ArrowUp':
-      case 'ArrowLeft': {
-        return (0 === currentIndex) ? this.tabLinksLastIndex : (currentIndex - 1);
-      }
-
-      // Move to the next sibling, or the first child if we're at the end.
-      case 'ArrowDown':
-      case 'ArrowRight': {
-        return (this.tabLinksLastIndex === currentIndex) ? 0 : (currentIndex + 1);
-      }
-
-      // Move to the last item.
-      case 'End': {
-        return this.tabLinksLastIndex;
-      }
-
-      default:
-        // Do nothing.
-        return undefined;
-    }
-  };
-
-  /**
    * Handle keydown events on the tabpanels.
    *
    * @param {Event} event The event object.
@@ -352,8 +316,7 @@ export default class Tablist extends AriaComponent {
    */
   tabsHandleKeydown = (event) => {
     const { key, target } = event;
-    const currentIndex = this.tabLinks.indexOf(target);
-    const nextIndex = this.getNextIndex(key, currentIndex);
+    const nextIndex = getNextIndexFromCurrent(findIn(target, this.tabLinks), key);
 
     switch (key) {
       /*

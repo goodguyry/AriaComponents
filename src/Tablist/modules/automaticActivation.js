@@ -1,3 +1,5 @@
+import getNextIndexFromCurrent, { findIn } from '../../shared/getNextIndexFromCurrent';
+
 /**
  * Tablist module for automatically activating tabs when moving focus.
  *
@@ -21,7 +23,6 @@ export default function AutomaticActivation({ component }) {
    */
   const activateTab = (event) => {
     const { key, shiftKey, target } = event;
-    const currentIndex = component.tabLinks.indexOf(target);
 
     switch (key) {
       /*
@@ -39,7 +40,7 @@ export default function AutomaticActivation({ component }) {
 
       // Conditionally activate another tab.
       default: {
-        const nextIndex = component.getNextIndex(key, currentIndex);
+        const nextIndex = getNextIndexFromCurrent(findIn(target, component.tabLinks), key);
 
         if (undefined !== nextIndex) {
           component.switchTo(nextIndex);
