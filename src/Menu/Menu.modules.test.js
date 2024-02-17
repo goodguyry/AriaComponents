@@ -8,7 +8,7 @@ const menuMarkup = `
   <nav class="nav" aria-label="Menu Class Example">
     <ul class="menu">
       <li id="first">
-        <button class="first-item">Fruit</button>
+        <button aria-controls="first-disclosure" class="first-item">Fruit</button>
         <ul id="first-disclosure" class="sublist1">
           <li><a class="sublist1-first-item" href="#example.com">Apples</a></li>
           <li><a class="sublist1-second-item" href="#example.com">Bananas</a></li>
@@ -122,7 +122,9 @@ test('UseKeyboardSupport: Add support for arrow, Home, and End keys', async () =
   expect(document.activeElement).toEqual(firstController);
 
   // if focus is on a button and its dropdown is expanded, moves focus to the first link in the dropdown.
-  menu.activeDisclosure = firstController.id;
+  menu.activeDisclosureId = firstController.id;
+  expect(menu.activeDisclosureId).toBe(firstController.id);
+
   // firstController.focus();
   await user.keyboard('{ArrowRight}');
   expect(document.activeElement).toEqual(firstTargetFirstItem);
