@@ -35,11 +35,11 @@ export default function UseKeyboardSupport({ component }) {
       && component.activeDisclosureId === event.target?.id
     ) {
       const { target } = component.activeDisclosure;
-      const firstItem = target.firstElementChild.querySelector('a,button');
+      const firstElementChild = target.firstElementChild.querySelector('a,button');
 
-      if (null !== firstItem) {
+      if (null !== firstElementChild) {
         event.stopPropagation();
-        firstItem.focus();
+        firstElementChild.focus();
       }
     }
   };
